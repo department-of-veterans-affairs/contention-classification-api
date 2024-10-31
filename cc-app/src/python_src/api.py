@@ -14,9 +14,17 @@ from .pydantic_models import (
     Contention,
     VaGovClaim,
 )
+from .util.expanded_lookup_config import FILE_READ_HELPER
+from .util.expanded_lookup_table import ExpandedLookupTable
 from .util.logging_dropdown_selections import build_logging_table
 from .util.lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .util.sanitizer import sanitize_log
+
+expanded_lookup_table = ExpandedLookupTable(
+    key_text=FILE_READ_HELPER["contention_text"],
+    classification_code=FILE_READ_HELPER["classification_code"],
+    classification_name=FILE_READ_HELPER["classification_name"],
+)
 
 dc_lookup_table = DiagnosticCodeLookupTable()
 dropdown_lookup_table = ContentionTextLookupTable()
@@ -231,4 +239,58 @@ def va_gov_claim_classifier(claim: VaGovClaim) -> ClassifierResponse:
         num_classified_contentions=num_classified,
     )
 
+    return response
+
+
+def get_expanded_classification(contention: Contention) -> Tuple[int, str]:
+    """
+    Performs the dictionary lookup for the expanded lookup table
+    """
+    classification_code = None
+    classification_name = None
+    if contention.contention_type == "INCREASE":
+        classification = dc_lookup_table.get(contention.diagnostic_code)
+        classification_code = classification["classification_code"]
+        classification_name = classification["classification_name"]
+
+    if contention.contention_text and not classification_code:
+        classification = expanded_lookup_table.get(contention.contention_text)
+        classification_code = classification["classification_code"]
+        classification_name = classification["classification_name"]
+
+    return classification_code, classification_name
+
+
+def classify_contention_expanded_table(
+    contention: Contention, claim: VaGovClaim
+) -> ClassifiedContention:
+    classification_code, classification_name = get_expanded_classification(contention)
+
+    response = ClassifiedContention(
+        classification_code=classification_code,
+        classification_name=classification_name,
+        diagnostic_code=contention.diagnostic_code,
+        contention_type=contention.contention_type,
+    )
+
+    return response
+
+
+@app.post("/expanded-contention-classification")
+def expanded_classifications(claim: VaGovClaim) -> ClassifierResponse:
+    classified_contentions = []
+    for contention in claim.contentions:
+        classification = classify_contention_expanded_table(contention, claim)
+        classified_contentions.append(classification)
+
+    num_classified = len([c for c in classified_contentions if c.classification_code])
+
+    response = ClassifierResponse(
+        contentions=classified_contentions,
+        claim_id=claim.claim_id,
+        form526_submission_id=claim.form526_submission_id,
+        is_fully_classified=num_classified == len(classified_contentions),
+        num_processed_contentions=len(classified_contentions),
+        num_classified_contentions=num_classified,
+    )
     return response
