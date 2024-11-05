@@ -86,6 +86,7 @@ def log_contention_stats(
     contention: Contention,
     classified_contention: ClassifiedContention,
     claim: VaGovClaim,
+    request: Request,
 ):
     """
     Logs stats about each contention process by the classifier. This will maintain
@@ -118,11 +119,14 @@ def log_contention_stats(
             "is_in_dropdown": is_in_dropdown,
             "is_lookup_table_match": classification_code is not None,
             "is_multi_contention": is_multi_contention,
+            "endpoint": request.url.path,
         }
     )
 
 
-def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse):
+def log_claim_stats_v2(
+    claim: VaGovClaim, response: ClassifierResponse, request: Request
+):
     """
     Logs stats about each claim processed by the classifier.  This will provide
     the capability to build widgets to track metrics about claims.
@@ -138,6 +142,7 @@ def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse):
             * 100,
             "num_processed_contentions": response.num_processed_contentions,
             "num_classified_contentions": response.num_classified_contentions,
+            "endpoint": request.url.path,
         }
     )
 
@@ -149,7 +154,8 @@ def log_claim_stats_decorator(func):
 
         if kwargs.get("claim"):
             claim = kwargs["claim"]
-            log_claim_stats_v2(claim, result)
+            request = kwargs["request"]
+            log_claim_stats_v2(claim, result, request)
 
         return result
 
@@ -163,7 +169,8 @@ def log_contention_stats_decorator(func):
         if isinstance(args[0], Contention) and isinstance(args[1], VaGovClaim):
             contention = args[0]
             claim = args[1]
-            log_contention_stats(contention, result, claim)
+            request = args[2]
+            log_contention_stats(contention, result, claim, request)
 
         return result
 
@@ -206,7 +213,7 @@ def get_classification_code_name(contention: Contention) -> Tuple:
 
 @log_contention_stats_decorator
 def classify_contention(
-    contention: Contention, claim: VaGovClaim
+    contention: Contention, claim: VaGovClaim, request: Request
 ) -> ClassifiedContention:
     classification_code, classification_name = get_classification_code_name(contention)
 
@@ -222,10 +229,10 @@ def classify_contention(
 
 @app.post("/va-gov-claim-classifier")
 @log_claim_stats_decorator
-def va_gov_claim_classifier(claim: VaGovClaim) -> ClassifierResponse:
+def va_gov_claim_classifier(claim: VaGovClaim, request: Request) -> ClassifierResponse:
     classified_contentions = []
     for contention in claim.contentions:
-        classification = classify_contention(contention, claim)
+        classification = classify_contention(contention, claim, request)
         classified_contentions.append(classification)
 
     num_classified = len([c for c in classified_contentions if c.classification_code])
@@ -261,8 +268,9 @@ def get_expanded_classification(contention: Contention) -> Tuple[int, str]:
     return classification_code, classification_name
 
 
+@log_contention_stats_decorator
 def classify_contention_expanded_table(
-    contention: Contention, claim: VaGovClaim
+    contention: Contention, claim: VaGovClaim, request: Request
 ) -> ClassifiedContention:
     classification_code, classification_name = get_expanded_classification(contention)
 
@@ -277,10 +285,11 @@ def classify_contention_expanded_table(
 
 
 @app.post("/expanded-contention-classification")
-def expanded_classifications(claim: VaGovClaim) -> ClassifierResponse:
+@log_claim_stats_decorator
+def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierResponse:
     classified_contentions = []
     for contention in claim.contentions:
-        classification = classify_contention_expanded_table(contention, claim)
+        classification = classify_contention_expanded_table(contention, claim, request)
         classified_contentions.append(classification)
 
     num_classified = len([c for c in classified_contentions if c.classification_code])
