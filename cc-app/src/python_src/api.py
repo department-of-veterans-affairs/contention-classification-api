@@ -82,6 +82,30 @@ def log_as_json(log: dict):
     logging.info(json.dumps(log))
 
 
+def log_expanded_contention_text(
+    logging_dict: dict, contention_text: str, log_contention_text: str
+):
+    """
+    Updates the  logging dictionary with the contention text updates from the expanded classification method
+    """
+    processed_text = expanded_lookup_table.prep_incoming_text(contention_text)
+    # only log these items if the expanded lookup returns a classification code
+    if expanded_lookup_table.get(contention_text)["classification_code"]:
+        if log_contention_text == "unmapped contention text":
+            log_contention_text = f"unmapped contention text {[processed_text]}"
+        logging_dict.update(
+            {
+                "processed_contention_text": processed_text,
+                "contention_text": log_contention_text,
+            }
+        )
+    # log none as the processed text if it is not in the LUT and leave unmapped contention text as is
+    else:
+        logging_dict.update({"processed_contention_text": None})
+
+    return logging_dict
+
+
 def log_contention_stats(
     contention: Contention,
     classified_contention: ClassifiedContention,
@@ -108,20 +132,27 @@ def log_contention_stats(
 
     is_multi_contention = len(claim.contentions) > 1
 
-    log_as_json(
-        {
-            "vagov_claim_id": sanitize_log(claim.claim_id),
-            "claim_type": sanitize_log(log_contention_type),
-            "classification_code": classification_code,
-            "classification_name": classification_name,
-            "contention_text": log_contention_text,
-            "diagnostic_code": sanitize_log(contention.diagnostic_code),
-            "is_in_dropdown": is_in_dropdown,
-            "is_lookup_table_match": classification_code is not None,
-            "is_multi_contention": is_multi_contention,
-            "endpoint": request.url.path,
-        }
-    )
+    logging_dict = {
+        "vagov_claim_id": sanitize_log(claim.claim_id),
+        "claim_type": sanitize_log(log_contention_type),
+        "classification_code": classification_code,
+        "classification_name": classification_name,
+        "contention_text": log_contention_text,
+        "diagnostic_code": sanitize_log(contention.diagnostic_code),
+        "is_in_dropdown": is_in_dropdown,
+        "is_lookup_table_match": classification_code is not None,
+        "is_multi_contention": is_multi_contention,
+        "endpoint": request.url.path,
+    }
+
+    if request.url.path == "/expanded-contention-classification":
+        logging_dict = log_expanded_contention_text(
+            logging_dict, contention.contention_text, log_contention_text
+        )
+
+        # log_as_json(logging_dict)
+    # else:
+    log_as_json(logging_dict)
 
 
 def log_claim_stats_v2(

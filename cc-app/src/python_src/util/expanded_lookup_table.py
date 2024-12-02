@@ -123,6 +123,19 @@ class ExpandedLookupTable:
 
         return classification_code_mappings
 
+    def prep_incoming_text(self, input_str: str):
+        """
+        Prepares the incoming text for lookup by removing common words and punctuation
+        """
+        input_str = input_str.strip().lower()
+
+        for term in ["due to", "secondary to", "because of"]:
+            if term in input_str:
+                input_str = input_str.split(term)[0]
+        input_str = self._removal_pipeline(input_str)
+
+        return input_str
+
     def get(self, input_str: str, default_value=LUT_DEFAULT_VALUE):
         """
         Processes input string using same method as the LUT and performs the lookup
@@ -132,19 +145,14 @@ class ExpandedLookupTable:
 
         This also process the parenthetical terms in the mappings
         """
-        # There is only one case of using due to in the mappings (need to figure out a better way than hard coding it)
-        input_str = input_str.strip().lower()
         if input_str == "loss of teeth due to bone loss":
             return {
                 "classification_code": 8967,
                 "classification_name": "Dental and Oral",
             }
 
-        for term in ["due to", "secondary to", "because of"]:
-            if term in input_str:
-                input_str = input_str.split(term)[0]
+        input_str = self.prep_incoming_text(input_str)
 
-        input_str = self._removal_pipeline(input_str)
         input_str_lookup = frozenset(input_str.split())
         classification = self.contention_text_lookup_table.get(
             input_str_lookup, default_value
