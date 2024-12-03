@@ -37,6 +37,7 @@ class VaGovClaim(BaseModel):
     claim_id: int
     form526_submission_id: int
     contentions: conlist(Contention, min_length=1)
+    is_ab_test_claim: Optional[bool] = False
 
 
 class ClassifiedContention(BaseModel):
