@@ -8,11 +8,11 @@ However, for a more speedy, lightweight setup, you can run the FastAPI server in
 
 ## FastAPI Setup
 Install Python3.10
-If you're on a mac, you can use pyenv to handle multiple python versions
+Mac Users: you can use pyenv to handle multiple python versions
 ```
 brew install pyenv
-pyenv install python3.10
-pyenv global python3.10 # or don't do this if you want a different version available globally for your system
+pyenv install 3.10 #Installs latest version of python 3.10
+pyenv global 3.10 # or don't do this if you want a different version available globally for your system, set locally to use python in current folder. 
 ```
 
 Create a virtual env
@@ -25,6 +25,13 @@ Make sure your pythonpath is set up to pull from your vitualenv
 ```
 which python3
 # /Users/<your_username>/.virtualenvs/domain-cc/bin/python
+```
+
+Mac Users: If python path hasn't been setup, you can put the following in your ~/.zshrc
+```
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/shims:$PATH"
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi” #Initalize pyenv in current shell session
 ```
 
 Navigate to `src` directory, install dependencies, and run webserver
@@ -57,7 +64,7 @@ pytest
 ```
 source ~/.virtualenvs/domain-cc/bin/activate
 pip install -r dev-requirements.txt
-# MAKE SURE you are in adb-vro/domain-cc to get the right pre-commit-config.yaml installed
+# MAKE SURE you are in abd-vro/domain-cc to get the right pre-commit-config.yaml installed
 pre-commit install
 ```
 
