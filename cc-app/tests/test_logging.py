@@ -68,7 +68,6 @@ def test_log_contention_stats_expanded(mocked_func):
         "is_lookup_table_match": True,
         "is_multi_contention": False,
         "endpoint": "/expanded-contention-classification",
-        "is_ab_test_claim": False,
         "processed_contention_text": "acl tear",
     }
 
@@ -108,7 +107,6 @@ def test_non_classified_contentions(mocked_func):
         "is_lookup_table_match": False,
         "is_multi_contention": False,
         "endpoint": "/expanded-contention-classification",
-        "is_ab_test_claim": False,
         "processed_contention_text": None,
     }
     mocked_func.assert_called_once_with(expected_log)
@@ -159,7 +157,6 @@ def test_multiple_contentions(mocked_func):
             "is_lookup_table_match": True,
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
-            "is_ab_test_claim": False,
             "processed_contention_text": "tinnitus ringing hissing ears",
         },
         {
@@ -173,7 +170,6 @@ def test_multiple_contentions(mocked_func):
             "is_lookup_table_match": True,
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
-            "is_ab_test_claim": False,
             "processed_contention_text": "anxiety",
         },
     ]
@@ -234,7 +230,6 @@ def test_contentions_with_pii(mocked_func):
             "is_lookup_table_match": False,
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
-            "is_ab_test_claim": False,
             "processed_contention_text": None,
         },
         {
@@ -248,7 +243,6 @@ def test_contentions_with_pii(mocked_func):
             "is_lookup_table_match": False,
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
-            "is_ab_test_claim": False,
             "processed_contention_text": None,
         },
     ]
@@ -311,7 +305,6 @@ def test_log_claim_stats(mocked_func):
         "num_processed_contentions": 2,
         "num_classified_contentions": 1,
         "endpoint": "/expanded-contention-classification",
-        "is_ab_test_claim": False,
     }
     log_claim_stats_v2(test_claim, classifier_response, test_expanded_request)
     mocked_func.assert_called_once_with(expected_log)
@@ -353,7 +346,6 @@ def test_current_classifier_contention(mocked_func):
         "is_lookup_table_match": False,
         "is_multi_contention": False,
         "endpoint": "/va-gov-claim-classifier",
-        "is_ab_test_claim": False,
     }
 
     mocked_func.assert_called_once_with(expected_logging_dict)
@@ -404,7 +396,6 @@ def test_full_logging_expanded_endpoint(mocked_func):
             "is_lookup_table_match": False,
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
-            "is_ab_test_claim": False,
             "processed_contention_text": None,
         },
         {
@@ -418,7 +409,6 @@ def test_full_logging_expanded_endpoint(mocked_func):
             "is_lookup_table_match": True,
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
-            "is_ab_test_claim": False,
             "processed_contention_text": "anxiety",
         },
     ]
@@ -439,7 +429,6 @@ def test_full_logging_expanded_endpoint(mocked_func):
         "num_processed_contentions": 2,
         "num_classified_contentions": 1,
         "endpoint": "/expanded-contention-classification",
-        "is_ab_test_claim": False,
     }
 
     for i in range(len(test_contentions)):
@@ -454,75 +443,3 @@ def test_full_logging_expanded_endpoint(mocked_func):
     log_claim_stats_v2(test_claim, classifier_response, test_expanded_request)
     mocked_func.assert_called_with(expected_claim_log)
     assert mocked_func.call_count == 3
-
-
-@patch("src.python_src.api.log_as_json")
-def test_claim_testing_log(mocked_func):
-    """
-    Tests that the testing claim flag is logged correctly
-    """
-    test_contention = Contention(
-        contention_text="acl tear right",
-        contention_type="NEW",
-    )
-    test_claim = VaGovClaim(
-        claim_id=100,
-        form526_submission_id=500,
-        contentions=[test_contention],
-        is_ab_test_claim=True,
-    )
-    classified_contention = ClassifiedContention(
-        classification_code=8997,
-        classification_name="Musculoskeletal - Knee",
-        diagnostic_code=None,
-        contention_type="NEW",
-    )
-    log_contention_stats(
-        test_contention, classified_contention, test_claim, test_expanded_request
-    )
-
-    test_response = ClassifierResponse(
-        contentions=[classified_contention],
-        claim_id=test_claim.claim_id,
-        form526_submission_id=test_claim.form526_submission_id,
-        is_fully_classified=False,
-        num_processed_contentions=1,
-        num_classified_contentions=1,
-    )
-
-    expected_logging_dict = {
-        "vagov_claim_id": test_claim.claim_id,
-        "claim_type": "new",
-        "classification_code": classified_contention.classification_code,
-        "classification_name": classified_contention.classification_name,
-        "contention_text": "unmapped contention text ['acl tear']",
-        "diagnostic_code": "None",
-        "is_in_dropdown": False,
-        "is_lookup_table_match": True,
-        "is_multi_contention": False,
-        "endpoint": "/expanded-contention-classification",
-        "is_ab_test_claim": True,
-        "processed_contention_text": "acl tear",
-    }
-
-    mocked_func.assert_called_with(expected_logging_dict)
-
-    log_claim_stats_v2(test_claim, test_response, test_expanded_request)
-
-    expected_claim_logging_dict = {
-        "claim_id": test_claim.claim_id,
-        "form526_submission_id": test_claim.form526_submission_id,
-        "is_fully_classified": test_response.is_fully_classified,
-        "percent_clasified": (
-            test_response.num_classified_contentions
-            / test_response.num_processed_contentions
-        )
-        * 100,
-        "num_processed_contentions": test_response.num_processed_contentions,
-        "num_classified_contentions": test_response.num_classified_contentions,
-        "endpoint": "/expanded-contention-classification",
-        "is_ab_test_claim": True,
-    }
-
-    mocked_func.assert_called_with(expected_claim_logging_dict)
-    assert mocked_func.call_count == 2

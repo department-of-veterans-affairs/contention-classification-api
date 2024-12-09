@@ -143,7 +143,6 @@ def log_contention_stats(
         "is_lookup_table_match": classification_code is not None,
         "is_multi_contention": is_multi_contention,
         "endpoint": request.url.path,
-        "is_ab_test_claim": claim.is_ab_test_claim,
     }
 
     if request.url.path == "/expanded-contention-classification":
@@ -173,7 +172,6 @@ def log_claim_stats_v2(
             "num_processed_contentions": response.num_processed_contentions,
             "num_classified_contentions": response.num_classified_contentions,
             "endpoint": request.url.path,
-            "is_ab_test_claim": claim.is_ab_test_claim,
         }
     )
 
