@@ -23,7 +23,7 @@ def export_openapi(app: FastAPI, filename: str) -> None:
 
 
 if __name__ == '__main__':
-    from api import app
+    from src.python_src.api import app
 
     export_openapi(app, 'fastapi.json')
     print('Done!')
