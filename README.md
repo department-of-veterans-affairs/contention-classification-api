@@ -1,62 +1,117 @@
 # Contention Classification
+
 `/contention-classification/va-gov-claim-classifier` maps contention text and diagnostic codes from 526 submission to classifications as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
 
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+![Python Version from PEP 621 TOML](https://img.shields.io/badge/Python-3.12-blue)
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
 ## Getting started
+
 This service can be run standalone using Poetry for dependency management.
 
 ## Setup
-Install Python 3.12.3
+
+### Install Python 3.12.3
+
 Mac Users: you can use pyenv to handle multiple python versions
-```
+
+```bash
 brew install pyenv
 pyenv install 3.12.3 #Installs latest version of python 3.12.3
-pyenv global 3.12.3 # or don't do this if you want a different version available globally for your system, set locally to use python in current folder.
+pyenv global 3.12.3 # or don't do this if you want a different version available globally for your system
 ```
 
 Mac Users: If python path hasn't been setup, you can put the following in your ~/.zshrc
-```
+
+```bash
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/shims:$PATH"
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi" #Initalize pyenv in current shell session
 ```
 
-Install Poetry and set up the project:
-```
+### Install Poetry
+
+This project uses [Poetry](https://python-poetry.org/docs/) to manage dependencies.
+
+Follow the directions on the [Poetry website](https://python-poetry.org/docs/#installation) for installation:
+
+```bash
 curl -sSL https://install.python-poetry.org | python3 -
+```
+
+### Install dependencies
+
+Use Poetry to install all dependencies:
+
+```bash
 poetry install
 ```
 
-Run the FastAPI server:
+### Install pre-commit hooks
+
+```bash
+poetry run pre-commit install
 ```
+
+To run the pre-commit hooks manually:
+
+```bash
+poetry run pre-commit run --all-files
+```
+
+## Run the server
+
+Using Poetry, run the FastAPI server:
+
+```bash
 poetry run uvicorn python_src.api:app --port 8120 --reload
 ```
 
-## Unit tests
-Pytest is used for Python Unit tests:
-```
+## Run tests
+
+Using Poetry, run the test suite:
+
+```bash
 poetry run pytest
 ```
 
-## Contributing
-### Install pre-commit hooks
-```
-poetry install
-pre-commit install
+For test coverage report:
+
+```bash
+poetry run pytest --cov=src --cov-report=term-missing
 ```
 
 ## Building docs
-API Documentation is automatically created by FastAPI. This can be viewed at the /docs (e.g. localhost:8080/docs)
-For exporting the open API spec and using documentation elsewhere, see [pull_api_documentation.py](https://github.com/department-of-veterans-affairs/abd-vro/blob/79bad1e34c98bada6dcfebe216820e52f4666df7/domain-cc/cc-app/src/python_src/util/pull_api_documentation.py)
+
+API Documentation is automatically created by FastAPI. This can be viewed at the /docs endpoint (e.g. localhost:8120/docs)
+
+For exporting the open API spec:
+
+```bash
+poetry run python src/python_src/pull_api_documentation.py
+```
 
 ## Docker
+
 ### Build and run with Docker Compose
+
+```bash
+docker compose up --build
 ```
-docker-compose up --build
+
+### Run tests in Docker
+
+```bash
+docker compose run --rm api poetry run pytest
 ```
 
 ### Clean up Docker resources
-```
-docker-compose down
+
+```bash
+docker compose down
 docker system prune
 docker volume prune
 ```
