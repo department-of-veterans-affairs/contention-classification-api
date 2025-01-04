@@ -12,54 +12,35 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v4
 
-# TODO: Uncomment the following after project is switched to use poetry
-#      - name: "Install Poetry"
-#        run: pipx install poetry
-#
-#      - name: "Install Python"
-#        uses: actions/setup-python@v5
-#        with:
-#          python-version: "3.12.3"
-#          cache: "poetry"
-#
-#      - name: Install dependencies
-#        run: poetry install
+      - name: "Install Poetry"
+        run: pipx install poetry
 
-# TODO: Uncomment the following after project is using Ruff
-#      - name: "Run ruff format"
-#        run: poetry run ruff format
-#
-#      - name: "Run ruff check"
-#        run: poetry run ruff check
-
-# TODO: Uncomment the following after project is using mypy
-#      - name: "Run mypy"
-#        run: poetry run mypy .
-
-# TODO: Uncomment the following after project is switched to use poetry
-#      - name: "Run tests with coverage"
-#        run: poetry run pytest --cov=src --cov-report=xml --cov-report=term-missing
-
-# TODO: Uncomment the following lines to enable Code Climate coverage upload once repo is public
-#      - name: "Upload coverage to Code Climate"
-#        uses: paambaati/codeclimate-action@v9.0.0
-#        env:
-#          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-
-# TODO: Uncomment the following after project is using Bandit
-#      - name: "Bandit Code Scan"
-#        if: always()
-#        run: poetry run bandit -c pyproject.toml -r -l .
-
-# TODO: REMOVE the following after project is using poetry
       - name: "Install Python"
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10.12"
-          cache: "pip"
+          python-version: "3.12.3"
+          cache: "poetry"
 
       - name: Install dependencies
-        run: pip install -r src/requirements.txt
+        run: poetry install
+
+      - name: "Run ruff format"
+        run: poetry run ruff format
+
+      - name: "Run ruff check"
+        run: poetry run ruff check
+
+      - name: "Run mypy"
+        run: poetry run mypy .
 
       - name: "Run tests with coverage"
-        run: pytest --cov=src --cov-report=xml --cov-report=term-missing --cov-fail-under=80
+        run: poetry run pytest --cov=src --cov-report=xml --cov-report=term-missing
+
+      - name: "Upload coverage to Code Climate"
+        uses: paambaati/codeclimate-action@v9.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+
+      - name: "Bandit Code Scan"
+        if: always()
+        run: poetry run bandit -c pyproject.toml -r -l .
