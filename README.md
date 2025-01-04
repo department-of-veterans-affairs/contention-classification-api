@@ -94,6 +94,8 @@ For exporting the open API spec:
 poetry run python src/python_src/pull_api_documentation.py
 ```
 
+<!--
+# TODO: add docker config https://github.com/department-of-veterans-affairs/abd-vro/issues/3895
 ## Docker
 
 ### Build and run with Docker Compose
@@ -114,4 +116,4 @@ docker compose run --rm api poetry run pytest
 docker compose down
 docker system prune
 docker volume prune
-```
+``` -->
