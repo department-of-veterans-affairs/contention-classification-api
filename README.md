@@ -5,12 +5,12 @@
 This service can be run standalone using Poetry for dependency management.
 
 ## Setup
-Install Python 3.11
+Install Python 3.12.3
 Mac Users: you can use pyenv to handle multiple python versions
 ```
 brew install pyenv
-pyenv install 3.11 #Installs latest version of python 3.11
-pyenv global 3.11 # or don't do this if you want a different version available globally for your system, set locally to use python in current folder.
+pyenv install 3.12.3 #Installs latest version of python 3.12.3
+pyenv global 3.12.3 # or don't do this if you want a different version available globally for your system, set locally to use python in current folder.
 ```
 
 Mac Users: If python path hasn't been setup, you can put the following in your ~/.zshrc
