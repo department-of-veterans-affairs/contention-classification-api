@@ -1,8 +1,27 @@
+###############################################################################
+# Operating System
+###############################################################################
+.DS_Store
+
+###############################################################################
 # Python
+###############################################################################
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+cython_debug/
+
+###############################################################################
+# Poetry & Virtual Environments
+###############################################################################
+.venv/
+__pypackages__/
+.python-version
+
+###############################################################################
+# Python Packaging / Distribution
+###############################################################################
 .Python
 build/
 develop-eggs/
@@ -26,83 +45,51 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Poetry
-.venv/
-poetry.lock
-__pypackages__/
+###############################################################################
+# Testing / Coverage
+###############################################################################
+.coverage
+.coverage.*
+.cache
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.tox/
+.nox/
+cover/
+htmlcov/
 
-# IDE
+###############################################################################
+# Documentation
+###############################################################################
+docs/_build/
+/site
+
+###############################################################################
+# IDE / Editor
+###############################################################################
 .idea/
 .vscode/
 *.swp
 *.swo
-.spyderproject
-.spyproject
-.ropeproject
 .mypy_cache/
 .dmypy.json
 dmypy.json
 .pyre/
 .pytype/
 
-# Environment
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-.python-version
-.pdm.toml
-.pdm-python
-.pdm-build/
-
-# Testing
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-cover/
-htmlcov/
-.tox/
-.nox/
-
-# Documentation
-docs/_build/
-/site
-
-# Jupyter
-.ipynb_checkpoints
-profile_default/
-ipython_config.py
-
+###############################################################################
 # Docker
+###############################################################################
 .docker/
 docker-compose.override.yml
 
-# Misc
-.DS_Store
+###############################################################################
+# Logs & Temporary Files
+###############################################################################
 *.log
 logs/
 tmp/
 temp/
-*.mo
-*.pot
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-instance/
-.webassets-cache
-.scrapy
-.pybuilder/
-target/
-celerybeat-schedule
-celerybeat.pid
-*.sage.py
-cython_debug/
