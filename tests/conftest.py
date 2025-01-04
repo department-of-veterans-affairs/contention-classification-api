@@ -1,28 +1,29 @@
-""" Pytest configuration. This file is automatically loaded by pytest before any tests. """
+"""Pytest configuration. This file is automatically loaded by pytest before any tests."""
 
 import pytest
 from fastapi.testclient import TestClient
+
 from src.python_src.api import app
 
 TUBERCULOSIS_CLASSIFICATION = {
-    "diagnostic_code": 7710,
-    "classification_code": 6890,
-    "classification_name": "Tuberculosis",
+    'diagnostic_code': 7710,
+    'classification_code': 6890,
+    'classification_name': 'Tuberculosis',
 }
 BENIGN_GROWTH_BRAIN_CLASSIFICATION = {
-    "diagnostic_code": 8003,
-    "classification_code": 8964,
-    "classification_name": "Cyst/Benign Growth - Neurological other System",
+    'diagnostic_code': 8003,
+    'classification_code': 8964,
+    'classification_name': 'Cyst/Benign Growth - Neurological other System',
 }
 DRUG_INDUCED_PULMONARY_PNEMONIA_CLASSIFICATION = {
-    "diagnostic_code": 6829,
-    "classification_code": 9012,
-    "classification_name": "Respiratory",
+    'diagnostic_code': 6829,
+    'classification_code': 9012,
+    'classification_name': 'Respiratory',
 }
 IMPAIRMENT_OF_FEMUR_CLASSIFICATION = {
-    "diagnostic_code": 5255,
-    "classification_code": 8996,
-    "classification_name": "Musculoskeletal - Hip",
+    'diagnostic_code': 5255,
+    'classification_code': 8996,
+    'classification_name': 'Musculoskeletal - Hip',
 }
 
 

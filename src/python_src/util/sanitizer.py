@@ -5,8 +5,8 @@ def sanitize_log(obj):
     https://codeql.github.com/codeql-query-help/go/go-log-injection/
     """
     if isinstance(obj, bool):
-        sanitized_str = str(obj).replace("\r\n", "").replace("\n", "")
-        return sanitized_str == "True"
+        sanitized_str = str(obj).replace('\r\n', '').replace('\n', '')
+        return sanitized_str == 'True'
     if isinstance(obj, int):
-        return int(str(obj).replace("\r\n", "").replace("\n", ""))
-    return str(obj).replace("\r\n", "").replace("\n", "")
+        return int(str(obj).replace('\r\n', '').replace('\n', ''))
+    return str(obj).replace('\r\n', '').replace('\n', '')

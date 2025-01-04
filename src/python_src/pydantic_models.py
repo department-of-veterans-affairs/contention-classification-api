@@ -15,20 +15,18 @@ class ClaimLinkInfo(BaseModel):
 class Contention(BaseModel):
     contention_text: str
     contention_type: str  # "disabilityActionType" in the VA.gov API
-    diagnostic_code: Optional[int] = (
-        None  # only required for contention_type: "claim_for_increase"
-    )
+    diagnostic_code: Optional[int] = None  # only required for contention_type: "claim_for_increase"
 
-    @model_validator(mode="before")
+    @model_validator(mode='before')
     @classmethod
     def check_dc_for_cfi(cls, values):
-        contention_type = values.get("contention_type")
-        diagnostic_code = values.get("diagnostic_code")
+        contention_type = values.get('contention_type')
+        diagnostic_code = values.get('diagnostic_code')
 
-        if contention_type == "INCREASE" and not diagnostic_code:
+        if contention_type == 'INCREASE' and not diagnostic_code:
             raise HTTPException(
                 422,
-                "diagnostic_code is required for contention_type claim_for_increase",
+                'diagnostic_code is required for contention_type claim_for_increase',
             )
         return values
 
@@ -42,9 +40,7 @@ class VaGovClaim(BaseModel):
 class ClassifiedContention(BaseModel):
     classification_code: Optional[int]
     classification_name: Optional[str]
-    diagnostic_code: Optional[int] = (
-        None  # only required for contention_type: "claim_for_increase"
-    )
+    diagnostic_code: Optional[int] = None  # only required for contention_type: "claim_for_increase"
     contention_type: str  # "disabilityActionType" in the VA.gov API
 
 

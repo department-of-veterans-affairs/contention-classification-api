@@ -5,9 +5,9 @@ from .table_versions import CONDITION_DROPDOWN_COVERAGE_VERSION
 
 path = os.path.join(
     os.path.dirname(__file__),
-    "data",
-    "condition_dropdown_coverage",
-    f"[Release notes] Auto-suggestions release notes - Suggested Conditions {CONDITION_DROPDOWN_COVERAGE_VERSION} Flat.csv",
+    'data',
+    'condition_dropdown_coverage',
+    f'[Release notes] Auto-suggestions release notes - Suggested Conditions {CONDITION_DROPDOWN_COVERAGE_VERSION} Flat.csv',
 )
 
 
@@ -17,10 +17,10 @@ def build_logging_table() -> list:
     dropdown conditions lookup table csv.
     """
     dropdown_values = []
-    with open(path, "r") as f:
+    with open(path, 'r') as f:
         reader = csv.DictReader(f)
         for row in reader:
-            dropdown_values.append(row["Autosuggestion Name"].strip().lower())
+            dropdown_values.append(row['Autosuggestion Name'].strip().lower())
     return dropdown_values
 
 
@@ -31,17 +31,17 @@ def build_logging_table_v0_1() -> list:
     dropdown conditions lookup table csv.
     """
     dropdown_values = []
-    with open(path, "r") as f:
+    with open(path, 'r') as f:
         next(f)  # skip "Conditions list terms, organized by base term and variations"
         reader = csv.DictReader(f)
         for row in reader:
             for k in [
-                "UI Term 1",
-                "UI Term 2",
-                "UI Term 3",
-                "UI Term 4",
-                "UI Term 5",
-                "UI Term 6",
+                'UI Term 1',
+                'UI Term 2',
+                'UI Term 3',
+                'UI Term 4',
+                'UI Term 5',
+                'UI Term 6',
             ]:
                 if row[k]:
                     dropdown_values.append(row[k].strip().lower())

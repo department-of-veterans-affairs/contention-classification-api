@@ -8,22 +8,20 @@ from .table_versions import (
 
 # https://docs.google.com/spreadsheets/d/18Mwnn9-cvJIRRupQyQ2zLYOBm3bd0pr4kKlsZtFiyc0/edit#gid=1711756762
 dc_table_name = (
-    f"[Release notes] Diagnostic Code to Classification mapping release notes - "
-    f"DC Lookup {DIAGNOSTIC_CODE_TABLE_VERSION}.csv"
+    f'[Release notes] Diagnostic Code to Classification mapping release notes - '
+    f'DC Lookup {DIAGNOSTIC_CODE_TABLE_VERSION}.csv'
 )
 # https://docs.google.com/spreadsheets/d/1A5JuYwn39mHE5Mk1HazN-mxCL2TENPeyUPHHhH10g_I/edit#gid=819850041
-previous_condition_dropdown_table_name = (
-    "Contention dropdown to classification master - Dropdown Lookup v0.1.csv"
-)
+previous_condition_dropdown_table_name = 'Contention dropdown to classification master - Dropdown Lookup v0.1.csv'
 
 contention_lut_csv_filename = (
-    f"[Release notes] Contention Text to Classification mapping release notes - Contention Text Lookup "
-    f"{CONDITION_DROPDOWN_TABLE_VERSION}.csv"
+    f'[Release notes] Contention Text to Classification mapping release notes - Contention Text Lookup '
+    f'{CONDITION_DROPDOWN_TABLE_VERSION}.csv'
 )
 
 LUT_DEFAULT_VALUE = {
-    "classification_code": None,
-    "classification_name": None,
+    'classification_code': None,
+    'classification_name': None,
 }
 
 
@@ -32,29 +30,23 @@ class DiagnosticCodeLookupTable:
     Lookup table for mapping diagnostic codes to contention classification codes
     """
 
-    CSV_FILEPATH = os.path.join(
-        os.path.dirname(__file__), "data", "dc_lookup_table", dc_table_name
-    )
-    input_key = "DIAGNOSTIC_CODE"
-    output_key = "CLASSIFICATION_CODE"
+    CSV_FILEPATH = os.path.join(os.path.dirname(__file__), 'data', 'dc_lookup_table', dc_table_name)
+    input_key = 'DIAGNOSTIC_CODE'
+    output_key = 'CLASSIFICATION_CODE'
 
     def __init__(self):
         self.classification_code_mappings = {}
-        with open(self.CSV_FILEPATH, "r") as fh:
+        with open(self.CSV_FILEPATH, 'r') as fh:
             csv_reader = csv.DictReader(fh)
             for row in csv_reader:
                 table_key = row[str(self.input_key)].strip().lower()
                 self.classification_code_mappings[table_key] = {
-                    "classification_code": int(row[self.output_key]),
-                    "classification_name": row[
-                        "CLASSIFICATION_TEXT"
-                    ],  # note underscore different from contention LUT
+                    'classification_code': int(row[self.output_key]),
+                    'classification_name': row['CLASSIFICATION_TEXT'],  # note underscore different from contention LUT
                 }
 
     def get(self, input_key: int, default_value=LUT_DEFAULT_VALUE):
-        classification = self.classification_code_mappings.get(
-            str(input_key), default_value
-        )
+        classification = self.classification_code_mappings.get(str(input_key), default_value)
         return classification
 
     def __len__(self):
@@ -82,7 +74,7 @@ def get_v1_lookup_table(filepath: str, input_key: str, output_key: str) -> dict:
         values: classification codes
     """
     classification_code_mappings = {}
-    with open(filepath, "r") as fh:
+    with open(filepath, 'r') as fh:
         csv_reader = csv.DictReader(fh)
         for csv_line in csv_reader:
             try:
@@ -93,7 +85,7 @@ def get_v1_lookup_table(filepath: str, input_key: str, output_key: str) -> dict:
                 classification_code = int(csv_line[output_key])
                 classification_code_mappings[text_to_convert] = classification_code
             except KeyError:
-                print(f"csv_line: {csv_line}")
+                print(f'csv_line: {csv_line}')
                 raise
 
     return classification_code_mappings
@@ -108,22 +100,22 @@ class ContentionTextLookupTable:
 
     CSV_FILEPATH = os.path.join(
         os.path.dirname(__file__),
-        "data",
-        "condition_dropdown_lookup_table",
+        'data',
+        'condition_dropdown_lookup_table',
         contention_lut_csv_filename,
     )
-    input_key = "CONTENTION TEXT"
-    output_key = "CLASSIFICATION CODE"
+    input_key = 'CONTENTION TEXT'
+    output_key = 'CLASSIFICATION CODE'
     classification_code_mappings = {}
 
     def __init__(self):
-        with open(self.CSV_FILEPATH, "r") as fh:
+        with open(self.CSV_FILEPATH, 'r') as fh:
             csv_reader = csv.DictReader(fh)
             for row in csv_reader:
                 table_key = row[self.input_key].strip().lower()
                 self.classification_code_mappings[table_key] = {
-                    "classification_code": int(row[self.output_key]),
-                    "classification_name": row["CLASSIFICATION TEXT"],
+                    'classification_code': int(row[self.output_key]),
+                    'classification_name': row['CLASSIFICATION TEXT'],
                 }
 
     def get(self, input_str: str, default_value=LUT_DEFAULT_VALUE):
@@ -173,20 +165,16 @@ def get_lookup_table(
         keys: either the diagnostic code of condition dropdown value
         values: classification codes
     """
-    classification_code_mappings = get_v1_lookup_table(
-        v1_mapping_filepath, input_key, output_key
-    )
-    if float(version_num.split("v")[1]) >= 0.1:
+    classification_code_mappings = get_v1_lookup_table(v1_mapping_filepath, input_key, output_key)
+    if float(version_num.split('v')[1]) >= 0.1:
         # add new dropdown values to LUT
         try:
-            with open(v2_filepath, "r") as fh:
+            with open(v2_filepath, 'r') as fh:
                 csv_reader = csv.DictReader(fh)
                 for row in csv_reader:
                     for k in v2_input_key:
                         if row[k] and row[v2_output_key]:
-                            classification_code_mappings[row[k].strip().lower()] = int(
-                                row[v2_output_key]
-                            )
+                            classification_code_mappings[row[k].strip().lower()] = int(row[v2_output_key])
         # raises exception if dropdown_v2_filepath is None (only create DC LUT)
         except TypeError:
             return classification_code_mappings
