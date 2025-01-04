@@ -1,4 +1,3 @@
-# TODO: Uncomment this file after project is using pre-commit
 name: Pre-Commit Updates
 on:
   schedule:
