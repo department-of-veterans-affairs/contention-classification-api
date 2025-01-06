@@ -64,10 +64,10 @@ packages = [{include = "python_src", from = "src"}]
 [tool.poetry.dependencies]
 python = "3.12.3"
 fastapi = "0.115.6"
-httpx = "0.24.1"
-pydantic = "2.6.4"
-setuptools = "75.6.0"
-uvicorn = {extras = ["standard"], version = "0.20.0"}
+httpx = "0.28.1"
+pydantic = "2.10.4"
+setuptools = "75.7.0"
+uvicorn = {extras = ["standard"], version = "0.34.0"}
 
 [tool.poetry.group.dev.dependencies]
 mypy = "1.14.1"
