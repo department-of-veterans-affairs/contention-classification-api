@@ -27,7 +27,7 @@ select = [
 ignore = []
 
 [tool.ruff.format]
-quote-style = "single"
+quote-style = "double"
 line-ending = "lf"
 indent-style = "space"
 skip-magic-trailing-comma = false
