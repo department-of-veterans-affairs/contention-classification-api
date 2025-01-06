@@ -12,9 +12,7 @@ dc_table_name = (
     f"DC Lookup {DIAGNOSTIC_CODE_TABLE_VERSION}.csv"
 )
 # https://docs.google.com/spreadsheets/d/1A5JuYwn39mHE5Mk1HazN-mxCL2TENPeyUPHHhH10g_I/edit#gid=819850041
-previous_condition_dropdown_table_name = (
-    "Contention dropdown to classification master - Dropdown Lookup v0.1.csv"
-)
+previous_condition_dropdown_table_name = "Contention dropdown to classification master - Dropdown Lookup v0.1.csv"
 
 contention_lut_csv_filename = (
     f"[Release notes] Contention Text to Classification mapping release notes - Contention Text Lookup "
@@ -32,9 +30,7 @@ class DiagnosticCodeLookupTable:
     Lookup table for mapping diagnostic codes to contention classification codes
     """
 
-    CSV_FILEPATH = os.path.join(
-        os.path.dirname(__file__), "data", "dc_lookup_table", dc_table_name
-    )
+    CSV_FILEPATH = os.path.join(os.path.dirname(__file__), "data", "dc_lookup_table", dc_table_name)
     input_key = "DIAGNOSTIC_CODE"
     output_key = "CLASSIFICATION_CODE"
 
@@ -46,15 +42,11 @@ class DiagnosticCodeLookupTable:
                 table_key = row[str(self.input_key)].strip().lower()
                 self.classification_code_mappings[table_key] = {
                     "classification_code": int(row[self.output_key]),
-                    "classification_name": row[
-                        "CLASSIFICATION_TEXT"
-                    ],  # note underscore different from contention LUT
+                    "classification_name": row["CLASSIFICATION_TEXT"],  # note underscore different from contention LUT
                 }
 
     def get(self, input_key: int, default_value=LUT_DEFAULT_VALUE):
-        classification = self.classification_code_mappings.get(
-            str(input_key), default_value
-        )
+        classification = self.classification_code_mappings.get(str(input_key), default_value)
         return classification
 
     def __len__(self):
@@ -173,9 +165,7 @@ def get_lookup_table(
         keys: either the diagnostic code of condition dropdown value
         values: classification codes
     """
-    classification_code_mappings = get_v1_lookup_table(
-        v1_mapping_filepath, input_key, output_key
-    )
+    classification_code_mappings = get_v1_lookup_table(v1_mapping_filepath, input_key, output_key)
     if float(version_num.split("v")[1]) >= 0.1:
         # add new dropdown values to LUT
         try:
@@ -184,9 +174,7 @@ def get_lookup_table(
                 for row in csv_reader:
                     for k in v2_input_key:
                         if row[k] and row[v2_output_key]:
-                            classification_code_mappings[row[k].strip().lower()] = int(
-                                row[v2_output_key]
-                            )
+                            classification_code_mappings[row[k].strip().lower()] = int(row[v2_output_key])
         # raises exception if dropdown_v2_filepath is None (only create DC LUT)
         except TypeError:
             return classification_code_mappings

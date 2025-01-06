@@ -3,9 +3,7 @@ import os
 
 # sourced from Lighthouse Benefits Reference Data /disabilities endpoint:
 # https://developer.va.gov/explore/benefits/docs/benefits_reference_data?version=current
-BRD_CLASSIFICATIONS_PATH = os.path.join(
-    os.path.dirname(__file__), "data", "lh_brd_classification_ids.json"
-)
+BRD_CLASSIFICATIONS_PATH = os.path.join(os.path.dirname(__file__), "data", "lh_brd_classification_ids.json")
 
 
 def get_classification_names_by_code():

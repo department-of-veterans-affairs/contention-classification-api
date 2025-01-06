@@ -32,7 +32,11 @@ dropdown_values = build_logging_table()
 
 app = FastAPI(
     title="Contention Classification",
-    description="Mapping VA.gov disability form contentions to actual classifications defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data) for use in downstream VA systems.",
+    description=(
+        "Mapping VA.gov disability form contentions to actual classifications defined in the "
+        "[Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data) "
+        "for use in downstream VA systems."
+    ),
     contact={"name": "Premal Shah", "email": "premal.shah@va.gov"},
     version="v0.2",
     license={
@@ -82,9 +86,7 @@ def log_as_json(log: dict):
     logging.info(json.dumps(log))
 
 
-def log_expanded_contention_text(
-    logging_dict: dict, contention_text: str, log_contention_text: str
-):
+def log_expanded_contention_text(logging_dict: dict, contention_text: str, log_contention_text: str):
     """
     Updates the  logging dictionary with the contention text updates from the expanded classification method
     """
@@ -122,9 +124,7 @@ def log_contention_stats(
     contention_text = contention.contention_text or ""
     is_in_dropdown = contention_text.strip().lower() in dropdown_values
     is_mapped_text = dropdown_lookup_table.get(contention_text, None) is not None
-    log_contention_text = (
-        contention_text if is_mapped_text else "unmapped contention text"
-    )
+    log_contention_text = contention_text if is_mapped_text else "unmapped contention text"
     if contention.contention_type == "INCREASE":
         log_contention_type = "claim_for_increase"
     else:
@@ -146,16 +146,12 @@ def log_contention_stats(
     }
 
     if request.url.path == "/expanded-contention-classification":
-        logging_dict = log_expanded_contention_text(
-            logging_dict, contention.contention_text, log_contention_text
-        )
+        logging_dict = log_expanded_contention_text(logging_dict, contention.contention_text, log_contention_text)
 
     log_as_json(logging_dict)
 
 
-def log_claim_stats_v2(
-    claim: VaGovClaim, response: ClassifierResponse, request: Request
-):
+def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request: Request):
     """
     Logs stats about each claim processed by the classifier.  This will provide
     the capability to build widgets to track metrics about claims.
@@ -165,10 +161,7 @@ def log_claim_stats_v2(
             "claim_id": sanitize_log(claim.claim_id),
             "form526_submission_id": sanitize_log(claim.form526_submission_id),
             "is_fully_classified": response.is_fully_classified,
-            "percent_clasified": (
-                response.num_classified_contentions / response.num_processed_contentions
-            )
-            * 100,
+            "percent_clasified": (response.num_classified_contentions / response.num_processed_contentions) * 100,
             "num_processed_contentions": response.num_processed_contentions,
             "num_classified_contentions": response.num_classified_contentions,
             "endpoint": request.url.path,
@@ -241,9 +234,7 @@ def get_classification_code_name(contention: Contention) -> Tuple:
 
 
 @log_contention_stats_decorator
-def classify_contention(
-    contention: Contention, claim: VaGovClaim, request: Request
-) -> ClassifiedContention:
+def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> ClassifiedContention:
     classification_code, classification_name = get_classification_code_name(contention)
 
     response = ClassifiedContention(
@@ -298,9 +289,7 @@ def get_expanded_classification(contention: Contention) -> Tuple[int, str]:
 
 
 @log_contention_stats_decorator
-def classify_contention_expanded_table(
-    contention: Contention, claim: VaGovClaim, request: Request
-) -> ClassifiedContention:
+def classify_contention_expanded_table(contention: Contention, claim: VaGovClaim, request: Request) -> ClassifiedContention:
     classification_code, classification_name = get_expanded_classification(contention)
 
     response = ClassifiedContention(

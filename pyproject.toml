@@ -1,0 +1,88 @@
+[tool.pytest.ini_options]
+addopts = "-ra --cov=./src --cov-fail-under=79 --no-cov-on-fail --cov-report=term:skip-covered --cov-report=html:build/reports/coverage --cov-branch"
+testpaths = [
+    "tests"
+]
+
+[tool.coverage.run]
+omit = [
+    "src/python_src/pull_api_documentation.py",
+]
+
+[tool.ruff]
+line-length = 127
+target-version = "py312"
+exclude = [".git", "__pycache__", "build", "dist"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "lf"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ['pydantic.mypy']
+strict = true
+ignore_missing_imports = true
+exclude = [
+    "scripts"
+]
+
+[tool.poetry]
+name = "contention-classification-api"
+version = "0.1.0"
+description = "API for classifying contentions from 526 submissions"
+authors = ["Department of Veterans Affairs"]
+readme = "README.md"
+license = "LICENSE.md"
+homepage = "https://github.com/department-of-veterans-affairs/contention-classification-api"
+repository = "https://github.com/department-of-veterans-affairs/contention-classification-api"
+keywords = ["veterans", "contention", "classification", "api", "fastapi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+]
+packages = [{include = "python_src", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "3.12.3"
+fastapi = "0.115.*"
+httpx = "0.24.*"
+pika = "1.3.*"
+pydantic = "2.6.*"
+setuptools = "75.6.*"
+starlette = "0.40.*"
+uvicorn = {extras = ["standard"], version = "0.20.*"}
+
+[tool.poetry.group.dev.dependencies]
+mypy = "1.14.*"
+pre-commit = "4.0.*"
+ruff = "0.8.*"
+pytest = "8.3.*"
+pytest-cov = "6.0.*"
+bandit = {version = "1.8.*", extras = ["toml"]}
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = ["B101"]  # Skip assert warnings in tests
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

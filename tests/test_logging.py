@@ -1,12 +1,12 @@
 """
-Tests for the logging functions in the API. This mocks the log_as_json function and tests that the logging is called
-with the correct dict for different situations.  The primary purpose is to test logging contention text to ensure that
-there is no PII in the logs.
+Test logging functions
 """
 
 from unittest.mock import patch
 
 from fastapi import Request
+from starlette.datastructures import Headers
+
 from src.python_src.api import log_claim_stats_v2, log_contention_stats
 from src.python_src.pydantic_models import (
     ClassifiedContention,
@@ -14,7 +14,6 @@ from src.python_src.pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from starlette.datastructures import Headers
 
 test_expanded_request = Request(
     scope={
@@ -44,18 +43,14 @@ def test_log_contention_stats_expanded(mocked_func):
         contention_text="acl tear right",
         contention_type="NEW",
     )
-    test_claim = VaGovClaim(
-        claim_id=100, form526_submission_id=500, contentions=[test_contention]
-    )
+    test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=[test_contention])
     classified_contention = ClassifiedContention(
         classification_code=8997,
         classification_name="Musculoskeletal - Knee",
         diagnostic_code=None,
         contention_type="NEW",
     )
-    log_contention_stats(
-        test_contention, classified_contention, test_claim, test_expanded_request
-    )
+    log_contention_stats(test_contention, classified_contention, test_claim, test_expanded_request)
 
     expected_logging_dict = {
         "vagov_claim_id": test_claim.claim_id,
@@ -83,18 +78,14 @@ def test_non_classified_contentions(mocked_func):
         contention_text="John has an acl tear right",
         contention_type="NEW",
     )
-    test_claim = VaGovClaim(
-        claim_id=100, form526_submission_id=500, contentions=[test_contention]
-    )
+    test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=[test_contention])
     classified_contention = ClassifiedContention(
         classification_code=None,
         classification_name=None,
         diagnostic_code=None,
         contention_type="NEW",
     )
-    log_contention_stats(
-        test_contention, classified_contention, test_claim, test_expanded_request
-    )
+    log_contention_stats(test_contention, classified_contention, test_claim, test_expanded_request)
 
     expected_log = {
         "vagov_claim_id": test_claim.claim_id,
@@ -127,9 +118,7 @@ def test_multiple_contentions(mocked_func):
             contention_type="NEW",
         ),
     ]
-    test_claim = VaGovClaim(
-        claim_id=100, form526_submission_id=500, contentions=test_contentions
-    )
+    test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=test_contentions)
     classified_contentions = [
         ClassifiedContention(
             classification_code=3140,
@@ -201,9 +190,7 @@ def test_contentions_with_pii(mocked_func):
             contention_type="NEW",
         ),
     ]
-    test_claim = VaGovClaim(
-        claim_id=100, form526_submission_id=500, contentions=test_contentions
-    )
+    test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=test_contentions)
     classified_contentions = [
         ClassifiedContention(
             classification_code=None,
@@ -319,9 +306,7 @@ def test_current_classifier_contention(mocked_func):
         contention_text="acl tear right",
         contention_type="NEW",
     )
-    test_claim = VaGovClaim(
-        claim_id=100, form526_submission_id=500, contentions=[test_contention]
-    )
+    test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=[test_contention])
     classified_contention = ClassifiedContention(
         classification_code=None,
         classification_name=None,
@@ -366,9 +351,7 @@ def test_full_logging_expanded_endpoint(mocked_func):
             contention_type="NEW",
         ),
     ]
-    test_claim = VaGovClaim(
-        claim_id=100, form526_submission_id=500, contentions=test_contentions
-    )
+    test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=test_contentions)
     classified_contentions = [
         ClassifiedContention(
             classification_code=None,

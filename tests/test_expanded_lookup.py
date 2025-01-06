@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
+
 from src.python_src.util.expanded_lookup_config import COMMON_WORDS, FILE_READ_HELPER
 from src.python_src.util.expanded_lookup_table import ExpandedLookupTable
 
@@ -120,18 +121,14 @@ def test_removed_parentheses():
     assert TEST_LUT.get(test_str) == expected
 
 
-@patch(
-    "src.python_src.util.expanded_lookup_table.ExpandedLookupTable._removal_pipeline"
-)
+@patch("src.python_src.util.expanded_lookup_table.ExpandedLookupTable._removal_pipeline")
 def test_prep_incoming_text_cause(mock_removal_pipeline):
     test_str = "acl tear, due to something"
     TEST_LUT.prep_incoming_text(test_str)
     mock_removal_pipeline.assert_called_once_with("acl tear, ")
 
 
-@patch(
-    "src.python_src.util.expanded_lookup_table.ExpandedLookupTable._removal_pipeline"
-)
+@patch("src.python_src.util.expanded_lookup_table.ExpandedLookupTable._removal_pipeline")
 def test_prep_incoming_text_non_cause(mock_removal_pipeline):
     test_str = "acl tear in my right knee"
     TEST_LUT.prep_incoming_text(test_str)

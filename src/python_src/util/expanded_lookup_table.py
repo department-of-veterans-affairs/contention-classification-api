@@ -16,9 +16,7 @@ class ExpandedLookupTable:
     This parses the lookup table to use sets and remove common words and punctuations
     """
 
-    def __init__(
-        self, key_text: str, classification_code: int, classification_name: str
-    ):
+    def __init__(self, key_text: str, classification_code: int, classification_name: str):
         """
         builds the lookup table using class methods
         """
@@ -105,9 +103,7 @@ class ExpandedLookupTable:
                         if k != "":
                             k = frozenset(k.split())
                             classification_code_mappings[k] = {
-                                "classification_code": int(
-                                    row[self.classification_code]
-                                ),
+                                "classification_code": int(row[self.classification_code]),
                                 "classification_name": row[self.classification_name],
                             }
 
@@ -154,9 +150,7 @@ class ExpandedLookupTable:
         input_str = self.prep_incoming_text(input_str)
 
         input_str_lookup = frozenset(input_str.split())
-        classification = self.contention_text_lookup_table.get(
-            input_str_lookup, default_value
-        )
+        classification = self.contention_text_lookup_table.get(input_str_lookup, default_value)
         return classification
 
     def __len__(self):

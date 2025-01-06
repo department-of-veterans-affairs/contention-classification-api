@@ -142,10 +142,7 @@ def test_order_response(client: TestClient):
     response = client.post("/va-gov-claim-classifier", json=json_post_dict)
     expected_order = [3140, 9012, None]
     for i in range(len(response.json()["contentions"])):
-        assert (
-            response.json()["contentions"][i]["classification_code"]
-            == expected_order[i]
-        )
+        assert response.json()["contentions"][i]["classification_code"] == expected_order[i]
 
 
 def test_case_insensitivity(client: TestClient):

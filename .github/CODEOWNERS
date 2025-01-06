@@ -1,3 +1,2 @@
 # This will match all files and assign them to the 'benefits-vro-engineers' and `benefits-contention-classification-engineers` teams when a new PR is created. Either team can approve PRs.
-
 * @department-of-veterans-affairs/benefits-vro-engineers @department-of-veterans-affairs/benefits-contention-classification-engineers
