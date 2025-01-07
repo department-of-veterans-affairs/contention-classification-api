@@ -1,44 +1,24 @@
-version: '3.9'
-
-networks:
-  # Put these services on the same `vro_intranet` network as VRO -- see app/src/docker/docker-compose.yml
-  vro_intranet:
-    # https://docs.docker.com/compose/networking/#use-a-pre-existing-network
-    # Change this to true if running with app/src/docker/docker-compose.yml
-    external: true
-
-# Reusable blocks
-# https://medium.com/@kinghuang/docker-compose-anchors-aliases-extensions-a1e4105d70bd
-# Also note https://yaml.org/type/merge.html
-
-x-common-vars: &common-vars
-  # ENV determines which configuration settings to use.
-  ENV: ${ENV:-local}
-
-x-common-security-opt: &common-security-opt
-  security_opt:
-    - no-new-privileges:true
-
-x-common-sde-security: &common-sde-security
-  ulimits:
-    nproc: 65535
-
-x-postgres-vars: &postgres-vars
-  POSTGRES_URL: postgresql://postgres-service:5432/vro
-  POSTGRES_DB: ${POSTGRES_DB}
-  POSTGRES_USER: ${POSTGRES_USER}
-  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  POSTGRES_SCHEMA: ${POSTGRES_SCHEMA}
-
 services:
-  # Containers with the `svc-` prefix are microservices to support domain workflows.
-
-  cc-app:
-    image: va/abd_vro-cc-app:latest
-    <<: [*common-sde-security, *common-security-opt]
-    environment:
-      <<: [*common-vars, *postgres-vars]
+  api:
+    build: .
+    container_name: contention-classification-api
     ports:
       - "8120:8120"
-    networks:
-      - vro_intranet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8120/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: no
+    environment:
+      - ENVIRONMENT=local
+      - POSTGRES_URL=postgresql://postgres-service:5432/vro
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_SCHEMA=${POSTGRES_SCHEMA}
+    volumes:
+      - .:/app
+    security_opt:
+      - no-new-privileges:true
