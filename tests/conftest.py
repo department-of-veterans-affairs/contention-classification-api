@@ -1,32 +1,47 @@
-"""Pytest configuration. This file is automatically loaded by pytest before any tests."""
+"""Common test configuration and fixtures."""
+
+import csv
+import json
+from unittest.mock import mock_open, patch
 
 import pytest
 from fastapi.testclient import TestClient
 
 from src.python_src.api import app
 
-TUBERCULOSIS_CLASSIFICATION = {
-    "diagnostic_code": 7710,
-    "classification_code": 6890,
-    "classification_name": "Tuberculosis",
-}
-BENIGN_GROWTH_BRAIN_CLASSIFICATION = {
-    "diagnostic_code": 8003,
-    "classification_code": 8964,
-    "classification_name": "Cyst/Benign Growth - Neurological other System",
-}
-DRUG_INDUCED_PULMONARY_PNEMONIA_CLASSIFICATION = {
-    "diagnostic_code": 6829,
-    "classification_code": 9012,
-    "classification_name": "Respiratory",
-}
-IMPAIRMENT_OF_FEMUR_CLASSIFICATION = {
-    "diagnostic_code": 5255,
-    "classification_code": 8996,
-    "classification_name": "Musculoskeletal - Hip",
-}
+# Export commonly used imports
+__all__ = ["pytest", "json", "csv", "mock_open", "patch", "TestClient"]
+
+
+# Common test client fixture
+@pytest.fixture
+def client() -> TestClient:
+    """Create a test client for the FastAPI app."""
+    return TestClient(app)
+
+
+# Common mock functions
+@pytest.fixture
+def mock_file_open():
+    """Create a mock for file operations."""
+    return mock_open
+
+
+# Common test data
+@pytest.fixture
+def common_classification_codes():
+    """Common classification codes used across tests."""
+    return {
+        "mental_disorders": {"id": 8989, "name": "Mental Disorders"},
+        "knee": {"id": 8997, "name": "Musculoskeletal - Knee"},
+        "hearing_loss": {"id": 3140, "name": "Hearing Loss"},
+    }
 
 
 @pytest.fixture
-def client() -> TestClient:
-    return TestClient(app)
+def common_diagnostic_codes():
+    """Common diagnostic codes used across tests."""
+    return {
+        "tuberculosis": {"code": 7710, "name": "Tuberculosis"},
+        "respiratory": {"code": 6829, "name": "Respiratory"},
+    }
