@@ -45,3 +45,26 @@ def common_diagnostic_codes():
         "tuberculosis": {"code": 7710, "name": "Tuberculosis"},
         "respiratory": {"code": 6829, "name": "Respiratory"},
     }
+
+
+@pytest.fixture
+def mock_csv_strings():
+    """Common CSV strings used across tests."""
+    return {
+        "diagnostic_csv": (
+            "DIAGNOSTIC_CODE,CLASSIFICATION_CODE,CLASSIFICATION_TEXT\n" "7710,6890,Tuberculosis\n" "6829,9012,Respiratory\n"
+        ),
+        "contention_csv": (
+            "CONTENTION TEXT,CLASSIFICATION CODE,CLASSIFICATION TEXT\n" "PTSD,8989,Mental Disorders\n" "Knee pain,8997,Knee\n"
+        ),
+        "logging_csv": (
+            "Autosuggestion Name,Other Columns\n"
+            "Tinnitus (ringing in ears),data\n"
+            "PTSD (post-traumatic stress disorder),data\n"
+        ),
+        "logging_v0_1_csv": (
+            "Conditions list terms, organized by base term and variations\n"
+            "Base Term,UI Term 1,UI Term 2,UI Term 3,UI Term 4,UI Term 5,UI Term 6\n"
+            "tinnitus,Tinnitus,Ringing in ears,,,,\n"
+        ),
+    }

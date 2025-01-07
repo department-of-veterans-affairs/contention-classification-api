@@ -26,6 +26,21 @@ def test_get_classification_names_by_code(common_classification_codes, mock_file
         }
 
 
+def test_get_classification_names_by_code_missing_items(mock_file_open):
+    """Test handling when JSON doesn't have 'items' key."""
+    mock_data = {"wrong_key": []}
+    with patch("builtins.open", mock_file_open(read_data=json.dumps(mock_data))):
+        with pytest.raises(KeyError):
+            get_classification_names_by_code()
+
+
+def test_get_classification_names_by_code_invalid_json(mock_file_open):
+    """Test handling of invalid JSON data."""
+    with patch("builtins.open", mock_file_open(read_data="invalid json")):
+        with pytest.raises(json.JSONDecodeError):
+            get_classification_names_by_code()
+
+
 def test_get_classification_name(common_classification_codes, mock_file_open):
     """Test get_classification_name with mock data."""
     mock_data = {
