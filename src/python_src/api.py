@@ -113,6 +113,7 @@ def log_contention_stats(
     classified_contention: ClassifiedContention,
     claim: VaGovClaim,
     request: Request,
+    classified_by: str,
 ):
     """
     Logs stats about each contention process by the classifier. This will maintain
@@ -143,6 +144,7 @@ def log_contention_stats(
         "is_lookup_table_match": classification_code is not None,
         "is_multi_contention": is_multi_contention,
         "endpoint": request.url.path,
+        "classification_method": classified_by,
     }
 
     if request.url.path == "/expanded-contention-classification":
@@ -187,12 +189,12 @@ def log_claim_stats_decorator(func):
 def log_contention_stats_decorator(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        result = func(*args, **kwargs)
+        result, classified_by = func(*args, **kwargs)
         if isinstance(args[0], Contention) and isinstance(args[1], VaGovClaim):
             contention = args[0]
             claim = args[1]
             request = args[2]
-            log_contention_stats(contention, result, claim, request)
+            log_contention_stats(contention, result, claim, request, classified_by)
 
         return result
 
@@ -218,24 +220,30 @@ def get_classification_code_name(contention: Contention) -> Tuple:
     check contention type and match contention to appropriate table's
     classification code (if available)
     """
+    classified_by = "not classified"
     classification_code = None
     classification_name = None
+
     if contention.contention_type == "INCREASE":
         classification = dc_lookup_table.get(contention.diagnostic_code)
         classification_code = classification["classification_code"]
         classification_name = classification["classification_name"]
+        if classification_code is not None:
+            classified_by = "diagnostic_code"
 
     if contention.contention_text and not classification_code:
         classification = dropdown_lookup_table.get(contention.contention_text)
         classification_code = classification["classification_code"]
         classification_name = classification["classification_name"]
+        if classification_code is not None:
+            classified_by = "contention_text"
 
-    return classification_code, classification_name
+    return classification_code, classification_name, classified_by
 
 
 @log_contention_stats_decorator
 def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> ClassifiedContention:
-    classification_code, classification_name = get_classification_code_name(contention)
+    classification_code, classification_name, classified_by = get_classification_code_name(contention)
 
     response = ClassifiedContention(
         classification_code=classification_code,
@@ -243,8 +251,7 @@ def classify_contention(contention: Contention, claim: VaGovClaim, request: Requ
         diagnostic_code=contention.diagnostic_code,
         contention_type=contention.contention_type,
     )
-
-    return response
+    return response, classified_by
 
 
 @app.post("/va-gov-claim-classifier")
@@ -275,22 +282,28 @@ def get_expanded_classification(contention: Contention) -> Tuple[int, str]:
     """
     classification_code = None
     classification_name = None
+    classified_by = "not classified"
+
     if contention.contention_type == "INCREASE":
         classification = dc_lookup_table.get(contention.diagnostic_code)
         classification_code = classification["classification_code"]
         classification_name = classification["classification_name"]
+        if classification_code is not None:
+            classified_by = "diagnostic_code"
 
     if contention.contention_text and not classification_code:
         classification = expanded_lookup_table.get(contention.contention_text)
         classification_code = classification["classification_code"]
         classification_name = classification["classification_name"]
+        if classification_code is not None:
+            classified_by = "contention_text"
 
-    return classification_code, classification_name
+    return classification_code, classification_name, classified_by
 
 
 @log_contention_stats_decorator
 def classify_contention_expanded_table(contention: Contention, claim: VaGovClaim, request: Request) -> ClassifiedContention:
-    classification_code, classification_name = get_expanded_classification(contention)
+    classification_code, classification_name, classified_by = get_expanded_classification(contention)
 
     response = ClassifiedContention(
         classification_code=classification_code,
@@ -299,7 +312,7 @@ def classify_contention_expanded_table(contention: Contention, claim: VaGovClaim
         contention_type=contention.contention_type,
     )
 
-    return response
+    return response, classified_by
 
 
 @app.post("/expanded-contention-classification")
