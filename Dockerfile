@@ -11,8 +11,9 @@ RUN apt-get update && \
 # Install Poetry
 RUN pip install --no-cache-dir poetry==1.8.5
 
-# Copy all files
-COPY . .
+# Copy files
+COPY pyproject.toml poetry.lock README.md ./
+COPY ./src/python_src ./src/python_src
 
 # Configure Poetry (no virtualenvs and silence export warnings)
 RUN poetry config virtualenvs.create false && \
@@ -33,6 +34,9 @@ RUN apt-get update && \
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 COPY --from=builder /usr/local/bin/poetry /usr/local/bin/poetry
 COPY --from=builder /usr/local/bin/uvicorn /usr/local/bin/uvicorn
+
+# Copy the application code
+COPY . .
 
 # Set ownership to appuser
 RUN chown -R appuser:appuser /app
