@@ -16,7 +16,6 @@ COPY . .
 
 # Configure Poetry (no virtualenvs and silence export warnings)
 RUN poetry config virtualenvs.create false && \
-    poetry config warnings.export false && \
     poetry install --only main --no-interaction --no-ansi
 
 # Stage 2: Runner
