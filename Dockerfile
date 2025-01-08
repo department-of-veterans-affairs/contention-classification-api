@@ -9,10 +9,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
-RUN pip install --no-cache-dir poetry==1.8.5
+RUN pip install --no-cache-dir poetry==2.0.0
 
 # Copy files
-COPY pyproject.toml poetry.lock README.md ./
+COPY pyproject.toml poetry.lock README.md LICENSE.md ./
 COPY ./src/python_src ./src/python_src
 
 # Configure Poetry (no virtualenvs and silence export warnings)

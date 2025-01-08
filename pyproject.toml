@@ -1,3 +1,28 @@
+[project]
+name = "contention-classification-api"
+version = "0.1.0"
+description = "API for classifying contentions from 526 submissions"
+dynamic = ["dependencies"]
+authors = [
+	{name = "Department of Veterans Affairs"}
+]
+readme = "README.md"
+license = {file = "LICENSE.md"}
+keywords = ["veterans", "contention", "classification", "api", "fastapi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+]
+requires-python = ">= 3.12"
+
+[project.urls]
+homepage = "https://github.com/department-of-veterans-affairs/contention-classification-api"
+repository = "https://github.com/department-of-veterans-affairs/contention-classification-api"
+
 [tool.pytest.ini_options]
 addopts = "-ra --cov=./src --cov-fail-under=80 --no-cov-on-fail --cov-report=term:skip-covered --cov-report=html:build/reports/coverage --cov-branch"
 testpaths = [
@@ -42,27 +67,11 @@ exclude = [
 ]
 
 [tool.poetry]
-name = "contention-classification-api"
-version = "0.1.0"
-description = "API for classifying contentions from 526 submissions"
-authors = ["Department of Veterans Affairs"]
-readme = "README.md"
-license = "LICENSE.md"
-homepage = "https://github.com/department-of-veterans-affairs/contention-classification-api"
-repository = "https://github.com/department-of-veterans-affairs/contention-classification-api"
-keywords = ["veterans", "contention", "classification", "api", "fastapi"]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-]
 packages = [{include = "python_src", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "3.12.3"
+poetry = "2.0.0"
 fastapi = "0.115.6"
 httpx = "0.28.1"
 pydantic = "2.10.4"
