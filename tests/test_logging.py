@@ -1,5 +1,7 @@
 """
-Test logging functions
+Tests for the logging functions in the API. This mocks the log_as_json function and tests that the logging is called
+with the correct dict for different situations.  The primary purpose is to test logging contention text to ensure that
+there is no PII in the logs.
 """
 
 from unittest.mock import patch
@@ -7,7 +9,12 @@ from unittest.mock import patch
 from fastapi import Request
 from starlette.datastructures import Headers
 
-from src.python_src.api import log_claim_stats_v2, log_contention_stats
+from src.python_src.api import (
+    get_classification_code_name,
+    get_expanded_classification,
+    log_claim_stats_v2,
+    log_contention_stats,
+)
 from src.python_src.pydantic_models import (
     ClassifiedContention,
     ClassifierResponse,
@@ -34,6 +41,59 @@ test_current_classifier_request = Request(
 )
 
 
+def test_create_classification_method_new():
+    """
+    Tests the logic of creating the classification_method field for logging
+    """
+    test_contention = Contention(
+        contention_text="acl tear right",
+        contention_type="NEW",
+    )
+    classification_method = get_expanded_classification(test_contention)[2]
+    classification_method_original = get_classification_code_name(test_contention)[2]
+    assert classification_method == "contention_text"
+    assert classification_method_original == "not classified"
+
+
+def test_create_classification_method_inc():
+    """
+    Tests the logic of creating the classification_method field for logging
+    """
+    test_contention_dc = Contention(
+        contention_text="",
+        contention_type="INCREASE",
+        diagnostic_code=5012,
+    )
+    test_contention_lookup = Contention(
+        contention_text="hearing loss",
+        contention_type="INCREASE",
+        diagnostic_code=501,
+    )
+
+    classification_method_dc = get_expanded_classification(test_contention_dc)[2]
+    classification_method_lookup = get_expanded_classification(test_contention_lookup)[2]
+    original_method_dc = get_classification_code_name(test_contention_dc)[2]
+    original_method_lookup = get_classification_code_name(test_contention_lookup)[2]
+    assert classification_method_dc == "diagnostic_code"
+    assert classification_method_lookup == "contention_text"
+    assert original_method_dc == "diagnostic_code"
+    assert original_method_lookup == "contention_text"
+
+
+def test_create_classification_method_not_classed():
+    """
+    Tests the logic of creating the classification_method field for logging
+    """
+    test_contention_test = Contention(
+        contention_text="free text entry",
+        contention_type="NEW",
+    )
+    classification_method = get_expanded_classification(test_contention_test)[2]
+    original_method = get_classification_code_name(test_contention_test)[2]
+    assert classification_method == "not classified"
+    assert original_method == "not classified"
+
+
 @patch("src.python_src.api.log_as_json")
 def test_log_contention_stats_expanded(mocked_func):
     """
@@ -50,7 +110,14 @@ def test_log_contention_stats_expanded(mocked_func):
         diagnostic_code=None,
         contention_type="NEW",
     )
-    log_contention_stats(test_contention, classified_contention, test_claim, test_expanded_request)
+    classified_by = "contention text"
+    log_contention_stats(
+        test_contention,
+        classified_contention,
+        test_claim,
+        test_expanded_request,
+        classified_by,
+    )
 
     expected_logging_dict = {
         "vagov_claim_id": test_claim.claim_id,
@@ -64,6 +131,7 @@ def test_log_contention_stats_expanded(mocked_func):
         "is_multi_contention": False,
         "endpoint": "/expanded-contention-classification",
         "processed_contention_text": "acl tear",
+        "classification_method": "contention text",
     }
 
     mocked_func.assert_called_once_with(expected_logging_dict)
@@ -85,7 +153,14 @@ def test_non_classified_contentions(mocked_func):
         diagnostic_code=None,
         contention_type="NEW",
     )
-    log_contention_stats(test_contention, classified_contention, test_claim, test_expanded_request)
+    classified_by = "not classified"
+    log_contention_stats(
+        test_contention,
+        classified_contention,
+        test_claim,
+        test_expanded_request,
+        classified_by,
+    )
 
     expected_log = {
         "vagov_claim_id": test_claim.claim_id,
@@ -99,6 +174,7 @@ def test_non_classified_contentions(mocked_func):
         "is_multi_contention": False,
         "endpoint": "/expanded-contention-classification",
         "processed_contention_text": None,
+        "classification_method": classified_by,
     }
     mocked_func.assert_called_once_with(expected_log)
 
@@ -133,6 +209,7 @@ def test_multiple_contentions(mocked_func):
             contention_type="NEW",
         ),
     ]
+    classified_by = "contention_text"
 
     expected_logs = [
         {
@@ -147,6 +224,7 @@ def test_multiple_contentions(mocked_func):
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
             "processed_contention_text": "tinnitus ringing hissing ears",
+            "classification_method": classified_by,
         },
         {
             "vagov_claim_id": test_claim.claim_id,
@@ -160,6 +238,7 @@ def test_multiple_contentions(mocked_func):
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
             "processed_contention_text": "anxiety",
+            "classification_method": classified_by,
         },
     ]
 
@@ -169,6 +248,7 @@ def test_multiple_contentions(mocked_func):
             classified_contentions[i],
             test_claim,
             test_expanded_request,
+            classified_by,
         )
         mocked_func.assert_called_with(expected_logs[i])
 
@@ -205,6 +285,7 @@ def test_contentions_with_pii(mocked_func):
             contention_type="NEW",
         ),
     ]
+    classified_by = "not classified"
     expected_logs = [
         {
             "vagov_claim_id": test_claim.claim_id,
@@ -218,6 +299,7 @@ def test_contentions_with_pii(mocked_func):
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
             "processed_contention_text": None,
+            "classification_method": classified_by,
         },
         {
             "vagov_claim_id": test_claim.claim_id,
@@ -231,6 +313,7 @@ def test_contentions_with_pii(mocked_func):
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
             "processed_contention_text": None,
+            "classification_method": classified_by,
         },
     ]
 
@@ -240,6 +323,7 @@ def test_contentions_with_pii(mocked_func):
             classified_contentions[i],
             test_claim,
             test_expanded_request,
+            classified_by,
         )
         mocked_func.assert_called_with(expected_logs[i])
 
@@ -313,11 +397,13 @@ def test_current_classifier_contention(mocked_func):
         diagnostic_code=None,
         contention_type="NEW",
     )
+    classified_by = "not classified"
     log_contention_stats(
         test_contention,
         classified_contention,
         test_claim,
         test_current_classifier_request,
+        classified_by,
     )
 
     expected_logging_dict = {
@@ -331,6 +417,7 @@ def test_current_classifier_contention(mocked_func):
         "is_lookup_table_match": False,
         "is_multi_contention": False,
         "endpoint": "/va-gov-claim-classifier",
+        "classification_method": classified_by,
     }
 
     mocked_func.assert_called_once_with(expected_logging_dict)
@@ -366,7 +453,7 @@ def test_full_logging_expanded_endpoint(mocked_func):
             contention_type="NEW",
         ),
     ]
-
+    classified_by = "contention_text"
     expected_contention_logs = [
         {
             "vagov_claim_id": test_claim.claim_id,
@@ -379,6 +466,7 @@ def test_full_logging_expanded_endpoint(mocked_func):
             "is_lookup_table_match": False,
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
+            "classification_method": classified_by,
             "processed_contention_text": None,
         },
         {
@@ -393,6 +481,7 @@ def test_full_logging_expanded_endpoint(mocked_func):
             "is_multi_contention": True,
             "endpoint": "/expanded-contention-classification",
             "processed_contention_text": "anxiety",
+            "classification_method": classified_by,
         },
     ]
 
@@ -420,6 +509,7 @@ def test_full_logging_expanded_endpoint(mocked_func):
             classified_contentions[i],
             test_claim,
             test_expanded_request,
+            classified_by,
         )
         mocked_func.assert_called_with(expected_contention_logs[i])
 
