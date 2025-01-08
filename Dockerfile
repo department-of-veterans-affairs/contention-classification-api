@@ -9,12 +9,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
-RUN pip install --no-cache-dir poetry==1.7.1
+RUN pip install --no-cache-dir poetry==1.8.5
 
-# Copy only the poetry files to leverage caching
-COPY pyproject.toml poetry.lock README.md ./
-
-# Get `poetry install` to run successfully since there are missing files otherwise
+# Copy all files
 COPY . .
 
 # Configure Poetry (no virtualenvs and silence export warnings)
@@ -35,10 +32,8 @@ RUN apt-get update && \
 
 # Copy installed site-packages and Poetry from the builder stage
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
-
-# Copy the application code
-COPY . .
+COPY --from=builder /usr/local/bin/poetry /usr/local/bin/poetry
+COPY --from=builder /usr/local/bin/uvicorn /usr/local/bin/uvicorn
 
 # Set ownership to appuser
 RUN chown -R appuser:appuser /app
