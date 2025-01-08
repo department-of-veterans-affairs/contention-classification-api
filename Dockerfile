@@ -22,8 +22,6 @@ RUN poetry config virtualenvs.create false && \
     poetry config warnings.export false && \
     poetry install --only main --no-interaction --no-ansi
 
-RUN echo $PATH
-
 # Stage 2: Runner
 FROM python:3.12.3-slim AS runner
 
@@ -37,7 +35,7 @@ RUN apt-get update && \
 
 # Copy installed site-packages and Poetry from the builder stage
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-COPY --from=builder /usr/local/bin/poetry /usr/local/bin/poetry
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Copy the application code
 COPY . .
