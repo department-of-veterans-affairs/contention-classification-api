@@ -2,13 +2,15 @@ from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
-from src.python_src.util.expanded_lookup_config import COMMON_WORDS, FILE_READ_HELPER
+from src.python_src.util.app_utilities import load_config
 from src.python_src.util.expanded_lookup_table import ExpandedLookupTable
 
+app_config = load_config("src/python_src/util/app_config.yaml")
+COMMON_WORDS = app_config["common_words"]
 TEST_LUT = ExpandedLookupTable(
-    FILE_READ_HELPER["contention_text"],
-    FILE_READ_HELPER["classification_code"],
-    FILE_READ_HELPER["classification_name"],
+    key_text=app_config["expanded_classifier"]["contention_text"],
+    classification_code=app_config["expanded_classifier"]["classification_code"],
+    classification_name=app_config["expanded_classifier"]["classification_name"],
 )
 
 

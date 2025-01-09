@@ -75,8 +75,10 @@ poetry = "2.0.0"
 fastapi = "0.115.6"
 httpx = "0.28.1"
 pydantic = "2.10.4"
+pyyaml = "6.0.2"
 setuptools = "75.7.0"
 uvicorn = {extras = ["standard"], version = "0.34.0"}
+
 
 [tool.poetry.group.dev.dependencies]
 mypy = "1.14.1"

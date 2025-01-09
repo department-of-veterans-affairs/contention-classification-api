@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import sys
 import time
 from functools import wraps
@@ -14,16 +15,18 @@ from .pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from .util.expanded_lookup_config import FILE_READ_HELPER
+from .util.app_utilities import load_config
 from .util.expanded_lookup_table import ExpandedLookupTable
 from .util.logging_dropdown_selections import build_logging_table
 from .util.lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .util.sanitizer import sanitize_log
 
+app_config = load_config(os.path.join(os.path.dirname(__file__), "util", "app_config.yaml"))
+
 expanded_lookup_table = ExpandedLookupTable(
-    key_text=FILE_READ_HELPER["contention_text"],
-    classification_code=FILE_READ_HELPER["classification_code"],
-    classification_name=FILE_READ_HELPER["classification_name"],
+    key_text=app_config["expanded_classifier"]["contention_text"],
+    classification_code=app_config["expanded_classifier"]["classification_code"],
+    classification_name=app_config["expanded_classifier"]["classification_name"],
 )
 
 dc_lookup_table = DiagnosticCodeLookupTable()
@@ -293,6 +296,7 @@ def get_expanded_classification(contention: Contention) -> Tuple[int, str]:
 
     if contention.contention_text and not classification_code:
         classification = expanded_lookup_table.get(contention.contention_text)
+        print("classification", classification)
         classification_code = classification["classification_code"]
         classification_name = classification["classification_name"]
         if classification_code is not None:

@@ -1,14 +1,20 @@
 import csv
+import os
 import re
 from string import punctuation
 from typing import List
 
-from .expanded_lookup_config import COMMON_WORDS, FILE_READ_HELPER, MUSCULOSKELETAL_LUT
+from .app_utilities import load_config
 
-LUT_DEFAULT_VALUE = {
-    "classification_code": None,
-    "classification_name": None,
-}
+app_config = load_config(os.path.join(os.path.dirname(__file__), "app_config.yaml"))
+
+LUT_DEFAULT_VALUE = app_config["lut_default_value"]
+COMMON_WORDS = app_config["common_words"]
+MUSCULOSKELETAL_LUT = app_config["musculoskeletal_lut"]
+contention_lut_csv_filename = (
+    f"{app_config['condition_dropdown_table']['filename']} {app_config['condition_dropdown_table']['version_number']}.csv"
+)
+filepath = os.path.join(os.path.dirname(__file__), "data", "condition_dropdown_lookup_table", contention_lut_csv_filename)
 
 
 class ExpandedLookupTable:
@@ -90,7 +96,7 @@ class ExpandedLookupTable:
         This also pulls out terms in parentheses and adds the separated strings to the list and also keeping the OG term
         """
         classification_code_mappings = {}
-        with open(FILE_READ_HELPER["filepath"]) as fh:
+        with open(filepath) as fh:
             csv_reader = csv.DictReader(fh)
             for row in csv_reader:
                 if "(" in row[self.key_text]:
@@ -150,7 +156,9 @@ class ExpandedLookupTable:
         input_str = self.prep_incoming_text(input_str)
 
         input_str_lookup = frozenset(input_str.split())
+        print(input_str_lookup)
         classification = self.contention_text_lookup_table.get(input_str_lookup, default_value)
+        print("def", default_value)
         return classification
 
     def __len__(self):

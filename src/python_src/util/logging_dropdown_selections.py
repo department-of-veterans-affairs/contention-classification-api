@@ -1,13 +1,16 @@
 import csv
 import os
 
-from .table_versions import CONDITION_DROPDOWN_COVERAGE_VERSION
+from .app_utilities import load_config
+
+app_config = load_config(os.path.join(os.path.dirname(__file__), "app_config.yaml"))
+
 
 path = os.path.join(
     os.path.dirname(__file__),
     "data",
     "condition_dropdown_coverage",
-    f"[Release notes] Auto-suggestions release notes - Suggested Conditions {CONDITION_DROPDOWN_COVERAGE_VERSION} Flat.csv",
+    f"{app_config["autosuggestion_table"]["filename"]} {app_config["autosuggestion_table"]["version_number"]} Flat.csv",
 )
 
 
