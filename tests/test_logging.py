@@ -9,13 +9,13 @@ from unittest.mock import patch
 from fastapi import Request
 from starlette.datastructures import Headers
 
-from src.python_src.api import get_classification_code_name, get_expanded_classification
 from src.python_src.pydantic_models import (
     ClassifiedContention,
     ClassifierResponse,
     Contention,
     VaGovClaim,
 )
+from src.python_src.util.classifier_utilities import get_classification_code_name, get_expanded_classification
 from src.python_src.util.logging_utilities import log_claim_stats_v2, log_contention_stats
 
 test_expanded_request = Request(
