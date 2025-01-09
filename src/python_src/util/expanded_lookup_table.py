@@ -156,9 +156,7 @@ class ExpandedLookupTable:
         input_str = self.prep_incoming_text(input_str)
 
         input_str_lookup = frozenset(input_str.split())
-        print(input_str_lookup)
         classification = self.contention_text_lookup_table.get(input_str_lookup, default_value)
-        print("def", default_value)
         return classification
 
     def __len__(self):

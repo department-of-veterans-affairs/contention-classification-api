@@ -9,18 +9,14 @@ from unittest.mock import patch
 from fastapi import Request
 from starlette.datastructures import Headers
 
-from src.python_src.api import (
-    get_classification_code_name,
-    get_expanded_classification,
-    log_claim_stats_v2,
-    log_contention_stats,
-)
+from src.python_src.api import get_classification_code_name, get_expanded_classification
 from src.python_src.pydantic_models import (
     ClassifiedContention,
     ClassifierResponse,
     Contention,
     VaGovClaim,
 )
+from src.python_src.util.logging_utilities import log_claim_stats_v2, log_contention_stats
 
 test_expanded_request = Request(
     scope={
@@ -94,7 +90,7 @@ def test_create_classification_method_not_classed():
     assert original_method == "not classified"
 
 
-@patch("src.python_src.api.log_as_json")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_log_contention_stats_expanded(mocked_func):
     """
     Tests the logging of a contention that is classified but considered free text
@@ -137,7 +133,7 @@ def test_log_contention_stats_expanded(mocked_func):
     mocked_func.assert_called_once_with(expected_logging_dict)
 
 
-@patch("src.python_src.api.log_as_json")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_non_classified_contentions(mocked_func):
     """
     Tests the logging of a contention that is not classified
@@ -179,7 +175,7 @@ def test_non_classified_contentions(mocked_func):
     mocked_func.assert_called_once_with(expected_log)
 
 
-@patch("src.python_src.api.log_as_json")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_multiple_contentions(mocked_func):
     """
     Tests multiple contentions one from autosuggestion and one that would be considered free text
@@ -255,7 +251,7 @@ def test_multiple_contentions(mocked_func):
     assert mocked_func.call_count == 2
 
 
-@patch("src.python_src.api.log_as_json")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_contentions_with_pii(mocked_func):
     """
     Tests that the logging will not log unless completely classified and no PII slips through
@@ -330,7 +326,7 @@ def test_contentions_with_pii(mocked_func):
     assert mocked_func.call_count == 2
 
 
-@patch("src.python_src.api.log_as_json")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_log_claim_stats(mocked_func):
     test_claim = VaGovClaim(
         claim_id=100,
@@ -381,7 +377,7 @@ def test_log_claim_stats(mocked_func):
     mocked_func.assert_called_once_with(expected_log)
 
 
-@patch("src.python_src.api.log_as_json")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_current_classifier_contention(mocked_func):
     """
     Tests the logging of the current contention logs
@@ -423,7 +419,7 @@ def test_current_classifier_contention(mocked_func):
     mocked_func.assert_called_once_with(expected_logging_dict)
 
 
-@patch("src.python_src.api.log_as_json")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_full_logging_expanded_endpoint(mocked_func):
     """
     Tests full logging including individual contentions and one claim
