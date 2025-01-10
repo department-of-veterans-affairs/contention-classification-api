@@ -1,5 +1,7 @@
 """Tests for the BRD classification codes module."""
 
+from typing import Any, Dict, List, TypedDict, Union
+
 from src.python_src.util.brd_classification_codes import (
     CLASSIFICATION_NAMES_BY_CODE,
     get_classification_name,
@@ -8,9 +10,16 @@ from src.python_src.util.brd_classification_codes import (
 from tests.conftest import json, patch, pytest
 
 
-def test_get_classification_names_by_code(common_classification_codes, mock_file_open):
+class ItemDict(TypedDict):
+    id: int
+    name: str
+
+
+def test_get_classification_names_by_code(
+    common_classification_codes: Dict[str, Dict[str, Union[int, str]]], mock_file_open: Any
+) -> None:
     """Test get_classification_names_by_code with mock data."""
-    mock_data = {
+    mock_data: Dict[str, List[ItemDict]] = {
         "items": [
             {"id": 8989, "name": "Mental Disorders"},
             {"id": 8997, "name": "Musculoskeletal - Knee"},
@@ -26,24 +35,26 @@ def test_get_classification_names_by_code(common_classification_codes, mock_file
         }
 
 
-def test_get_classification_names_by_code_missing_items(mock_file_open):
+def test_get_classification_names_by_code_missing_items(mock_file_open: Any) -> None:
     """Test handling when JSON doesn't have 'items' key."""
-    mock_data = {"wrong_key": []}
+    mock_data: Dict[str, List[Any]] = {"wrong_key": []}
     with patch("builtins.open", mock_file_open(read_data=json.dumps(mock_data))):
         with pytest.raises(KeyError):
             get_classification_names_by_code()
 
 
-def test_get_classification_names_by_code_invalid_json(mock_file_open):
+def test_get_classification_names_by_code_invalid_json(mock_file_open: Any) -> None:
     """Test handling of invalid JSON data."""
     with patch("builtins.open", mock_file_open(read_data="invalid json")):
         with pytest.raises(json.JSONDecodeError):
             get_classification_names_by_code()
 
 
-def test_get_classification_name(common_classification_codes, mock_file_open):
+def test_get_classification_name(
+    common_classification_codes: Dict[str, Dict[str, Union[int, str]]], mock_file_open: Any
+) -> None:
     """Test get_classification_name with mock data."""
-    mock_data = {
+    mock_data: Dict[str, List[ItemDict]] = {
         "items": [
             {"id": 8989, "name": "Mental Disorders"},
             {"id": 8997, "name": "Musculoskeletal - Knee"},
@@ -57,14 +68,14 @@ def test_get_classification_name(common_classification_codes, mock_file_open):
         assert get_classification_name(9999) is None
 
 
-def test_get_classification_names_by_code_file_error():
+def test_get_classification_names_by_code_file_error() -> None:
     """Test error handling when file cannot be opened."""
     with patch("builtins.open", side_effect=FileNotFoundError()):
         with pytest.raises(FileNotFoundError):
             get_classification_names_by_code()
 
 
-def test_get_classification_name_file_error():
+def test_get_classification_name_file_error() -> None:
     """Test error handling when file cannot be opened."""
     with patch.dict(CLASSIFICATION_NAMES_BY_CODE, {}, clear=True):
         result = get_classification_name(8989)

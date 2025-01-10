@@ -9,17 +9,17 @@ CONTENTION_DROPDOWN_LUT_SIZE = 1056
 DIAGNOSTIC_CODE_LUT_SIZE = 755
 
 
-def test_build_dropdown_lookup_table():
+def test_build_dropdown_lookup_table() -> None:
     lookup_table = ContentionTextLookupTable()
     assert len(lookup_table) == CONTENTION_DROPDOWN_LUT_SIZE
 
 
-def test_build_dc_lut():
+def test_build_dc_lut() -> None:
     dc_lookup_table = DiagnosticCodeLookupTable()
     assert len(dc_lookup_table) == DIAGNOSTIC_CODE_LUT_SIZE
 
 
-def test_build_expanded_table():
+def test_build_expanded_table() -> None:
     expanded = ExpandedLookupTable(
         FILE_READ_HELPER["contention_text"],
         FILE_READ_HELPER["classification_code"],

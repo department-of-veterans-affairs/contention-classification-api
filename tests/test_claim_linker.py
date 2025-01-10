@@ -1,9 +1,10 @@
 import logging
 
+from _pytest.logging import LogCaptureFixture
 from fastapi.testclient import TestClient
 
 
-def test_claim_ids_logged(client: TestClient, caplog):
+def test_claim_ids_logged(client: TestClient, caplog: LogCaptureFixture) -> None:
     json_post_dict = {
         "va_gov_claim_id": 100,
         "vbms_claim_id": 200,

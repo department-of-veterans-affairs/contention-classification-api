@@ -1,25 +1,29 @@
 import csv
 import os
+from typing import Dict, List, Optional, Union, cast
 
 from .table_versions import (
     CONDITION_DROPDOWN_TABLE_VERSION,
     DIAGNOSTIC_CODE_TABLE_VERSION,
 )
 
+# Type aliases to improve readability
+LookupValue = Dict[str, Optional[Union[int, str]]]
+LookupDict = Dict[str, Dict[str, Union[int, str]]]
+
 # https://docs.google.com/spreadsheets/d/18Mwnn9-cvJIRRupQyQ2zLYOBm3bd0pr4kKlsZtFiyc0/edit#gid=1711756762
 dc_table_name = (
-    f"[Release notes] Diagnostic Code to Classification mapping release notes - "
-    f"DC Lookup {DIAGNOSTIC_CODE_TABLE_VERSION}.csv"
+    f"[Release notes] Diagnostic Code to Classification mapping release notes - DC Lookup {DIAGNOSTIC_CODE_TABLE_VERSION}.csv"
 )
 # https://docs.google.com/spreadsheets/d/1A5JuYwn39mHE5Mk1HazN-mxCL2TENPeyUPHHhH10g_I/edit#gid=819850041
 previous_condition_dropdown_table_name = "Contention dropdown to classification master - Dropdown Lookup v0.1.csv"
 
 contention_lut_csv_filename = (
-    f"[Release notes] Contention Text to Classification mapping release notes - Contention Text Lookup "
-    f"{CONDITION_DROPDOWN_TABLE_VERSION}.csv"
+    "[Release notes] Contention Text to Classification mapping release notes - "
+    f"Contention Text Lookup {CONDITION_DROPDOWN_TABLE_VERSION}.csv"
 )
 
-LUT_DEFAULT_VALUE = {
+LUT_DEFAULT_VALUE: LookupValue = {
     "classification_code": None,
     "classification_name": None,
 }
@@ -34,8 +38,8 @@ class DiagnosticCodeLookupTable:
     input_key = "DIAGNOSTIC_CODE"
     output_key = "CLASSIFICATION_CODE"
 
-    def __init__(self):
-        self.classification_code_mappings = {}
+    def __init__(self) -> None:
+        self.classification_code_mappings: Dict[str, Dict[str, Union[int, str]]] = {}
         with open(self.CSV_FILEPATH, "r") as fh:
             csv_reader = csv.DictReader(fh)
             for row in csv_reader:
@@ -45,15 +49,15 @@ class DiagnosticCodeLookupTable:
                     "classification_name": row["CLASSIFICATION_TEXT"],  # note underscore different from contention LUT
                 }
 
-    def get(self, input_key: int, default_value=LUT_DEFAULT_VALUE):
-        classification = self.classification_code_mappings.get(str(input_key), default_value)
+    def get(self, input_key: int, default_value: LookupValue = LUT_DEFAULT_VALUE) -> LookupValue:
+        classification = cast(LookupValue, self.classification_code_mappings.get(str(input_key), default_value))
         return classification
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.classification_code_mappings)
 
 
-def get_v1_lookup_table(filepath: str, input_key: str, output_key: str) -> dict:
+def get_v1_lookup_table(filepath: str, input_key: str, output_key: str) -> Dict[Union[str, int], int]:
     """
     Returns the lookup table for the diagnostic code and original condition
     dropdown list
@@ -73,11 +77,12 @@ def get_v1_lookup_table(filepath: str, input_key: str, output_key: str) -> dict:
         keys: either the diagnostic code of condition dropdown value
         values: classification codes
     """
-    classification_code_mappings = {}
+    classification_code_mappings: Dict[Union[str, int], int] = {}
     with open(filepath, "r") as fh:
         csv_reader = csv.DictReader(fh)
         for csv_line in csv_reader:
             try:
+                text_to_convert: Union[str, int]
                 try:
                     text_to_convert = int(csv_line[input_key])
                 except ValueError:
@@ -106,9 +111,9 @@ class ContentionTextLookupTable:
     )
     input_key = "CONTENTION TEXT"
     output_key = "CLASSIFICATION CODE"
-    classification_code_mappings = {}
+    classification_code_mappings: Dict[str, Dict[str, Union[int, str]]] = {}
 
-    def __init__(self):
+    def __init__(self) -> None:
         with open(self.CSV_FILEPATH, "r") as fh:
             csv_reader = csv.DictReader(fh)
             for row in csv_reader:
@@ -118,12 +123,12 @@ class ContentionTextLookupTable:
                     "classification_name": row["CLASSIFICATION TEXT"],
                 }
 
-    def get(self, input_str: str, default_value=LUT_DEFAULT_VALUE):
+    def get(self, input_str: str, default_value: LookupValue = LUT_DEFAULT_VALUE) -> LookupValue:
         input_str = input_str.strip().lower()
-        classification = self.classification_code_mappings.get(input_str, default_value)
+        classification = cast(LookupValue, self.classification_code_mappings.get(input_str, default_value))
         return classification
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.classification_code_mappings)
 
 
@@ -133,9 +138,9 @@ def get_lookup_table(
     v1_mapping_filepath: str,
     input_key: str,
     output_key: str,
-    v2_input_key: list,
+    v2_input_key: List[str],
     v2_output_key: str,
-) -> dict:
+) -> Dict[Union[str, int], int]:
     """
     Build the full lookup table with version LUT and condition dropdown LUT
 

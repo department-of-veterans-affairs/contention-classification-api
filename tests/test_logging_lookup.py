@@ -1,26 +1,26 @@
 from src.python_src.util.logging_dropdown_selections import build_logging_table
 
 
-def test_build_dropdown_options_list():
+def test_build_dropdown_options_list() -> None:
     assert len(build_logging_table()) == 580
 
 
-def test_new_value_in_list():
+def test_new_value_in_list() -> None:
     test_value = "astragalectomy or talectomy (removal of talus bone in ankle), right"
     assert test_value in build_logging_table()
 
 
-def test_previous_value_not_in_list():
+def test_previous_value_not_in_list() -> None:
     test_value = "migraine"
     assert test_value not in build_logging_table()
 
 
-def test_previous_value_not_in_v3_list():
+def test_previous_value_not_in_v3_list() -> None:
     test_value = "urticaria (hives)"
     assert test_value not in build_logging_table()
 
 
-def test_kidney_cancer():
+def test_kidney_cancer() -> None:
     v2_kidney_cancer_value = "kidney cancer (renal cancer)"
     v3_kidney_cancer_values = [
         "kidney cancer (renal cancer), bilateral",

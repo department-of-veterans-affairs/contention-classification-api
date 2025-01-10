@@ -1,11 +1,11 @@
 import csv
 import re
 from string import punctuation
-from typing import List
+from typing import Dict, FrozenSet, List, Optional, Union, cast
 
 from .expanded_lookup_config import COMMON_WORDS, FILE_READ_HELPER, MUSCULOSKELETAL_LUT
 
-LUT_DEFAULT_VALUE = {
+LUT_DEFAULT_VALUE: Dict[str, Optional[Union[int, str]]] = {
     "classification_code": None,
     "classification_name": None,
 }
@@ -16,7 +16,7 @@ class ExpandedLookupTable:
     This parses the lookup table to use sets and remove common words and punctuations
     """
 
-    def __init__(self, key_text: str, classification_code: int, classification_name: str):
+    def __init__(self, key_text: str, classification_code: str, classification_name: str) -> None:
         """
         builds the lookup table using class methods
         """
@@ -25,22 +25,22 @@ class ExpandedLookupTable:
         self.classification_name = classification_name
         self.contention_text_lookup_table = self._build_lut()
 
-    def _musculoskeletal_lookup(self):
+    def _musculoskeletal_lookup(self) -> Dict[FrozenSet[str], Dict[str, Union[int, str]]]:
         """
         Creates a lookup table for musculoskeletal conditions with the key a frozenset.
         The musculoskeletal classifications are stored in the config file and can be added/updated there.
         """
-        MUSCULOSKELETAL_LUT_LUT_SET = {}
+        MUSCULOSKELETAL_LUT_LUT_SET: Dict[FrozenSet[str], Dict[str, Union[int, str]]] = {}
         for k, v in MUSCULOSKELETAL_LUT.items():
             s = frozenset(k.split())
-            MUSCULOSKELETAL_LUT_LUT_SET[s] = v
+            MUSCULOSKELETAL_LUT_LUT_SET[s] = cast(Dict[str, Union[int, str]], v)
 
         return MUSCULOSKELETAL_LUT_LUT_SET
 
-    def _remove_spaces(self, text):
+    def _remove_spaces(self, text: str) -> str:
         return re.sub(r"\s{2,}", " ", text).strip()
 
-    def _remove_punctuation(self, text):
+    def _remove_punctuation(self, text: str) -> str:
         """
         Removes puncutation from the lookup table contention text and any spaces of 2 or more
         """
@@ -55,16 +55,16 @@ class ExpandedLookupTable:
 
         return removed_punc_spaces.strip()
 
-    def _remove_common_words(self, text, common_words: List[str] = COMMON_WORDS):
+    def _remove_common_words(self, text: str, common_words: List[str] = COMMON_WORDS) -> str:
         """
         Removes common words from the lookup table contention text values
         """
-        regex = re.compile(rf'\b({"|".join(COMMON_WORDS)})\b', re.IGNORECASE)
+        regex = re.compile(rf"\b({'|'.join(COMMON_WORDS)})\b", re.IGNORECASE)
         removed_words = re.sub(regex, " ", text)
         removed_words = self._remove_spaces(removed_words)
         return removed_words
 
-    def _remove_numbers_single_characters(self, text):
+    def _remove_numbers_single_characters(self, text: str) -> str:
         """
         Removes numbers or single character letters
         """
@@ -73,7 +73,7 @@ class ExpandedLookupTable:
         text = self._remove_spaces(text)
         return text
 
-    def _removal_pipeline(self, text):
+    def _removal_pipeline(self, text: str) -> str:
         """
         Pipeline to remove all unwanted characters from the lookup table contention text values
         """
@@ -83,13 +83,13 @@ class ExpandedLookupTable:
 
         return text.lower().strip()
 
-    def _build_lut(self):
+    def _build_lut(self) -> Dict[FrozenSet[str], Dict[str, Union[int, str]]]:
         """
         Builds the lookup table using the CSV file
 
         This also pulls out terms in parentheses and adds the separated strings to the list and also keeping the OG term
         """
-        classification_code_mappings = {}
+        classification_code_mappings: Dict[FrozenSet[str], Dict[str, Union[int, str]]] = {}
         with open(FILE_READ_HELPER["filepath"]) as fh:
             csv_reader = csv.DictReader(fh)
             for row in csv_reader:
@@ -101,16 +101,16 @@ class ExpandedLookupTable:
                     for t in ls_terms:
                         k = self._removal_pipeline(t)
                         if k != "":
-                            k = frozenset(k.split())
-                            classification_code_mappings[k] = {
+                            k_set = frozenset(k.split())
+                            classification_code_mappings[k_set] = {
                                 "classification_code": int(row[self.classification_code]),
                                 "classification_name": row[self.classification_name],
                             }
 
                 # adds the original string
                 k = self._removal_pipeline(row[self.key_text])
-                k = frozenset(k.split())
-                classification_code_mappings[k] = {
+                k_set = frozenset(k.split())
+                classification_code_mappings[k_set] = {
                     "classification_code": int(row[self.classification_code]),
                     "classification_name": row[self.classification_name],
                 }
@@ -119,7 +119,7 @@ class ExpandedLookupTable:
 
         return classification_code_mappings
 
-    def prep_incoming_text(self, input_str: str):
+    def prep_incoming_text(self, input_str: str) -> str:
         """
         Prepares the incoming text for lookup by removing common words and punctuation
         """
@@ -132,7 +132,9 @@ class ExpandedLookupTable:
 
         return input_str
 
-    def get(self, input_str: str, default_value=LUT_DEFAULT_VALUE):
+    def get(
+        self, input_str: str, default_value: Dict[str, Optional[Union[int, str]]] = LUT_DEFAULT_VALUE
+    ) -> Dict[str, Optional[Union[int, str]]]:
         """
         Processes input string using same method as the LUT and performs the lookup
 
@@ -151,9 +153,9 @@ class ExpandedLookupTable:
 
         input_str_lookup = frozenset(input_str.split())
         classification = self.contention_text_lookup_table.get(input_str_lookup, default_value)
-        return classification
+        return cast(Dict[str, Optional[Union[int, str]]], classification)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
         Returns length of the LUT
         """

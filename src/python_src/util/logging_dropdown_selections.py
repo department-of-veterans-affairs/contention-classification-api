@@ -1,5 +1,6 @@
 import csv
 import os
+from typing import List
 
 from .table_versions import CONDITION_DROPDOWN_COVERAGE_VERSION
 
@@ -11,12 +12,12 @@ path = os.path.join(
 )
 
 
-def build_logging_table() -> list:
+def build_logging_table() -> List[str]:
     """
     Builds list of dropdown options to use for logging from the most current
     dropdown conditions lookup table csv.
     """
-    dropdown_values = []
+    dropdown_values: List[str] = []
     with open(path, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -24,13 +25,13 @@ def build_logging_table() -> list:
     return dropdown_values
 
 
-def build_logging_table_v0_1() -> list:
+def build_logging_table_v0_1() -> List[str]:
     """
     DEPRECATED
     Builds list of dropdown options to use for logging from the most current
     dropdown conditions lookup table csv.
     """
-    dropdown_values = []
+    dropdown_values: List[str] = []
     with open(path, "r") as f:
         next(f)  # skip "Conditions list terms, organized by base term and variations"
         reader = csv.DictReader(f)

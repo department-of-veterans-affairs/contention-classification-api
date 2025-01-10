@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
 
-def test_vagov_classifier_mixed_types(client: TestClient):
+def test_vagov_classifier_mixed_types(client: TestClient) -> None:
     """
     Tests response of multi-contention claims matches expected values
     """
@@ -49,7 +49,7 @@ def test_vagov_classifier_mixed_types(client: TestClient):
     ]
 
 
-def test_vagov_classifier_empty_contentions(client: TestClient):
+def test_vagov_classifier_empty_contentions(client: TestClient) -> None:
     """
     Tests 422 is returned when contentions is empty
     """
@@ -62,7 +62,7 @@ def test_vagov_classifier_empty_contentions(client: TestClient):
     assert response.status_code == 422
 
 
-def test_vagov_classifier_missing_params(client: TestClient):
+def test_vagov_classifier_missing_params(client: TestClient) -> None:
     """
     Tests 422 is returned when contentions is empty
     """
@@ -88,7 +88,7 @@ def test_vagov_classifier_missing_params(client: TestClient):
     assert response.status_code == 422
 
 
-def test_single_contention(client: TestClient):
+def test_single_contention(client: TestClient) -> None:
     """
     Tests response of single contention claim matches expected values
     """
@@ -114,12 +114,12 @@ def test_single_contention(client: TestClient):
     ]
 
 
-def test_order_response(client: TestClient):
+def test_order_response(client: TestClient) -> None:
     """
     Tests to make sure that the order of the response matches the
     order of input
     """
-    json_post_dict = json_post_dict = {
+    json_post_dict = {
         "claim_id": 100,
         "form526_submission_id": 500,
         "contentions": [
@@ -145,7 +145,7 @@ def test_order_response(client: TestClient):
         assert response.json()["contentions"][i]["classification_code"] == expected_order[i]
 
 
-def test_case_insensitivity(client: TestClient):
+def test_case_insensitivity(client: TestClient) -> None:
     """
     Tests that the classifier is case insensitive
     """
@@ -193,7 +193,7 @@ def test_case_insensitivity(client: TestClient):
     ]
 
 
-def test_whitespace_removal(client: TestClient):
+def test_whitespace_removal(client: TestClient) -> None:
     json_post_dict = {
         "claim_id": 100,
         "form526_submission_id": 500,
@@ -216,7 +216,7 @@ def test_whitespace_removal(client: TestClient):
     ]
 
 
-def test_v5_v6_lookup_values(client: TestClient):
+def test_v5_v6_lookup_values(client: TestClient) -> None:
     """
     This tests new classification mappings in v5 of the condition dropdown list
     and v6 of the diagnostic code lookup tables.
@@ -251,4 +251,4 @@ def test_v5_v6_lookup_values(client: TestClient):
         }
         for c in response.json()["contentions"]
     ]
-    assert expected_classifications == returned_classifications
+    assert returned_classifications == expected_classifications
