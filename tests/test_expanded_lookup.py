@@ -7,7 +7,7 @@ from src.python_src.util.expanded_lookup_table import ExpandedLookupTable
 
 TEST_LUT = ExpandedLookupTable(
     FILE_READ_HELPER["contention_text"],
-    FILE_READ_HELPER["classification_code"],
+    int(FILE_READ_HELPER["classification_code"]),
     FILE_READ_HELPER["classification_name"],
 )
 

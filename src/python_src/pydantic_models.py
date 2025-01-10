@@ -1,8 +1,7 @@
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import HTTPException
 from pydantic import BaseModel, model_validator
-from pydantic.types import conlist
 
 
 class ClaimLinkInfo(BaseModel):
@@ -34,7 +33,13 @@ class Contention(BaseModel):
 class VaGovClaim(BaseModel):
     claim_id: int
     form526_submission_id: int
-    contentions: conlist(Contention, min_length=1)
+    contentions: List[Contention]
+
+    @model_validator(mode='after')
+    def validate_contentions_length(self):
+        if len(self.contentions) < 1:
+            raise ValueError("contentions must have at least 1 item")
+        return self
 
 
 class ClassifiedContention(BaseModel):
@@ -45,9 +50,15 @@ class ClassifiedContention(BaseModel):
 
 
 class ClassifierResponse(BaseModel):
-    contentions: conlist(ClassifiedContention, min_length=1)
+    contentions: List[ClassifiedContention]
     claim_id: int
     form526_submission_id: int
     is_fully_classified: bool
     num_processed_contentions: int
     num_classified_contentions: int
+
+    @model_validator(mode='after')
+    def validate_contentions_length(self):
+        if len(self.contentions) < 1:
+            raise ValueError("contentions must have at least 1 item")
+        return self

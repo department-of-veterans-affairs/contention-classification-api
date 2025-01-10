@@ -22,7 +22,7 @@ from .util.sanitizer import sanitize_log
 
 expanded_lookup_table = ExpandedLookupTable(
     key_text=FILE_READ_HELPER["contention_text"],
-    classification_code=FILE_READ_HELPER["classification_code"],
+    classification_code=int(FILE_READ_HELPER["classification_code"]),
     classification_name=FILE_READ_HELPER["classification_name"],
 )
 
@@ -220,7 +220,7 @@ def get_classification_code_name(contention: Contention) -> Tuple:
     """
     classification_code = None
     classification_name = None
-    if contention.contention_type == "INCREASE":
+    if contention.contention_type == "INCREASE" and contention.diagnostic_code is not None:
         classification = dc_lookup_table.get(contention.diagnostic_code)
         classification_code = classification["classification_code"]
         classification_name = classification["classification_name"]
@@ -269,13 +269,13 @@ def va_gov_claim_classifier(claim: VaGovClaim, request: Request) -> ClassifierRe
     return response
 
 
-def get_expanded_classification(contention: Contention) -> Tuple[int, str]:
+def get_expanded_classification(contention: Contention) -> Tuple[int | None, str | None]:
     """
     Performs the dictionary lookup for the expanded lookup table
     """
     classification_code = None
     classification_name = None
-    if contention.contention_type == "INCREASE":
+    if contention.contention_type == "INCREASE" and contention.diagnostic_code is not None:
         classification = dc_lookup_table.get(contention.diagnostic_code)
         classification_code = classification["classification_code"]
         classification_name = classification["classification_name"]

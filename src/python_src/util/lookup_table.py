@@ -1,5 +1,6 @@
 import csv
 import os
+from typing import Dict, Union
 
 from .table_versions import (
     CONDITION_DROPDOWN_TABLE_VERSION,
@@ -79,7 +80,7 @@ def get_v1_lookup_table(filepath: str, input_key: str, output_key: str) -> dict:
         for csv_line in csv_reader:
             try:
                 try:
-                    text_to_convert = int(csv_line[input_key])
+                    text_to_convert = str(int(csv_line[input_key])).strip().lower()
                 except ValueError:
                     text_to_convert = csv_line[input_key].strip().lower()
                 classification_code = int(csv_line[output_key])
@@ -106,7 +107,7 @@ class ContentionTextLookupTable:
     )
     input_key = "CONTENTION TEXT"
     output_key = "CLASSIFICATION CODE"
-    classification_code_mappings = {}
+    classification_code_mappings: Dict[str, Dict[str, Union[int, str, None]]] = {}
 
     def __init__(self):
         with open(self.CSV_FILEPATH, "r") as fh:
@@ -146,8 +147,7 @@ def get_lookup_table(
     dropdown_v2_filepath: str
         Filepath to the new condition dropdown table
     v1_mapping_filepath: str
-        Filepath to original csv files for both diagnostic code and
-        condition dropdown
+        Filepath to original csv files containing the data for the version 1 LUTs
     input_key: str
         CSV column name used to build the v1 LUTs either
         DIAGNOSTIC_CODE or CONTENTION_TEXT
