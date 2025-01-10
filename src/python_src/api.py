@@ -7,7 +7,7 @@ from .pydantic_models import (
     ClassifierResponse,
     VaGovClaim,
 )
-from .util.app_utilities import dc_lookup_table
+from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
 from .util.classifier_utilities import classify_contention, classify_contention_expanded_table
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 from .util.sanitizer import sanitize_log
@@ -47,9 +47,18 @@ async def save_process_time_as_metric(request: Request, call_next):
 
 @app.get("/health")
 def get_health_status():
+    empty_tables = []
     if not len(dc_lookup_table):
-        raise HTTPException(status_code=500, detail="Lookup table is empty")
-
+        empty_tables.append("DC Lookup")
+    if not len(expanded_lookup_table):
+        empty_tables.append("Expanded Lookup")
+    if not len(dropdown_lookup_table):
+        empty_tables.append("Contention Text Lookup")
+    if empty_tables:
+        if len(empty_tables) == 1:
+            raise HTTPException(status_code=500, detail=f"{' and '.join(empty_tables)} table is empty")
+        else:
+            raise HTTPException(status_code=500, detail=f"{', '.join(empty_tables)} tables are empty")
     return {"status": "ok"}
 
 
