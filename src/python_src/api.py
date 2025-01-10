@@ -1,4 +1,3 @@
-import os
 import time
 
 from fastapi import FastAPI, HTTPException, Request
@@ -8,25 +7,10 @@ from .pydantic_models import (
     ClassifierResponse,
     VaGovClaim,
 )
-from .util.app_utilities import load_config
+from .util.app_utilities import dc_lookup_table
 from .util.classifier_utilities import classify_contention, classify_contention_expanded_table
-from .util.expanded_lookup_table import ExpandedLookupTable
-from .util.logging_dropdown_selections import build_logging_table
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
-from .util.lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .util.sanitizer import sanitize_log
-
-app_config = load_config(os.path.join(os.path.dirname(__file__), "util", "app_config.yaml"))
-
-expanded_lookup_table = ExpandedLookupTable(
-    key_text=app_config["expanded_classifier"]["contention_text"],
-    classification_code=app_config["expanded_classifier"]["classification_code"],
-    classification_name=app_config["expanded_classifier"]["classification_name"],
-)
-
-dc_lookup_table = DiagnosticCodeLookupTable()
-dropdown_lookup_table = ContentionTextLookupTable()
-dropdown_values = build_logging_table()
 
 app = FastAPI(
     title="Contention Classification",

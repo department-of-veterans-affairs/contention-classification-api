@@ -1,4 +1,3 @@
-import os
 from typing import Tuple
 
 from fastapi import Request
@@ -8,23 +7,8 @@ from ..pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from .app_utilities import load_config
-from .expanded_lookup_table import ExpandedLookupTable
-from .logging_dropdown_selections import build_logging_table
+from .app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
 from .logging_utilities import log_contention_stats_decorator
-from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
-
-app_config = load_config(os.path.join(os.path.dirname(__file__), "app_config.yaml"))
-
-expanded_lookup_table = ExpandedLookupTable(
-    key_text=app_config["expanded_classifier"]["contention_text"],
-    classification_code=app_config["expanded_classifier"]["classification_code"],
-    classification_name=app_config["expanded_classifier"]["classification_name"],
-)
-
-dc_lookup_table = DiagnosticCodeLookupTable()
-dropdown_lookup_table = ContentionTextLookupTable()
-dropdown_values = build_logging_table()
 
 
 def get_classification_code_name(contention: Contention) -> Tuple:

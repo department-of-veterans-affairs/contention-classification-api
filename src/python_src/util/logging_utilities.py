@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 import sys
 import time
 from functools import wraps
@@ -13,24 +12,8 @@ from ..pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from .app_utilities import load_config
-from .expanded_lookup_table import ExpandedLookupTable
-from .logging_dropdown_selections import build_logging_table
-from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
+from .app_utilities import dropdown_lookup_table, dropdown_values, expanded_lookup_table
 from .sanitizer import sanitize_log
-
-app_config = load_config(os.path.join(os.path.dirname(__file__), "app_config.yaml"))
-
-expanded_lookup_table = ExpandedLookupTable(
-    key_text=app_config["expanded_classifier"]["contention_text"],
-    classification_code=app_config["expanded_classifier"]["classification_code"],
-    classification_name=app_config["expanded_classifier"]["classification_name"],
-)
-
-dc_lookup_table = DiagnosticCodeLookupTable()
-dropdown_lookup_table = ContentionTextLookupTable()
-dropdown_values = build_logging_table()
-
 
 logging.basicConfig(
     format="%(message)s",
@@ -89,7 +72,7 @@ def log_contention_stats(
 
     contention_text = contention.contention_text or ""
     is_in_dropdown = contention_text.strip().lower() in dropdown_values
-    is_mapped_text = dropdown_lookup_table.get(contention_text, None) is not None
+    is_mapped_text = dropdown_lookup_table.get(contention_text, None)["classification_code"] is not None
     log_contention_text = contention_text if is_mapped_text else "unmapped contention text"
     if contention.contention_type == "INCREASE":
         log_contention_type = "claim_for_increase"
