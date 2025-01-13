@@ -1,12 +1,15 @@
 # Contention Classification
 
-`/contention-classification/va-gov-claim-classifier` maps contention text and diagnostic codes from 526 submission to classifications as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
-
+[![Continuous Integration](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e48f6ba9d97c1ff3ecab/maintainability)](https://codeclimate.com/github/department-of-veterans-affairs/contention-classification-api/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e48f6ba9d97c1ff3ecab/test_coverage)](https://codeclimate.com/github/department-of-veterans-affairs/contention-classification-api/test_coverage)
 [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
 ![Python Version from PEP 621 TOML](https://img.shields.io/badge/Python-3.12-blue)
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 [![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+`/contention-classification/va-gov-claim-classifier` maps contention text and diagnostic codes from 526 submission to classifications as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
 
 ## Getting started
 
