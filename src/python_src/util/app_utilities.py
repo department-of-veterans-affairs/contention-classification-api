@@ -83,7 +83,7 @@ autosuggestions_path = os.path.join(
     os.path.dirname(__file__),
     "data",
     "condition_dropdown_coverage",
-    f"{app_config["autosuggestion_table"]["filename"]} {app_config["autosuggestion_table"]["version_number"]} Flat.csv",
+    f"{app_config['autosuggestion_table']['filename']} {app_config['autosuggestion_table']['version_number']} Flat.csv",
 )
 
 dropdown_values = build_logging_table(autosuggestions_path)

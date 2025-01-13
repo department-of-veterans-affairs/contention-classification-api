@@ -10,7 +10,7 @@ filepath = os.path.join(
     "util",
     "data",
     "condition_dropdown_coverage",
-    f"{app_config["autosuggestion_table"]["filename"]} {app_config["autosuggestion_table"]["version_number"]} Flat.csv",
+    f"{app_config['autosuggestion_table']['filename']} {app_config['autosuggestion_table']['version_number']} Flat.csv",
 )
 
 

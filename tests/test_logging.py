@@ -15,7 +15,8 @@ from src.python_src.pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from src.python_src.util.classifier_utilities import get_classification_code_name, get_expanded_classification
+from src.python_src.util.app_utilities import dropdown_lookup_table, expanded_lookup_table
+from src.python_src.util.classifier_utilities import get_classification_code_name
 from src.python_src.util.logging_utilities import log_claim_stats_v2, log_contention_stats
 
 test_expanded_request = Request(
@@ -45,9 +46,9 @@ def test_create_classification_method_new():
         contention_text="acl tear right",
         contention_type="NEW",
     )
-    classification_method = get_expanded_classification(test_contention)[2]
-    classification_method_original = get_classification_code_name(test_contention)[2]
-    assert classification_method == "contention_text"
+    classification_method_expanded = get_classification_code_name(test_contention, expanded_lookup_table)[2]
+    classification_method_original = get_classification_code_name(test_contention, dropdown_lookup_table)[2]
+    assert classification_method_expanded == "contention_text"
     assert classification_method_original == "not classified"
 
 
@@ -66,10 +67,10 @@ def test_create_classification_method_inc():
         diagnostic_code=501,
     )
 
-    classification_method_dc = get_expanded_classification(test_contention_dc)[2]
-    classification_method_lookup = get_expanded_classification(test_contention_lookup)[2]
-    original_method_dc = get_classification_code_name(test_contention_dc)[2]
-    original_method_lookup = get_classification_code_name(test_contention_lookup)[2]
+    classification_method_dc = get_classification_code_name(test_contention_dc, expanded_lookup_table)[2]
+    classification_method_lookup = get_classification_code_name(test_contention_lookup, expanded_lookup_table)[2]
+    original_method_dc = get_classification_code_name(test_contention_dc, dropdown_lookup_table)[2]
+    original_method_lookup = get_classification_code_name(test_contention_lookup, dropdown_lookup_table)[2]
     assert classification_method_dc == "diagnostic_code"
     assert classification_method_lookup == "contention_text"
     assert original_method_dc == "diagnostic_code"
@@ -84,8 +85,8 @@ def test_create_classification_method_not_classed():
         contention_text="free text entry",
         contention_type="NEW",
     )
-    classification_method = get_expanded_classification(test_contention_test)[2]
-    original_method = get_classification_code_name(test_contention_test)[2]
+    classification_method = get_classification_code_name(test_contention_test, expanded_lookup_table)[2]
+    original_method = get_classification_code_name(test_contention_test, dropdown_lookup_table)[2]
     assert classification_method == "not classified"
     assert original_method == "not classified"
 

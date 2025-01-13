@@ -25,9 +25,7 @@ def test_diagnostic_code_lookup_table(common_diagnostic_codes, mock_file_open, m
 def test_diagnostic_code_lookup_table_duplicate_codes(mock_file_open):
     """Test how DiagnosticCodeLookupTable handles duplicate codes."""
     duplicate_csv = (
-        "DIAGNOSTIC_CODE,CLASSIFICATION_CODE,CLASSIFICATION_TEXT\n"
-        "7710,6890,Tuberculosis\n"
-        "7710,7777,Conflicting Tuberculosis\n"
+        "DIAGNOSTIC_CODE,CLASSIFICATION_CODE,CLASSIFICATION_TEXT\n7710,6890,Tuberculosis\n7710,7777,Conflicting Tuberculosis\n"
     )
     with patch("builtins.open", mock_file_open(read_data=duplicate_csv)):
         table = DiagnosticCodeLookupTable(

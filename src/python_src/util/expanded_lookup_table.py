@@ -64,7 +64,7 @@ class ExpandedLookupTable:
         """
         Removes common words from the lookup table contention text values
         """
-        regex = re.compile(rf'\b({"|".join(self.common_words)})\b', re.IGNORECASE)
+        regex = re.compile(rf"\b({'|'.join(self.common_words)})\b", re.IGNORECASE)
         removed_words = re.sub(regex, " ", text)
         removed_words = self._remove_spaces(removed_words)
         return removed_words

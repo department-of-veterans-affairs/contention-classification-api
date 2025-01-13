@@ -8,7 +8,7 @@ from .pydantic_models import (
     VaGovClaim,
 )
 from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
-from .util.classifier_utilities import classify_contention, classify_contention_expanded_table
+from .util.classifier_utilities import classify_contention
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 from .util.sanitizer import sanitize_log
 
@@ -19,8 +19,8 @@ app = FastAPI(
         "[Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data) "
         "for use in downstream VA systems."
     ),
-    contact={"name": "Premal Shah", "email": "premal.shah@va.gov"},
-    version="v0.2",
+    contact={"name": "Jennifer Bertsch", "email": "jennifer.bertsch@va.gov"},
+    version="v1.1",
     license={
         "name": "CCO 1.0",
         "url": "https://github.com/department-of-veterans-affairs/abd-vro/blob/master/LICENSE.md",
@@ -103,7 +103,7 @@ def va_gov_claim_classifier(claim: VaGovClaim, request: Request) -> ClassifierRe
 def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierResponse:
     classified_contentions = []
     for contention in claim.contentions:
-        classification = classify_contention_expanded_table(contention, claim, request)
+        classification = classify_contention(contention, claim, request)
         classified_contentions.append(classification)
 
     num_classified = len([c for c in classified_contentions if c.classification_code])
