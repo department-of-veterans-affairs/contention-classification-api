@@ -6,31 +6,23 @@ from .lookup_tables_utilities import InitValues, read_csv_to_list
 
 class ExpandedLookupTable:
     """
-    This parses the lookup table to use sets and remove common words and punctuations
+    Builds the lookup table for expanded classification using a CSV file path, plus
+    additional musculoskeletal rules and removal of common words, all defined in app_config.yaml.
+
     """
 
     def __init__(
         self,
         init_values: InitValues,
-        # csv_filepath: str,
-        # key_text: str,
-        # classification_code: int,
-        # classification_name: str,
         common_words: list[str],
         musculoskeletal_lut: dict[str, dict[str, str | int]],
-        # lut_default_value: dict[str, str | int],
     ):
         """
         builds the lookup table using class methods
         """
-        # self.csv_filepath = csv_filepath
-        # self.key_text = key_text
-        # self.classification_code = classification_code
-        # self.classification_name = classification_name
         self.init_values = init_values
         self.common_words = common_words
         self.musculoskeletal_lookup = musculoskeletal_lut
-        # self.lut_default_value = lut_default_value
         self.contention_text_lookup_table = self._build_lut()
 
     def _musculoskeletal_lookup(self):

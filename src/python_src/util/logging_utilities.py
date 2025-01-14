@@ -1,7 +1,7 @@
 import json
 import logging
 import sys
-import time
+from datetime import datetime, timezone
 from functools import wraps
 
 from fastapi import Request
@@ -18,7 +18,7 @@ from .sanitizer import sanitize_log
 logging.basicConfig(
     format="%(message)s",
     level=logging.INFO,
-    datefmt="%Y-%m-%d %H:%M:%S",
+    datefmt="%Y-%m-%dT%H:%M:%S%z",
     stream=sys.stdout,
 )
 
@@ -28,7 +28,7 @@ def log_as_json(log: dict) -> None:
     Logs the dictionary as a JSON to enable easier parsing in DataDog
     """
     if "date" not in log.keys():
-        log.update({"date": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())})
+        log.update({"date": datetime.now(tz=timezone.utc).isoformat()})
     if "level" not in log.keys():
         log.update({"level": "info"})
     logging.info(json.dumps(log))
