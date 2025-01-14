@@ -20,7 +20,7 @@ dropdown_values
 """
 
 import os
-from typing import Dict, Any, List, Union, Optional, cast
+from typing import Any, Dict, cast
 
 from yaml import safe_load
 

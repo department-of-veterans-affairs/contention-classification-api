@@ -1,9 +1,8 @@
-from typing import Optional, Dict, Any
-from typing_extensions import Annotated
+from typing import Any, Dict, Optional
 
 from fastapi import HTTPException
-from pydantic import BaseModel, model_validator, Field
-from pydantic.types import conlist
+from pydantic import BaseModel, Field, model_validator
+from typing_extensions import Annotated
 
 
 class ClaimLinkInfo(BaseModel):

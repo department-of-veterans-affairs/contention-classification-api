@@ -1,7 +1,7 @@
 import csv
 import logging
 from dataclasses import dataclass
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 # from .logging_utilities import log_as_json
 

@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Tuple, Union, cast, Any, Protocol, TypeVar, Generic, runtime_checkable
+from typing import Any, Dict, Optional, Protocol, Tuple, Union, runtime_checkable
 
 from fastapi import Request
 
@@ -8,9 +8,10 @@ from ..pydantic_models import (
     VaGovClaim,
 )
 from .app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
-from .logging_utilities import log_contention_stats_decorator
 from .expanded_lookup_table import ExpandedLookupTable
-from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
+from .logging_utilities import log_contention_stats_decorator
+from .lookup_table import ContentionTextLookupTable
+
 
 @runtime_checkable
 class LookupTable(Protocol):

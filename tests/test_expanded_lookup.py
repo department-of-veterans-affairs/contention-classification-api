@@ -1,5 +1,5 @@
-from unittest.mock import patch, Mock
 from typing import List
+from unittest.mock import Mock, patch
 
 from fastapi.testclient import TestClient
 

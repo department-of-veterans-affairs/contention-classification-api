@@ -4,13 +4,10 @@ with the correct dict for different situations.  The primary purpose is to test 
 there is no PII in the logs.
 """
 
-from typing import Any, Dict, List
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
 from fastapi import Request
 from starlette.datastructures import Headers
-from fastapi.testclient import TestClient
-from _pytest.logging import LogCaptureFixture
 
 from src.python_src.pydantic_models import (
     ClassifiedContention,

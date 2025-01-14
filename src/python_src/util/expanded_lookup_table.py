@@ -1,6 +1,6 @@
 import re
 from string import punctuation
-from typing import Dict, Any, Optional, FrozenSet, List, Union
+from typing import Any, Dict, FrozenSet, List, Optional, Union
 
 from .lookup_tables_utilities import InitValues, read_csv_to_list
 

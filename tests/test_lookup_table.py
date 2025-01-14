@@ -1,14 +1,13 @@
 """Tests for the lookup table module."""
 
-from typing import Dict, Any, List
-from unittest.mock import patch, mock_open, Mock
+from typing import Dict
+from unittest.mock import mock_open, patch
 
 import pytest
-from fastapi.testclient import TestClient
 
-from src.python_src.util.lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
-from src.python_src.util.expanded_lookup_table import ExpandedLookupTable
 from src.python_src.util.app_utilities import diagnostic_code_inits, dropdown_expanded_table_inits
+from src.python_src.util.lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
+
 
 @pytest.fixture
 def mock_csv_strings() -> Dict[str, str]:

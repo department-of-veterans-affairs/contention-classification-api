@@ -1,12 +1,12 @@
 """Tests for the logging dropdown selections module."""
 
-from typing import Dict, Any, List
-from unittest.mock import patch, mock_open, Mock
+from unittest.mock import mock_open, patch
 
 import pytest
 from fastapi.testclient import TestClient
 
 from src.python_src.util.logging_dropdown_selections import build_logging_table
+
 
 @pytest.fixture
 def mock_csv_data() -> str:

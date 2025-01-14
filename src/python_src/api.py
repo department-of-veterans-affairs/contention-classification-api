@@ -1,5 +1,5 @@
 import time
-from typing import Dict, Any, Callable, Awaitable
+from typing import Awaitable, Callable, Dict
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import Response

@@ -3,7 +3,7 @@ import logging
 import sys
 from datetime import datetime, timezone
 from functools import wraps
-from typing import Any, Callable, Dict, Optional, TypeVar, Union, cast, Tuple
+from typing import Any, Callable, Dict, Tuple, TypeVar, cast
 
 from fastapi import Request
 
@@ -146,7 +146,9 @@ def log_claim_stats_decorator(func: F) -> F:
     return cast(F, wrapper)
 
 
-def log_contention_stats_decorator(func: Callable[..., Tuple[ClassifiedContention, str]]) -> Callable[..., ClassifiedContention]:
+def log_contention_stats_decorator(
+        func: Callable[..., Tuple[ClassifiedContention, str]]
+    ) -> Callable[..., ClassifiedContention]:
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> ClassifiedContention:
         result, classified_by = func(*args, **kwargs)

@@ -2,8 +2,8 @@
 
 import csv
 import json
+from typing import Dict, Union
 from unittest.mock import mock_open, patch
-from typing import Generator, Dict, Any, Union
 
 import pytest
 from fastapi.testclient import TestClient
@@ -25,7 +25,7 @@ def setup_test_data() -> None:
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_env() -> None:
     """Create a mock for file operations."""
-    mock_open
+    mock_open()
 
 
 # Common test data

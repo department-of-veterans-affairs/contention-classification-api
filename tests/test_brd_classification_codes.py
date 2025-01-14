@@ -1,16 +1,16 @@
 """Tests for the BRD classification codes module."""
 
 import json
-from typing import Dict, Any, List
-from unittest.mock import patch, mock_open, Mock
+from typing import Any, Dict, List
+from unittest.mock import mock_open, patch
 
 import pytest
 from fastapi.testclient import TestClient
 
 from src.python_src.util.brd_classification_codes import (
+    CLASSIFICATION_NAMES_BY_CODE,
     get_classification_name,
     get_classification_names_by_code,
-    CLASSIFICATION_NAMES_BY_CODE
 )
 
 

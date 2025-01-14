@@ -1,5 +1,6 @@
 from typing import Union
 
+
 def sanitize_log(obj: Union[str, bool, int, None]) -> Union[str, bool, int]:
     """
     Removes all newlines and carriage returns from the input log statement. This

@@ -1,10 +1,9 @@
 """Tests for the claim linker module."""
 
 import logging
-from typing import Generator
 
-from fastapi.testclient import TestClient
 from _pytest.logging import LogCaptureFixture
+from fastapi.testclient import TestClient
 
 
 def test_claim_ids_logged(test_client: TestClient, caplog: LogCaptureFixture) -> None:

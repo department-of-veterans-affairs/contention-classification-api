@@ -1,8 +1,6 @@
 from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 
-from src.python_src.api import app
-
 
 def test_health_check_success(test_client: TestClient, monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr("src.python_src.api.dc_lookup_table", {"key1": "value:1"})
