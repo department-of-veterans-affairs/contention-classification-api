@@ -155,13 +155,6 @@ common_words:
   - cant
   - pain
   - condition
-expanded_classifier:
-  contention_text:
-    CONTENTION TEXT
-  classification_code:
-    CLASSIFICATION CODE
-  classification_name:
-    CLASSIFICATION TEXT
 lut_default_value:
   classification_code: null
   classification_name: null

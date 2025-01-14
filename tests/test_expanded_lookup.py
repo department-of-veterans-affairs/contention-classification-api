@@ -2,20 +2,15 @@ from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
-from src.python_src.util.app_utilities import contention_text_csv_filepath, load_config
+from src.python_src.util.app_utilities import dropdown_expanded_table_inits, load_config
 from src.python_src.util.expanded_lookup_table import ExpandedLookupTable
 
 app_config = load_config("src/python_src/util/app_config.yaml")
 
-
 TEST_LUT = ExpandedLookupTable(
-    csv_filepath=contention_text_csv_filepath,
-    key_text=app_config["expanded_classifier"]["contention_text"],
-    classification_code=app_config["expanded_classifier"]["classification_code"],
-    classification_name=app_config["expanded_classifier"]["classification_name"],
+    init_values=dropdown_expanded_table_inits,
     common_words=app_config["common_words"],
     musculoskeletal_lut=app_config["musculoskeletal_lut"],
-    lut_default_value=app_config["lut_default_value"],
 )
 
 

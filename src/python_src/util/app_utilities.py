@@ -4,6 +4,8 @@ Methods
 -------
 load_config
     Load the configuration file.
+read_csv_to_list
+    Read a CSV file and return a list of dictionaries.
 
 Shared Resources
 ----------------
@@ -24,6 +26,7 @@ import yaml
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_dropdown_selections import build_logging_table
 from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
+from .lookup_tables_utilities import InitValues
 
 
 def load_config(config_file):
@@ -42,13 +45,16 @@ dc_table_name = (
 )
 dc_csv_filepath = os.path.join(os.path.dirname(__file__), "data", "dc_lookup_table", dc_table_name)
 
-dc_lookup_table = DiagnosticCodeLookupTable(
+diagnostic_code_inits = InitValues(
     csv_filepath=dc_csv_filepath,
     input_key=app_config["diagnostic_code_table"]["input_key"],
     classification_code=app_config["diagnostic_code_table"]["classification_code"],
     classification_name=app_config["diagnostic_code_table"]["classification_name"],
     lut_default_value=default_lut_table,
 )
+
+
+dc_lookup_table = DiagnosticCodeLookupTable(init_values=diagnostic_code_inits)
 
 contention_lut_csv_filename = (
     f"{app_config['condition_dropdown_table']['filename']} {app_config['condition_dropdown_table']['version_number']}.csv"
@@ -60,23 +66,21 @@ contention_text_csv_filepath = os.path.join(
     "condition_dropdown_lookup_table",
     contention_lut_csv_filename,
 )
-dropdown_lookup_table = ContentionTextLookupTable(
+
+dropdown_expanded_table_inits = InitValues(
     csv_filepath=contention_text_csv_filepath,
     input_key=app_config["condition_dropdown_table"]["input_key"],
     classification_code=app_config["condition_dropdown_table"]["classification_code"],
     classification_name=app_config["condition_dropdown_table"]["classification_name"],
     lut_default_value=default_lut_table,
 )
+dropdown_lookup_table = ContentionTextLookupTable(dropdown_expanded_table_inits)
 
 
 expanded_lookup_table = ExpandedLookupTable(
-    csv_filepath=contention_text_csv_filepath,
-    key_text=app_config["expanded_classifier"]["contention_text"],
-    classification_code=app_config["expanded_classifier"]["classification_code"],
-    classification_name=app_config["expanded_classifier"]["classification_name"],
+    init_values=dropdown_expanded_table_inits,
     common_words=app_config["common_words"],
     musculoskeletal_lut=app_config["musculoskeletal_lut"],
-    lut_default_value=default_lut_table,
 )
 
 autosuggestions_path = os.path.join(

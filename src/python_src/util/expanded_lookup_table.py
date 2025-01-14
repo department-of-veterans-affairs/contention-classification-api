@@ -1,6 +1,7 @@
-import csv
 import re
 from string import punctuation
+
+from .lookup_tables_utilities import InitValues, read_csv_to_list
 
 
 class ExpandedLookupTable:
@@ -10,24 +11,26 @@ class ExpandedLookupTable:
 
     def __init__(
         self,
-        csv_filepath: str,
-        key_text: str,
-        classification_code: int,
-        classification_name: str,
+        init_values: InitValues,
+        # csv_filepath: str,
+        # key_text: str,
+        # classification_code: int,
+        # classification_name: str,
         common_words: list[str],
         musculoskeletal_lut: dict[str, dict[str, str | int]],
-        lut_default_value: dict[str, str | int],
+        # lut_default_value: dict[str, str | int],
     ):
         """
         builds the lookup table using class methods
         """
-        self.csv_filepath = csv_filepath
-        self.key_text = key_text
-        self.classification_code = classification_code
-        self.classification_name = classification_name
+        # self.csv_filepath = csv_filepath
+        # self.key_text = key_text
+        # self.classification_code = classification_code
+        # self.classification_name = classification_name
+        self.init_values = init_values
         self.common_words = common_words
         self.musculoskeletal_lookup = musculoskeletal_lut
-        self.lut_default_value = lut_default_value
+        # self.lut_default_value = lut_default_value
         self.contention_text_lookup_table = self._build_lut()
 
     def _musculoskeletal_lookup(self):
@@ -95,32 +98,31 @@ class ExpandedLookupTable:
         This also pulls out terms in parentheses and adds the separated strings to the list and also keeping the OG term
         """
         classification_code_mappings = {}
-        with open(self.csv_filepath) as fh:
-            csv_reader = csv.DictReader(fh)
-            for row in csv_reader:
-                if "(" in row[self.key_text]:
-                    parenthetical_terms = re.findall(r"\((.*?)\)", row[self.key_text])
-                    ls_terms = [term for term in parenthetical_terms]
-                    removed_parenthetical = [re.sub(r"\(.*?\)", "", row[self.key_text])]
-                    ls_terms.extend(removed_parenthetical)
-                    for t in ls_terms:
-                        k = self._removal_pipeline(t)
-                        if k != "":
-                            k = frozenset(k.split())
-                            classification_code_mappings[k] = {
-                                "classification_code": int(row[self.classification_code]),
-                                "classification_name": row[self.classification_name],
-                            }
-
-                # adds the original string
-                k = self._removal_pipeline(row[self.key_text])
-                k = frozenset(k.split())
-                classification_code_mappings[k] = {
-                    "classification_code": int(row[self.classification_code]),
-                    "classification_name": row[self.classification_name],
-                }
-            # adds the joint lookup to the table
-            classification_code_mappings.update(self._musculoskeletal_lookup())
+        csv_rows = read_csv_to_list(self.init_values.csv_filepath)
+        for row in csv_rows:
+            key_text = self.init_values.input_key
+            if "(" in row[key_text]:
+                parenthetical_terms = re.findall(r"\((.*?)\)", row[key_text])
+                ls_terms = [term for term in parenthetical_terms]
+                removed_parenthetical = [re.sub(r"\(.*?\)", "", row[key_text])]
+                ls_terms.extend(removed_parenthetical)
+                for t in ls_terms:
+                    k = self._removal_pipeline(t)
+                    if k != "":
+                        k = frozenset(k.split())
+                        classification_code_mappings[k] = {
+                            "classification_code": int(row[self.init_values.classification_code]),
+                            "classification_name": row[self.init_values.classification_name],
+                        }
+            # adds the original string
+            k = self._removal_pipeline(row[key_text])
+            k = frozenset(k.split())
+            classification_code_mappings[k] = {
+                "classification_code": int(row[self.init_values.classification_code]),
+                "classification_name": row[self.init_values.classification_name],
+            }
+        # adds the joint lookup to the table
+        classification_code_mappings.update(self._musculoskeletal_lookup())
 
         return classification_code_mappings
 
@@ -146,7 +148,7 @@ class ExpandedLookupTable:
 
         This also process the parenthetical terms in the mappings
         """
-        default_value = self.lut_default_value
+        default_value = self.init_values.lut_default_value
         if input_str == "loss of teeth due to bone loss":
             return {
                 "classification_code": 8967,
