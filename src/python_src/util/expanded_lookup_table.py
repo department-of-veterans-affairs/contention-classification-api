@@ -6,9 +6,18 @@ from .lookup_tables_utilities import InitValues, read_csv_to_list
 
 class ExpandedLookupTable:
     """
-    Builds the lookup table for expanded classification using a CSV file path, plus
-    additional musculoskeletal rules and removal of common words, all defined in app_config.yaml.
+    Lookup table to perform expanded classification lookup based on mappings between contention text and
+    classification codes/names.
 
+    Attributes:
+    ----------
+    init_values: InitValues
+        Dataclass that stores the initialization values for the lookup table stored in tehe app_config.yaml
+    common_words: list[str]
+        List of common words that are removed from the lookup table and incoming contention text
+    musculoskeletal_lut: dict[str, dict[str, str | int]]
+        Lookup table for musculoskeletal classifications that are for single body parts:
+            ex: {"keee": {"classification_code": 8997, "classification_name": "Musculoskeletal - Knee"}}
     """
 
     def __init__(
@@ -18,7 +27,8 @@ class ExpandedLookupTable:
         musculoskeletal_lut: dict[str, dict[str, str | int]],
     ):
         """
-        builds the lookup table using class methods
+        Builds the lookup table for expanded classification using a CSV file path, plus
+        additional musculoskeletal rules and removal of common words, all defined in app_config.yaml.
         """
         self.init_values = init_values
         self.common_words = common_words
@@ -30,12 +40,12 @@ class ExpandedLookupTable:
         Creates a lookup table for musculoskeletal conditions with the key a frozenset.
         The musculoskeletal classifications are stored in the config file and can be added/updated there.
         """
-        MUSCULOSKELETAL_LUT_LUT_SET = {}
+        MUSCULOSKELETAL_LUT_SET = {}
         for k, v in self.musculoskeletal_lookup.items():
             s = frozenset(k.split())
-            MUSCULOSKELETAL_LUT_LUT_SET[s] = v
+            MUSCULOSKELETAL_LUT_SET[s] = v
 
-        return MUSCULOSKELETAL_LUT_LUT_SET
+        return MUSCULOSKELETAL_LUT_SET
 
     def _remove_spaces(self, text: str):
         return re.sub(r"\s{2,}", " ", text).strip()
