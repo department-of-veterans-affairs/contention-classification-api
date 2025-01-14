@@ -1,6 +1,8 @@
 import time
+from typing import Dict, Any, Callable, Awaitable
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import Response
 
 from .pydantic_models import (
     ClaimLinkInfo,
@@ -35,18 +37,20 @@ app = FastAPI(
 
 
 @app.middleware("http")
-async def save_process_time_as_metric(request: Request, call_next):
+async def save_process_time_as_metric(
+    request: Request,
+    call_next: Callable[[Request], Awaitable[Response]]
+) -> Response:
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time
     response.headers["X-Process-Time"] = str(process_time)
     log_as_json({"process_time": process_time, "url": request.url.path})
-
     return response
 
 
 @app.get("/health")
-def get_health_status():
+def get_health_status() -> Dict[str, str]:
     empty_tables = []
     if not len(dc_lookup_table):
         empty_tables.append("DC Lookup")
@@ -63,7 +67,7 @@ def get_health_status():
 
 
 @app.post("/claim-linker")
-def link_vbms_claim_id(claim_link_info: ClaimLinkInfo):
+def link_vbms_claim_id(claim_link_info: ClaimLinkInfo) -> Dict[str, bool]:
     log_as_json(
         {
             "message": "linking claims",

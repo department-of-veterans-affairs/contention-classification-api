@@ -1,3 +1,5 @@
+from typing import Dict, Any, Optional
+
 from .lookup_tables_utilities import InitValues, read_csv_to_list
 
 print("importing lookup table")
@@ -16,7 +18,7 @@ class DiagnosticCodeLookupTable:
     def __init__(
         self,
         init_values: InitValues,
-    ):
+    ) -> None:
         self.init_values = init_values
         self.classification_code_mappings = {}
         csv_rows = read_csv_to_list(self.init_values.csv_filepath)
@@ -29,12 +31,12 @@ class DiagnosticCodeLookupTable:
                 ],  # note underscore different from contention LUT
             }
 
-    def get(self, input_key: int, default_value=None):
+    def get(self, input_str: str, default_value: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         default_value = self.init_values.lut_default_value
-        classification = self.classification_code_mappings.get(str(input_key), default_value)
+        classification = self.classification_code_mappings.get(input_str.strip().lower(), default_value)
         return classification
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.classification_code_mappings)
 
 
@@ -53,7 +55,7 @@ class ContentionTextLookupTable:
     def __init__(
         self,
         init_values: InitValues,
-    ):
+    ) -> None:
         self.init_values = init_values
         self.classification_code_mappings = {}
         csv_rows = read_csv_to_list(self.init_values.csv_filepath)
@@ -64,11 +66,10 @@ class ContentionTextLookupTable:
                 "classification_name": row[self.init_values.classification_name],
             }
 
-    def get(self, input_str: str, default_value=None):
+    def get(self, input_str: str, default_value: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         default_value = self.init_values.lut_default_value
-        input_str = input_str.strip().lower()
-        classification = self.classification_code_mappings.get(input_str, default_value)
+        classification = self.classification_code_mappings.get(input_str.strip().lower(), default_value)
         return classification
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.classification_code_mappings)

@@ -1,4 +1,5 @@
-from unittest.mock import patch
+from unittest.mock import patch, Mock
+from typing import List
 
 from fastapi.testclient import TestClient
 
@@ -14,7 +15,7 @@ TEST_LUT = ExpandedLookupTable(
 )
 
 
-def test_remove_punctuation_within_string():
+def test_remove_punctuation_within_string() -> None:
     """
     Test the remove punctuation function
     """
@@ -24,37 +25,37 @@ def test_remove_punctuation_within_string():
     assert TEST_LUT._remove_punctuation(text) == expected
 
 
-def test_remove_punctuation_against_words():
+def test_remove_punctuation_against_words() -> None:
     text = "This (a, string) is another => hopefully works!!"
     expected = "This a string is another hopefully works"
     assert TEST_LUT._remove_punctuation(text) == expected
 
 
-def test_remove_spaces():
+def test_remove_spaces() -> None:
     text = "  This i       is a test with a     lot of spaces.    "
     expected = "This i is a test with a lot of spaces"
     assert TEST_LUT._remove_punctuation(text) == expected
 
 
-def test_remove_common_words_normal():
+def test_remove_common_words_normal() -> None:
     text = "string of words and common words"
     expected = "string words common words"
     assert TEST_LUT._remove_common_words(text) == expected
 
 
-def test_does_not_remove_inside_words():
+def test_does_not_remove_inside_words() -> None:
     text = "officially land lore tin"
     expected = "officially land lore tin"
     assert TEST_LUT._remove_common_words(text) == expected
 
 
-def test_remove_common_words_ends_of_strings():
+def test_remove_common_words_ends_of_strings() -> None:
     text = "and this string or"
     expected = "string"
     assert TEST_LUT._remove_common_words(text) == expected
 
 
-def test_get_lookup_autosuggestion():
+def test_get_lookup_autosuggestion() -> None:
     test_string = "tinnitus (ringing or hissing in ears)"
     expected = {
         "classification_code": 3140,
@@ -63,7 +64,7 @@ def test_get_lookup_autosuggestion():
     assert TEST_LUT.get(test_string) == expected
 
 
-def test_get_lookup_free_text():
+def test_get_lookup_free_text() -> None:
     test_string = "athletes foot (tinea pedis)"
     expected = {
         "classification_code": 9016,
@@ -72,7 +73,7 @@ def test_get_lookup_free_text():
     assert TEST_LUT.get(test_string) == expected
 
 
-def test_get_lookup_free_text_second():
+def test_get_lookup_free_text_second() -> None:
     test_string = "ringing in ears"
     expected = {
         "classification_code": 3140,
@@ -81,7 +82,7 @@ def test_get_lookup_free_text_second():
     assert TEST_LUT.get(test_string) == expected
 
 
-def test_lookup_with_out_side_typos():
+def test_lookup_with_out_side_typos() -> None:
     test_string = "ACL TEAR (ANTERIOR CRUCIATE LIGAMENT      TEAR "
     expected = {
         "classification_code": 8997,
@@ -90,31 +91,31 @@ def test_lookup_with_out_side_typos():
     assert TEST_LUT.get(test_string) == expected
 
 
-def test_remove_digits():
+def test_remove_digits() -> None:
     test_str = "123 some 789 condition 0456"
     expected = "some condition"
     assert TEST_LUT._remove_numbers_single_characters(test_str) == expected
 
 
-def test_remove_single_letters():
+def test_remove_single_letters() -> None:
     test_str = "pain in a leg r b"
     expected = "pain in leg"
     assert TEST_LUT._remove_numbers_single_characters(test_str) == expected
 
 
-def test_full_removal_pipeline():
+def test_full_removal_pipeline() -> None:
     test_str = "I have pain in 3 areas in the r side of body!"
     expected = "areas body"
     assert TEST_LUT._removal_pipeline(test_str) == expected
 
 
-def test_remove_common_words():
+def test_remove_common_words() -> None:
     test_str = " ".join(app_config["common_words"])
     expected = ""
     assert TEST_LUT._remove_common_words(test_str).strip() == expected
 
 
-def test_removed_parentheses():
+def test_removed_parentheses() -> None:
     test_str = "acl tear, left"
     expected = {
         "classification_code": 8997,
@@ -124,21 +125,21 @@ def test_removed_parentheses():
 
 
 @patch("src.python_src.util.expanded_lookup_table.ExpandedLookupTable._removal_pipeline")
-def test_prep_incoming_text_cause(mock_removal_pipeline):
+def test_prep_incoming_text_cause(mock_removal_pipeline: Mock) -> None:
     test_str = "acl tear, due to something"
     TEST_LUT.prep_incoming_text(test_str)
     mock_removal_pipeline.assert_called_once_with("acl tear, ")
 
 
 @patch("src.python_src.util.expanded_lookup_table.ExpandedLookupTable._removal_pipeline")
-def test_prep_incoming_text_non_cause(mock_removal_pipeline):
+def test_prep_incoming_text_non_cause(mock_removal_pipeline: Mock) -> None:
     test_str = "acl tear in my right knee"
     TEST_LUT.prep_incoming_text(test_str)
     mock_removal_pipeline.assert_called_once_with(test_str)
 
 
-def test_lookup_cause_included():
-    test_str = [
+def test_lookup_cause_included() -> None:
+    test_str: List[str] = [
         "migraines (headaches), due to something",
         "Tinnitus secondary to hearing loss",
         "free text due to something else",
@@ -173,7 +174,7 @@ def test_lookup_cause_included():
     }
 
 
-def test_api_endpoint(client: TestClient):
+def test_api_endpoint(test_client: TestClient) -> None:
     json_post_data = {
         "claim_id": 100,
         "form526_submission_id": 500,
@@ -202,7 +203,7 @@ def test_api_endpoint(client: TestClient):
             },
         ],
     }
-    response = client.post("/expanded-contention-classification", json=json_post_data)
+    response = test_client.post("/expanded-contention-classification", json=json_post_data)
     assert response.status_code == 200
     assert response.json() == {
         "contentions": [
