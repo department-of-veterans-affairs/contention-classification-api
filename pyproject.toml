@@ -75,8 +75,10 @@ poetry = "2.0.0"
 fastapi = "0.115.6"
 httpx = "0.28.1"
 pydantic = "2.10.4"
+pyyaml = "6.0.2"
 setuptools = "75.7.0"
 uvicorn = {extras = ["standard"], version = "0.34.0"}
+
 
 [tool.poetry.group.dev.dependencies]
 mypy = "1.14.1"
@@ -85,6 +87,7 @@ ruff = "0.8.6"
 pytest = "8.3.4"
 pytest-cov = "6.0.0"
 bandit = {version = "1.8.0", extras = ["toml"]}
+types-pyyaml = "6.0.2"
 
 [tool.bandit]
 exclude_dirs = ["tests"]

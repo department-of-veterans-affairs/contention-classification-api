@@ -1,34 +1,16 @@
-import json
-import logging
-import sys
 import time
-from functools import wraps
-from typing import Tuple
 
 from fastapi import FastAPI, HTTPException, Request
 
 from .pydantic_models import (
     ClaimLinkInfo,
-    ClassifiedContention,
     ClassifierResponse,
-    Contention,
     VaGovClaim,
 )
-from .util.expanded_lookup_config import FILE_READ_HELPER
-from .util.expanded_lookup_table import ExpandedLookupTable
-from .util.logging_dropdown_selections import build_logging_table
-from .util.lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
+from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
+from .util.classifier_utilities import classify_contention
+from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 from .util.sanitizer import sanitize_log
-
-expanded_lookup_table = ExpandedLookupTable(
-    key_text=FILE_READ_HELPER["contention_text"],
-    classification_code=FILE_READ_HELPER["classification_code"],
-    classification_name=FILE_READ_HELPER["classification_name"],
-)
-
-dc_lookup_table = DiagnosticCodeLookupTable()
-dropdown_lookup_table = ContentionTextLookupTable()
-dropdown_values = build_logging_table()
 
 app = FastAPI(
     title="Contention Classification",
@@ -37,8 +19,8 @@ app = FastAPI(
         "[Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data) "
         "for use in downstream VA systems."
     ),
-    contact={"name": "Premal Shah", "email": "premal.shah@va.gov"},
-    version="v0.2",
+    contact={"name": "Jennifer Bertsch", "email": "jennifer.bertsch@va.gov"},
+    version="v1.1",
     license={
         "name": "CCO 1.0",
         "url": "https://github.com/department-of-veterans-affairs/abd-vro/blob/master/LICENSE.md",
@@ -49,13 +31,6 @@ app = FastAPI(
             "description": "Contention Classification Default",
         },
     ],
-)
-
-logging.basicConfig(
-    format="%(message)s",
-    level=logging.INFO,
-    datefmt="%Y-%m-%d %H:%M:%S",
-    stream=sys.stdout,
 )
 
 
@@ -72,133 +47,19 @@ async def save_process_time_as_metric(request: Request, call_next):
 
 @app.get("/health")
 def get_health_status():
+    empty_tables = []
     if not len(dc_lookup_table):
-        raise HTTPException(status_code=500, detail="Lookup table is empty")
-
+        empty_tables.append("DC Lookup")
+    if not len(expanded_lookup_table):
+        empty_tables.append("Expanded Lookup")
+    if not len(dropdown_lookup_table):
+        empty_tables.append("Contention Text Lookup")
+    if empty_tables:
+        if len(empty_tables) == 1:
+            raise HTTPException(status_code=500, detail=f"{' and '.join(empty_tables)} table is empty")
+        else:
+            raise HTTPException(status_code=500, detail=f"{', '.join(empty_tables)} tables are empty")
     return {"status": "ok"}
-
-
-def log_as_json(log: dict):
-    if "date" not in log.keys():
-        log.update({"date": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())})
-    if "level" not in log.keys():
-        log.update({"level": "info"})
-    logging.info(json.dumps(log))
-
-
-def log_expanded_contention_text(logging_dict: dict, contention_text: str, log_contention_text: str):
-    """
-    Updates the  logging dictionary with the contention text updates from the expanded classification method
-    """
-    processed_text = expanded_lookup_table.prep_incoming_text(contention_text)
-    # only log these items if the expanded lookup returns a classification code
-    if expanded_lookup_table.get(contention_text)["classification_code"]:
-        if log_contention_text == "unmapped contention text":
-            log_contention_text = f"unmapped contention text {[processed_text]}"
-        logging_dict.update(
-            {
-                "processed_contention_text": processed_text,
-                "contention_text": log_contention_text,
-            }
-        )
-    # log none as the processed text if it is not in the LUT and leave unmapped contention text as is
-    else:
-        logging_dict.update({"processed_contention_text": None})
-
-    return logging_dict
-
-
-def log_contention_stats(
-    contention: Contention,
-    classified_contention: ClassifiedContention,
-    claim: VaGovClaim,
-    request: Request,
-    classified_by: str,
-):
-    """
-    Logs stats about each contention process by the classifier. This will maintain
-    compatability with the existing datadog widgets.
-    """
-    classification_code = classified_contention.classification_code or None
-    classification_name = classified_contention.classification_name or None
-
-    contention_text = contention.contention_text or ""
-    is_in_dropdown = contention_text.strip().lower() in dropdown_values
-    is_mapped_text = dropdown_lookup_table.get(contention_text, None) is not None
-    log_contention_text = contention_text if is_mapped_text else "unmapped contention text"
-    if contention.contention_type == "INCREASE":
-        log_contention_type = "claim_for_increase"
-    else:
-        log_contention_type = contention.contention_type.lower()
-
-    is_multi_contention = len(claim.contentions) > 1
-
-    logging_dict = {
-        "vagov_claim_id": sanitize_log(claim.claim_id),
-        "claim_type": sanitize_log(log_contention_type),
-        "classification_code": classification_code,
-        "classification_name": classification_name,
-        "contention_text": log_contention_text,
-        "diagnostic_code": sanitize_log(contention.diagnostic_code),
-        "is_in_dropdown": is_in_dropdown,
-        "is_lookup_table_match": classification_code is not None,
-        "is_multi_contention": is_multi_contention,
-        "endpoint": request.url.path,
-        "classification_method": classified_by,
-    }
-
-    if request.url.path == "/expanded-contention-classification":
-        logging_dict = log_expanded_contention_text(logging_dict, contention.contention_text, log_contention_text)
-
-    log_as_json(logging_dict)
-
-
-def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request: Request):
-    """
-    Logs stats about each claim processed by the classifier.  This will provide
-    the capability to build widgets to track metrics about claims.
-    """
-    log_as_json(
-        {
-            "claim_id": sanitize_log(claim.claim_id),
-            "form526_submission_id": sanitize_log(claim.form526_submission_id),
-            "is_fully_classified": response.is_fully_classified,
-            "percent_clasified": (response.num_classified_contentions / response.num_processed_contentions) * 100,
-            "num_processed_contentions": response.num_processed_contentions,
-            "num_classified_contentions": response.num_classified_contentions,
-            "endpoint": request.url.path,
-        }
-    )
-
-
-def log_claim_stats_decorator(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        result = func(*args, **kwargs)
-
-        if kwargs.get("claim"):
-            claim = kwargs["claim"]
-            request = kwargs["request"]
-            log_claim_stats_v2(claim, result, request)
-
-        return result
-
-    return wrapper
-
-
-def log_contention_stats_decorator(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        result, classified_by = func(*args, **kwargs)
-        if isinstance(args[0], Contention) and isinstance(args[1], VaGovClaim):
-            contention = args[0]
-            claim = args[1]
-            request = args[2]
-            log_contention_stats(contention, result, claim, request, classified_by)
-
-        return result
-
-    return wrapper
 
 
 @app.post("/claim-linker")
@@ -213,45 +74,6 @@ def link_vbms_claim_id(claim_link_info: ClaimLinkInfo):
     return {
         "success": True,
     }
-
-
-def get_classification_code_name(contention: Contention) -> Tuple:
-    """
-    check contention type and match contention to appropriate table's
-    classification code (if available)
-    """
-    classified_by = "not classified"
-    classification_code = None
-    classification_name = None
-
-    if contention.contention_type == "INCREASE":
-        classification = dc_lookup_table.get(contention.diagnostic_code)
-        classification_code = classification["classification_code"]
-        classification_name = classification["classification_name"]
-        if classification_code is not None:
-            classified_by = "diagnostic_code"
-
-    if contention.contention_text and not classification_code:
-        classification = dropdown_lookup_table.get(contention.contention_text)
-        classification_code = classification["classification_code"]
-        classification_name = classification["classification_name"]
-        if classification_code is not None:
-            classified_by = "contention_text"
-
-    return classification_code, classification_name, classified_by
-
-
-@log_contention_stats_decorator
-def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> ClassifiedContention:
-    classification_code, classification_name, classified_by = get_classification_code_name(contention)
-
-    response = ClassifiedContention(
-        classification_code=classification_code,
-        classification_name=classification_name,
-        diagnostic_code=contention.diagnostic_code,
-        contention_type=contention.contention_type,
-    )
-    return response, classified_by
 
 
 @app.post("/va-gov-claim-classifier")
@@ -276,51 +98,12 @@ def va_gov_claim_classifier(claim: VaGovClaim, request: Request) -> ClassifierRe
     return response
 
 
-def get_expanded_classification(contention: Contention) -> Tuple[int, str]:
-    """
-    Performs the dictionary lookup for the expanded lookup table
-    """
-    classification_code = None
-    classification_name = None
-    classified_by = "not classified"
-
-    if contention.contention_type == "INCREASE":
-        classification = dc_lookup_table.get(contention.diagnostic_code)
-        classification_code = classification["classification_code"]
-        classification_name = classification["classification_name"]
-        if classification_code is not None:
-            classified_by = "diagnostic_code"
-
-    if contention.contention_text and not classification_code:
-        classification = expanded_lookup_table.get(contention.contention_text)
-        classification_code = classification["classification_code"]
-        classification_name = classification["classification_name"]
-        if classification_code is not None:
-            classified_by = "contention_text"
-
-    return classification_code, classification_name, classified_by
-
-
-@log_contention_stats_decorator
-def classify_contention_expanded_table(contention: Contention, claim: VaGovClaim, request: Request) -> ClassifiedContention:
-    classification_code, classification_name, classified_by = get_expanded_classification(contention)
-
-    response = ClassifiedContention(
-        classification_code=classification_code,
-        classification_name=classification_name,
-        diagnostic_code=contention.diagnostic_code,
-        contention_type=contention.contention_type,
-    )
-
-    return response, classified_by
-
-
 @app.post("/expanded-contention-classification")
 @log_claim_stats_decorator
 def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierResponse:
     classified_contentions = []
     for contention in claim.contentions:
-        classification = classify_contention_expanded_table(contention, claim, request)
+        classification = classify_contention(contention, claim, request)
         classified_contentions.append(classification)
 
     num_classified = len([c for c in classified_contentions if c.classification_code])

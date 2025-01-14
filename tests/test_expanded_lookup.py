@@ -2,13 +2,15 @@ from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
-from src.python_src.util.expanded_lookup_config import COMMON_WORDS, FILE_READ_HELPER
+from src.python_src.util.app_utilities import dropdown_expanded_table_inits, load_config
 from src.python_src.util.expanded_lookup_table import ExpandedLookupTable
 
+app_config = load_config("src/python_src/util/app_config.yaml")
+
 TEST_LUT = ExpandedLookupTable(
-    FILE_READ_HELPER["contention_text"],
-    FILE_READ_HELPER["classification_code"],
-    FILE_READ_HELPER["classification_name"],
+    init_values=dropdown_expanded_table_inits,
+    common_words=app_config["common_words"],
+    musculoskeletal_lut=app_config["musculoskeletal_lut"],
 )
 
 
@@ -107,7 +109,7 @@ def test_full_removal_pipeline():
 
 
 def test_remove_common_words():
-    test_str = " ".join(COMMON_WORDS)
+    test_str = " ".join(app_config["common_words"])
     expected = ""
     assert TEST_LUT._remove_common_words(test_str).strip() == expected
 

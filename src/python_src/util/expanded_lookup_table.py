@@ -1,28 +1,38 @@
-import csv
 import re
 from string import punctuation
-from typing import List
 
-from .expanded_lookup_config import COMMON_WORDS, FILE_READ_HELPER, MUSCULOSKELETAL_LUT
-
-LUT_DEFAULT_VALUE = {
-    "classification_code": None,
-    "classification_name": None,
-}
+from .lookup_tables_utilities import InitValues, read_csv_to_list
 
 
 class ExpandedLookupTable:
     """
-    This parses the lookup table to use sets and remove common words and punctuations
+    Lookup table to perform expanded classification lookup based on mappings between contention text and
+    classification codes/names.
+
+    Attributes:
+    ----------
+    init_values: InitValues
+        Dataclass that stores the initialization values for the lookup table stored in tehe app_config.yaml
+    common_words: list[str]
+        List of common words that are removed from the lookup table and incoming contention text
+    musculoskeletal_lut: dict[str, dict[str, str | int]]
+        Lookup table for musculoskeletal classifications that are for single body parts:
+            ex: {"keee": {"classification_code": 8997, "classification_name": "Musculoskeletal - Knee"}}
     """
 
-    def __init__(self, key_text: str, classification_code: int, classification_name: str):
+    def __init__(
+        self,
+        init_values: InitValues,
+        common_words: list[str],
+        musculoskeletal_lut: dict[str, dict[str, str | int]],
+    ):
         """
-        builds the lookup table using class methods
+        Builds the lookup table for expanded classification using a CSV file path, plus
+        additional musculoskeletal rules and removal of common words, all defined in app_config.yaml.
         """
-        self.key_text = key_text
-        self.classification_code = classification_code
-        self.classification_name = classification_name
+        self.init_values = init_values
+        self.common_words = common_words
+        self.musculoskeletal_lookup = musculoskeletal_lut
         self.contention_text_lookup_table = self._build_lut()
 
     def _musculoskeletal_lookup(self):
@@ -30,17 +40,17 @@ class ExpandedLookupTable:
         Creates a lookup table for musculoskeletal conditions with the key a frozenset.
         The musculoskeletal classifications are stored in the config file and can be added/updated there.
         """
-        MUSCULOSKELETAL_LUT_LUT_SET = {}
-        for k, v in MUSCULOSKELETAL_LUT.items():
+        MUSCULOSKELETAL_LUT_SET = {}
+        for k, v in self.musculoskeletal_lookup.items():
             s = frozenset(k.split())
-            MUSCULOSKELETAL_LUT_LUT_SET[s] = v
+            MUSCULOSKELETAL_LUT_SET[s] = v
 
-        return MUSCULOSKELETAL_LUT_LUT_SET
+        return MUSCULOSKELETAL_LUT_SET
 
-    def _remove_spaces(self, text):
+    def _remove_spaces(self, text: str):
         return re.sub(r"\s{2,}", " ", text).strip()
 
-    def _remove_punctuation(self, text):
+    def _remove_punctuation(self, text: str):
         """
         Removes puncutation from the lookup table contention text and any spaces of 2 or more
         """
@@ -55,16 +65,16 @@ class ExpandedLookupTable:
 
         return removed_punc_spaces.strip()
 
-    def _remove_common_words(self, text, common_words: List[str] = COMMON_WORDS):
+    def _remove_common_words(self, text: str):
         """
         Removes common words from the lookup table contention text values
         """
-        regex = re.compile(rf'\b({"|".join(COMMON_WORDS)})\b', re.IGNORECASE)
+        regex = re.compile(rf"\b({'|'.join(self.common_words)})\b", re.IGNORECASE)
         removed_words = re.sub(regex, " ", text)
         removed_words = self._remove_spaces(removed_words)
         return removed_words
 
-    def _remove_numbers_single_characters(self, text):
+    def _remove_numbers_single_characters(self, text: str):
         """
         Removes numbers or single character letters
         """
@@ -73,7 +83,7 @@ class ExpandedLookupTable:
         text = self._remove_spaces(text)
         return text
 
-    def _removal_pipeline(self, text):
+    def _removal_pipeline(self, text: str):
         """
         Pipeline to remove all unwanted characters from the lookup table contention text values
         """
@@ -90,32 +100,31 @@ class ExpandedLookupTable:
         This also pulls out terms in parentheses and adds the separated strings to the list and also keeping the OG term
         """
         classification_code_mappings = {}
-        with open(FILE_READ_HELPER["filepath"]) as fh:
-            csv_reader = csv.DictReader(fh)
-            for row in csv_reader:
-                if "(" in row[self.key_text]:
-                    parenthetical_terms = re.findall(r"\((.*?)\)", row[self.key_text])
-                    ls_terms = [term for term in parenthetical_terms]
-                    removed_parenthetical = [re.sub(r"\(.*?\)", "", row[self.key_text])]
-                    ls_terms.extend(removed_parenthetical)
-                    for t in ls_terms:
-                        k = self._removal_pipeline(t)
-                        if k != "":
-                            k = frozenset(k.split())
-                            classification_code_mappings[k] = {
-                                "classification_code": int(row[self.classification_code]),
-                                "classification_name": row[self.classification_name],
-                            }
-
-                # adds the original string
-                k = self._removal_pipeline(row[self.key_text])
-                k = frozenset(k.split())
-                classification_code_mappings[k] = {
-                    "classification_code": int(row[self.classification_code]),
-                    "classification_name": row[self.classification_name],
-                }
-            # adds the joint lookup to the table
-            classification_code_mappings.update(self._musculoskeletal_lookup())
+        csv_rows = read_csv_to_list(self.init_values.csv_filepath)
+        for row in csv_rows:
+            key_text = self.init_values.input_key
+            if "(" in row[key_text]:
+                parenthetical_terms = re.findall(r"\((.*?)\)", row[key_text])
+                ls_terms = [term for term in parenthetical_terms]
+                removed_parenthetical = [re.sub(r"\(.*?\)", "", row[key_text])]
+                ls_terms.extend(removed_parenthetical)
+                for t in ls_terms:
+                    k = self._removal_pipeline(t)
+                    if k != "":
+                        k = frozenset(k.split())
+                        classification_code_mappings[k] = {
+                            "classification_code": int(row[self.init_values.classification_code]),
+                            "classification_name": row[self.init_values.classification_name],
+                        }
+            # adds the original string
+            k = self._removal_pipeline(row[key_text])
+            k = frozenset(k.split())
+            classification_code_mappings[k] = {
+                "classification_code": int(row[self.init_values.classification_code]),
+                "classification_name": row[self.init_values.classification_name],
+            }
+        # adds the joint lookup to the table
+        classification_code_mappings.update(self._musculoskeletal_lookup())
 
         return classification_code_mappings
 
@@ -132,7 +141,7 @@ class ExpandedLookupTable:
 
         return input_str
 
-    def get(self, input_str: str, default_value=LUT_DEFAULT_VALUE):
+    def get(self, input_str: str, default_value=None):
         """
         Processes input string using same method as the LUT and performs the lookup
 
@@ -141,6 +150,7 @@ class ExpandedLookupTable:
 
         This also process the parenthetical terms in the mappings
         """
+        default_value = self.init_values.lut_default_value
         if input_str == "loss of teeth due to bone loss":
             return {
                 "classification_code": 8967,
