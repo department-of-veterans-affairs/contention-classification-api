@@ -15,6 +15,14 @@ def test_claim_ids_logged(test_client: TestClient, caplog: LogCaptureFixture) ->
         response = test_client.post("/claim-linker", json=json_post_dict)
         assert response.status_code == 200
         assert response.json() == {"success": True}
-        assert "linking claims" in caplog.text
-        assert "100" in caplog.text
-        assert "200" in caplog.text
+        
+        expected_claim_link_json = {
+            "level": "info",
+            "message": "linking claims",
+            "va_gov_claim_id": 100,
+            "vbms_claim_id": 200,
+        }
+        log_as_dict = eval(caplog.records[0].message)
+        del log_as_dict["date"]
+        assert log_as_dict == expected_claim_link_json
+        
