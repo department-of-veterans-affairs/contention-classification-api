@@ -28,6 +28,7 @@ def mock_csv_strings() -> Dict[str, str]:
         ),
     }
 
+
 def test_diagnostic_code_lookup_table_duplicate_codes() -> None:
     """Test how DiagnosticCodeLookupTable handles duplicate codes."""
     duplicate_csv = (
@@ -39,6 +40,7 @@ def test_diagnostic_code_lookup_table_duplicate_codes() -> None:
         entry = table.get("7710")
         assert entry["classification_code"] == 7777
         assert entry["classification_name"] == "Conflicting Tuberculosis"
+
 
 def test_contention_text_lookup_table_duplicate_entries() -> None:
     """Test how ContentionTextLookupTable handles duplicate entries."""
@@ -54,6 +56,7 @@ def test_contention_text_lookup_table_duplicate_entries() -> None:
         assert entry["classification_code"] == 9999
         assert entry["classification_name"] == "Different Mental Disorder"
 
+
 def test_contention_text_lookup_table(mock_csv_strings: Dict[str, str]) -> None:
     """Test ContentionTextLookupTable with mock data."""
     with patch("builtins.open", mock_open(read_data=mock_csv_strings["contention_csv"])):
@@ -61,3 +64,31 @@ def test_contention_text_lookup_table(mock_csv_strings: Dict[str, str]) -> None:
         assert table.get("PTSD")["classification_code"] == 8989
         assert table.get("Knee pain")["classification_code"] == 8997
         assert table.get("Unknown")["classification_code"] is None
+
+
+def test_diagnostic_code_lookup_table_file_error() -> None:
+    """Test error handling when file cannot be opened."""
+    with patch("builtins.open", side_effect=FileNotFoundError()):
+        with pytest.raises(FileNotFoundError):
+            DiagnosticCodeLookupTable(init_values=diagnostic_code_inits)
+
+
+def test_contention_text_lookup_table_file_error() -> None:
+    """Test error handling when file cannot be opened."""
+    with patch("builtins.open", side_effect=FileNotFoundError()):
+        with pytest.raises(FileNotFoundError):
+            ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+
+
+def test_diagnostic_code_lookup_table_empty_file() -> None:
+    """Test DiagnosticCodeLookupTable with empty file."""
+    with patch("builtins.open", mock_open(read_data="DIAGNOSTIC_CODE,CLASSIFICATION_CODE,CLASSIFICATION_TEXT\n")):
+        table = DiagnosticCodeLookupTable(init_values=diagnostic_code_inits)
+        assert table.get("1234")["classification_name"] is None
+
+
+def test_contention_text_lookup_table_empty_file() -> None:
+    """Test ContentionTextLookupTable with empty file."""
+    with patch("builtins.open", mock_open(read_data="CONTENTION TEXT,CLASSIFICATION CODE,CLASSIFICATION TEXT\n")):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        assert table.get("Test")["classification_code"] is None
