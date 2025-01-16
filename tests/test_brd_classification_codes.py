@@ -14,7 +14,7 @@ from src.python_src.util.brd_classification_codes import (
 )
 
 
-def test_first_function(test_client: TestClient) -> None:
+def test_get_classification_names_by_code(test_client: TestClient) -> None:
     """Test get_classification_names_by_code with mock data."""
     mock_data: Dict[str, List[Dict[str, Any]]] = {
         "items": [
@@ -32,7 +32,7 @@ def test_first_function(test_client: TestClient) -> None:
         }
 
 
-def test_second_function(test_client: TestClient) -> None:
+def test_get_classification_names_by_code_missing_items(test_client: TestClient) -> None:
     """Test handling when JSON doesn't have 'items' key."""
     mock_data: Dict[str, List[Dict[str, Any]]] = {"wrong_key": []}
     with patch("builtins.open", mock_open(read_data=json.dumps(mock_data))):
@@ -40,14 +40,14 @@ def test_second_function(test_client: TestClient) -> None:
             get_classification_names_by_code()
 
 
-def test_third_function(test_client: TestClient) -> None:
+def test_get_classification_names_by_code_invalid_json(test_client: TestClient) -> None:
     """Test handling of invalid JSON data."""
     with patch("builtins.open", mock_open(read_data="invalid json")):
         with pytest.raises(json.JSONDecodeError):
             get_classification_names_by_code()
 
 
-def test_fourth_function(test_client: TestClient) -> None:
+def test_get_classification_name(test_client: TestClient) -> None:
     """Test get_classification_name with mock data."""
     mock_data: Dict[str, List[Dict[str, Any]]] = {
         "items": [
@@ -63,14 +63,14 @@ def test_fourth_function(test_client: TestClient) -> None:
         assert get_classification_name(9999) is None
 
 
-def test_fifth_function(test_client: TestClient) -> None:
+def test_get_classification_names_by_code_file_error(test_client: TestClient) -> None:
     """Test error handling when file cannot be opened."""
     with patch("builtins.open", side_effect=FileNotFoundError()):
         with pytest.raises(FileNotFoundError):
             get_classification_names_by_code()
 
 
-def test_sixth_function(test_client: TestClient) -> None:
+def test_get_classification_name_file_error(test_client: TestClient) -> None:
     """Test error handling when file cannot be opened."""
     with patch.dict(CLASSIFICATION_NAMES_BY_CODE, {}, clear=True):
         result = get_classification_name(8989)
