@@ -67,6 +67,11 @@ exclude = [
 ]
 
 [tool.poetry]
+# TODO: Remove name, version, description, and authors when dependabot uses poetry 2.x.x. See https://github.com/dependabot/dependabot-core/issues/11237
+name = "contention-classification-api"
+version = "0.1.0"
+description = "API for classifying contentions from 526 submissions"
+authors = ["Department of Veterans Affairs"]
 packages = [{include = "python_src", from = "src"}]
 
 [tool.poetry.dependencies]
