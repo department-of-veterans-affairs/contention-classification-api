@@ -3,6 +3,7 @@ import logging
 import sys
 from datetime import datetime, timezone
 from functools import wraps
+from typing import Any, Callable, Dict, Tuple, TypeVar, cast
 
 from fastapi import Request
 
@@ -23,7 +24,7 @@ logging.basicConfig(
 )
 
 
-def log_as_json(log: dict) -> None:
+def log_as_json(log: Dict[str, Any]) -> None:
     """
     Logs the dictionary as a JSON to enable easier parsing in DataDog
     """
@@ -34,7 +35,11 @@ def log_as_json(log: dict) -> None:
     logging.info(json.dumps(log))
 
 
-def log_expanded_contention_text(logging_dict: dict, contention_text: str, log_contention_text: str):
+def log_expanded_contention_text(
+    logging_dict: Dict[str, Any],
+    contention_text: str,
+    log_contention_text: str
+) -> Dict[str, Any]:
     """
     Updates the  logging dictionary with the contention text updates from the expanded classification method
     """
@@ -62,7 +67,7 @@ def log_contention_stats(
     claim: VaGovClaim,
     request: Request,
     classified_by: str,
-):
+) -> None:
     """
     Logs stats about each contention process by the classifier. This will maintain
     compatability with the existing datadog widgets.
@@ -101,7 +106,11 @@ def log_contention_stats(
     log_as_json(logging_dict)
 
 
-def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request: Request):
+def log_claim_stats_v2(
+    claim: VaGovClaim,
+    response: ClassifierResponse,
+    request: Request
+) -> None:
     """
     Logs stats about each claim processed by the classifier.  This will provide
     the capability to build widgets to track metrics about claims.
@@ -119,9 +128,12 @@ def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request:
     )
 
 
-def log_claim_stats_decorator(func):
+F = TypeVar('F', bound=Callable[..., Any])
+R = TypeVar('R')
+
+def log_claim_stats_decorator(func: F) -> F:
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         result = func(*args, **kwargs)
 
         if kwargs.get("claim"):
@@ -131,12 +143,14 @@ def log_claim_stats_decorator(func):
 
         return result
 
-    return wrapper
+    return cast(F, wrapper)
 
 
-def log_contention_stats_decorator(func):
+def log_contention_stats_decorator(
+        func: Callable[..., Tuple[ClassifiedContention, str]]
+    ) -> Callable[..., ClassifiedContention]:
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> ClassifiedContention:
         result, classified_by = func(*args, **kwargs)
         if isinstance(args[0], Contention) and isinstance(args[1], VaGovClaim):
             contention = args[0]

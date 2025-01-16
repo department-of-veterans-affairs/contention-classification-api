@@ -4,7 +4,7 @@ with the correct dict for different situations.  The primary purpose is to test 
 there is no PII in the logs.
 """
 
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from fastapi import Request
 from starlette.datastructures import Headers
@@ -38,7 +38,7 @@ test_current_classifier_request = Request(
 )
 
 
-def test_create_classification_method_new():
+def test_create_classification_method_new() -> None:
     """
     Tests the logic of creating the classification_method field for logging
     """
@@ -52,7 +52,7 @@ def test_create_classification_method_new():
     assert classification_method_original == "not classified"
 
 
-def test_create_classification_method_inc():
+def test_create_classification_method_inc() -> None:
     """
     Tests the logic of creating the classification_method field for logging
     """
@@ -77,7 +77,7 @@ def test_create_classification_method_inc():
     assert original_method_lookup == "contention_text"
 
 
-def test_create_classification_method_not_classed():
+def test_create_classification_method_not_classed() -> None:
     """
     Tests the logic of creating the classification_method field for logging
     """
@@ -92,7 +92,7 @@ def test_create_classification_method_not_classed():
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
-def test_log_contention_stats_expanded(mocked_func):
+def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
     """
     Tests the logging of a contention that is classified but considered free text
     """
@@ -135,7 +135,7 @@ def test_log_contention_stats_expanded(mocked_func):
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
-def test_non_classified_contentions(mocked_func):
+def test_non_classified_contentions(mocked_func: Mock) -> None:
     """
     Tests the logging of a contention that is not classified
     """
@@ -177,7 +177,7 @@ def test_non_classified_contentions(mocked_func):
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
-def test_multiple_contentions(mocked_func):
+def test_multiple_contentions(mocked_func: Mock) -> None:
     """
     Tests multiple contentions one from autosuggestion and one that would be considered free text
     """
@@ -253,7 +253,7 @@ def test_multiple_contentions(mocked_func):
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
-def test_contentions_with_pii(mocked_func):
+def test_contentions_with_pii(mocked_func: Mock) -> None:
     """
     Tests that the logging will not log unless completely classified and no PII slips through
     """
@@ -328,7 +328,7 @@ def test_contentions_with_pii(mocked_func):
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
-def test_log_claim_stats(mocked_func):
+def test_log_claim_stats(mocked_func: Mock) -> None:
     test_claim = VaGovClaim(
         claim_id=100,
         form526_submission_id=500,
@@ -379,7 +379,7 @@ def test_log_claim_stats(mocked_func):
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
-def test_current_classifier_contention(mocked_func):
+def test_current_classifier_contention(mocked_func: Mock) -> None:
     """
     Tests the logging of the current contention logs
     """
@@ -421,7 +421,7 @@ def test_current_classifier_contention(mocked_func):
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
-def test_full_logging_expanded_endpoint(mocked_func):
+def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
     """
     Tests full logging including individual contentions and one claim
     """

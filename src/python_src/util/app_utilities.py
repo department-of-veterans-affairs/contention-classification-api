@@ -20,8 +20,9 @@ dropdown_values
 """
 
 import os
+from typing import Any, Dict, cast
 
-import yaml
+from yaml import safe_load
 
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_dropdown_selections import build_logging_table
@@ -29,10 +30,9 @@ from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .lookup_tables_utilities import InitValues
 
 
-def load_config(config_file):
+def load_config(config_file: str) -> Dict[str, Any]:
     with open(config_file, "r") as f:
-        data = yaml.safe_load(f)
-    return data
+        return cast(Dict[str, Any], safe_load(f))
 
 
 # build the lookup tables after loading the config yaml

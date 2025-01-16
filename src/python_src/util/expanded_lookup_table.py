@@ -1,5 +1,6 @@
 import re
 from string import punctuation
+from typing import Any, Dict, FrozenSet, List, Optional, Union
 
 from .lookup_tables_utilities import InitValues, read_csv_to_list
 
@@ -23,9 +24,9 @@ class ExpandedLookupTable:
     def __init__(
         self,
         init_values: InitValues,
-        common_words: list[str],
-        musculoskeletal_lut: dict[str, dict[str, str | int]],
-    ):
+        common_words: List[str],
+        musculoskeletal_lut: Dict[str, Dict[str, Union[str, int]]],
+    ) -> None:
         """
         Builds the lookup table for expanded classification using a CSV file path, plus
         additional musculoskeletal rules and removal of common words, all defined in app_config.yaml.
@@ -35,7 +36,7 @@ class ExpandedLookupTable:
         self.musculoskeletal_lookup = musculoskeletal_lut
         self.contention_text_lookup_table = self._build_lut()
 
-    def _musculoskeletal_lookup(self):
+    def _musculoskeletal_lookup(self) -> Dict[FrozenSet[str], Dict[str, Union[str, int]]]:
         """
         Creates a lookup table for musculoskeletal conditions with the key a frozenset.
         The musculoskeletal classifications are stored in the config file and can be added/updated there.
@@ -47,10 +48,10 @@ class ExpandedLookupTable:
 
         return MUSCULOSKELETAL_LUT_SET
 
-    def _remove_spaces(self, text: str):
+    def _remove_spaces(self, text: str) -> str:
         return re.sub(r"\s{2,}", " ", text).strip()
 
-    def _remove_punctuation(self, text: str):
+    def _remove_punctuation(self, text: str) -> str:
         """
         Removes puncutation from the lookup table contention text and any spaces of 2 or more
         """
@@ -65,7 +66,7 @@ class ExpandedLookupTable:
 
         return removed_punc_spaces.strip()
 
-    def _remove_common_words(self, text: str):
+    def _remove_common_words(self, text: str) -> str:
         """
         Removes common words from the lookup table contention text values
         """
@@ -74,7 +75,7 @@ class ExpandedLookupTable:
         removed_words = self._remove_spaces(removed_words)
         return removed_words
 
-    def _remove_numbers_single_characters(self, text: str):
+    def _remove_numbers_single_characters(self, text: str) -> str:
         """
         Removes numbers or single character letters
         """
@@ -83,7 +84,7 @@ class ExpandedLookupTable:
         text = self._remove_spaces(text)
         return text
 
-    def _removal_pipeline(self, text: str):
+    def _removal_pipeline(self, text: str) -> str:
         """
         Pipeline to remove all unwanted characters from the lookup table contention text values
         """
@@ -93,13 +94,13 @@ class ExpandedLookupTable:
 
         return text.lower().strip()
 
-    def _build_lut(self):
+    def _build_lut(self) -> Dict[FrozenSet[str], Dict[str, Union[str, int]]]:
         """
         Builds the lookup table using the CSV file
 
         This also pulls out terms in parentheses and adds the separated strings to the list and also keeping the OG term
         """
-        classification_code_mappings = {}
+        classification_code_mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
         csv_rows = read_csv_to_list(self.init_values.csv_filepath)
         for row in csv_rows:
             key_text = self.init_values.input_key
@@ -111,15 +112,15 @@ class ExpandedLookupTable:
                 for t in ls_terms:
                     k = self._removal_pipeline(t)
                     if k != "":
-                        k = frozenset(k.split())
-                        classification_code_mappings[k] = {
+                        term_set: FrozenSet[str] = frozenset(k.split())
+                        classification_code_mappings[term_set] = {
                             "classification_code": int(row[self.init_values.classification_code]),
                             "classification_name": row[self.init_values.classification_name],
                         }
             # adds the original string
             k = self._removal_pipeline(row[key_text])
-            k = frozenset(k.split())
-            classification_code_mappings[k] = {
+            original_set: FrozenSet[str] = frozenset(k.split())
+            classification_code_mappings[original_set] = {
                 "classification_code": int(row[self.init_values.classification_code]),
                 "classification_name": row[self.init_values.classification_name],
             }
@@ -128,7 +129,7 @@ class ExpandedLookupTable:
 
         return classification_code_mappings
 
-    def prep_incoming_text(self, input_str: str):
+    def prep_incoming_text(self, input_str: str) -> str:
         """
         Prepares the incoming text for lookup by removing common words and punctuation
         """
@@ -141,7 +142,7 @@ class ExpandedLookupTable:
 
         return input_str
 
-    def get(self, input_str: str, default_value=None):
+    def get(self, input_str: str, default_value: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Processes input string using same method as the LUT and performs the lookup
 
@@ -163,7 +164,7 @@ class ExpandedLookupTable:
         classification = self.contention_text_lookup_table.get(input_str_lookup, default_value)
         return classification
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
         Returns length of the LUT
         """

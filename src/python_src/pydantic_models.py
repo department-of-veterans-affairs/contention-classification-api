@@ -1,8 +1,8 @@
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from fastapi import HTTPException
-from pydantic import BaseModel, model_validator
-from pydantic.types import conlist
+from pydantic import BaseModel, Field, model_validator
+from typing_extensions import Annotated
 
 
 class ClaimLinkInfo(BaseModel):
@@ -19,7 +19,7 @@ class Contention(BaseModel):
 
     @model_validator(mode="before")
     @classmethod
-    def check_dc_for_cfi(cls, values):
+    def check_dc_for_cfi(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         contention_type = values.get("contention_type")
         diagnostic_code = values.get("diagnostic_code")
 
@@ -34,7 +34,7 @@ class Contention(BaseModel):
 class VaGovClaim(BaseModel):
     claim_id: int
     form526_submission_id: int
-    contentions: conlist(Contention, min_length=1)
+    contentions: Annotated[list[Contention], Field(min_length=1)]
 
 
 class ClassifiedContention(BaseModel):
@@ -45,7 +45,7 @@ class ClassifiedContention(BaseModel):
 
 
 class ClassifierResponse(BaseModel):
-    contentions: conlist(ClassifiedContention, min_length=1)
+    contentions: Annotated[list[ClassifiedContention], Field(min_length=1)]
     claim_id: int
     form526_submission_id: int
     is_fully_classified: bool

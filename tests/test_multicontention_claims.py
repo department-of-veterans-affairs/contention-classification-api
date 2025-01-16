@@ -1,7 +1,9 @@
+"""Tests for the multicontention claims module."""
+
 from fastapi.testclient import TestClient
 
 
-def test_vagov_classifier_mixed_types(client: TestClient):
+def test_vagov_classifier_mixed_types(test_client: TestClient) -> None:
     """
     Tests response of multi-contention claims matches expected values
     """
@@ -25,7 +27,7 @@ def test_vagov_classifier_mixed_types(client: TestClient):
             },
         ],
     }
-    response = client.post("/va-gov-claim-classifier", json=json_post_dict)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_dict)
     assert response.status_code == 200
     assert response.json()["contentions"] == [
         {
@@ -49,7 +51,7 @@ def test_vagov_classifier_mixed_types(client: TestClient):
     ]
 
 
-def test_vagov_classifier_empty_contentions(client: TestClient):
+def test_vagov_classifier_empty_contentions(test_client: TestClient) -> None:
     """
     Tests 422 is returned when contentions is empty
     """
@@ -58,11 +60,11 @@ def test_vagov_classifier_empty_contentions(client: TestClient):
         "form526_submission_id": 500,
         "contentions": [],
     }
-    response = client.post("/va-gov-claim-classifier", json=json_post_dict)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_dict)
     assert response.status_code == 422
 
 
-def test_vagov_classifier_missing_params(client: TestClient):
+def test_vagov_classifier_missing_params(test_client: TestClient) -> None:
     """
     Tests 422 is returned when contentions is empty
     """
@@ -84,11 +86,11 @@ def test_vagov_classifier_missing_params(client: TestClient):
             },
         ],
     }
-    response = client.post("/va-gov-claim-classifier", json=json_post_dict)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_dict)
     assert response.status_code == 422
 
 
-def test_single_contention(client: TestClient):
+def test_single_contention(test_client: TestClient) -> None:
     """
     Tests response of single contention claim matches expected values
     """
@@ -102,7 +104,7 @@ def test_single_contention(client: TestClient):
             },
         ],
     }
-    response = client.post("/va-gov-claim-classifier", json=json_post_dict)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_dict)
     assert response.status_code == 200
     assert response.json()["contentions"] == [
         {
@@ -114,7 +116,7 @@ def test_single_contention(client: TestClient):
     ]
 
 
-def test_order_response(client: TestClient):
+def test_order_response(test_client: TestClient) -> None:
     """
     Tests to make sure that the order of the response matches the
     order of input
@@ -139,13 +141,13 @@ def test_order_response(client: TestClient):
             },
         ],
     }
-    response = client.post("/va-gov-claim-classifier", json=json_post_dict)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_dict)
     expected_order = [3140, 9012, None]
     for i in range(len(response.json()["contentions"])):
         assert response.json()["contentions"][i]["classification_code"] == expected_order[i]
 
 
-def test_case_insensitivity(client: TestClient):
+def test_case_insensitivity(test_client: TestClient) -> None:
     """
     Tests that the classifier is case insensitive
     """
@@ -169,7 +171,7 @@ def test_case_insensitivity(client: TestClient):
             },
         ],
     }
-    response = client.post("/va-gov-claim-classifier", json=json_post_dict)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_dict)
     assert response.status_code == 200
     assert response.json()["contentions"] == [
         {
@@ -193,7 +195,7 @@ def test_case_insensitivity(client: TestClient):
     ]
 
 
-def test_whitespace_removal(client: TestClient):
+def test_whitespace_removal(test_client: TestClient) -> None:
     json_post_dict = {
         "claim_id": 100,
         "form526_submission_id": 500,
@@ -204,7 +206,7 @@ def test_whitespace_removal(client: TestClient):
             }
         ],
     }
-    response = client.post("/va-gov-claim-classifier", json=json_post_dict)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_dict)
     assert response.status_code == 200
     assert response.json()["contentions"] == [
         {
@@ -216,7 +218,7 @@ def test_whitespace_removal(client: TestClient):
     ]
 
 
-def test_v5_v6_lookup_values(client: TestClient):
+def test_v5_v6_lookup_values(test_client: TestClient) -> None:
     """
     This tests new classification mappings in v5 of the condition dropdown list
     and v6 of the diagnostic code lookup tables.
@@ -236,7 +238,7 @@ def test_v5_v6_lookup_values(client: TestClient):
             },
         ],
     }
-    response = client.post("/va-gov-claim-classifier", json=json_post_dict)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_dict)
     expected_classifications = [
         {"classification_code": 8989, "classification_name": "Mental Disorders"},
         {

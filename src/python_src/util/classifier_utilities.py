@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Any, Dict, Optional, Protocol, Tuple, Union, runtime_checkable
 
 from fastapi import Request
 
@@ -8,10 +8,20 @@ from ..pydantic_models import (
     VaGovClaim,
 )
 from .app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
+from .expanded_lookup_table import ExpandedLookupTable
 from .logging_utilities import log_contention_stats_decorator
+from .lookup_table import ContentionTextLookupTable
 
 
-def get_classification_code_name(contention: Contention, lookup_table: dict[str, dict[str, str | int]]) -> Tuple:
+@runtime_checkable
+class LookupTable(Protocol):
+    def get(self, input_str: str, default_value: Optional[Dict[str, Any]] = None) -> Dict[str, Any]: ...
+
+
+def get_classification_code_name(
+    contention: Contention,
+    lookup_table: LookupTable
+) -> Tuple[Optional[int], Optional[str], str]:
     """
     check contention type and match contention to appropriate table's
     classification code (if available)
@@ -35,12 +45,13 @@ def get_classification_code_name(contention: Contention, lookup_table: dict[str,
     classification_code = None
     classification_name = None
 
-    if contention.contention_type == "INCREASE":
-        classification = dc_lookup_table.get(contention.diagnostic_code)
-        classification_code = classification["classification_code"]
-        classification_name = classification["classification_name"]
-        if classification_code is not None:
-            classified_by = "diagnostic_code"
+    if contention.contention_type == "INCREASE" and contention.diagnostic_code is not None:
+        classification = dc_lookup_table.get(str(contention.diagnostic_code))
+        if classification:
+            classification_code = classification["classification_code"]
+            classification_name = classification["classification_name"]
+            if classification_code is not None:
+                classified_by = "diagnostic_code"
 
     if contention.contention_text and not classification_code:
         classification = lookup_table.get(contention.contention_text)
@@ -53,7 +64,12 @@ def get_classification_code_name(contention: Contention, lookup_table: dict[str,
 
 
 @log_contention_stats_decorator
-def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> ClassifiedContention:
+def classify_contention(
+    contention: Contention,
+    claim: VaGovClaim,
+    request: Request
+) -> Tuple[ClassifiedContention, str]:
+    lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable]
     if request.url.path == "/expanded-contention-classification":
         lookup_table = expanded_lookup_table
     else:

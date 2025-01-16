@@ -1,6 +1,7 @@
 import csv
 import logging
 from dataclasses import dataclass
+from typing import Any, Dict, List
 
 # from .logging_utilities import log_as_json
 
@@ -11,10 +12,10 @@ class InitValues:
     input_key: str
     classification_code: str
     classification_name: str
-    lut_default_value: dict
+    lut_default_value: Dict[str, Any]
 
 
-def read_csv_to_list(filepath: str) -> list[dict[str, str]]:
+def read_csv_to_list(filepath: str) -> List[Dict[str, str]]:
     """
     Reads a CSV file and returns a list of dictionaries (one dict per row).
 

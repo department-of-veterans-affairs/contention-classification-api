@@ -2,6 +2,7 @@
 
 import csv
 import json
+from typing import Dict, Union
 from unittest.mock import mock_open, patch
 
 import pytest
@@ -14,22 +15,22 @@ __all__ = ["pytest", "json", "csv", "mock_open", "patch", "TestClient"]
 
 
 # Common test client fixture
-@pytest.fixture
-def client() -> TestClient:
+@pytest.fixture(scope="session", autouse=True)
+def setup_test_data() -> None:
     """Create a test client for the FastAPI app."""
-    return TestClient(app)
+    TestClient(app)
 
 
 # Common mock functions
-@pytest.fixture
-def mock_file_open():
+@pytest.fixture(scope="session", autouse=True)
+def setup_test_env() -> None:
     """Create a mock for file operations."""
-    return mock_open
+    mock_open()
 
 
 # Common test data
-@pytest.fixture
-def common_classification_codes():
+@pytest.fixture(scope="session")
+def common_classification_codes() -> Dict[str, Dict[str, Union[int, str]]]:
     """Common classification codes used across tests."""
     return {
         "mental_disorders": {"id": 8989, "name": "Mental Disorders"},
@@ -38,8 +39,8 @@ def common_classification_codes():
     }
 
 
-@pytest.fixture
-def common_diagnostic_codes():
+@pytest.fixture(scope="session")
+def common_diagnostic_codes() -> Dict[str, Dict[str, Union[int, str]]]:
     """Common diagnostic codes used across tests."""
     return {
         "tuberculosis": {"code": 7710, "name": "Tuberculosis"},
@@ -47,8 +48,8 @@ def common_diagnostic_codes():
     }
 
 
-@pytest.fixture
-def mock_csv_strings():
+@pytest.fixture(scope="session")
+def mock_csv_strings() -> Dict[str, str]:
     """Common CSV strings used across tests."""
     return {
         "diagnostic_csv": (
@@ -66,3 +67,15 @@ def mock_csv_strings():
             "tinnitus,Tinnitus,Ringing in ears,,,,\n"
         ),
     }
+
+
+@pytest.fixture(scope="session")
+def test_client() -> TestClient:
+    """Create a test client for the FastAPI app."""
+    return TestClient(app)
+
+
+@pytest.fixture(scope="session")
+def test_data_dir() -> str:
+    """Create a test data directory for the test suite."""
+    return "test_data"
