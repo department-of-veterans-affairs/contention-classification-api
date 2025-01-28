@@ -37,10 +37,7 @@ app = FastAPI(
 
 
 @app.middleware("http")
-async def save_process_time_as_metric(
-    request: Request,
-    call_next: Callable[[Request], Awaitable[Response]]
-) -> Response:
+async def save_process_time_as_metric(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time
@@ -103,21 +100,5 @@ def va_gov_claim_classifier(claim: VaGovClaim, request: Request) -> ClassifierRe
 
 
 @app.post("/expanded-contention-classification")
-@log_claim_stats_decorator
-def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    classified_contentions = []
-    for contention in claim.contentions:
-        classification = classify_contention(contention, claim, request)
-        classified_contentions.append(classification)
-
-    num_classified = len([c for c in classified_contentions if c.classification_code])
-
-    response = ClassifierResponse(
-        contentions=classified_contentions,
-        claim_id=claim.claim_id,
-        form526_submission_id=claim.form526_submission_id,
-        is_fully_classified=num_classified == len(classified_contentions),
-        num_processed_contentions=len(classified_contentions),
-        num_classified_contentions=num_classified,
-    )
-    return response
+def expanded_classifications(claim: VaGovClaim, request: Request) -> Dict[str, str]:
+    return {"message": "New classification method in development; endpoint is not currently available"}

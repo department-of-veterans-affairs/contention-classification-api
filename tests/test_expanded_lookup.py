@@ -203,7 +203,7 @@ def test_api_endpoint(test_client: TestClient) -> None:
             },
         ],
     }
-    response = test_client.post("/expanded-contention-classification", json=json_post_data)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_data)
     assert response.status_code == 200
     assert response.json() == {
         "contentions": [
@@ -298,3 +298,14 @@ def test_parenthetical_removal_specific_terms() -> None:
     ]
     assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
     assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
+
+
+def test_expanded_endpoint_not_in_use(test_client: TestClient) -> None:
+    json_body = {
+        "claim_id": 100,
+        "form526_submission_id": 500,
+        "contentions": [{"contention_text": "osteoarthritis in ankle", "contention_type": "NEW", "diagnostic_code": "1234"}],
+    }
+    response = test_client.post("/expanded-contention-classification", json=json_body)
+    assert response.status_code == 200
+    assert response.json() == {"message": "New classification method in development; endpoint is not currently available"}

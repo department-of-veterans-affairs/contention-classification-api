@@ -7,10 +7,9 @@ from ..pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from .app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
+from .app_utilities import dc_lookup_table, expanded_lookup_table
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_utilities import log_contention_stats_decorator
-from .lookup_table import ContentionTextLookupTable
 
 
 @runtime_checkable
@@ -19,8 +18,7 @@ class LookupTable(Protocol):
 
 
 def get_classification_code_name(
-    contention: Contention,
-    lookup_table: LookupTable
+    contention: Contention, lookup_table: LookupTable
 ) -> Tuple[Optional[int], Optional[str], str]:
     """
     check contention type and match contention to appropriate table's
@@ -64,16 +62,10 @@ def get_classification_code_name(
 
 
 @log_contention_stats_decorator
-def classify_contention(
-    contention: Contention,
-    claim: VaGovClaim,
-    request: Request
-) -> Tuple[ClassifiedContention, str]:
-    lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable]
-    if request.url.path == "/expanded-contention-classification":
+def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> Tuple[ClassifiedContention, str]:
+    lookup_table: Union[ExpandedLookupTable]
+    if request.url.path == "/va-gov-claim-classifier":
         lookup_table = expanded_lookup_table
-    else:
-        lookup_table = dropdown_lookup_table
 
     classification_code, classification_name, classified_by = get_classification_code_name(contention, lookup_table)
 
