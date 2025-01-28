@@ -10,15 +10,17 @@
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 [![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-`/contention-classification/va-gov-claim-classifier` maps contention text and diagnostic codes from 526 submission to classifications as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
+`/contention-classification/va-gov-claim-classifier` maps contention text and diagnostic codes from 526 submission to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
 
 ## Getting started
 
-This service can be run standalone using Poetry for dependency management.
+This service can be run standalone using Poetry for dependency management or using Docker.
 
 ## Setup
 
-### Install Python 3.12.3
+### Python using Poetry
+
+#### Install Python 3.12.3
 
 Mac Users: you can use pyenv to handle multiple python versions
 
@@ -36,7 +38,7 @@ export PATH="$PYENV_ROOT/shims:$PATH"
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi" #Initalize pyenv in current shell session
 ```
 
-### Install Poetry
+#### Install Poetry
 
 This project uses [Poetry](https://python-poetry.org/docs/) to manage dependencies.
 
@@ -46,7 +48,7 @@ Follow the directions on the [Poetry website](https://python-poetry.org/docs/#in
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 
-### Install dependencies
+#### Install dependencies
 
 Use Poetry to install all dependencies:
 
@@ -54,7 +56,7 @@ Use Poetry to install all dependencies:
 poetry install
 ```
 
-### Install pre-commit hooks
+#### Install pre-commit hooks
 
 ```bash
 poetry run pre-commit install
@@ -66,7 +68,7 @@ To run the pre-commit hooks manually:
 poetry run pre-commit run --all-files
 ```
 
-## Run the server
+### Run the server
 
 Using Poetry, run the FastAPI server:
 
@@ -74,7 +76,7 @@ Using Poetry, run the FastAPI server:
 poetry run uvicorn python_src.api:app --port 8120 --reload
 ```
 
-## Run tests
+### Run tests
 
 Using Poetry, run the test suite:
 
@@ -88,9 +90,75 @@ For test coverage report:
 poetry run pytest --cov=src --cov-report=term-missing
 ```
 
+## Running with Docker
+This application can also be run with Docker using the following commands.
+```
+docker compose down
+docker compose build --no-cache
+docker compose up -d
+```
+
+## Testing locally
+With the application running using either Docker or Python, tests requests can be sent using the following curl commands.
+
+To test the health of the application or to check if the application is running at the `contention-classification/health` endpoint:
+```
+curl -X 'GET' 'http://localhost:8120/health'
+```
+
+To test the classification provided at the `contention-classification/va-gov-claim-classifier` endpoint:
+
+```
+curl -X 'POST'   'http://localhost:8120/va-gov-claim-classifier'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "claim_id": 44,
+  "form526_submission_id": 55,
+  "contentions": [
+        {
+            "contention_text": "PTSD (post-traumatic stress disorder)",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "acl tear, right",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 5012
+        }
+    ]
+}'
+```
+
+To test the classification provided by the experimental endpoint at `contention-classification/expanded-contention-classification`:
+```
+curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "claim_id": 44,
+  "form526_submission_id": 55,
+  "contentions": [
+        {
+            "contention_text": "PTSD (post-traumatic stress disorder)",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "acl tear, right",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 5012
+        }
+    ]
+}'
+```
+
+An alternative to the above `curl` commands is to use a local testing application like [Bruno](https://www.usebruno.com/) or [Postman](https://www.postman.com/).  Different JSON request bodies can be set up for testing each of the above endpoints and tests can be saved using Collections within these tools.
+
+
 ## Building docs
 
-API Documentation is automatically created by FastAPI. This can be viewed at the /docs endpoint (e.g. localhost:8120/docs)
+API Documentation is automatically created by FastAPI. This can be viewed by visiting `localhost:8120/docs` while the application is running.
 
 For exporting the open API spec:
 
