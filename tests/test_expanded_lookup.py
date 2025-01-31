@@ -203,7 +203,7 @@ def test_api_endpoint(test_client: TestClient) -> None:
             },
         ],
     }
-    response = test_client.post("/expanded-contention-classification", json=json_post_data)
+    response = test_client.post("/va-gov-claim-classifier", json=json_post_data)
     assert response.status_code == 200
     assert response.json() == {
         "contentions": [
@@ -262,3 +262,50 @@ def test_api_endpoint(test_client: TestClient) -> None:
         "num_processed_contentions": 8,
         "num_classified_contentions": 6,
     }
+
+
+def test_removed_terms_not_in_lut() -> None:
+    removed_terms = ["osteoarthritis", "tendinitis", "difficulty swallowing"]
+    for term in removed_terms:
+        assert TEST_LUT.get(term) == {
+            "classification_code": None,
+            "classification_name": None,
+        }
+
+
+def test_parenthetical_removal_normal() -> None:
+    test_str = "ACL tear (anterior cruciate ligament tear), bilateral"
+    expected = ["anterior cruciate ligament tear", "acl tear"]
+    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
+    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
+
+
+def test_parenthetical_removal_multiple() -> None:
+    """
+    There are currently no terms in the CSV that have multiple parenthetical values
+    """
+    test_str = "knee replacement (knee arthroplasty) (knee joint replacement), bilateral"
+    expected = ["knee arthroplasty", "knee joint replacement", "knee replacement"]
+    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
+    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
+
+
+def test_parenthetical_removal_specific_terms() -> None:
+    test_str = "degenerative arthritis (osteoarthritis) in wrist, right"
+    expected = [
+        "osteoarthritis wrist",
+        "degenerative arthritis wrist",
+    ]
+    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
+    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
+
+
+def test_expanded_endpoint_not_in_use(test_client: TestClient) -> None:
+    json_body = {
+        "claim_id": 100,
+        "form526_submission_id": 500,
+        "contentions": [{"contention_text": "osteoarthritis in ankle", "contention_type": "NEW", "diagnostic_code": "1234"}],
+    }
+    response = test_client.post("/expanded-contention-classification", json=json_body)
+    assert response.status_code == 200
+    assert response.json() == {"message": "New classification method in development; endpoint is not currently available"}
