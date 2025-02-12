@@ -31,4 +31,4 @@ def test_build_expanded_table() -> None:
         common_words=app_config["common_words"],
         musculoskeletal_lut=app_config["musculoskeletal_lut"],
     )
-    assert len(expanded.contention_text_lookup_table) == 1017
+    assert len(expanded.contention_text_lookup_table) == 1037
