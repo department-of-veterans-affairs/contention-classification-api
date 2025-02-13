@@ -262,3 +262,39 @@ def test_api_endpoint(test_client: TestClient) -> None:
         "num_processed_contentions": 8,
         "num_classified_contentions": 6,
     }
+
+
+def test_removed_terms_not_in_lut() -> None:
+    removed_terms = ["osteoarthritis", "tendinitis", "difficulty swallowing"]
+    for term in removed_terms:
+        assert TEST_LUT.get(term) == {
+            "classification_code": None,
+            "classification_name": None,
+        }
+
+
+def test_parenthetical_removal_normal() -> None:
+    test_str = "ACL tear (anterior cruciate ligament tear), bilateral"
+    expected = ["anterior cruciate ligament tear", "acl tear"]
+    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
+    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
+
+
+def test_parenthetical_removal_multiple() -> None:
+    """
+    There are currently no terms in the CSV that have multiple parenthetical values
+    """
+    test_str = "knee replacement (knee arthroplasty) (knee joint replacement), bilateral"
+    expected = ["knee arthroplasty", "knee joint replacement", "knee replacement"]
+    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
+    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
+
+
+def test_parenthetical_removal_specific_terms() -> None:
+    test_str = "degenerative arthritis (osteoarthritis) in wrist, right"
+    expected = [
+        "osteoarthritis wrist",
+        "degenerative arthritis wrist",
+    ]
+    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
+    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
