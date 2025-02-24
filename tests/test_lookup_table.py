@@ -16,7 +16,12 @@ def mock_csv_strings() -> Dict[str, str]:
             "DIAGNOSTIC_CODE,CLASSIFICATION_CODE,CLASSIFICATION_TEXT\n7710,6890,Tuberculosis\n6829,9012,Respiratory\n"
         ),
         "contention_csv": (
-            "CONTENTION TEXT,CLASSIFICATION CODE,CLASSIFICATION TEXT\nPTSD,8989,Mental Disorders\nKnee pain,8997,Knee\n"
+            "Main condition/term,Legacy term 1,Legacy term 2,Legacy term 3,Legacy term 4,"
+            "Legacy term 5,Legacy term 6,Legacy term 7,Autosuggestion term 1,Autosuggestion term 2,"
+            "Autosuggestion term 3,Autosuggestion term 4,Autosuggestion term 5,Autosuggestion term 6,"
+            "Classification Code,Classification Text,Active classification mapping\n"
+            "PTSD,,,,,,,,,,,,,,8989,Mental Disorders,Active\n"
+            "Knee pain,,,,,,,,,,,,,,8997,Knee,Active\n"
         ),
         "logging_csv": (
             "Autosuggestion Name,Other Columns\nTinnitus (ringing in ears),data\nPTSD (post-traumatic stress disorder),data\n"
@@ -45,9 +50,12 @@ def test_diagnostic_code_lookup_table_duplicate_codes() -> None:
 def test_contention_text_lookup_table_duplicate_entries() -> None:
     """Test how ContentionTextLookupTable handles duplicate entries."""
     duplicate_csv = (
-        "CONTENTION TEXT,CLASSIFICATION CODE,CLASSIFICATION TEXT\n"
-        "PTSD,8989,Mental Disorders\n"
-        "PTSD,9999,Different Mental Disorder\n"
+        "Main condition/term,Legacy term 1,Legacy term 2,Legacy term 3,Legacy term 4,"
+        "Legacy term 5,Legacy term 6,Legacy term 7,Autosuggestion term 1,Autosuggestion term 2,"
+        "Autosuggestion term 3,Autosuggestion term 4,Autosuggestion term 5,Autosuggestion term 6,"
+        "Classification Code,Classification Text,Active classification mapping\n"
+        "PTSD,,,,,,,,,,,,,,8989,Mental Disorders,Active\n"
+        "PTSD,,,,,,,,,,,,,,9999,Different Mental Disorder,Active\n"
     )
     with patch("builtins.open", mock_open(read_data=duplicate_csv)):
         table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)

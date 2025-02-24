@@ -50,6 +50,7 @@ diagnostic_code_inits = InitValues(
     input_key=app_config["diagnostic_code_table"]["input_key"],
     classification_code=app_config["diagnostic_code_table"]["classification_code"],
     classification_name=app_config["diagnostic_code_table"]["classification_name"],
+    active_selection=None,
     lut_default_value=default_lut_table,
 )
 
@@ -57,21 +58,24 @@ diagnostic_code_inits = InitValues(
 dc_lookup_table = DiagnosticCodeLookupTable(init_values=diagnostic_code_inits)
 
 contention_lut_csv_filename = (
-    f"{app_config['condition_dropdown_table']['filename']} {app_config['condition_dropdown_table']['version_number']}.csv"
+    f"{app_config['condition_dropdown_table']['filename']} - {app_config['condition_dropdown_table']['version_number']}.csv"
 )
 
 contention_text_csv_filepath = os.path.join(
     os.path.dirname(__file__),
     "data",
-    "condition_dropdown_lookup_table",
+    "master_taxonomy",
     contention_lut_csv_filename,
 )
+
+print(contention_text_csv_filepath)
 
 dropdown_expanded_table_inits = InitValues(
     csv_filepath=contention_text_csv_filepath,
     input_key=app_config["condition_dropdown_table"]["input_key"],
     classification_code=app_config["condition_dropdown_table"]["classification_code"],
     classification_name=app_config["condition_dropdown_table"]["classification_name"],
+    active_selection=app_config["condition_dropdown_table"]["active_classification"],
     lut_default_value=default_lut_table,
 )
 dropdown_lookup_table = ContentionTextLookupTable(dropdown_expanded_table_inits)
@@ -86,8 +90,14 @@ expanded_lookup_table = ExpandedLookupTable(
 autosuggestions_path = os.path.join(
     os.path.dirname(__file__),
     "data",
-    "condition_dropdown_coverage",
-    f"{app_config['autosuggestion_table']['filename']} {app_config['autosuggestion_table']['version_number']} Flat.csv",
+    "master_taxonomy",
+    f"{app_config['autosuggestion_table']['filename']} - {app_config['autosuggestion_table']['version_number']}.csv",
 )
 
-dropdown_values = build_logging_table(autosuggestions_path)
+dropdown_values = build_logging_table(
+    autosuggestions_path,
+    app_config["autosuggestion_table"]["autocomplete_terms"],
+    app_config["autosuggestion_table"]["active_autocomplete"],
+)
+
+print(expanded_lookup_table.get("neuropathy in my hand"))

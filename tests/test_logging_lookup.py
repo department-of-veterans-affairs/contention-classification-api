@@ -11,28 +11,44 @@ filepath = os.path.join(
     "python_src",
     "util",
     "data",
-    "condition_dropdown_coverage",
-    f"{app_config['autosuggestion_table']['filename']} {app_config['autosuggestion_table']['version_number']} Flat.csv",
+    "master_taxonomy",
+    f"{app_config['autosuggestion_table']['filename']} - {app_config['autosuggestion_table']['version_number']}.csv",
 )
+
+autocomplete_columns = app_config["autosuggestion_table"]["autocomplete_terms"]
+active_autocomplete = app_config["autosuggestion_table"]["active_autocomplete"]
 
 
 def test_build_dropdown_options_list() -> None:
-    assert len(build_logging_table(filepath=filepath)) == 580
+    assert (
+        len(
+            build_logging_table(
+                filepath=filepath, autocomplete_columns=autocomplete_columns, active_autocomplete=active_autocomplete
+            )
+        )
+        == 582
+    )
 
 
 def test_new_value_in_list() -> None:
     test_value = "astragalectomy or talectomy (removal of talus bone in ankle), right"
-    assert test_value in build_logging_table(filepath=filepath)
+    assert test_value in build_logging_table(
+        filepath=filepath, autocomplete_columns=autocomplete_columns, active_autocomplete=active_autocomplete
+    )
 
 
 def test_previous_value_not_in_list() -> None:
     test_value = "migraine"
-    assert test_value not in build_logging_table(filepath=filepath)
+    assert test_value not in build_logging_table(
+        filepath=filepath, autocomplete_columns=autocomplete_columns, active_autocomplete=active_autocomplete
+    )
 
 
 def test_previous_value_not_in_v3_list() -> None:
     test_value = "urticaria (hives)"
-    assert test_value not in build_logging_table(filepath=filepath)
+    assert test_value not in build_logging_table(
+        filepath=filepath, autocomplete_columns=autocomplete_columns, active_autocomplete=active_autocomplete
+    )
 
 
 def test_kidney_cancer() -> None:
@@ -42,7 +58,9 @@ def test_kidney_cancer() -> None:
         "kidney cancer (renal cancer), left",
         "kidney cancer (renal cancer), right",
     ]
-    logging_table = build_logging_table(filepath=filepath)
+    logging_table = build_logging_table(
+        filepath=filepath, autocomplete_columns=autocomplete_columns, active_autocomplete=active_autocomplete
+    )
 
     assert v2_kidney_cancer_value not in logging_table
     for v3_value in v3_kidney_cancer_values:

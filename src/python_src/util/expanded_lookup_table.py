@@ -94,21 +94,26 @@ class ExpandedLookupTable:
 
         return text.lower().strip()
 
-    def _remove_parenthetical_terms(self, text: str) -> List[str]:
+    def _is_in_table(
+        self, term: str, row: Dict[str, str], classification_code_mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]]
+    ) -> bool:
         """
-        Removes terms within contention text values that are included in parenthetical. This will append the
-        rest of the string to the parenthetical, and create a list of terms from this.
+        Checks if the term is already in the lookup table and if the classification code is different.
+        This prevents overwriting classification codes that have already been added.
 
-        Ex: "degenerative arthritis (osteoarthritis) in wrist, right" will return
-            ["osteoarthritis in wrist, right", "degenerative arthritis in wrist, right"]
-
-        This will then move through the removal pipeline to build the lookup table.
+        Args:
+            term (str): The term to check.
+            row (dict): A row from the CSV containing classification data.
+            classification_code_mappings (dict): The lookup table to check.
         """
-        parenthetical_terms = re.findall(r"\((.*?)\)", text)
-        base_text = re.sub(r"\(.*?\)", "", text)
-        variations = [re.sub(r"\(.*?\)", "", f"{term} {text.split(term)[-1]}") for term in parenthetical_terms]
-        variations.append(base_text)
-        return [self._removal_pipeline(v) for v in variations]
+
+        temp = frozenset(self._removal_pipeline(term).split())
+        is_in_table = temp in classification_code_mappings
+        if is_in_table:
+            classification_codes_differ = classification_code_mappings[temp]["classification_code"] != int(
+                row[self.init_values.classification_code]
+            )
+        return is_in_table and classification_codes_differ
 
     def _add_to_lut(
         self,
@@ -140,15 +145,14 @@ class ExpandedLookupTable:
         classification_code_mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
         csv_rows = read_csv_to_list(self.init_values.csv_filepath)
         for row in csv_rows:
-            key_text = self.init_values.input_key
-            if "(" in row[key_text]:
-                ls_terms = self._remove_parenthetical_terms(row[key_text])
-                for t in ls_terms:
-                    self._add_to_lut(t, row, classification_code_mappings)
-
-            # adds the original string
-            self._add_to_lut(row[key_text], row, classification_code_mappings)
-
+            if self.init_values.active_selection is not None and row[self.init_values.active_selection] == "Active":
+                for key_text in self.init_values.input_key:
+                    if row[key_text]:
+                        # adds the original string
+                        if self._is_in_table(row[key_text], row, classification_code_mappings):
+                            pass
+                        else:
+                            self._add_to_lut(row[key_text], row, classification_code_mappings)
         # adds the joint lookup to the table
         classification_code_mappings.update(self._musculoskeletal_lookup())
 

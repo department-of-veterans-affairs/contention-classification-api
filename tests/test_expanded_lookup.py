@@ -115,15 +115,6 @@ def test_remove_common_words() -> None:
     assert TEST_LUT._remove_common_words(test_str).strip() == expected
 
 
-def test_removed_parentheses() -> None:
-    test_str = "acl tear, left"
-    expected = {
-        "classification_code": 8997,
-        "classification_name": "Musculoskeletal - Knee",
-    }
-    assert TEST_LUT.get(test_str) == expected
-
-
 @patch("src.python_src.util.expanded_lookup_table.ExpandedLookupTable._removal_pipeline")
 def test_prep_incoming_text_cause(mock_removal_pipeline: Mock) -> None:
     test_str = "acl tear, due to something"
@@ -226,8 +217,8 @@ def test_api_endpoint(test_client: TestClient) -> None:
                 "contention_type": "new",
             },
             {
-                "classification_code": 8997,
-                "classification_name": "Musculoskeletal - Knee",
+                "classification_code": None,
+                "classification_name": None,
                 "diagnostic_code": None,
                 "contention_type": "new",
             },
@@ -260,7 +251,7 @@ def test_api_endpoint(test_client: TestClient) -> None:
         "form526_submission_id": 500,
         "is_fully_classified": False,
         "num_processed_contentions": 8,
-        "num_classified_contentions": 6,
+        "num_classified_contentions": 5,
     }
 
 
@@ -271,30 +262,3 @@ def test_removed_terms_not_in_lut() -> None:
             "classification_code": None,
             "classification_name": None,
         }
-
-
-def test_parenthetical_removal_normal() -> None:
-    test_str = "ACL tear (anterior cruciate ligament tear), bilateral"
-    expected = ["anterior cruciate ligament tear", "acl tear"]
-    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
-    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
-
-
-def test_parenthetical_removal_multiple() -> None:
-    """
-    There are currently no terms in the CSV that have multiple parenthetical values
-    """
-    test_str = "knee replacement (knee arthroplasty) (knee joint replacement), bilateral"
-    expected = ["knee arthroplasty", "knee joint replacement", "knee replacement"]
-    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
-    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
-
-
-def test_parenthetical_removal_specific_terms() -> None:
-    test_str = "degenerative arthritis (osteoarthritis) in wrist, right"
-    expected = [
-        "osteoarthritis wrist",
-        "degenerative arthritis wrist",
-    ]
-    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
-    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
