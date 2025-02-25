@@ -3,6 +3,10 @@ condition_dropdown_table:
   filename: "CC Taxonomy master"
   input_key:
     - Main condition/term
+    - Synonym term 1
+    - Synonym term 2
+    - Synonym term 3
+    - Synonym term 4
     - Legacy term 1
     - Legacy term 2
     - Legacy term 3

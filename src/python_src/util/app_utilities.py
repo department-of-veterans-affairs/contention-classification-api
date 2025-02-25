@@ -99,5 +99,3 @@ dropdown_values = build_logging_table(
     app_config["autosuggestion_table"]["autocomplete_terms"],
     app_config["autosuggestion_table"]["active_autocomplete"],
 )
-
-print(expanded_lookup_table.get("neuropathy in my hand"))

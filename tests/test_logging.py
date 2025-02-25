@@ -48,7 +48,7 @@ def test_create_classification_method_new() -> None:
     )
     classification_method_expanded = get_classification_code_name(test_contention, expanded_lookup_table)[2]
     classification_method_original = get_classification_code_name(test_contention, dropdown_lookup_table)[2]
-    assert classification_method_expanded == "not classified"
+    assert classification_method_expanded == "contention_text"
     assert classification_method_original == "not classified"
 
 

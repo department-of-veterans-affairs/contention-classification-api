@@ -148,11 +148,9 @@ class ExpandedLookupTable:
             if self.init_values.active_selection is not None and row[self.init_values.active_selection] == "Active":
                 for key_text in self.init_values.input_key:
                     if row[key_text]:
-                        # adds the original string
-                        if self._is_in_table(row[key_text], row, classification_code_mappings):
-                            pass
-                        else:
+                        if not self._is_in_table(row[key_text], row, classification_code_mappings):
                             self._add_to_lut(row[key_text], row, classification_code_mappings)
+
         # adds the joint lookup to the table
         classification_code_mappings.update(self._musculoskeletal_lookup())
 

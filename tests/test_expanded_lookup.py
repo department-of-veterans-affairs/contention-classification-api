@@ -217,8 +217,8 @@ def test_api_endpoint(test_client: TestClient) -> None:
                 "contention_type": "new",
             },
             {
-                "classification_code": None,
-                "classification_name": None,
+                "classification_code": 8997,
+                "classification_name": "Musculoskeletal - Knee",
                 "diagnostic_code": None,
                 "contention_type": "new",
             },
@@ -251,7 +251,7 @@ def test_api_endpoint(test_client: TestClient) -> None:
         "form526_submission_id": 500,
         "is_fully_classified": False,
         "num_processed_contentions": 8,
-        "num_classified_contentions": 5,
+        "num_classified_contentions": 6,
     }
 
 
