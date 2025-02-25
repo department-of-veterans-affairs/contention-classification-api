@@ -262,3 +262,39 @@ def test_removed_terms_not_in_lut() -> None:
             "classification_code": None,
             "classification_name": None,
         }
+
+
+def test_is_in_lut_same_class_code() -> None:
+    test_value = "acl tear"
+    test_row = {
+        "CONDITION": "ACL Tear",
+        "Classification Code": "8997",
+        "CLASSIFICATION NAME": "Musculoskeletal - Knee",
+        "ACTIVE": "Active",
+    }
+    result = TEST_LUT._is_in_table(test_value, test_row, TEST_LUT.contention_text_lookup_table)
+    assert not result
+
+
+def test_is_in_lut_diff_class_codes() -> None:
+    test_value = "acl tear"
+    test_row = {
+        "CONDITION": "ACL Tear",
+        "Classification Code": "9999",
+        "CLASSIFICATION NAME": "Musculoskeletal - Knee",
+        "ACTIVE": "Active",
+    }
+    result = TEST_LUT._is_in_table(test_value, test_row, TEST_LUT.contention_text_lookup_table)
+    assert result
+
+
+def test_is_in_lut_not_in_lut() -> None:
+    test_value = "new term"
+    test_row = {
+        "CONDITION": "new term",
+        "Classification Code": "9999",
+        "CLASSIFICATION NAME": "Musculoskeletal - Knee",
+        "ACTIVE": "Active",
+    }
+    result = TEST_LUT._is_in_table(test_value, test_row, TEST_LUT.contention_text_lookup_table)
+    assert not result

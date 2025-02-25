@@ -14,13 +14,9 @@ classification_columns = [
     app_config["condition_dropdown_table"]["classification_name"],
     app_config["condition_dropdown_table"]["active_classification"],
 ]
-column_names = ",".join(term_columns + classification_columns)
+column_names = ",".join(term_columns + classification_columns)  # add string for mock csv strings
 
 
-# "Main condition/term,Legacy term 1,Legacy term 2,Legacy term 3,Legacy term 4,"
-# "Legacy term 5,Legacy term 6,Legacy term 7,Autosuggestion term 1,Autosuggestion term 2,"
-# "Autosuggestion term 3,Autosuggestion term 4,Autosuggestion term 5,Autosuggestion term 6,"
-# "Classification Code,Classification Text,Active classification mapping\n"
 @pytest.fixture
 def mock_csv_strings() -> Dict[str, str]:
     return {

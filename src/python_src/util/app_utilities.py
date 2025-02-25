@@ -68,8 +68,6 @@ contention_text_csv_filepath = os.path.join(
     contention_lut_csv_filename,
 )
 
-print(contention_text_csv_filepath)
-
 dropdown_expanded_table_inits = InitValues(
     csv_filepath=contention_text_csv_filepath,
     input_key=app_config["condition_dropdown_table"]["input_key"],
