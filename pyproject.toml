@@ -81,7 +81,7 @@ fastapi = "0.115.8"
 httpx = "0.28.1"
 pydantic = "2.10.6"
 pyyaml = "6.0.2"
-setuptools = "75.8.0"
+setuptools = "75.8.1"
 uvicorn = {extras = ["standard"], version = "0.34.0"}
 
 
