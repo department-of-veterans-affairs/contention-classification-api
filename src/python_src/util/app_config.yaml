@@ -24,14 +24,8 @@ condition_dropdown_table:
   classification_name: Classification Text
   active_classification: Active classification mapping
   release_notes: |
-    Updated and removed classification mappings based on Comp Service review and RVSR research
-    * Merged version with legacy mappings
-    - Removed classification for some arthritis terms where the joint is unknowable from the term
-    (and the joint-specific classification is preferable): arthritis arthritis, degenerative; arthritis, due to trauma; gout.
-    - Updated classification for bone cancer, including osteosarcoma, extremities or trunk to Cancer - Musculoskeletal - Other.
-    - Updated classification for rib fracture, costochrondritis and Tietze syndromve to Musculoskeletal-Bones
-    - Updated classification for PTSD terms to Mental Disorders
-    - Added classification mappings for new terms added to autosuggestions.
+    Updated format for master taxonomy to use a wide format instead of combining multiple csvs
+    to create the lookup table csv files.
   release_date: 2024-09-12
 diagnostic_code_table:
   version_number: v0.6
@@ -55,14 +49,8 @@ autosuggestion_table:
     - Autosuggestion term 5
     - Autosuggestion term 6
   release_notes: >
-    Added and removed terms based on learnings from Comp Service and RVSR Research
-    Added 14 terms: hearing loss, varicose veins in leg, [l/r/bilateral], weak foot, right;
-    weak foot, left; PTSD (post-traumatic stress disorder); chronic otitis media (middle ear infection), [r/l/bilateral];
-    labryinthitis (inner ear inflammation), [r/l/bilataeral]; paranasal sinus or nasal cavity cancer
-    Removed 12 terms:  hearing loss, other than tinnitus; PTSD (post-traumatic stress disorder),
-    non-combat related; PTSD (post-traumatic stress disorder), combat related; varicose veins in leg;
-    varicose veins, other than in leg; otitis media (middle ear infection),
-    [r/l/bilateral]; labyrinthitis (type of inner ear infection), [r/l/bilateral]; paranasal sinus and nasal cavity cancer"
+    Updated format for master taxonomy to use a wide format instead of combining multiple csvs
+    to create the lookup table csv files.
   release_date: 2024-09-12
 musculoskeletal_lut:
   ankle:
