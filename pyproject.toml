@@ -77,18 +77,18 @@ packages = [{include = "python_src", from = "src"}]
 [tool.poetry.dependencies]
 python = "3.12.3"
 poetry = "2.1.1"
-fastapi = "0.115.8"
+fastapi = "0.115.9"
 httpx = "0.28.1"
 pydantic = "2.10.6"
 pyyaml = "6.0.2"
-setuptools = "75.8.0"
+setuptools = "75.8.2"
 uvicorn = {extras = ["standard"], version = "0.34.0"}
 
 
 [tool.poetry.group.dev.dependencies]
 mypy = "1.15.0"
 pre-commit = "4.1.0"
-ruff = "0.9.7"
+ruff = "0.9.8"
 pytest = "8.3.4"
 pytest-cov = "6.0.0"
 bandit = {version = "1.8.3", extras = ["toml"]}
