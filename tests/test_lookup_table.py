@@ -5,8 +5,16 @@ from unittest.mock import mock_open, patch
 
 import pytest
 
-from src.python_src.util.app_utilities import diagnostic_code_inits, dropdown_expanded_table_inits
+from src.python_src.util.app_utilities import app_config, diagnostic_code_inits, dropdown_expanded_table_inits
 from src.python_src.util.lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
+
+term_columns = app_config["condition_dropdown_table"]["input_key"]
+classification_columns = [
+    app_config["condition_dropdown_table"]["classification_code"],
+    app_config["condition_dropdown_table"]["classification_name"],
+    app_config["condition_dropdown_table"]["active_classification"],
+]
+column_names = ",".join(term_columns + classification_columns)  # add string for mock csv strings
 
 
 @pytest.fixture
@@ -16,7 +24,9 @@ def mock_csv_strings() -> Dict[str, str]:
             "DIAGNOSTIC_CODE,CLASSIFICATION_CODE,CLASSIFICATION_TEXT\n7710,6890,Tuberculosis\n6829,9012,Respiratory\n"
         ),
         "contention_csv": (
-            "CONTENTION TEXT,CLASSIFICATION CODE,CLASSIFICATION TEXT\nPTSD,8989,Mental Disorders\nKnee pain,8997,Knee\n"
+            f"{column_names}\n"
+            "PTSD,,,,,,,,,,,,,,,,,,8989,Mental Disorders,Active\n"
+            "Knee pain,,,,,,,,,,,,,,,,,,8997,Knee,Active\n"
         ),
         "logging_csv": (
             "Autosuggestion Name,Other Columns\nTinnitus (ringing in ears),data\nPTSD (post-traumatic stress disorder),data\n"
@@ -45,9 +55,9 @@ def test_diagnostic_code_lookup_table_duplicate_codes() -> None:
 def test_contention_text_lookup_table_duplicate_entries() -> None:
     """Test how ContentionTextLookupTable handles duplicate entries."""
     duplicate_csv = (
-        "CONTENTION TEXT,CLASSIFICATION CODE,CLASSIFICATION TEXT\n"
-        "PTSD,8989,Mental Disorders\n"
-        "PTSD,9999,Different Mental Disorder\n"
+        f"{column_names}\n"
+        "PTSD,,,,,,,,,,,,,,,,,,8989,Mental Disorders,Active\n"
+        "PTSD,,,,,,,,,,,,,,,,,,9999,Different Mental Disorder,Active\n"
     )
     with patch("builtins.open", mock_open(read_data=duplicate_csv)):
         table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)

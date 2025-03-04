@@ -97,7 +97,7 @@ def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
     Tests the logging of a contention that is classified but considered free text
     """
     test_contention = Contention(
-        contention_text="acl tear right",
+        contention_text="knee",
         contention_type="NEW",
     )
     test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=[test_contention])
@@ -121,13 +121,13 @@ def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
         "claim_type": "new",
         "classification_code": classified_contention.classification_code,
         "classification_name": classified_contention.classification_name,
-        "contention_text": "unmapped contention text ['acl tear']",
+        "contention_text": "unmapped contention text ['knee']",
         "diagnostic_code": "None",
         "is_in_dropdown": False,
         "is_lookup_table_match": True,
         "is_multi_contention": False,
         "endpoint": "/expanded-contention-classification",
-        "processed_contention_text": "acl tear",
+        "processed_contention_text": "knee",
         "classification_method": "contention text",
     }
 

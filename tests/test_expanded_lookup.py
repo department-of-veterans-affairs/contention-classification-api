@@ -115,15 +115,6 @@ def test_remove_common_words() -> None:
     assert TEST_LUT._remove_common_words(test_str).strip() == expected
 
 
-def test_removed_parentheses() -> None:
-    test_str = "acl tear, left"
-    expected = {
-        "classification_code": 8997,
-        "classification_name": "Musculoskeletal - Knee",
-    }
-    assert TEST_LUT.get(test_str) == expected
-
-
 @patch("src.python_src.util.expanded_lookup_table.ExpandedLookupTable._removal_pipeline")
 def test_prep_incoming_text_cause(mock_removal_pipeline: Mock) -> None:
     test_str = "acl tear, due to something"
@@ -273,28 +264,37 @@ def test_removed_terms_not_in_lut() -> None:
         }
 
 
-def test_parenthetical_removal_normal() -> None:
-    test_str = "ACL tear (anterior cruciate ligament tear), bilateral"
-    expected = ["anterior cruciate ligament tear", "acl tear"]
-    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
-    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
+def test_is_in_lut_same_class_code() -> None:
+    test_value = "acl tear"
+    test_row = {
+        "CONDITION": "ACL Tear",
+        "Classification Code": "8997",
+        "CLASSIFICATION NAME": "Musculoskeletal - Knee",
+        "ACTIVE": "Active",
+    }
+    result = TEST_LUT._is_in_table(test_value, test_row, TEST_LUT.contention_text_lookup_table)
+    assert not result
 
 
-def test_parenthetical_removal_multiple() -> None:
-    """
-    There are currently no terms in the CSV that have multiple parenthetical values
-    """
-    test_str = "knee replacement (knee arthroplasty) (knee joint replacement), bilateral"
-    expected = ["knee arthroplasty", "knee joint replacement", "knee replacement"]
-    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
-    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
+def test_is_in_lut_diff_class_codes() -> None:
+    test_value = "acl tear"
+    test_row = {
+        "CONDITION": "ACL Tear",
+        "Classification Code": "9999",
+        "CLASSIFICATION NAME": "Musculoskeletal - Knee",
+        "ACTIVE": "Active",
+    }
+    result = TEST_LUT._is_in_table(test_value, test_row, TEST_LUT.contention_text_lookup_table)
+    assert result
 
 
-def test_parenthetical_removal_specific_terms() -> None:
-    test_str = "degenerative arthritis (osteoarthritis) in wrist, right"
-    expected = [
-        "osteoarthritis wrist",
-        "degenerative arthritis wrist",
-    ]
-    assert isinstance(TEST_LUT._remove_parenthetical_terms(test_str), list)
-    assert TEST_LUT._remove_parenthetical_terms(test_str) == expected
+def test_is_in_lut_not_in_lut() -> None:
+    test_value = "new term"
+    test_row = {
+        "CONDITION": "new term",
+        "Classification Code": "9999",
+        "CLASSIFICATION NAME": "Musculoskeletal - Knee",
+        "ACTIVE": "Active",
+    }
+    result = TEST_LUT._is_in_table(test_value, test_row, TEST_LUT.contention_text_lookup_table)
+    assert not result

@@ -1,18 +1,31 @@
 condition_dropdown_table:
-  version_number: v0.5
-  filename: "[Release notes] Contention Text to Classification mapping release notes - Contention Text Lookup"
-  input_key: CONTENTION TEXT
-  classification_code: CLASSIFICATION CODE
-  classification_name: CLASSIFICATION TEXT
+  version_number: v0.1
+  filename: "CC Taxonomy master"
+  input_key:
+    - Main condition/term
+    - Synonym term 1
+    - Synonym term 2
+    - Synonym term 3
+    - Synonym term 4
+    - Legacy term 1
+    - Legacy term 2
+    - Legacy term 3
+    - Legacy term 4
+    - Legacy term 5
+    - Legacy term 6
+    - Legacy term 7
+    - Autosuggestion term 1
+    - Autosuggestion term 2
+    - Autosuggestion term 3
+    - Autosuggestion term 4
+    - Autosuggestion term 5
+    - Autosuggestion term 6
+  classification_code: Classification Code
+  classification_name: Classification Text
+  active_classification: Active classification mapping
   release_notes: |
-    Updated and removed classification mappings based on Comp Service review and RVSR research
-    * Merged version with legacy mappings
-    - Removed classification for some arthritis terms where the joint is unknowable from the term
-    (and the joint-specific classification is preferable): arthritis arthritis, degenerative; arthritis, due to trauma; gout.
-    - Updated classification for bone cancer, including osteosarcoma, extremities or trunk to Cancer - Musculoskeletal - Other.
-    - Updated classification for rib fracture, costochrondritis and Tietze syndromve to Musculoskeletal-Bones
-    - Updated classification for PTSD terms to Mental Disorders
-    - Added classification mappings for new terms added to autosuggestions.
+    Updated format for master taxonomy to use a wide format instead of combining multiple csvs
+    to create the lookup table csv files.
   release_date: 2024-09-12
 diagnostic_code_table:
   version_number: v0.6
@@ -25,17 +38,19 @@ diagnostic_code_table:
     3 DCs removed: 5003 for degenerative arthritis, 5017 for gout, and 5010 for post-traumatic arthritis"""
   release_date: 2024-09-12
 autosuggestion_table:
-  version_number: v1.2
-  filename: "[Release notes] Auto-suggestions release notes - Suggested Conditions"
+  version_number: v0.1
+  filename: "CC Taxonomy master"
+  active_autocomplete: Active autosuggestion terms
+  autocomplete_terms:
+    - Autosuggestion term 1
+    - Autosuggestion term 2
+    - Autosuggestion term 3
+    - Autosuggestion term 4
+    - Autosuggestion term 5
+    - Autosuggestion term 6
   release_notes: >
-    Added and removed terms based on learnings from Comp Service and RVSR Research
-    Added 14 terms: hearing loss, varicose veins in leg, [l/r/bilateral], weak foot, right;
-    weak foot, left; PTSD (post-traumatic stress disorder); chronic otitis media (middle ear infection), [r/l/bilateral];
-    labryinthitis (inner ear inflammation), [r/l/bilataeral]; paranasal sinus or nasal cavity cancer
-    Removed 12 terms:  hearing loss, other than tinnitus; PTSD (post-traumatic stress disorder),
-    non-combat related; PTSD (post-traumatic stress disorder), combat related; varicose veins in leg;
-    varicose veins, other than in leg; otitis media (middle ear infection),
-    [r/l/bilateral]; labyrinthitis (type of inner ear infection), [r/l/bilateral]; paranasal sinus and nasal cavity cancer"
+    Updated format for master taxonomy to use a wide format instead of combining multiple csvs
+    to create the lookup table csv files.
   release_date: 2024-09-12
 musculoskeletal_lut:
   ankle:

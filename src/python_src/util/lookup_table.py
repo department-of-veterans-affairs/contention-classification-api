@@ -2,8 +2,6 @@ from typing import Any, Dict, Optional
 
 from .lookup_tables_utilities import InitValues, read_csv_to_list
 
-print("importing lookup table")
-
 
 class DiagnosticCodeLookupTable:
     """
@@ -60,11 +58,14 @@ class ContentionTextLookupTable:
         self.classification_code_mappings = {}
         csv_rows = read_csv_to_list(self.init_values.csv_filepath)
         for row in csv_rows:
-            table_key = row[self.init_values.input_key].strip().lower()
-            self.classification_code_mappings[table_key] = {
-                "classification_code": int(row[self.init_values.classification_code]),
-                "classification_name": row[self.init_values.classification_name],
-            }
+            for k in self.init_values.input_key:
+                if self.init_values.active_selection is not None and row[self.init_values.active_selection] == "Active":
+                    table_key = row[k].strip().lower()
+                    if table_key != "":
+                        self.classification_code_mappings[table_key] = {
+                            "classification_code": int(row[self.init_values.classification_code]),
+                            "classification_name": row[self.init_values.classification_name],
+                        }
 
     def get(self, input_str: str, default_value: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         default_value = self.init_values.lut_default_value

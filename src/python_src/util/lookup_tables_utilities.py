@@ -1,7 +1,7 @@
 import csv
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 # from .logging_utilities import log_as_json
 
@@ -9,9 +9,10 @@ from typing import Any, Dict, List
 @dataclass
 class InitValues:
     csv_filepath: str
-    input_key: str
+    input_key: str | List[str]
     classification_code: str
     classification_name: str
+    active_selection: Optional[str]
     lut_default_value: Dict[str, Any]
 
 

@@ -11,7 +11,7 @@ app_config = load_config("src/python_src/util/app_config.yaml")
 default_lut_table = app_config["lut_default_value"]
 
 
-CONTENTION_DROPDOWN_LUT_SIZE = 1056
+CONTENTION_DROPDOWN_LUT_SIZE = 1497
 DIAGNOSTIC_CODE_LUT_SIZE = 755
 
 
@@ -31,4 +31,4 @@ def test_build_expanded_table() -> None:
         common_words=app_config["common_words"],
         musculoskeletal_lut=app_config["musculoskeletal_lut"],
     )
-    assert len(expanded.contention_text_lookup_table) == 1037
+    assert len(expanded.contention_text_lookup_table) == 1066
