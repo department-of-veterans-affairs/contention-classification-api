@@ -19,8 +19,7 @@ class LookupTable(Protocol):
 
 
 def get_classification_code_name(
-    contention: Contention,
-    lookup_table: LookupTable
+    contention: Contention, lookup_table: LookupTable
 ) -> Tuple[Optional[int], Optional[str], str]:
     """
     check contention type and match contention to appropriate table's
@@ -64,16 +63,12 @@ def get_classification_code_name(
 
 
 @log_contention_stats_decorator
-def classify_contention(
-    contention: Contention,
-    claim: VaGovClaim,
-    request: Request
-) -> Tuple[ClassifiedContention, str]:
+def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> Tuple[ClassifiedContention, str]:
     lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable]
-    if request.url.path == "/expanded-contention-classification":
-        lookup_table = expanded_lookup_table
-    else:
+    if request.url.path == "/va-gov-claim-classifier":
         lookup_table = dropdown_lookup_table
+    else:
+        lookup_table = expanded_lookup_table
 
     classification_code, classification_name, classified_by = get_classification_code_name(contention, lookup_table)
 
