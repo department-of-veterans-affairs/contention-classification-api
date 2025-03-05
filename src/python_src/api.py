@@ -11,7 +11,7 @@ from .pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from .util.api_client import AiClient  # type: ignore
+from .util.api_client import AiClient
 from .util.app_utilities import app_config, dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
 from .util.classifier_utilities import classify_contention
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
