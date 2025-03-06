@@ -86,6 +86,26 @@ def classify_contention(contention: Contention, claim: VaGovClaim, request: Requ
     return response, classified_by
 
 
+def classify_claim(claim: VaGovClaim, request: Request) -> ClassifierResponse:
+    classified_contentions: list[ClassifiedContention] = []
+    for contention in claim.contentions:
+        classification = classify_contention(contention, claim, request)
+        classified_contentions.append(classification)
+
+    num_classified = len([c for c in classified_contentions if c.classification_code])
+
+    response = ClassifierResponse(
+        contentions=classified_contentions,
+        claim_id=claim.claim_id,
+        form526_submission_id=claim.form526_submission_id,
+        is_fully_classified=num_classified == len(classified_contentions),
+        num_processed_contentions=len(classified_contentions),
+        num_classified_contentions=num_classified,
+    )
+
+    return response
+
+
 def subset_unclassified_contentions(response: ClassifierResponse, claim: VaGovClaim) -> tuple[list[int], AiRequest]:
     """
     Builds the request body for the Ai Classifier

@@ -13,7 +13,7 @@ from .pydantic_models import (
     VaGovClaim,
 )
 from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
-from .util.classifier_utilities import classify_contention, ml_classification
+from .util.classifier_utilities import classify_claim, ml_classification
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 from .util.sanitizer import sanitize_log
 
@@ -83,43 +83,14 @@ def link_vbms_claim_id(claim_link_info: ClaimLinkInfo) -> Dict[str, bool]:
 @app.post("/va-gov-claim-classifier")
 @log_claim_stats_decorator
 def va_gov_claim_classifier(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    classified_contentions = []
-    for contention in claim.contentions:
-        classification = classify_contention(contention, claim, request)
-        classified_contentions.append(classification)
-
-    num_classified = len([c for c in classified_contentions if c.classification_code])
-
-    response = ClassifierResponse(
-        contentions=classified_contentions,
-        claim_id=claim.claim_id,
-        form526_submission_id=claim.form526_submission_id,
-        is_fully_classified=num_classified == len(classified_contentions),
-        num_processed_contentions=len(classified_contentions),
-        num_classified_contentions=num_classified,
-    )
-
+    response = classify_claim(claim, request)
     return response
 
 
 @app.post("/expanded-contention-classification")
 @log_claim_stats_decorator
 def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    classified_contentions = []
-    for contention in claim.contentions:
-        classification = classify_contention(contention, claim, request)
-        classified_contentions.append(classification)
-
-    num_classified = len([c for c in classified_contentions if c.classification_code])
-
-    response = ClassifierResponse(
-        contentions=classified_contentions,
-        claim_id=claim.claim_id,
-        form526_submission_id=claim.form526_submission_id,
-        is_fully_classified=num_classified == len(classified_contentions),
-        num_processed_contentions=len(classified_contentions),
-        num_classified_contentions=num_classified,
-    )
+    response = classify_claim(claim, request)
     return response
 
 
@@ -142,21 +113,8 @@ def fake_endpoint(contentions: AiRequest) -> AiResponse:
 @app.post("/hybrid-contention-classification")
 @log_claim_stats_decorator
 def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    # classify using expanded classifier
-    classified_contentions: list[ClassifiedContention] = []
-    for contention in claim.contentions:
-        classification = classify_contention(contention, claim, request)
-        classified_contentions.append(classification)
-
-    num_classified = len([c for c in classified_contentions if c.classification_code])
-    response = ClassifierResponse(
-        contentions=classified_contentions,
-        claim_id=claim.claim_id,
-        form526_submission_id=claim.form526_submission_id,
-        is_fully_classified=num_classified == len(classified_contentions),
-        num_processed_contentions=len(classified_contentions),
-        num_classified_contentions=num_classified,
-    )
+    # classifies usinge expanded classification
+    response: ClassifierResponse = classify_claim(claim, request)
 
     if response.is_fully_classified:
         return response
