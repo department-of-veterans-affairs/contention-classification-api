@@ -51,3 +51,11 @@ class ClassifierResponse(BaseModel):
     is_fully_classified: bool
     num_processed_contentions: int
     num_classified_contentions: int
+
+
+class AiRequest(BaseModel):
+    contentions: list[Contention]
+
+
+class AiResponse(BaseModel):
+    classified_contentions: list[ClassifiedContention]
