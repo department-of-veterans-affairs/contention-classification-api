@@ -106,9 +106,9 @@ def classify_claim(claim: VaGovClaim, request: Request) -> ClassifierResponse:
     return response
 
 
-def subset_unclassified_contentions(response: ClassifierResponse, claim: VaGovClaim) -> tuple[list[int], AiRequest]:
+def build_ai_request(response: ClassifierResponse, claim: VaGovClaim) -> tuple[list[int], AiRequest]:
     """
-    Builds the request body for the Ai Classifier
+    Builds the request body for the Ai Classifier by extracting unclassified contentions
     """
     non_classified_indices = [i for i, c in enumerate(response.contentions) if not c.classification_code]
 
@@ -131,7 +131,7 @@ def ml_classification(response: ClassifierResponse, claim: VaGovClaim) -> Classi
     """
     Establishes and calls the AI client to classify unclassified contentions
     """
-    non_classified_indices, ai_request = subset_unclassified_contentions(response, claim)
+    non_classified_indices, ai_request = build_ai_request(response, claim)
     client = AiClient(base_url=app_config["ai_classification_endpoint"]["url"])
     try:
         ai_response = client.classify_contention(

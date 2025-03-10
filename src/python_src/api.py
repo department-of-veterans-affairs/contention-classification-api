@@ -98,13 +98,13 @@ def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierR
 def fake_endpoint(contentions: AiRequest) -> AiResponse:
     c: list[ClassifiedContention] = []
     for contention in contentions.contentions:
-        temp_classy = ClassifiedContention(
+        temp_classification = ClassifiedContention(
             classification_code=9999,
             classification_name="ml classification",
             diagnostic_code=contention.diagnostic_code,
             contention_type=contention.contention_type,
         )
-        c.append(temp_classy)
+        c.append(temp_classification)
     response = AiResponse(classified_contentions=c)
 
     return response

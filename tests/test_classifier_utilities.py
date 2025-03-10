@@ -11,7 +11,7 @@ from src.python_src.pydantic_models import (
     VaGovClaim,
 )
 from src.python_src.util.app_utilities import app_config
-from src.python_src.util.classifier_utilities import ml_classification, subset_unclassified_contentions, update_classifications
+from src.python_src.util.classifier_utilities import build_ai_request, ml_classification, update_classifications
 
 TEST_CLAIM = VaGovClaim(
     claim_id=100,
@@ -72,14 +72,14 @@ def update_contentions_test(contentions: list[ClassifiedContention]) -> list[Cla
     return updated_contentions
 
 
-def test_subset_unclassified() -> None:
-    test_indices, test_ai_request = subset_unclassified_contentions(TEST_RESPONSE, TEST_CLAIM)
+def test_build_request_unclassified() -> None:
+    test_indices, test_ai_request = build_ai_request(TEST_RESPONSE, TEST_CLAIM)
     assert test_indices == [1, 2]
     assert isinstance(test_ai_request, AiRequest)
     assert len(test_ai_request.contentions) == 2
 
 
-def test_subset_unclassified_fully_classified() -> None:
+def test_build_fully_classified() -> None:
     updated = update_contentions_test(TEST_CONTENTIONS)
     test_response = ClassifierResponse(
         contentions=updated,
@@ -89,7 +89,7 @@ def test_subset_unclassified_fully_classified() -> None:
         num_processed_contentions=3,
         num_classified_contentions=3,
     )
-    result = subset_unclassified_contentions(test_response, TEST_CLAIM)
+    result = build_ai_request(test_response, TEST_CLAIM)
     assert result[0] == []
     assert isinstance(result[1], AiRequest)
     assert len(result[1].contentions) == 0
@@ -122,12 +122,12 @@ def test_update_classifications() -> None:
 
 
 @patch("src.python_src.util.classifier_utilities.AiClient")
-@patch("src.python_src.util.classifier_utilities.subset_unclassified_contentions")
+@patch("src.python_src.util.classifier_utilities.build_ai_request")
 @patch("src.python_src.util.classifier_utilities.update_classifications")
-def test_ml_classifications_success(mock_update: MagicMock, mock_subset: MagicMock, mock_ai_client: MagicMock) -> None:
+def test_ml_classifications_success(mock_update: MagicMock, mock_build: MagicMock, mock_ai_client: MagicMock) -> None:
     mock_client_instance = mock_ai_client.return_value
 
-    mock_subset.return_value = ([1, 2], AiRequest(contentions=TEST_CLAIM.contentions[1:]))
+    mock_build.return_value = ([1, 2], AiRequest(contentions=TEST_CLAIM.contentions[1:]))
 
     mock_client_instance.classify_contention.return_value = AiResponse(
         classified_contentions=[
@@ -175,31 +175,31 @@ def test_ml_classifications_success(mock_update: MagicMock, mock_subset: MagicMo
     ml_classification(TEST_RESPONSE, TEST_CLAIM)
 
     # Assert that the functions are called with the expected arguments
-    mock_subset.assert_called_once_with(TEST_RESPONSE, TEST_CLAIM)
+    mock_build.assert_called_once_with(TEST_RESPONSE, TEST_CLAIM)
     mock_client_instance.classify_contention.assert_called_once_with(
-        endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=mock_subset.return_value[1]
+        endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=mock_build.return_value[1]
     )
     mock_update.assert_called_once_with(
-        TEST_RESPONSE, mock_subset.return_value[0], mock_client_instance.classify_contention.return_value
+        TEST_RESPONSE, mock_build.return_value[0], mock_client_instance.classify_contention.return_value
     )
 
 
 @patch("src.python_src.util.classifier_utilities.log_as_json")
 @patch("src.python_src.util.classifier_utilities.update_classifications")
-@patch("src.python_src.util.classifier_utilities.subset_unclassified_contentions")
+@patch("src.python_src.util.classifier_utilities.build_ai_request")
 @patch("src.python_src.util.classifier_utilities.AiClient")
 def test_ml_classifications_http_error(
-    mock_ai_client: MagicMock, mock_subset: MagicMock, mock_update: MagicMock, mock_log: MagicMock
+    mock_ai_client: MagicMock, mock_build: MagicMock, mock_update: MagicMock, mock_log: MagicMock
 ) -> None:
     mock_ai_client_instance = mock_ai_client.return_value
 
-    mock_subset.return_value = ([1, 2], AiRequest(contentions=TEST_CLAIM.contentions[1:]))
+    mock_build.return_value = ([1, 2], AiRequest(contentions=TEST_CLAIM.contentions[1:]))
     mock_ai_client_instance.classify_contention.side_effect = httpx.HTTPStatusError(
         "Error reaching service", request=MagicMock(), response=MagicMock(status_code=500)
     )
     result = ml_classification(TEST_RESPONSE, TEST_CLAIM)
     mock_ai_client_instance.classify_contention.assert_called_once_with(
-        endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=mock_subset.return_value[1]
+        endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=mock_build.return_value[1]
     )
     mock_update.assert_not_called()
     mock_log.assert_called_once_with({"message": "Failure to reach AI Endpoint", "error": "Error reaching service"})
@@ -208,18 +208,18 @@ def test_ml_classifications_http_error(
 
 @patch("src.python_src.util.classifier_utilities.log_as_json")
 @patch("src.python_src.util.classifier_utilities.update_classifications")
-@patch("src.python_src.util.classifier_utilities.subset_unclassified_contentions")
+@patch("src.python_src.util.classifier_utilities.build_ai_request")
 @patch("src.python_src.util.classifier_utilities.AiClient")
 def test_ml_classifications_request_error(
-    mock_ai_client: MagicMock, mock_subset: MagicMock, mock_update: MagicMock, mock_log: MagicMock
+    mock_ai_client: MagicMock, mock_build: MagicMock, mock_update: MagicMock, mock_log: MagicMock
 ) -> None:
     mock_ai_client_instance = mock_ai_client.return_value
 
-    mock_subset.return_value = ([1, 2], AiRequest(contentions=TEST_CLAIM.contentions[1:]))
+    mock_build.return_value = ([1, 2], AiRequest(contentions=TEST_CLAIM.contentions[1:]))
     mock_ai_client_instance.classify_contention.side_effect = httpx.RequestError("Network error", request=MagicMock())
     result = ml_classification(TEST_RESPONSE, TEST_CLAIM)
     mock_ai_client_instance.classify_contention.assert_called_once_with(
-        endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=mock_subset.return_value[1]
+        endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=mock_build.return_value[1]
     )
     mock_update.assert_not_called()
     mock_log.assert_called_once_with({"message": "Failure to reach AI Endpoint", "error": "Network error"})
