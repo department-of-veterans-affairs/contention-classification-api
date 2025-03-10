@@ -14,7 +14,7 @@ from ..pydantic_models import (
 from .api_client import AiClient
 from .app_utilities import app_config, dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
 from .expanded_lookup_table import ExpandedLookupTable
-from .logging_utilities import log_as_json, log_contention_stats_decorator
+from .logging_utilities import log_as_json, log_contention_stats_decorator, log_ml_stats_decorator
 from .lookup_table import ContentionTextLookupTable
 
 
@@ -117,13 +117,18 @@ def build_ai_request(response: ClassifierResponse, claim: VaGovClaim) -> tuple[l
     return non_classified_indices, ai_request
 
 
+@log_ml_stats_decorator
 def update_classifications(response: ClassifierResponse, indices: list[int], ai_classified: AiResponse) -> ClassifierResponse:
     """
     Updates the originally classified claim with classifications from the ml classifier
     """
-    for idx, c in zip(indices, ai_classified.classified_contentions, strict=False):
-        response.contentions[idx].classification_code = c.classification_code
-        response.contentions[idx].classification_name = c.classification_name
+
+    try:
+        for idx, c in zip(indices, ai_classified.classified_contentions, strict=True):
+            response.contentions[idx].classification_code = c.classification_code
+            response.contentions[idx].classification_name = c.classification_name
+    except ValueError:
+        log_as_json({"message": "Mismatched contentions between AI and original classifications"})
     return response
 
 
