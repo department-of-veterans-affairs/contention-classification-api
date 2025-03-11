@@ -1,3 +1,4 @@
+import traceback
 from typing import Any, Dict, Optional, Protocol, Tuple, Union, runtime_checkable
 
 import httpx
@@ -11,7 +12,7 @@ from ..pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from .api_client import AiClient
+from .ai_client import AiClient
 from .app_utilities import app_config, dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_utilities import log_as_json, log_contention_stats_decorator
@@ -145,4 +146,6 @@ def ml_classification(response: ClassifierResponse, claim: VaGovClaim) -> Classi
         log_as_json({"message": "Failure to reach AI Endpoint", "error": str(e)})
     except httpx.RequestError as e:
         log_as_json({"message": "Failure to reach AI Endpoint", "error": str(e)})
+    except Exception as e:
+        log_as_json({"message": "Unexpected error in ML classification", "error": str(e), "traceback": traceback.format_exc()})
     return response

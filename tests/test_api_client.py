@@ -1,10 +1,10 @@
 from unittest.mock import MagicMock, patch
 
 from src.python_src.pydantic_models import AiRequest, AiResponse, ClassifiedContention, Contention
-from src.python_src.util.api_client import AiClient
+from src.python_src.util.ai_client import AiClient
 
 
-@patch("src.python_src.util.api_client.AiClient")
+@patch("src.python_src.util.ai_client.AiClient")
 def test_classify_contention(mock_ai_client: MagicMock) -> None:
     mock_instance = mock_ai_client.return_value
     mock_response = AiResponse(
