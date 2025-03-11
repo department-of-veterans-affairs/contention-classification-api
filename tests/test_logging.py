@@ -10,6 +10,7 @@ from fastapi import Request
 from starlette.datastructures import Headers
 
 from src.python_src.pydantic_models import (
+    AiResponse,
     ClassifiedContention,
     ClassifierResponse,
     Contention,
@@ -17,7 +18,7 @@ from src.python_src.pydantic_models import (
 )
 from src.python_src.util.app_utilities import dropdown_lookup_table, expanded_lookup_table
 from src.python_src.util.classifier_utilities import get_classification_code_name
-from src.python_src.util.logging_utilities import log_claim_stats_v2, log_contention_stats
+from src.python_src.util.logging_utilities import log_claim_stats_v2, log_contention_stats, log_ml_contention_stats
 
 test_expanded_request = Request(
     scope={
@@ -513,3 +514,66 @@ def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
     log_claim_stats_v2(test_claim, classifier_response, test_expanded_request)
     mocked_func.assert_called_with(expected_claim_log)
     assert mocked_func.call_count == 3
+
+
+@patch("src.python_src.util.logging_utilities.log_as_json")
+def test_ml_classification_logging(mock_log: Mock) -> None:
+    test_AI_response = AiResponse(
+        classified_contentions=[
+            ClassifiedContention(
+                classification_code=9999,
+                classification_name="ML Classified",
+                diagnostic_code=None,
+                contention_type="NEW",
+            ),
+            ClassifiedContention(
+                classification_code=9999,
+                classification_name="ML Classified",
+                diagnostic_code=None,
+                contention_type="NEW",
+            ),
+        ]
+    )
+    response = ClassifierResponse(
+        contentions=[
+            ClassifiedContention(
+                classification_code=8997,
+                classification_name="Classification Name",
+                contention_type="NEW",
+            ),
+            ClassifiedContention(
+                classification_code=None,
+                classification_name=None,
+                diagnostic_code=None,
+                contention_type="NEW",
+            ),
+            ClassifiedContention(
+                classification_code=None,
+                classification_name=None,
+                diagnostic_code=None,
+                contention_type="NEW",
+            ),
+        ],
+        claim_id=100,
+        form526_submission_id=500,
+        is_fully_classified=False,
+        num_processed_contentions=3,
+        num_classified_contentions=1,
+    )
+    # call function
+    log_ml_contention_stats(response, test_AI_response)
+    expected_logs = {
+        "vagov_claim_id": 100,
+        "claim_type": "new",
+        "classification_code": 9999,
+        "classification_name": "ML Classified",
+        "contention_text": "FILTERED [AI Classification]",
+        "diagnostic_code": None,
+        "is_in_dropdown": False,
+        "is_lookup_table_match": False,
+        "is_multi_contention": True,
+        "endpoint": "AI Classification Endpoint",
+        "classification_method": "AI Classification",
+    }
+    mock_log.assert_called_with(expected_logs)
+    assert mock_log.call_count == 2
