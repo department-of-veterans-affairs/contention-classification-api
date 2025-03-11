@@ -99,7 +99,7 @@ def log_contention_stats(
         "classification_method": classified_by,
     }
 
-    if request.url.path == "/expanded-contention-classification":
+    if request.url.path == "/expanded-contention-classification" or request.url.path == "/hybrid-contention-classification":
         logging_dict = log_expanded_contention_text(logging_dict, contention.contention_text, log_contention_text)
 
     log_as_json(logging_dict)
