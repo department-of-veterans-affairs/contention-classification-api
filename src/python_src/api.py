@@ -5,12 +5,15 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import Response
 
 from .pydantic_models import (
+    AiRequest,
+    AiResponse,
     ClaimLinkInfo,
+    ClassifiedContention,
     ClassifierResponse,
     VaGovClaim,
 )
 from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
-from .util.classifier_utilities import classify_contention
+from .util.classifier_utilities import classify_claim, ml_classification
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 from .util.sanitizer import sanitize_log
 
@@ -37,10 +40,7 @@ app = FastAPI(
 
 
 @app.middleware("http")
-async def save_process_time_as_metric(
-    request: Request,
-    call_next: Callable[[Request], Awaitable[Response]]
-) -> Response:
+async def save_process_time_as_metric(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time
@@ -83,41 +83,45 @@ def link_vbms_claim_id(claim_link_info: ClaimLinkInfo) -> Dict[str, bool]:
 @app.post("/va-gov-claim-classifier")
 @log_claim_stats_decorator
 def va_gov_claim_classifier(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    classified_contentions = []
-    for contention in claim.contentions:
-        classification = classify_contention(contention, claim, request)
-        classified_contentions.append(classification)
-
-    num_classified = len([c for c in classified_contentions if c.classification_code])
-
-    response = ClassifierResponse(
-        contentions=classified_contentions,
-        claim_id=claim.claim_id,
-        form526_submission_id=claim.form526_submission_id,
-        is_fully_classified=num_classified == len(classified_contentions),
-        num_processed_contentions=len(classified_contentions),
-        num_classified_contentions=num_classified,
-    )
-
+    response = classify_claim(claim, request)
     return response
 
 
 @app.post("/expanded-contention-classification")
 @log_claim_stats_decorator
 def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    classified_contentions = []
-    for contention in claim.contentions:
-        classification = classify_contention(contention, claim, request)
-        classified_contentions.append(classification)
+    response = classify_claim(claim, request)
+    return response
 
-    num_classified = len([c for c in classified_contentions if c.classification_code])
 
-    response = ClassifierResponse(
-        contentions=classified_contentions,
-        claim_id=claim.claim_id,
-        form526_submission_id=claim.form526_submission_id,
-        is_fully_classified=num_classified == len(classified_contentions),
-        num_processed_contentions=len(classified_contentions),
-        num_classified_contentions=num_classified,
-    )
+@app.post("/ml-contention-classification")
+def fake_endpoint(contentions: AiRequest) -> AiResponse:
+    c: list[ClassifiedContention] = []
+    for contention in contentions.contentions:
+        temp_classification = ClassifiedContention(
+            classification_code=9999,
+            classification_name="ml classification",
+            diagnostic_code=contention.diagnostic_code,
+            contention_type=contention.contention_type,
+        )
+        c.append(temp_classification)
+    response = AiResponse(classified_contentions=c)
+
+    return response
+
+
+@app.post("/hybrid-contention-classification")
+@log_claim_stats_decorator
+def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResponse:
+    # classifies usinge expanded classification
+    response: ClassifierResponse = classify_claim(claim, request)
+
+    if response.is_fully_classified:
+        return response
+
+    response = ml_classification(response, claim)
+
+    num_classified = len([c for c in response.contentions if c.classification_code])
+    response.num_classified_contentions = num_classified
+    response.is_fully_classified = num_classified == len(response.contentions)
     return response
