@@ -1,15 +1,20 @@
 from typing import Any, Dict, Optional, Protocol, Tuple, Union, runtime_checkable
 
+import httpx
 from fastapi import Request
 
 from ..pydantic_models import (
+    AiRequest,
+    AiResponse,
     ClassifiedContention,
+    ClassifierResponse,
     Contention,
     VaGovClaim,
 )
-from .app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
+from .api_client import AiClient
+from .app_utilities import app_config, dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
 from .expanded_lookup_table import ExpandedLookupTable
-from .logging_utilities import log_contention_stats_decorator
+from .logging_utilities import log_as_json, log_contention_stats_decorator, log_ml_stats_decorator
 from .lookup_table import ContentionTextLookupTable
 
 
@@ -19,8 +24,7 @@ class LookupTable(Protocol):
 
 
 def get_classification_code_name(
-    contention: Contention,
-    lookup_table: LookupTable
+    contention: Contention, lookup_table: LookupTable
 ) -> Tuple[Optional[int], Optional[str], str]:
     """
     check contention type and match contention to appropriate table's
@@ -64,16 +68,12 @@ def get_classification_code_name(
 
 
 @log_contention_stats_decorator
-def classify_contention(
-    contention: Contention,
-    claim: VaGovClaim,
-    request: Request
-) -> Tuple[ClassifiedContention, str]:
+def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> Tuple[ClassifiedContention, str]:
     lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable]
-    if request.url.path == "/expanded-contention-classification":
-        lookup_table = expanded_lookup_table
-    else:
+    if request.url.path == "/va-gov-claim-classifier":
         lookup_table = dropdown_lookup_table
+    else:
+        lookup_table = expanded_lookup_table
 
     classification_code, classification_name, classified_by = get_classification_code_name(contention, lookup_table)
 
@@ -84,3 +84,70 @@ def classify_contention(
         contention_type=contention.contention_type,
     )
     return response, classified_by
+
+
+def classify_claim(claim: VaGovClaim, request: Request) -> ClassifierResponse:
+    classified_contentions: list[ClassifiedContention] = []
+    for contention in claim.contentions:
+        classification = classify_contention(contention, claim, request)
+        classified_contentions.append(classification)
+
+    num_classified = len([c for c in classified_contentions if c.classification_code])
+
+    response = ClassifierResponse(
+        contentions=classified_contentions,
+        claim_id=claim.claim_id,
+        form526_submission_id=claim.form526_submission_id,
+        is_fully_classified=num_classified == len(classified_contentions),
+        num_processed_contentions=len(classified_contentions),
+        num_classified_contentions=num_classified,
+    )
+
+    return response
+
+
+def build_ai_request(response: ClassifierResponse, claim: VaGovClaim) -> tuple[list[int], AiRequest]:
+    """
+    Builds the request body for the Ai Classifier by extracting unclassified contentions
+    """
+    non_classified_indices = [i for i, c in enumerate(response.contentions) if not c.classification_code]
+
+    non_classified_contentions = [claim.contentions[i] for i in non_classified_indices]
+    ai_request = AiRequest(contentions=non_classified_contentions)
+    return non_classified_indices, ai_request
+
+
+@log_ml_stats_decorator
+def update_classifications(response: ClassifierResponse, indices: list[int], ai_classified: AiResponse) -> ClassifierResponse:
+    """
+    Updates the originally classified claim with classifications from the ml classifier
+    """
+
+    try:
+        for idx, c in zip(indices, ai_classified.classified_contentions, strict=True):
+            response.contentions[idx].classification_code = c.classification_code
+            response.contentions[idx].classification_name = c.classification_name
+    except ValueError:
+        log_as_json({"message": "Mismatched contentions between AI and original classifications"})
+    return response
+
+
+def ml_classification(response: ClassifierResponse, claim: VaGovClaim) -> ClassifierResponse:
+    """
+    Establishes and calls the AI client to classify unclassified contentions
+    """
+    non_classified_indices, ai_request = build_ai_request(response, claim)
+    client = AiClient(base_url=app_config["ai_classification_endpoint"]["url"])
+    try:
+        ai_response = client.classify_contention(
+            endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=ai_request
+        )
+
+        response = update_classifications(response, non_classified_indices, ai_response)
+
+        return response
+    except httpx.HTTPStatusError as e:
+        log_as_json({"message": "Failure to reach AI Endpoint", "error": str(e)})
+    except httpx.RequestError as e:
+        log_as_json({"message": "Failure to reach AI Endpoint", "error": str(e)})
+    return response
