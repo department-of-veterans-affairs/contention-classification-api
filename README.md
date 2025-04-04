@@ -106,31 +106,7 @@ To test the health of the application or to check if the application is running 
 curl -X 'GET' 'http://localhost:8120/health'
 ```
 
-To test the classification provided at the `contention-classification/va-gov-claim-classifier` endpoint:
-
-```
-curl -X 'POST'   'http://localhost:8120/va-gov-claim-classifier'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
-  "claim_id": 44,
-  "form526_submission_id": 55,
-  "contentions": [
-        {
-            "contention_text": "PTSD (post-traumatic stress disorder)",
-            "contention_type": "NEW"
-        },
-        {
-            "contention_text": "acl tear, right",
-            "contention_type": "NEW"
-        },
-        {
-            "contention_text": "",
-            "contention_type": "INCREASE",
-            "diagnostic_code": 5012
-        }
-    ]
-}'
-```
-
-To test the classification provided by the experimental endpoint at `contention-classification/expanded-contention-classification`:
+To test the classification provided by the endpoint at `contention-classification/expanded-contention-classification`:
 ```
 curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
   "claim_id": 44,

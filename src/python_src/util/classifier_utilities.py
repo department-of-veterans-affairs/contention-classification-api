@@ -4,10 +4,11 @@ from fastapi import Request
 
 from ..pydantic_models import (
     ClassifiedContention,
+    ClassifierResponse,
     Contention,
     VaGovClaim,
 )
-from .app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
+from .app_utilities import dc_lookup_table, expanded_lookup_table
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_utilities import log_contention_stats_decorator
 from .lookup_table import ContentionTextLookupTable
@@ -19,8 +20,7 @@ class LookupTable(Protocol):
 
 
 def get_classification_code_name(
-    contention: Contention,
-    lookup_table: LookupTable
+    contention: Contention, lookup_table: LookupTable
 ) -> Tuple[Optional[int], Optional[str], str]:
     """
     check contention type and match contention to appropriate table's
@@ -64,16 +64,8 @@ def get_classification_code_name(
 
 
 @log_contention_stats_decorator
-def classify_contention(
-    contention: Contention,
-    claim: VaGovClaim,
-    request: Request
-) -> Tuple[ClassifiedContention, str]:
-    lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable]
-    if request.url.path == "/expanded-contention-classification":
-        lookup_table = expanded_lookup_table
-    else:
-        lookup_table = dropdown_lookup_table
+def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> Tuple[ClassifiedContention, str]:
+    lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable] = expanded_lookup_table
 
     classification_code, classification_name, classified_by = get_classification_code_name(contention, lookup_table)
 
@@ -84,3 +76,22 @@ def classify_contention(
         contention_type=contention.contention_type,
     )
     return response, classified_by
+
+
+def classify_claim(claim: VaGovClaim, request: Request) -> ClassifierResponse:
+    classified_contentions = []
+    for contention in claim.contentions:
+        classification = classify_contention(contention, claim, request)
+        classified_contentions.append(classification)
+
+    num_classified = len([c for c in classified_contentions if c.classification_code])
+
+    response = ClassifierResponse(
+        contentions=classified_contentions,
+        claim_id=claim.claim_id,
+        form526_submission_id=claim.form526_submission_id,
+        is_fully_classified=num_classified == len(classified_contentions),
+        num_processed_contentions=len(classified_contentions),
+        num_classified_contentions=num_classified,
+    )
+    return response

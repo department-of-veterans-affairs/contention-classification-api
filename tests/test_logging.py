@@ -15,7 +15,7 @@ from src.python_src.pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from src.python_src.util.app_utilities import dropdown_lookup_table, expanded_lookup_table
+from src.python_src.util.app_utilities import expanded_lookup_table
 from src.python_src.util.classifier_utilities import get_classification_code_name
 from src.python_src.util.logging_utilities import log_claim_stats_v2, log_contention_stats
 
@@ -24,15 +24,6 @@ test_expanded_request = Request(
         "type": "http",
         "method": "POST",
         "path": "/expanded-contention-classification",
-        "headers": Headers(),
-    }
-)
-
-test_current_classifier_request = Request(
-    scope={
-        "type": "http",
-        "method": "POST",
-        "path": "/va-gov-claim-classifier",
         "headers": Headers(),
     }
 )
@@ -47,9 +38,7 @@ def test_create_classification_method_new() -> None:
         contention_type="NEW",
     )
     classification_method_expanded = get_classification_code_name(test_contention, expanded_lookup_table)[2]
-    classification_method_original = get_classification_code_name(test_contention, dropdown_lookup_table)[2]
     assert classification_method_expanded == "contention_text"
-    assert classification_method_original == "not classified"
 
 
 def test_create_classification_method_inc() -> None:
@@ -69,12 +58,8 @@ def test_create_classification_method_inc() -> None:
 
     classification_method_dc = get_classification_code_name(test_contention_dc, expanded_lookup_table)[2]
     classification_method_lookup = get_classification_code_name(test_contention_lookup, expanded_lookup_table)[2]
-    original_method_dc = get_classification_code_name(test_contention_dc, dropdown_lookup_table)[2]
-    original_method_lookup = get_classification_code_name(test_contention_lookup, dropdown_lookup_table)[2]
     assert classification_method_dc == "diagnostic_code"
     assert classification_method_lookup == "contention_text"
-    assert original_method_dc == "diagnostic_code"
-    assert original_method_lookup == "contention_text"
 
 
 def test_create_classification_method_not_classed() -> None:
@@ -86,9 +71,7 @@ def test_create_classification_method_not_classed() -> None:
         contention_type="NEW",
     )
     classification_method = get_classification_code_name(test_contention_test, expanded_lookup_table)[2]
-    original_method = get_classification_code_name(test_contention_test, dropdown_lookup_table)[2]
     assert classification_method == "not classified"
-    assert original_method == "not classified"
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
@@ -376,48 +359,6 @@ def test_log_claim_stats(mocked_func: Mock) -> None:
     }
     log_claim_stats_v2(test_claim, classifier_response, test_expanded_request)
     mocked_func.assert_called_once_with(expected_log)
-
-
-@patch("src.python_src.util.logging_utilities.log_as_json")
-def test_current_classifier_contention(mocked_func: Mock) -> None:
-    """
-    Tests the logging of the current contention logs
-    """
-    test_contention = Contention(
-        contention_text="acl tear right",
-        contention_type="NEW",
-    )
-    test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=[test_contention])
-    classified_contention = ClassifiedContention(
-        classification_code=None,
-        classification_name=None,
-        diagnostic_code=None,
-        contention_type="NEW",
-    )
-    classified_by = "not classified"
-    log_contention_stats(
-        test_contention,
-        classified_contention,
-        test_claim,
-        test_current_classifier_request,
-        classified_by,
-    )
-
-    expected_logging_dict = {
-        "vagov_claim_id": test_claim.claim_id,
-        "claim_type": "new",
-        "classification_code": classified_contention.classification_code,
-        "classification_name": classified_contention.classification_name,
-        "contention_text": "unmapped contention text",
-        "diagnostic_code": "None",
-        "is_in_dropdown": False,
-        "is_lookup_table_match": False,
-        "is_multi_contention": False,
-        "endpoint": "/va-gov-claim-classifier",
-        "classification_method": classified_by,
-    }
-
-    mocked_func.assert_called_once_with(expected_logging_dict)
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
