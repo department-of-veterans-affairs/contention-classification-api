@@ -5,14 +5,12 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import Response
 
 from .pydantic_models import (
-    ClaimLinkInfo,
     ClassifierResponse,
     VaGovClaim,
 )
 from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
 from .util.classifier_utilities import classify_claim
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
-from .util.sanitizer import sanitize_log
 
 app = FastAPI(
     title="Contention Classification",
@@ -61,27 +59,6 @@ def get_health_status() -> Dict[str, str]:
         else:
             raise HTTPException(status_code=500, detail=f"{', '.join(empty_tables)} tables are empty")
     return {"status": "ok"}
-
-
-@app.post("/claim-linker")
-def link_vbms_claim_id(claim_link_info: ClaimLinkInfo) -> Dict[str, bool]:
-    log_as_json(
-        {
-            "message": "linking claims",
-            "va_gov_claim_id": sanitize_log(claim_link_info.va_gov_claim_id),
-            "vbms_claim_id": sanitize_log(claim_link_info.vbms_claim_id),
-        }
-    )
-    return {
-        "success": True,
-    }
-
-
-@app.post("/va-gov-claim-classifier")
-@log_claim_stats_decorator
-def va_gov_claim_classifier(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    response = classify_claim(claim, request)
-    return response
 
 
 @app.post("/expanded-contention-classification")
