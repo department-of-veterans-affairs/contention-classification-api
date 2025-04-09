@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, Protocol, Tuple, Union, runtime_checkable
+from typing import Any, Dict, Optional, Protocol, Tuple, runtime_checkable
 
 from fastapi import Request
 
@@ -11,7 +11,6 @@ from ..pydantic_models import (
 from .app_utilities import dc_lookup_table, expanded_lookup_table
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_utilities import log_contention_stats_decorator
-from .lookup_table import ContentionTextLookupTable
 
 
 @runtime_checkable
@@ -65,7 +64,7 @@ def get_classification_code_name(
 
 @log_contention_stats_decorator
 def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> Tuple[ClassifiedContention, str]:
-    lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable] = expanded_lookup_table
+    lookup_table: ExpandedLookupTable = expanded_lookup_table
 
     classification_code, classification_name, classified_by = get_classification_code_name(contention, lookup_table)
 
