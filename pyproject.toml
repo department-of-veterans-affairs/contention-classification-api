@@ -76,10 +76,10 @@ packages = [{include = "python_src", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "3.12.3"
-poetry = "2.1.1"
-fastapi = "0.115.11"
+poetry = "2.1.2"
+fastapi = "0.115.12"
 httpx = "0.28.1"
-pydantic = "2.10.6"
+pydantic = "2.11.3"
 pyyaml = "6.0.2"
 uvicorn = {extras = ["standard"], version = "0.34.0"}
 
@@ -87,9 +87,9 @@ uvicorn = {extras = ["standard"], version = "0.34.0"}
 [tool.poetry.group.dev.dependencies]
 mypy = "1.15.0"
 pre-commit = "4.2.0"
-ruff = "0.11.2"
+ruff = "0.11.4"
 pytest = "8.3.5"
-pytest-cov = "6.0.0"
+pytest-cov = "6.1.1"
 bandit = {version = "1.8.3", extras = ["toml"]}
 types-pyyaml = "6.0.12.20241230"
 
