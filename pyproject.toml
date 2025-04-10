@@ -7,7 +7,7 @@ authors = [
 	{name = "Department of Veterans Affairs"}
 ]
 readme = "README.md"
-license = {file = "LICENSE.md"}
+license = "CC0-1.0"
 keywords = ["veterans", "contention", "classification", "api", "fastapi"]
 classifiers = [
     "Development Status :: 4 - Beta",
