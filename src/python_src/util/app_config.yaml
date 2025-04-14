@@ -34,8 +34,9 @@ diagnostic_code_table:
   classification_code: CLASSIFICATION_CODE
   classification_name: CLASSIFICATION_TEXT
   release_notes: >
-    Demostration File
-  release_date: 20254-09-12
+    Added mappings 11 DCs added: 9411 for PTSD, 5012, 5015, and new DCs because of updates to Digestive section of rating schedule.
+    3 DCs removed: 5003 for degenerative arthritis, 5017 for gout, and 5010 for post-traumatic arthritis"""
+  release_date: 2024-09-12
 autosuggestion_table:
   version_number: v0.2
   filename: "CC Taxonomy master"
