@@ -28,9 +28,9 @@ Mac Users: you can use pyenv to handle multiple python versions
 brew install pyenv
 pyenv install 3.12.3 #Installs latest version of python 3.12.3
 pyenv global 3.12.3 # or don't do this if you want a different version available globally for your system
-```
+````
 
-Mac Users: If python path hasn't been setup, you can put the following in your ~/.zshrc
+Mac Users: If python path hasn't been setup, you can put the following in your \~/.zshrc
 
 ```bash
 export PYENV_ROOT="$HOME/.pyenv"
@@ -76,6 +76,8 @@ Using Poetry, run the FastAPI server:
 poetry run uvicorn python_src.api:app --port 8120 --reload
 ```
 
+When running locally, if required ML model files are not present in `src/python_src/util/models/`, they will be downloaded at runtime from a private S3 bucket. Ensure that valid AWS credentials are available in your environment (via environment variables or `~/.aws/credentials`).
+
 ### Run tests
 
 Using Poetry, run the test suite:
@@ -91,22 +93,39 @@ poetry run pytest --cov=src --cov-report=term-missing
 ```
 
 ## Running with Docker
+
 This application can also be run with Docker using the following commands.
+
 ```
 docker compose down
 docker compose build --no-cache
 docker compose up -d
 ```
 
+The Dockerfile includes commands to download the required ML model files (`tfidf_vectorizer.pkl` and `logistic_model.pkl`) from a private S3 bucket during the build process. You must provide AWS credentials at build time:
+
+```bash
+docker build \
+  --build-arg AWS_ACCESS_KEY_ID=your_key \
+  --build-arg AWS_SECRET_ACCESS_KEY=your_secret \
+  --build-arg AWS_SESSION_TOKEN=your_session_token \
+  -t contention-classifier .
+```
+
+If the models are not downloaded during build, the application will attempt to download them from S3 at runtime.
+
 ## Testing locally
+
 With the application running using either Docker or Python, tests requests can be sent using the following curl commands.
 
 To test the health of the application or to check if the application is running at the `contention-classification/health` endpoint:
+
 ```
 curl -X 'GET' 'http://localhost:8120/health'
 ```
 
 To test the classification provided by the endpoint at `contention-classification/expanded-contention-classification`:
+
 ```
 curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
   "claim_id": 44,
@@ -130,7 +149,6 @@ curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H
 ```
 
 An alternative to the above `curl` commands is to use a local testing application like [Bruno](https://www.usebruno.com/) or [Postman](https://www.postman.com/).  Different JSON request bodies can be set up for testing each of the above endpoints and tests can be saved using Collections within these tools.
-
 
 ## Building docs
 
@@ -167,14 +185,18 @@ docker volume prune
 ``` -->
 
 ## Deploying to VA Platform
+
 ### Building the image and publishing to ECR
-Images are built and pushed to ECR using the [build_and_push_to_ecr.yml](.github/workflows/build_and_push_to_ecr.yml) workflow which is triggered in one of two ways:
+
+Images are built and pushed to ECR using the [build\_and\_push\_to\_ecr.yml](.github/workflows/build_and_push_to_ecr.yml) workflow which is triggered in one of two ways:
+
 * Automatically: when pushed when changes are pushed to the `main` branch, which should only be done when a Pull Request is merged into the `main` branch
 * Manually: by triggering the action in [Github](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml)
 
 This workflow is not triggered when changes are pushed to any branch other than the `main` branch.
 
 ### Deploying the image
+
 The image is released to the VA Platform using the [release.yml](.github/workflows/release.yml) workflow which is triggered when a new image is pushed to ECR.
 This workflow will deploy the latest image to the VA Platform automatically for the `dev` and `staging` environments.
 The `sandbox` and `prod` environments must be deployed manually by triggering the action in [Github](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/release.yml) and selecting the desired environment(s).

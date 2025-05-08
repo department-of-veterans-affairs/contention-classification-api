@@ -3,13 +3,60 @@ import re
 import string
 import joblib
 from typing import Optional, Tuple
+import boto3
+from botocore.exceptions import ClientError
 
-# Load the models
-TFIDF_PATH = os.path.join(os.path.dirname(__file__), 'models', 'tfidf_vectorizer.pkl')
-CLASSIFIER_PATH = os.path.join(os.path.dirname(__file__), 'models', 'logistic_model.pkl')
+# constants
+MODEL_DIR = os.path.join(os.path.dirname(__file__), 'models')
+TFIDF_FILENAME = 'tfidf_vectorizer.pkl'
+LOGREG_FILENAME = 'logistic_model.pkl'
+
+S3_BUCKET = 'private-bucket-name'
+S3_PATHS = {
+    TFIDF_FILENAME: 'path/in/s3/tfidf_vectorizer.pkl',
+    LOGREG_FILENAME: 'path/in/s3/logistic_model.pkl'
+}
+
+
+def model_exists_locally(filename: str) -> bool:
+    return os.path.exists(os.path.join(MODEL_DIR, filename))
+
+
+def download_model_from_s3(filename: str):
+    """Downloads a single file from S3 into the model folder."""
+    s3_key = S3_PATHS[filename]
+    local_path = os.path.join(MODEL_DIR, filename)
+    s3 = boto3.client('s3')
+
+    try:
+        print(f"Downloading {filename} from s3://{S3_BUCKET}/{s3_key}")
+        s3.download_file(S3_BUCKET, s3_key, local_path)
+    except ClientError as e:
+        print(f"Error downloading {filename} from S3: {e}")
+        raise RuntimeError(f"Model download failed for {filename}")
+
+def ensure_models_exist():
+    """Ensures models are present. Downloads missing ones from S3."""
+    os.makedirs(MODEL_DIR, exist_ok=True)
+
+    for filename in [TFIDF_FILENAME, LOGREG_FILENAME]:
+        if not model_exists_locally(filename):
+            print(f"filename} not found locally. Attempting download...")
+            download_model_from_s3(filename)
+        else:
+            print(f"{filename} found locally.")
+
+
+# ensure models exist before loading
+ensure_models_exist()
+
+# Load models
+TFIDF_PATH = os.path.join(MODEL_DIR, TFIDF_FILENAME)
+CLASSIFIER_PATH = os.path.join(MODEL_DIR, LOGREG_FILENAME)
 
 tfidf_vectorizer = joblib.load(TFIDF_PATH)
 logistic_model = joblib.load(CLASSIFIER_PATH)
+
 
 # dummy clean text. will be replace by the one used on training pipeline
 def clean_text(text: str) -> str:
