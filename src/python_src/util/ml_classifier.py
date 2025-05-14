@@ -1,22 +1,19 @@
 import os
 import re
 import string
-import joblib
+import onnxruntime as ort
 from typing import Optional, Tuple
 import boto3
 from botocore.exceptions import ClientError
 
 # constants
 MODEL_DIR = os.path.join(os.path.dirname(__file__), 'models')
-TFIDF_FILENAME = 'tfidf_vectorizer.pkl'
-LOGREG_FILENAME = 'logistic_model.pkl'
+ONNX_FILENAME = 'classifier.onnx'
 
 S3_BUCKET = 'private-bucket-name'
 S3_PATHS = {
-    TFIDF_FILENAME: 'path/in/s3/tfidf_vectorizer.pkl',
-    LOGREG_FILENAME: 'path/in/s3/logistic_model.pkl'
+    ONNX_FILENAME: 'path/in/s3/classifier.onnx'
 }
-
 
 def model_exists_locally(filename: str) -> bool:
     return os.path.exists(os.path.join(MODEL_DIR, filename))
@@ -50,12 +47,13 @@ def ensure_models_exist():
 # ensure models exist before loading
 ensure_models_exist()
 
-# Load models
-TFIDF_PATH = os.path.join(MODEL_DIR, TFIDF_FILENAME)
-CLASSIFIER_PATH = os.path.join(MODEL_DIR, LOGREG_FILENAME)
+# Load ONNX model
+ONNX_PATH = os.path.join(MODEL_DIR, ONNX_FILENAME)
+session = ort.InferenceSession(ONNX_PATH, providers=["CPUExecutionProvider"])
 
-tfidf_vectorizer = joblib.load(TFIDF_PATH)
-logistic_model = joblib.load(CLASSIFIER_PATH)
+# get input and output names
+input_name = session.get_inputs()[0].name
+output_name = session.get_outputs()[0].name
 
 
 # dummy clean text. will be replace by the one used on training pipeline
@@ -66,13 +64,19 @@ def clean_text(text: str) -> str:
     text = text.strip()
     return text
 
-
 def ml_classify_text(text: str) -> Optional[int]:
     if not text:
         return None
 
     cleaned = clean_text(text)
-    transformed = tfidf_vectorizer.transform([cleaned])
-    prediction = logistic_model.predict(transformed)[0]
 
-    return prediction
+    # ONNX model expects a list of strings for text input
+    inputs = {input_name: np.array([cleaned])}
+
+    try:
+        result = session.run([output_name], inputs)[0]
+        prediction = int(result[0])
+        return prediction
+    except Exception as e:
+        print(f"ONNX inference failed: {e}")
+        return None
