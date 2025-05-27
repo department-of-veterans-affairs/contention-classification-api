@@ -191,7 +191,7 @@ API Documentation is automatically created by FastAPI. This can be viewed by vis
 For exporting the open API spec:
 
 ```bash
-poetry run python src/python_src/pull_api_documentation.py
+poetry run python src/python_src/util/pull_api_documentation.py
 ```
 
 <!--
