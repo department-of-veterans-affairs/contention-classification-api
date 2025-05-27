@@ -36,9 +36,7 @@ def log_as_json(log: Dict[str, Any]) -> None:
 
 
 def log_expanded_contention_text(
-    logging_dict: Dict[str, Any],
-    contention_text: str,
-    log_contention_text: str
+    logging_dict: Dict[str, Any], contention_text: str, log_contention_text: str
 ) -> Dict[str, Any]:
     """
     Updates the  logging dictionary with the contention text updates from the expanded classification method
@@ -106,11 +104,7 @@ def log_contention_stats(
     log_as_json(logging_dict)
 
 
-def log_claim_stats_v2(
-    claim: VaGovClaim,
-    response: ClassifierResponse,
-    request: Request
-) -> None:
+def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request: Request) -> None:
     """
     Logs stats about each claim processed by the classifier.  This will provide
     the capability to build widgets to track metrics about claims.
@@ -128,8 +122,9 @@ def log_claim_stats_v2(
     )
 
 
-F = TypeVar('F', bound=Callable[..., Any])
-R = TypeVar('R')
+F = TypeVar("F", bound=Callable[..., Any])
+R = TypeVar("R")
+
 
 def log_claim_stats_decorator(func: F) -> F:
     @wraps(func)
@@ -147,8 +142,8 @@ def log_claim_stats_decorator(func: F) -> F:
 
 
 def log_contention_stats_decorator(
-        func: Callable[..., Tuple[ClassifiedContention, str]]
-    ) -> Callable[..., ClassifiedContention]:
+    func: Callable[..., Tuple[ClassifiedContention, str]],
+) -> Callable[..., ClassifiedContention]:
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> ClassifiedContention:
         result, classified_by = func(*args, **kwargs)

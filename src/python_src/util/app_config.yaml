@@ -1,5 +1,5 @@
 condition_dropdown_table:
-  version_number: v0.1
+  version_number: v0.2
   filename: "CC Taxonomy master"
   input_key:
     - Main condition/term
@@ -24,9 +24,9 @@ condition_dropdown_table:
   classification_name: Classification Text
   active_classification: Active classification mapping
   release_notes: |
-    Updated format for master taxonomy to use a wide format instead of combining multiple csvs
-    to create the lookup table csv files.
-  release_date: 2024-09-12
+    Adds synonyms for conditions and includes 5 new terms and mappings. The added terms are
+    skin carcinoma, eye cancer, vision cancer, vascular soft tissue sarcoma, and angiosarcoma.
+  release_date: 2025-04-14
 diagnostic_code_table:
   version_number: v0.6
   filename: "[Release notes] Diagnostic Code to Classification mapping release notes - DC Lookup"
@@ -38,7 +38,7 @@ diagnostic_code_table:
     3 DCs removed: 5003 for degenerative arthritis, 5017 for gout, and 5010 for post-traumatic arthritis"""
   release_date: 2024-09-12
 autosuggestion_table:
-  version_number: v0.1
+  version_number: v0.2
   filename: "CC Taxonomy master"
   active_autocomplete: Active autosuggestion terms
   autocomplete_terms:
@@ -49,9 +49,8 @@ autosuggestion_table:
     - Autosuggestion term 5
     - Autosuggestion term 6
   release_notes: >
-    Updated format for master taxonomy to use a wide format instead of combining multiple csvs
-    to create the lookup table csv files.
-  release_date: 2024-09-12
+    No updates to the autosuggestion for this v0.2 release.
+  release_date: 2025-04-14
 musculoskeletal_lut:
   ankle:
     classification_code: 8991

@@ -7,7 +7,6 @@ from fastapi.responses import Response
 from .pydantic_models import (
     AiRequest,
     AiResponse,
-    ClaimLinkInfo,
     ClassifiedContention,
     ClassifierResponse,
     VaGovClaim,
@@ -15,7 +14,6 @@ from .pydantic_models import (
 from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
 from .util.classifier_utilities import classify_claim, ml_classification
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
-from .util.sanitizer import sanitize_log
 
 app = FastAPI(
     title="Contention Classification",
@@ -66,27 +64,6 @@ def get_health_status() -> Dict[str, str]:
     return {"status": "ok"}
 
 
-@app.post("/claim-linker")
-def link_vbms_claim_id(claim_link_info: ClaimLinkInfo) -> Dict[str, bool]:
-    log_as_json(
-        {
-            "message": "linking claims",
-            "va_gov_claim_id": sanitize_log(claim_link_info.va_gov_claim_id),
-            "vbms_claim_id": sanitize_log(claim_link_info.vbms_claim_id),
-        }
-    )
-    return {
-        "success": True,
-    }
-
-
-@app.post("/va-gov-claim-classifier")
-@log_claim_stats_decorator
-def va_gov_claim_classifier(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    response = classify_claim(claim, request)
-    return response
-
-
 @app.post("/expanded-contention-classification")
 @log_claim_stats_decorator
 def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierResponse:
@@ -124,4 +101,5 @@ def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResp
     num_classified = len([c for c in response.contentions if c.classification_code])
     response.num_classified_contentions = num_classified
     response.is_fully_classified = num_classified == len(response.contentions)
+
     return response

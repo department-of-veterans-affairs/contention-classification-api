@@ -10,7 +10,7 @@
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 [![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-`/contention-classification/va-gov-claim-classifier` maps contention text and diagnostic codes from 526 submission to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
+`/contention-classification/expanded-contention-classification` maps contention text and diagnostic codes from 526 submission to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
 
 ## Getting started
 
@@ -106,31 +106,7 @@ To test the health of the application or to check if the application is running 
 curl -X 'GET' 'http://localhost:8120/health'
 ```
 
-To test the classification provided at the `contention-classification/va-gov-claim-classifier` endpoint:
-
-```
-curl -X 'POST'   'http://localhost:8120/va-gov-claim-classifier'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
-  "claim_id": 44,
-  "form526_submission_id": 55,
-  "contentions": [
-        {
-            "contention_text": "PTSD (post-traumatic stress disorder)",
-            "contention_type": "NEW"
-        },
-        {
-            "contention_text": "acl tear, right",
-            "contention_type": "NEW"
-        },
-        {
-            "contention_text": "",
-            "contention_type": "INCREASE",
-            "diagnostic_code": 5012
-        }
-    ]
-}'
-```
-
-To test the classification provided by the experimental endpoint at `contention-classification/expanded-contention-classification`:
+To test the classification provided by the endpoint at `contention-classification/expanded-contention-classification`:
 ```
 curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
   "claim_id": 44,
