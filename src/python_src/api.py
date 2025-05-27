@@ -113,7 +113,7 @@ def fake_endpoint(contentions: AiRequest) -> AiResponse:
 @app.post("/hybrid-contention-classification")
 @log_claim_stats_decorator
 def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    # classifies usinge expanded classification
+    # classifies using expanded classification
     response: ClassifierResponse = classify_claim(claim, request)
 
     if response.is_fully_classified:
