@@ -129,6 +129,58 @@ curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H
 }'
 ```
 
+To test the classification provided by the endpoint at `contention-classification/ml-contention-classification`:
+(note: absence of `claim_id` and `form526_submission_id` in the data posted in the request)
+```
+curl -X 'POST'   'http://localhost:8120/ml-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "contentions": [
+        {
+            "contention_text": "PTSD (post-traumatic stress disorder)",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "acl tear, right",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 5012
+        }
+    ]
+}'
+```
+
+
+To test the classification provided by the endpoint at `contention-classification/hybrid-contention-classification`:
+```
+curl -X 'POST'   'http://localhost:8120/hybrid-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "claim_id": 44,
+  "form526_submission_id": 55,
+  "contentions": [
+        {
+            "contention_text": "lorem ipsum unclassifiable",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "acl tear, right",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 5012
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 7777777777777
+        }
+    ]
+}'
+```
+
+
 An alternative to the above `curl` commands is to use a local testing application like [Bruno](https://www.usebruno.com/) or [Postman](https://www.postman.com/).  Different JSON request bodies can be set up for testing each of the above endpoints and tests can be saved using Collections within these tools.
 
 
