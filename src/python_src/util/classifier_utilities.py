@@ -118,7 +118,7 @@ def update_classifications(response: ClassifierResponse, indices: list[int], ai_
     """
     Updates the originally classified claim with classifications from the ml classifier
     """
-    for idx, c in zip(indices, ai_classified.classified_contentions, strict=False):
+    for idx, c in zip(indices, ai_classified.classified_contentions, strict=True):
         response.contentions[idx].classification_code = c.classification_code
         response.contentions[idx].classification_name = c.classification_name
     return response
