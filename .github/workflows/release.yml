@@ -13,7 +13,7 @@ on:
           - dev staging sandbox prod
       commit_sha:
         type: string
-        description: 'Commit SHA to deploy (must be from main branch, defaults to latest SHA if not specified)'
+        description: 'Commit SHA to deploy (must belong to the selected branch, defaults to latest SHA if not specified)'
         required: false
   workflow_run:
     workflows:
@@ -48,15 +48,15 @@ jobs:
       - name: Validate SHA or use current workflow SHA
         id: validate-sha
         run: |
-          echo "Provided SHA: ${{ github.event.inputs.commit_sha }}"
-          if [[ -n "${{ github.event.inputs.commit_sha }}" ]]; then
-            echo "Validating provided SHA: ${{ github.event.inputs.commit_sha }}"
+          COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
+          if [[ -n "$COMMIT_SHA" ]]; then
+            echo "Validating provided SHA: $COMMIT_SHA"
             git fetch origin ${{ github.ref_name }}
-            if git merge-base --is-ancestor ${{ github.event.inputs.commit_sha }} origin/${{ github.ref_name }}; then
-              echo "Using SHA ${{ github.event.inputs.commit_sha }} from branch ${{ github.ref_name }}"
-              echo "validated_sha=${{ github.event.inputs.commit_sha }}" >> $GITHUB_OUTPUT
+            if git merge-base --is-ancestor $COMMIT_SHA origin/${{ github.ref_name }}; then
+              echo "Using SHA $COMMIT_SHA from branch ${{ github.ref_name }}"
+              echo "validated_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
             else
-              echo "Error: SHA ${{ github.event.inputs.commit_sha }} does not exist on branch ${{ github.ref_name }}"
+              echo "Error: SHA $COMMIT_SHA does not exist on branch ${{ github.ref_name }}"
               exit 1
             fi
           else
@@ -97,17 +97,13 @@ jobs:
           echo "Current branch: $current_branch"
           echo "Target environments: $environments"
 
-          if [[ "$environments" == *"sandbox"* ]] || [[ "$environments" == *"prod"* ]]; then
-            if [[ "$current_branch" != "main" ]]; then
-              echo "Error: Cannot deploy to sandbox or prod environments from branch '$current_branch'"
-              echo "Sandbox and prod deployments are only allowed from the main branch"
-              exit 1
-            else
-              echo "✅ Deploying to protected environments from main branch - allowed"
-            fi
-          else
-            echo "✅ Deploying to non-protected environments - no branch restriction"
+          if [[ ("$environments" == *"sandbox"* || "$environments" == *"prod"*) && "$current_branch" != "main" ]]; then
+            echo "Error: Cannot deploy to sandbox or prod environments from branch '$current_branch'"
+            echo "Sandbox and prod deployments are only allowed from the main branch"
+            exit 1
           fi
+
+          echo "✅ Deployment(s) to '$environments' allowed"
 
   update-image-tag:
     runs-on: ubuntu-latest
