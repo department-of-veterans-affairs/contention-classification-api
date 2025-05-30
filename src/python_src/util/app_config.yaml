@@ -172,3 +172,6 @@ common_words:
 lut_default_value:
   classification_code: null
   classification_name: null
+ai_classification_endpoint:
+  url: 'http://localhost:8120/'
+  endpoint: 'ml-contention-classification'
