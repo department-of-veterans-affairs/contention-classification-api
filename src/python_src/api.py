@@ -5,11 +5,14 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import Response
 
 from .pydantic_models import (
+    AiRequest,
+    AiResponse,
+    ClassifiedContention,
     ClassifierResponse,
     VaGovClaim,
 )
 from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
-from .util.classifier_utilities import classify_claim
+from .util.classifier_utilities import classify_claim, ml_classification
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 
 app = FastAPI(
@@ -65,4 +68,38 @@ def get_health_status() -> Dict[str, str]:
 @log_claim_stats_decorator
 def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierResponse:
     response = classify_claim(claim, request)
+    return response
+
+
+@app.post("/ml-contention-classification")
+def fake_endpoint(contentions: AiRequest) -> AiResponse:
+    c: list[ClassifiedContention] = []
+    for contention in contentions.contentions:
+        temp_classification = ClassifiedContention(
+            classification_code=9999,
+            classification_name="ml classification",
+            diagnostic_code=contention.diagnostic_code,
+            contention_type=contention.contention_type,
+        )
+        c.append(temp_classification)
+    response = AiResponse(classified_contentions=c)
+
+    return response
+
+
+@app.post("/hybrid-contention-classification")
+@log_claim_stats_decorator
+def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResponse:
+    # classifies using expanded classification
+    response: ClassifierResponse = classify_claim(claim, request)
+
+    if response.is_fully_classified:
+        return response
+
+    response = ml_classification(response, claim)
+
+    num_classified = len([c for c in response.contentions if c.classification_code])
+    response.num_classified_contentions = num_classified
+    response.is_fully_classified = num_classified == len(response.contentions)
+
     return response

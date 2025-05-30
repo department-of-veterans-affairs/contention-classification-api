@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from fastapi import HTTPException
 from pydantic import BaseModel, Field, model_validator
@@ -51,3 +51,11 @@ class ClassifierResponse(BaseModel):
     is_fully_classified: bool
     num_processed_contentions: int
     num_classified_contentions: int
+
+
+class AiRequest(BaseModel):
+    contentions: List[Contention]
+
+
+class AiResponse(BaseModel):
+    classified_contentions: List[ClassifiedContention]
