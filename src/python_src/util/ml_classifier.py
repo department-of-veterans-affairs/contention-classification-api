@@ -51,17 +51,18 @@ def ensure_models_exist():
             print(f"{filename} found locally.")
 
 
-# ensure models exist before loading
-ensure_models_exist()
+## TODO un-comment once we have a sample of the model
+# # ensure models exist before loading
+# ensure_models_exist()
 
-# Load ONNX model
-ONNX_PATH = os.path.join(MODEL_DIR, ONNX_FILENAME)
-session = ort.InferenceSession(ONNX_PATH, providers=["CPUExecutionProvider"])
+# # Load ONNX model
+# ONNX_PATH = os.path.join(MODEL_DIR, ONNX_FILENAME)
+# session = ort.InferenceSession(ONNX_PATH, providers=["CPUExecutionProvider"])
 
-# get input and output names
-input_name = session.get_inputs()[0].name
-output_name = session.get_outputs()[0].name
-
+# # get input and output names
+# input_name = session.get_inputs()[0].name
+# output_name = session.get_outputs()[0].name
+## end of block to un-comment once we have a sample of the model
 
 # dummy clean text. will be replace by the one used on training pipeline
 def clean_text(text: str) -> str:
