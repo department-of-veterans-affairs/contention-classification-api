@@ -1,4 +1,5 @@
 import os
+import random  # remove this condition once we have access to the model
 import re
 import string
 from typing import Optional
@@ -51,18 +52,22 @@ def ensure_models_exist():
             print(f"{filename} found locally.")
 
 
-## TODO un-comment once we have a sample of the model
-# # ensure models exist before loading
-# ensure_models_exist()
+# TODO un-comment once we have a access to the model
+IS_MODEL_AVAILABLE = False
 
-# # Load ONNX model
-# ONNX_PATH = os.path.join(MODEL_DIR, ONNX_FILENAME)
-# session = ort.InferenceSession(ONNX_PATH, providers=["CPUExecutionProvider"])
 
-# # get input and output names
-# input_name = session.get_inputs()[0].name
-# output_name = session.get_outputs()[0].name
-## end of block to un-comment once we have a sample of the model
+# remove this condition once we have access to the model
+if IS_MODEL_AVAILABLE:
+    ensure_models_exist()
+
+    # Load ONNX model
+    ONNX_PATH = os.path.join(MODEL_DIR, ONNX_FILENAME)
+    session = ort.InferenceSession(ONNX_PATH, providers=["CPUExecutionProvider"])
+
+    # get input and output names
+    input_name = session.get_inputs()[0].name
+    output_name = session.get_outputs()[0].name
+
 
 # dummy clean text. will be replace by the one used on training pipeline
 def clean_text(text: str) -> str:
@@ -79,13 +84,17 @@ def ml_classify_text(text: str) -> Optional[int]:
 
     cleaned = clean_text(text)
 
-    # ONNX model expects a list of strings for text input
-    inputs = {input_name: np.array([cleaned])}
+    # remove this condition once we have access to the model
+    if IS_MODEL_AVAILABLE:
+        # ONNX model expects a list of strings for text input
+        inputs = {input_name: np.array([cleaned])}
 
-    try:
-        result = session.run([output_name], inputs)[0]
-        prediction = int(result[0])
-        return prediction
-    except Exception as e:
-        print(f"ONNX inference failed: {e}")
-        return None
+        try:
+            result = session.run([output_name], inputs)[0]
+            prediction = int(result[0])
+            return prediction
+        except Exception as e:
+            print(f"ONNX inference failed: {e}")
+            return None
+    else:
+        return random.choice([8979, 9007, 897, 8968, 8997, 9016, 8973])
