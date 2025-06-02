@@ -18,6 +18,8 @@ from .expanded_lookup_table import ExpandedLookupTable
 from .logging_utilities import log_as_json, log_contention_stats_decorator
 from .lookup_table import ContentionTextLookupTable
 
+from .ml_classifier import ml_classify_text
+
 
 @runtime_checkable
 class LookupTable(Protocol):
@@ -65,7 +67,13 @@ def get_classification_code_name(
         if classification_code is not None:
             classified_by = "contention_text"
 
-    return classification_code, classification_name, classified_by
+    if not classification_code and contention.contention_text:
+        ml_code = ml_classify_text(contention.contention_text)
+        if ml_code is not None:
+            classification = dc_lookup_table.get(str(ml_code))
+            classification_code = ml_code
+            classification_name = classification.get("classification_name") if classification else None
+            classified_by = "ml_fallback"
 
 
 @log_contention_stats_decorator

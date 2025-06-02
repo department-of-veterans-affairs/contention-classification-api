@@ -23,10 +23,20 @@ RUN poetry config virtualenvs.create false && \
 FROM python:3.12.3-slim AS runner
 
 WORKDIR /app
+# --- AWS credentials (for private S3 download) ---
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG AWS_SESSION_TOKEN  # Optional (for temporary credentials)
+ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ENV AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
 
-# Install curl for healthcheck
+# Install curl and awscli for healthchecks and model download
 RUN apt-get update && \
-    apt-get install -y curl && \
+    apt-get install -y curl awscli && \
+    mkdir -p src/python_src/util/models && \
+    aws s3 cp s3://your-private-bucket/tfidf_vectorizer.pkl src/python_src/util/models/tfidf_vectorizer.pkl && \
+    aws s3 cp s3://your-private-bucket/logistic_model.pkl src/python_src/util/models/logistic_model.pkl && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -m appuser
 
