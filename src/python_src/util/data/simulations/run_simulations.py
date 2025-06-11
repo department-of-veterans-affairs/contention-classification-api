@@ -2,7 +2,7 @@
 This script runs a set of input conditions through the classifiers
 and outputs their results to file.
 
-The intent is to gather outputs that allow for comparing performance of the classifiers.
+The intent is to gather outputs for comparing and tracking behavior of the classifiers.
 
 
 The input file is expected to be a csv with these columns: text_to_classify, expected_classification
