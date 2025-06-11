@@ -23,7 +23,7 @@ agoraphobia,8989,8989,True
 alopecia,9016,1234,False
 
 
-Usage:
+Usage: (from the codebase root directory)
     poetry run python src/python_src/util/data/simulations/run_simulations.py
 
 """
