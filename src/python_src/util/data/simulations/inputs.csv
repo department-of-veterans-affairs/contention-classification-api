@@ -1,0 +1,59 @@
+## this section are invalid condition/classification mappings 
+Africa,1010
+Antarctica,1010
+Asia,1010
+Australia,1010
+Europe,1010
+North America,1010
+South America,1010
+## the below are legitimate condition/classification mappings
+acne,9016
+adjustment disorder,8989
+agoraphobia,8989
+alopecia,9016
+ALS,9007 
+amyotrophic lateral sclerosis,9007
+anal cancer,8932
+anal or perianal fistula,8968
+anemia,8981
+anorexia,8970
+aortic insufficiency,8979
+aortic valve disease,8979
+arrhythmia,8979
+irregular heartbeat,8979
+asthma,9012
+athlete's foot,9016
+atrial fibrillation,8979
+A-fib,8979
+bipolar disorder,8989
+bladder cancer,8935
+bladder stones,8975
+bronchiectasis,9012
+bulimia,8970
+bursitis in right ankle,8991
+bursitis in right wrist,9004
+carpal tunnel syndrome,9006
+chronic bronchitis,9012
+chronic conjunctivitis,8974
+pink eye,8974
+chronic fatigue syndrome,8986
+chronic laryngitis,9012
+chronic sinusitis,9012
+Crohn's disease,8968
+decompression illness,8930
+depression,8989
+eczema,9016
+emphysema,9012
+endometriosis,8978
+fibromyalgia,9007
+gallstones,8968
+generalized anxiety disorder,8989
+glaucoma,8974
+lupus,8986
+malaria,8986
+schizophrenia,8989
+tachycardia,8979
+vitiligo,9016
+wrist fracture,9004
+wrist arthroplasty,9004
+wrist sprain,9004
