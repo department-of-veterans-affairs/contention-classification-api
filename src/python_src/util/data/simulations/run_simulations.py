@@ -1,6 +1,6 @@
 """
 This script runs a set of input conditions through the classifiers
-and outputs their results to file. 
+and outputs their results to file.
 
 The intent is to gather outputs that allow for comparing performance of the classifiers.
 
@@ -14,7 +14,7 @@ agoraphobia,8989
 alopecia,9016
 
 
-The output files will have these columns: text_to_classify, expected_classification, prediction, is_accurate. 
+The output files will have these columns: text_to_classify, expected_classification, prediction, is_accurate.
 As an example of rows in an output file:
 
 acne,9016,9016,True
@@ -27,8 +27,8 @@ Usage:
     poetry run python src/python_src/util/data/simulations/run_simulations.py
 
 """
+
 import os
-import random
 import time
 from datetime import datetime
 
@@ -48,16 +48,20 @@ def get_classification_from_production_classifier(condition_text):
     except Exception:
         pass
 
+
 ## TODO : implement when we have the ML classifier running locally
 def get_classification_from_ml_classifier(condition_text):
     pass
+
 
 def get_respiratory_classification(condition_text):
     ## TODO : replace this when we have the ML classifier running locally
     return "9012"
 
+
 def get_skin_classification(condition_text):
     return "9016"
+
 
 def get_classification_from_stacked_classifier(condition_text):
     classification = get_classification_from_production_classifier(condition_text)
@@ -65,11 +69,14 @@ def get_classification_from_stacked_classifier(condition_text):
         classification = get_classification_from_ml_classifier(condition_text)
     return classification
 
+
 def get_classification_from_reverse_stacked_classifier(condition_text):
     classification = get_classification_from_ml_classifier(condition_text)
     if not classification:
         classification = get_classification_from_production_classifier(condition_text)
     return classification
+
+
 ## end of classifiers ###
 
 
@@ -79,11 +86,9 @@ def run_inputs_against_classifier(input_data, classifier_function, classifier_de
     text_for_csv = []
     expected_values = []
     classifier_predictions = []
-    accurate_predictions = 0
 
     for text_to_classify, expected_classification in input_data:
-        
-        classifier_prediction = ''
+        classifier_prediction = ""
         try:
             classifier_prediction = classifier_function(text_to_classify)
         except Exception as e:
@@ -107,31 +112,35 @@ def run_inputs_against_classifier(input_data, classifier_function, classifier_de
 
     print(f"Accuracy: {round(accuracy * 100, 2)}%")
     print(f"Execution time: {round(execution_time, 4)} seconds")
-    print(f"Outputs: {predictions_file}, {predictions_file}")
+    print(f"Outputs: {predictions_file}, {scores_file}")
 
     return
 
+
 def _get_scores_for_classifier(labels, target_values, predictions):
-    '''Compute scores for the classifier'''
-    
+    """Compute scores for the classifier"""
+
     assert len(target_values) == len(predictions)
-    
+
     accuracy = accuracy_score(target_values, predictions, normalize=True)
-    other_computed_scores = precision_recall_fscore_support(target_values, predictions, average=None, labels=labels, zero_division=1)
+    other_computed_scores = precision_recall_fscore_support(
+        target_values, predictions, average=None, labels=labels, zero_division=1
+    )
 
     return accuracy, other_computed_scores
 
+
 def _write_scores_to_file(labels, accuracy, other_computed_scores, file_prefix):
-    '''Write the classifier's scores to file
+    """Write the classifier's scores to file
     labels: list of the possible classifications
     accuracy: a float
-    other_computed_scores: a 2D array, with length 4, one column for each label
-    '''
+    other_computed_scores: a 2D array with length 4, one column for each label
+    """
     assert len(labels) == len(other_computed_scores[0])
 
     filename = f"{file_prefix}_{TIMESTAMP}_scores.csv"
 
-    with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), 'w') as f:
+    with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
         f.write(f"# accuracy: {accuracy * 100}%\n")
         f.write("label,precision,recall,fbeta,support\n")
 
@@ -142,37 +151,38 @@ def _write_scores_to_file(labels, accuracy, other_computed_scores, file_prefix):
             support = round(other_computed_scores[3][i], 4)
 
             f.write(f"{labels[i]},{precision},{recall},{fscore},{support}\n")
-    return filename 
+    return filename
 
 
 def _write_predictions_to_file(lines_to_write, file_prefix):
     filename = f"{file_prefix}_{TIMESTAMP}.csv"
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
-    with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), 'w') as f:
+    with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
         f.write("text_to_classify,expected_classification,prediction,is_accurate\n")
         f.write("\n".join(lines_to_write))
 
     return filename
 
+
 def _get_input_from_file():
-    with open(os.path.join(SIMULATIONS_DIR, INPUT_FILE), 'r') as f:
+    with open(os.path.join(SIMULATIONS_DIR, INPUT_FILE), "r") as f:
         file_data = f.readlines()
-        input_conditions = [i.strip().split(",") for i in file_data if not i.startswith("#") and len(i.split(","))==2]
+        input_conditions = [i.strip().split(",") for i in file_data if not i.startswith("#") and len(i.split(",")) == 2]
 
     return input_conditions
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     input_data = _get_input_from_file()
 
-    classifiers = [ 
+    classifiers = [
         (get_classification_from_production_classifier, "production_classifier"),
         (get_respiratory_classification, "respiratory_classification_always"),
         (get_skin_classification, "skin_classifiction_always"),
-        #(get_classification_from_ml_classifier, "ml_classifier"),
-        #(get_classification_from_stacked_classifier, "stacked"),
-        #(get_classification_from_reverse_stacked_classifier, "reverse_stacked"),
+        # (get_classification_from_ml_classifier, "ml_classifier"),
+        # (get_classification_from_stacked_classifier, "stacked"),
+        # (get_classification_from_reverse_stacked_classifier, "reverse_stacked"),
     ]
 
     for classifier_function, descriptive_name in classifiers:
