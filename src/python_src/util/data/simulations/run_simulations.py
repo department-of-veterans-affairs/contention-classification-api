@@ -32,6 +32,8 @@ import random
 import time
 from datetime import datetime
 
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+
 from python_src.util.app_utilities import expanded_lookup_table
 
 SIMULATIONS_DIR = "src/python_src/util/data/simulations/"
@@ -64,37 +66,81 @@ def get_classification_from_reverse_stacked_classifier(condition_text):
 ## end of classifiers ###
 
 
-def run_inputs_against_classifier(input_data, classifier_function, short_descriptive_name):
-    print(f"\n--- {short_descriptive_name} -------")
+def run_inputs_against_classifier(input_data, classifier_function, classifier_descriptive_name):
+    print(f"\n--- {classifier_descriptive_name} -------")
     start_time = time.time()
-    output_data = []
+    text_for_csv = []
+    expected_values = []
+    classifier_predictions = []
     accurate_predictions = 0
 
     for text_to_classify, expected_classification in input_data:
-        classifier_prediction = None
-        is_accurate = False
+        
+        classifier_prediction = ''
         try:
             classifier_prediction = classifier_function(text_to_classify)
-            if classifier_prediction and str(classifier_prediction) == expected_classification:
-                accurate_predictions += 1
-        except Exception:
+        except Exception as e:
+            print(e)
             pass
 
-        output_data.append(f"{text_to_classify},{expected_classification},{classifier_prediction},{is_accurate}")
+        expected_values.append(expected_classification)
+        classifier_predictions.append(str(classifier_prediction))
+        is_accurate = str(classifier_prediction) == expected_classification
+        text_for_csv.append(f"{text_to_classify},{expected_classification},{classifier_prediction},{is_accurate}")
 
     end_time = time.time()
     execution_time = end_time - start_time
 
-    output_file = _write_lines_to_file(output_data, f"{short_descriptive_name}_{TIMESTAMP}.csv")
+    labels = list(set(expected_values))
+    labels.sort()
+    accuracy, other_computed_scores = _get_scores_for_classifier(labels, expected_values, classifier_predictions)
 
-    print(f"Accuracy: {accurate_predictions} of {len(input_data)} ({round(accurate_predictions/len(input_data), 2) * 100}%)")
+    predictions_file = _write_predictions_to_file(text_for_csv, classifier_descriptive_name)
+    scores_file = _write_scores_to_file(labels, accuracy, other_computed_scores, classifier_descriptive_name)
+
+    print(f"Accuracy: {round(accuracy * 100, 2)}%")
     print(f"Execution time: {round(execution_time, 4)} seconds")
-    print(f"Output file: {output_file}")
+    print(f"Outputs: {predictions_file}, {predictions_file}")
 
     return
 
+def _get_scores_for_classifier(labels, target_values, predictions):
+    '''Compute scores for the classifier'''
+    
+    assert len(target_values) == len(predictions)
+    
+    accuracy = accuracy_score(target_values, predictions, normalize=True)
+    other_computed_scores = precision_recall_fscore_support(target_values, predictions, average=None, labels=labels, zero_division=1)
 
-def _write_lines_to_file(lines_to_write, filename):
+    return accuracy, other_computed_scores
+
+def _write_scores_to_file(labels, accuracy, other_computed_scores, file_prefix):
+    '''Write the classifier's scores to file
+    labels: list of the possible classifications
+    accuracy: a float
+    other_computed_scores: a 2D array, with length 4, one column for each label
+    '''
+    assert len(labels) == len(other_computed_scores[0])
+
+    filename = f"{file_prefix}_{TIMESTAMP}_scores.csv"
+
+    with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), 'w') as f:
+        f.write(f"# accuracy: {accuracy * 100}%\n")
+        f.write("label,precision,recall,fbeta,support\n")
+
+        for i in range(len(labels)):
+            precision = round(other_computed_scores[0][i], 4)
+            recall = round(other_computed_scores[1][i], 4)
+            fscore = round(other_computed_scores[2][i], 4)
+            support = round(other_computed_scores[3][i], 4)
+
+            f.write(f"{labels[i]},{precision},{recall},{fscore},{support}\n")
+    return filename 
+
+
+def _write_predictions_to_file(lines_to_write, file_prefix):
+    filename = f"{file_prefix}_{TIMESTAMP}.csv"
+
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), 'w') as f:
         f.write("text_to_classify,expected_classification,prediction,is_accurate\n")
