@@ -1,10 +1,12 @@
+# this data set represents three classifications:
+# 8968, 9012, 9016 (respectively: digestive, respiratory, skin)
 acne,9016
-adjustment disorder,8989
-agoraphobia,8989
 alopecia,9016
-arrhythmia,8979
+asthma,9012
 athlete's foot,9016
-depression,8989
+bronchiectasis,9012
 eczema,9016
+emphysema,9012
+gallstones,8968
+psoriasis,9016
 vitiligo,9016
-tachycardia,8979

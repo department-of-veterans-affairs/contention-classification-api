@@ -48,9 +48,16 @@ def get_classification_from_production_classifier(condition_text):
     except Exception:
         pass
 
+## TODO : implement when we have the ML classifier running locally
 def get_classification_from_ml_classifier(condition_text):
+    pass
+
+def get_respiratory_classification(condition_text):
     ## TODO : replace this when we have the ML classifier running locally
-    return "8979"
+    return "9012"
+
+def get_skin_classification(condition_text):
+    return "9016"
 
 def get_classification_from_stacked_classifier(condition_text):
     classification = get_classification_from_production_classifier(condition_text)
@@ -161,9 +168,11 @@ if __name__ == "__main__":
 
     classifiers = [ 
         (get_classification_from_production_classifier, "production_classifier"),
-        (get_classification_from_ml_classifier, "ml_classifier"),
-        (get_classification_from_stacked_classifier, "stacked"),
-        (get_classification_from_reverse_stacked_classifier, "reverse_stacked"),
+        (get_respiratory_classification, "respiratory_classification_always"),
+        (get_skin_classification, "skin_classifiction_always"),
+        #(get_classification_from_ml_classifier, "ml_classifier"),
+        #(get_classification_from_stacked_classifier, "stacked"),
+        #(get_classification_from_reverse_stacked_classifier, "reverse_stacked"),
     ]
 
     for classifier_function, descriptive_name in classifiers:
