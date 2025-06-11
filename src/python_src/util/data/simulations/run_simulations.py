@@ -37,7 +37,7 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from python_src.util.app_utilities import expanded_lookup_table
 
 SIMULATIONS_DIR = "src/python_src/util/data/simulations/"
-INPUT_FILE = "inputs.csv"
+INPUT_FILE = "inputs_mini.csv"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
@@ -50,7 +50,7 @@ def get_classification_from_production_classifier(condition_text):
 
 def get_classification_from_ml_classifier(condition_text):
     ## TODO : replace this when we have the ML classifier running locally
-    return random.choice([None, 8968, 8973, 8979, 8989, 8997, 9004, 9007, 9016])
+    return "8979"
 
 def get_classification_from_stacked_classifier(condition_text):
     classification = get_classification_from_production_classifier(condition_text)
