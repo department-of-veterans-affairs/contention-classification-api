@@ -31,6 +31,7 @@ Usage: (from the codebase root directory)
 import os
 import time
 from datetime import datetime
+from typing import Callable, List, Tuple
 
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
@@ -42,35 +43,35 @@ TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
 ## start of classifiers ###
-def get_classification_from_production_classifier(condition_text):
+def get_classification_from_production_classifier(condition_text: str) -> str:
     try:
-        return expanded_lookup_table.get(condition_text).get("classification_code")
+        return str(expanded_lookup_table.get(condition_text).get("classification_code"))
     except Exception:
         pass
+    return "no-classification"
 
 
 ## TODO : implement when we have the ML classifier running locally
-def get_classification_from_ml_classifier(condition_text):
-    pass
+def get_classification_from_ml_classifier(condition_text: str) -> str:
+    return "no-classification"
 
 
-def get_respiratory_classification(condition_text):
-    ## TODO : replace this when we have the ML classifier running locally
+def get_respiratory_classification(condition_text: str) -> str:
     return "9012"
 
 
-def get_skin_classification(condition_text):
+def get_skin_classification(condition_text: str) -> str:
     return "9016"
 
 
-def get_classification_from_stacked_classifier(condition_text):
+def get_classification_from_stacked_classifier(condition_text: str) -> str:
     classification = get_classification_from_production_classifier(condition_text)
     if not classification:
         classification = get_classification_from_ml_classifier(condition_text)
     return classification
 
 
-def get_classification_from_reverse_stacked_classifier(condition_text):
+def get_classification_from_reverse_stacked_classifier(condition_text: str) -> str:
     classification = get_classification_from_ml_classifier(condition_text)
     if not classification:
         classification = get_classification_from_production_classifier(condition_text)
@@ -80,7 +81,7 @@ def get_classification_from_reverse_stacked_classifier(condition_text):
 ## end of classifiers ###
 
 
-def run_inputs_against_classifier(input_data, classifier_function, classifier_descriptive_name):
+def run_inputs_against_classifier(input_data: List[List[str]], classifier_function: Callable[[str, ], str], classifier_descriptive_name: str) -> None:
     print(f"\n--- {classifier_descriptive_name} -------")
     start_time = time.time()
     text_for_csv = []
@@ -89,6 +90,7 @@ def run_inputs_against_classifier(input_data, classifier_function, classifier_de
 
     for text_to_classify, expected_classification in input_data:
         classifier_prediction = ""
+
         try:
             classifier_prediction = classifier_function(text_to_classify)
         except Exception as e:
@@ -117,7 +119,7 @@ def run_inputs_against_classifier(input_data, classifier_function, classifier_de
     return
 
 
-def _get_scores_for_classifier(labels, target_values, predictions):
+def _get_scores_for_classifier(labels: List[str], target_values: List[str], predictions: List[str]) -> Tuple [float, List[List[float]]]:
     """Compute scores for the classifier"""
 
     assert len(target_values) == len(predictions)
@@ -130,7 +132,7 @@ def _get_scores_for_classifier(labels, target_values, predictions):
     return accuracy, other_computed_scores
 
 
-def _write_scores_to_file(labels, accuracy, other_computed_scores, file_prefix):
+def _write_scores_to_file(labels: List[str], accuracy: float, other_computed_scores: List[List[float]], file_prefix: str) -> str:
     """Write the classifier's scores to file
     labels: list of the possible classifications
     accuracy: a float
@@ -154,7 +156,7 @@ def _write_scores_to_file(labels, accuracy, other_computed_scores, file_prefix):
     return filename
 
 
-def _write_predictions_to_file(lines_to_write, file_prefix):
+def _write_predictions_to_file(lines_to_write: List[str], file_prefix: str) -> str:
     filename = f"{file_prefix}_{TIMESTAMP}.csv"
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
@@ -165,7 +167,7 @@ def _write_predictions_to_file(lines_to_write, file_prefix):
     return filename
 
 
-def _get_input_from_file():
+def _get_input_from_file() -> List[List[str]]:
     with open(os.path.join(SIMULATIONS_DIR, INPUT_FILE), "r") as f:
         file_data = f.readlines()
         input_conditions = [i.strip().split(",") for i in file_data if not i.startswith("#") and len(i.split(",")) == 2]
@@ -176,7 +178,7 @@ def _get_input_from_file():
 if __name__ == "__main__":
     input_data = _get_input_from_file()
 
-    classifiers = [
+    classifiers : List[Tuple[Callable[[str,], str], str]] = [
         (get_classification_from_production_classifier, "production_classifier"),
         (get_respiratory_classification, "respiratory_classification_always"),
         (get_skin_classification, "skin_classifiction_always"),
