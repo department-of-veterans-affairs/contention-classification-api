@@ -46,8 +46,9 @@ TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 def get_classification_from_production_classifier(condition_text: str) -> str:
     try:
         return str(expanded_lookup_table.get(condition_text).get("classification_code"))
-    except Exception:
-        pass
+    except Exception as e:
+        print(e)
+
     return "no-classification"
 
 
