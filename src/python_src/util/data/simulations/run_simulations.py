@@ -81,7 +81,16 @@ def get_classification_from_reverse_stacked_classifier(condition_text: str) -> s
 ## end of classifiers ###
 
 
-def run_inputs_against_classifier(input_data: List[List[str]], classifier_function: Callable[[str, ], str], classifier_descriptive_name: str) -> None:
+def run_inputs_against_classifier(
+    input_data: List[List[str]],
+    classifier_function: Callable[
+        [
+            str,
+        ],
+        str,
+    ],
+    classifier_descriptive_name: str,
+) -> None:
     print(f"\n--- {classifier_descriptive_name} -------")
     start_time = time.time()
     text_for_csv = []
@@ -119,7 +128,9 @@ def run_inputs_against_classifier(input_data: List[List[str]], classifier_functi
     return
 
 
-def _get_scores_for_classifier(labels: List[str], target_values: List[str], predictions: List[str]) -> Tuple [float, List[List[float]]]:
+def _get_scores_for_classifier(
+    labels: List[str], target_values: List[str], predictions: List[str]
+) -> Tuple[float, List[List[float]]]:
     """Compute scores for the classifier"""
 
     assert len(target_values) == len(predictions)
@@ -132,7 +143,9 @@ def _get_scores_for_classifier(labels: List[str], target_values: List[str], pred
     return accuracy, other_computed_scores
 
 
-def _write_scores_to_file(labels: List[str], accuracy: float, other_computed_scores: List[List[float]], file_prefix: str) -> str:
+def _write_scores_to_file(
+    labels: List[str], accuracy: float, other_computed_scores: List[List[float]], file_prefix: str
+) -> str:
     """Write the classifier's scores to file
     labels: list of the possible classifications
     accuracy: a float
@@ -178,7 +191,17 @@ def _get_input_from_file() -> List[List[str]]:
 if __name__ == "__main__":
     input_data = _get_input_from_file()
 
-    classifiers : List[Tuple[Callable[[str,], str], str]] = [
+    classifiers: List[
+        Tuple[
+            Callable[
+                [
+                    str,
+                ],
+                str,
+            ],
+            str,
+        ]
+    ] = [
         (get_classification_from_production_classifier, "production_classifier"),
         (get_respiratory_classification, "respiratory_classification_always"),
         (get_skin_classification, "skin_classifiction_always"),
