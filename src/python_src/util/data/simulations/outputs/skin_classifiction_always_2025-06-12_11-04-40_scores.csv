@@ -1,0 +1,5 @@
+# accuracy: 60.0%
+label,precision,recall,fbeta,support
+8968,1.0,0.0,0.0,1
+9012,1.0,0.0,0.0,3
+9016,0.6,1.0,0.75,6
