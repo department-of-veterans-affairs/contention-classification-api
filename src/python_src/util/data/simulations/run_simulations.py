@@ -83,7 +83,7 @@ def get_classification_from_reverse_stacked_classifier(condition_text: str) -> s
 
 
 def run_inputs_against_classifier(
-    input_data: List[List[str]],
+    input_data: List[str],
     classifier_function: Callable[
         [
             str,
@@ -98,7 +98,9 @@ def run_inputs_against_classifier(
     expected_values = []
     classifier_predictions = []
 
-    for text_to_classify, expected_classification in input_data:
+    for input_line in input_data:
+        text_to_classify, expected_classification = [token.strip() for token in input_line.split(",")]
+
         classifier_prediction = ""
 
         try:
@@ -181,10 +183,10 @@ def _write_predictions_to_file(lines_to_write: List[str], file_prefix: str) -> s
     return filename
 
 
-def _get_input_from_file() -> List[List[str]]:
+def _get_input_from_file() -> List[str]:
     with open(os.path.join(SIMULATIONS_DIR, INPUT_FILE), "r") as f:
         file_data = f.readlines()
-        input_conditions = [i.strip().split(",") for i in file_data if not i.startswith("#") and len(i.split(",")) == 2]
+        input_conditions = [i.split("#")[0].strip() for i in file_data if not i.startswith("#") and len(i.split(",")) == 2]
 
     return input_conditions
 
