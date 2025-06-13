@@ -27,7 +27,8 @@ adjustment disorder,8989,,False
 agoraphobia,8989,8989,True
 alopecia,9016,1234,False
 
-Additionally,if more than one classifier is being considered, then an output file of the predictions across all of the classifiers is created.
+Additionally,if more than one classifier is being considered, then an output 
+file of the predictions across all of the classifiers is created. 
 As an example of rows in this output file:
 
 text_to_classify,expected_classification,prediction_by_model_a,is_model_a_accurate,prediction_by_model_b,is_model_b_accurate
@@ -46,8 +47,7 @@ import time
 from datetime import datetime
 from typing import Callable, List, Tuple
 
-
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report
+from sklearn.metrics import classification_report
 
 from python_src.util.app_utilities import expanded_lookup_table
 
@@ -57,52 +57,38 @@ TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
 ## start of classifiers ###
-def get_classification_from_production_classifier(conditions: List[str]) -> List[str]:
+class ClassifierForSimulation:
+    name: str 
+    predictions: List[str]
 
-    predicted_classifications = []
+    def make_predictions(self, conditions: List[str]) -> None:
+        pass
 
-    for condition in conditions:
-        try:
-            prediction = str(expanded_lookup_table.get(condition).get("classification_code"))
-        except Exception as e:
-            prediction = "no-classification"
-        predicted_classifications.append(prediction)
-    return predicted_classifications
+class ProductionClassifier(ClassifierForSimulation):
+    name = "csv lookup"
 
-def get_classification_from_respiratory_classifier(conditions: List[str]) -> List[str]:
+    def make_predictions(self, conditions: List[str]) -> None:
+        predicted_classifications: List[str] = []
+        for condition in conditions:
+            try:
+                prediction = str(expanded_lookup_table.get(condition).get("classification_code"))
+            except Exception:
+                prediction = "no-classification"
+            predicted_classifications.append(prediction)
+        self.predictions = predicted_classifications
+
+class RespiratoryClassifier(ClassifierForSimulation):
     """For demo purposes: a classifier that always predicts the label '9012' (classification: respiratory)"""
-    return ['9016'] * len(conditions)
+
+    name = "respiratory classifier"
+
+    def make_predictions(self, conditions: List[str]) -> None:
+        self.predictions = ["9016"] * len(conditions)
 
 ## end of classifiers ###
 
 
-def run_inputs_against_classifier(
-    conditions_to_test: List[str],
-    classifier_function: Callable[
-        [
-            str,
-        ],
-        str,
-    ]
-) -> List[str]:
-    """Returns the list of predictions"""
-    print(f"\n--- {classifier_function.__name__} -------")
-
-    start_time = time.time()
-    
-    classifier_predictions = classifier_function(conditions_to_test)
-
-    end_time = time.time()
-    execution_time = end_time - start_time
-    print(f"Execution time: {round(execution_time, 4)} seconds")
-
-    return classifier_predictions
-
-
-
-
-def _write_scores_to_file(classification_report: str
-, file_prefix: str) -> str:
+def _write_scores_to_file(classification_report: str, file_prefix: str) -> str:
     filename = f"{file_prefix}_{TIMESTAMP}_scores.csv"
 
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
@@ -110,47 +96,66 @@ def _write_scores_to_file(classification_report: str
     return filename
 
 
-def _write_predictions_to_file(conditions_to_test: List[str], expected_classifications: List[str], predictions: List[str], file_prefix: str) -> str:
+def _write_predictions_to_file(
+    conditions_to_test: List[str], expected_classifications: List[str], predictions: List[str], file_prefix: str
+) -> str:
     filename = f"{file_prefix}_{TIMESTAMP}.csv"
 
     assert len(conditions_to_test) == len(expected_classifications) == len(predictions)
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
+
+        # initial row: columns
         f.write("text_to_classify,expected_classification,prediction,is_accurate\n")
 
         for i in range(len(conditions_to_test)):
-            f.write(f"{conditions_to_test[i]},{expected_classifications[i]},{predictions[i]},{str(expected_classifications[i])==str(predictions[i])}\n")
+            prediction = conditions_to_test[i]
+            f.write(
+                f"{conditions_to_test[i]},{expected_classifications[i]},{prediction},{str(expected_classifications[i])
+                == str(prediction)}\n"
+            )
 
     return filename
 
-def _write_aggregate_predictions_to_file(conditions_to_test: List[str], expected_classifications: List[str], predictions_across_classifiers, file_prefix: str) -> str:
 
+def _write_aggregate_predictions_to_file(
+    conditions_to_test: List[str], expected_classifications: List[str],
+     classifiers: List[ClassifierForSimulation], file_prefix: str
+) -> str:
+    """
+    Create a csv file that documents the inputs and the predictions across all of the classifiers. 
+
+    rows: text_to_classify, expected_classification, model_a_prediction,
+     is_model_a_accurate, model_b_prediction, is_model_b_accurate, ...
+    """
     filename = f"{file_prefix}_{TIMESTAMP}.csv"
 
     assert len(conditions_to_test) == len(expected_classifications)
 
-    column_names = ['text_to_classify', 'expected_classification']
-    for i in predictions_across_classifiers:
-        assert len(i[1]) == len(expected_classifications)
-        column_names += [i[0], f"{i[0]} accurate?"]
+    # build the list of column names and verify that ## verify that the classifiers have the expected number of predictions
+    column_names = ["text_to_classify", "expected_classification"]
+    for c in classifiers:
+        assert len(c.predictions) == len(expected_classifications)
+        column_names += [c.name, f"{c.name} accurate?"]
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
         f.write(f"{','.join(column_names)}\n")
 
         for i in range(len(conditions_to_test)):
-            
             row_to_write = f"{conditions_to_test[i]},{expected_classifications[i]}"
 
-            for classifier_predictions in predictions_across_classifiers:
-                row_to_write += f",{classifier_predictions[1][i]},{classifier_predictions[1][i] == expected_classifications[i]}"
+            for c in classifiers:
+                row_to_write += (
+                    f",{c.predictions[i]},{c.predictions[i] == expected_classifications[i]}"
+                )
 
             f.write(f"{row_to_write}\n")
     return filename
 
-def _get_input_from_file() -> Tuple[List[str], List[str]]:
 
+def _get_input_from_file() -> Tuple[List[str], List[str]]:
     conditions_to_test = []
     expected_classifications = []
 
@@ -161,7 +166,7 @@ def _get_input_from_file() -> Tuple[List[str], List[str]]:
             row = row.split("#")[0]
             if len(row.split(",")) != 2:
                 continue
-            
+
             tokens = [token.strip() for token in row.split(",")]
             conditions_to_test.append(tokens[0])
             expected_classifications.append(tokens[1])
@@ -175,36 +180,25 @@ if __name__ == "__main__":
     labels = list(set(expected_classifications))
     labels.sort()
 
-    classifiers: List[
-        Tuple[
-            Callable[
-                [
-                    List[str],
-                ],
-                List[str],
-            ],
-            str,
-        ]
-    ] = [
-        (get_classification_from_production_classifier, "production_classifier"),
-        (get_classification_from_respiratory_classifier, "respiratory_classifier"),
+    classifiers: List[ClassifierForSimulation] = [ProductionClassifier(), RespiratoryClassifier()
     ]
 
-    predictions_across_classifiers = []
-
-    for classifier_function, descriptive_name in classifiers:
+    for c in classifiers:
+        print(f"---{c.name}---")
         
-        predictions = run_inputs_against_classifier(conditions_to_test, classifier_function)
-        
-        predictions_across_classifiers.append((descriptive_name, predictions))
+        c.make_predictions(conditions_to_test)
 
-        predictions_file = _write_predictions_to_file(conditions_to_test, expected_classifications, predictions, descriptive_name)
+        predictions_file = _write_predictions_to_file(
+            conditions_to_test, expected_classifications, c.predictions, c.name
+        )
 
-        computed_scores = classification_report(expected_classifications, predictions, target_names=labels, zero_division=1)
+        computed_scores = classification_report(expected_classifications, c.predictions, target_names=labels, zero_division=1)
 
-        scores_file = _write_scores_to_file(computed_scores, descriptive_name)
+        scores_file = _write_scores_to_file(computed_scores, c.name)
 
         print(f"Outputs: {predictions_file}, {scores_file}\n")
 
     if len(classifiers) > 1:
-        _write_aggregate_predictions_to_file(conditions_to_test, expected_classifications, predictions_across_classifiers, "aggregate_predictions")
+        _write_aggregate_predictions_to_file(
+            conditions_to_test, expected_classifications, classifiers, "aggregate_predictions"
+        )
