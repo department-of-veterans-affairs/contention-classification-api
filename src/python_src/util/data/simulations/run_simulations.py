@@ -69,13 +69,10 @@ def get_classification_from_production_classifier(conditions: List[str]) -> List
         predicted_classifications.append(prediction)
     return predicted_classifications
 
-
-def get_respiratory_classification(conditions: List[str]) -> List[str]:
-    return ['9012'] * len(conditions)
-
-
-def get_skin_classification(conditions: List[str]) -> List[str]:
+def get_classification_from_respiratory_classifier(conditions: List[str]) -> List[str]:
+    """For demo purposes: a classifier that always predicts the label '9012' (classification: respiratory)"""
     return ['9016'] * len(conditions)
+
 ## end of classifiers ###
 
 
@@ -190,11 +187,7 @@ if __name__ == "__main__":
         ]
     ] = [
         (get_classification_from_production_classifier, "production_classifier"),
-        (get_respiratory_classification, "respiratory_classification_always"),
-        (get_skin_classification, "skin_classifiction_always"),
-        #(get_classification_from_ml_classifier, "ml_classifier"),
-        # (get_classification_from_stacked_classifier, "stacked"),
-        # (get_classification_from_reverse_stacked_classifier, "reverse_stacked"),
+        (get_classification_from_respiratory_classifier, "respiratory_classifier"),
     ]
 
     predictions_across_classifiers = []
