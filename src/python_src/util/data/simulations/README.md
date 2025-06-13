@@ -5,7 +5,7 @@ The `run_simulations.py` script feeds a set of input conditions through the clas
 The intent is to gather outputs for comparing and tracking behavior of the classifiers.
 
 
-## Inputs 
+## Inputs
 The input file is expected to be a csv with these columns: text_to_classify, expected_classification
 As an example of rows in an input file:
 
@@ -16,11 +16,26 @@ agoraphobia,8989
 alopecia,9016
 ```
 
-## Outputs 
+## Outputs
 
 For each classifier being considered, two files are created:
 
 1. a txt file that shows computed scores for the classifier (eg accuracy, precision, recall)
+As an example of this file:
+```
+              precision    recall  f1-score   support
+
+        8968       1.00      0.00      0.00         1
+        9012       1.00      0.00      0.00         3
+        9016       0.60      1.00      0.75         6
+
+    accuracy                           0.60        10
+   macro avg       0.87      0.33      0.25        10
+weighted avg       0.76      0.60      0.45        10
+
+``` (where `8968`, `9012`, and `9016` are the possible classifications)
+
+
 2. a csv file that shows the predictions made by the classifier for the inputs.
 As an example of rows in this output file:
 
