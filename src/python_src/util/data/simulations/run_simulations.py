@@ -33,6 +33,7 @@ import time
 from datetime import datetime
 from typing import Callable, List, Tuple
 
+
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 from python_src.util.app_utilities import expanded_lookup_table
@@ -43,92 +44,50 @@ TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
 ## start of classifiers ###
-def get_classification_from_production_classifier(condition_text: str) -> str:
-    try:
-        return str(expanded_lookup_table.get(condition_text).get("classification_code"))
-    except Exception as e:
-        print(e)
+def get_classification_from_production_classifier(conditions: List[str]) -> List[str]:
 
-    return "no-classification"
+    predicted_classifications = []
 
-
-## TODO : implement when we have the ML classifier running locally
-def get_classification_from_ml_classifier(condition_text: str) -> str:
-    return "no-classification"
-
-
-def get_respiratory_classification(condition_text: str) -> str:
-    return "9012"
+    for condition in conditions:
+        try:
+            prediction = str(expanded_lookup_table.get(condition).get("classification_code"))
+        except Exception as e:
+            prediction = "no-classification"
+        predicted_classifications.append(prediction)
+    return predicted_classifications
 
 
-def get_skin_classification(condition_text: str) -> str:
-    return "9016"
+def get_respiratory_classification(conditions: List[str]) -> List[str]:
+    return ['9012'] * len(conditions)
 
 
-def get_classification_from_stacked_classifier(condition_text: str) -> str:
-    classification = get_classification_from_production_classifier(condition_text)
-    if not classification:
-        classification = get_classification_from_ml_classifier(condition_text)
-    return classification
-
-
-def get_classification_from_reverse_stacked_classifier(condition_text: str) -> str:
-    classification = get_classification_from_ml_classifier(condition_text)
-    if not classification:
-        classification = get_classification_from_production_classifier(condition_text)
-    return classification
-
-
+def get_skin_classification(conditions: List[str]) -> List[str]:
+    return ['9016'] * len(conditions)
 ## end of classifiers ###
 
 
 def run_inputs_against_classifier(
-    input_data: List[str],
+    conditions_to_test: List[str],
     classifier_function: Callable[
         [
             str,
         ],
         str,
-    ],
-    classifier_descriptive_name: str,
-) -> None:
-    print(f"\n--- {classifier_descriptive_name} -------")
+    ]
+) -> List[str]:
+    """Returns the list of predictions"""
+    print(f"\n--- {classifier_function.__name__} -------")
+
     start_time = time.time()
-    text_for_csv = []
-    expected_values = []
-    classifier_predictions = []
-
-    for input_line in input_data:
-        text_to_classify, expected_classification = [token.strip() for token in input_line.split(",")]
-
-        classifier_prediction = ""
-
-        try:
-            classifier_prediction = classifier_function(text_to_classify)
-        except Exception as e:
-            print(e)
-            pass
-
-        expected_values.append(expected_classification)
-        classifier_predictions.append(str(classifier_prediction))
-        is_accurate = str(classifier_prediction) == expected_classification
-        text_for_csv.append(f"{text_to_classify},{expected_classification},{classifier_prediction},{is_accurate}")
+    
+    classifier_predictions = classifier_function(conditions_to_test)
 
     end_time = time.time()
     execution_time = end_time - start_time
-
-    labels = list(set(expected_values))
-    labels.sort()
-    accuracy, other_computed_scores = _get_scores_for_classifier(labels, expected_values, classifier_predictions)
-
-    predictions_file = _write_predictions_to_file(text_for_csv, classifier_descriptive_name)
-    scores_file = _write_scores_to_file(labels, accuracy, other_computed_scores, classifier_descriptive_name)
-
-    print(f"Accuracy: {round(accuracy * 100, 2)}%")
     print(f"Execution time: {round(execution_time, 4)} seconds")
-    print(f"Outputs: {predictions_file}, {scores_file}")
 
-    return
+    return classifier_predictions
+
 
 
 def _get_scores_for_classifier(
@@ -172,35 +131,54 @@ def _write_scores_to_file(
     return filename
 
 
-def _write_predictions_to_file(lines_to_write: List[str], file_prefix: str) -> str:
+def _write_predictions_to_file(conditions_to_test: List[str], expected_classifications: List[str], predictions: List[str], file_prefix: str) -> str:
     filename = f"{file_prefix}_{TIMESTAMP}.csv"
+
+    assert len(conditions_to_test) == len(expected_classifications) == len(predictions)
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
         f.write("text_to_classify,expected_classification,prediction,is_accurate\n")
-        f.write("\n".join(lines_to_write))
+
+        for i in range(len(conditions_to_test)):
+            f.write(f"{conditions_to_test[i]},{expected_classifications[i]},{predictions[i]},{str(expected_classifications[i])==str(predictions[i])}\n")
 
     return filename
 
 
-def _get_input_from_file() -> List[str]:
+def _get_input_from_file() -> Tuple[List[str], List[str]]:
+
+    conditions_to_test = []
+    expected_classifications = []
+
     with open(os.path.join(SIMULATIONS_DIR, INPUT_FILE), "r") as f:
         file_data = f.readlines()
-        input_conditions = [i.split("#")[0].strip() for i in file_data if not i.startswith("#") and len(i.split(",")) == 2]
 
-    return input_conditions
+        for row in file_data:
+            row = row.split("#")[0]
+            if len(row.split(",")) != 2:
+                continue
+            
+            tokens = [token.strip() for token in row.split(",")]
+            conditions_to_test.append(tokens[0])
+            expected_classifications.append(tokens[1])
+
+    return (conditions_to_test, expected_classifications)
 
 
 if __name__ == "__main__":
-    input_data = _get_input_from_file()
+    conditions_to_test, expected_classifications = _get_input_from_file()
+
+    labels = list(set(expected_classifications))
+    labels.sort()
 
     classifiers: List[
         Tuple[
             Callable[
                 [
-                    str,
+                    List[str],
                 ],
-                str,
+                List[str],
             ],
             str,
         ]
@@ -208,10 +186,21 @@ if __name__ == "__main__":
         (get_classification_from_production_classifier, "production_classifier"),
         (get_respiratory_classification, "respiratory_classification_always"),
         (get_skin_classification, "skin_classifiction_always"),
-        # (get_classification_from_ml_classifier, "ml_classifier"),
+        #(get_classification_from_ml_classifier, "ml_classifier"),
         # (get_classification_from_stacked_classifier, "stacked"),
         # (get_classification_from_reverse_stacked_classifier, "reverse_stacked"),
     ]
 
     for classifier_function, descriptive_name in classifiers:
-        run_inputs_against_classifier(input_data, classifier_function, descriptive_name)
+        
+        predictions = run_inputs_against_classifier(conditions_to_test, classifier_function)
+
+        predictions_file = _write_predictions_to_file(conditions_to_test, expected_classifications, predictions, descriptive_name)
+
+        accuracy, other_computed_scores = _get_scores_for_classifier(labels, expected_classifications, predictions)
+
+        scores_file = _write_scores_to_file(labels, accuracy, other_computed_scores, descriptive_name)
+
+        print(f"Accuracy: {round(accuracy * 100, 2)}%")
+        print(f"Outputs: {predictions_file}, {scores_file}")
+
