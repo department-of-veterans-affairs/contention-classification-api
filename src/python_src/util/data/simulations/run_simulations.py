@@ -34,7 +34,7 @@ from datetime import datetime
 from typing import Callable, List, Tuple
 
 
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support, classification_report
 
 from python_src.util.app_utilities import expanded_lookup_table
 
@@ -90,44 +90,13 @@ def run_inputs_against_classifier(
 
 
 
-def _get_scores_for_classifier(
-    labels: List[str], target_values: List[str], predictions: List[str]
-) -> Tuple[float, List[List[float]]]:
-    """Compute scores for the classifier"""
 
-    assert len(target_values) == len(predictions)
-
-    accuracy = accuracy_score(target_values, predictions, normalize=True)
-    other_computed_scores = precision_recall_fscore_support(
-        target_values, predictions, average=None, labels=labels, zero_division=1
-    )
-
-    return accuracy, other_computed_scores
-
-
-def _write_scores_to_file(
-    labels: List[str], accuracy: float, other_computed_scores: List[List[float]], file_prefix: str
-) -> str:
-    """Write the classifier's scores to file
-    labels: list of the possible classifications
-    accuracy: a float
-    other_computed_scores: a 2D array with length 4, one column for each label
-    """
-    assert len(labels) == len(other_computed_scores[0])
-
+def _write_scores_to_file(classification_report: str
+, file_prefix: str) -> str:
     filename = f"{file_prefix}_{TIMESTAMP}_scores.csv"
 
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
-        f.write(f"# accuracy: {accuracy * 100}%\n")
-        f.write("label,precision,recall,fbeta,support\n")
-
-        for i in range(len(labels)):
-            precision = round(other_computed_scores[0][i], 4)
-            recall = round(other_computed_scores[1][i], 4)
-            fscore = round(other_computed_scores[2][i], 4)
-            support = round(other_computed_scores[3][i], 4)
-
-            f.write(f"{labels[i]},{precision},{recall},{fscore},{support}\n")
+        f.writelines(classification_report)
     return filename
 
 
@@ -197,10 +166,8 @@ if __name__ == "__main__":
 
         predictions_file = _write_predictions_to_file(conditions_to_test, expected_classifications, predictions, descriptive_name)
 
-        accuracy, other_computed_scores = _get_scores_for_classifier(labels, expected_classifications, predictions)
+        computed_scores = classification_report(expected_classifications, predictions, target_names=labels, zero_division=1)
 
-        scores_file = _write_scores_to_file(labels, accuracy, other_computed_scores, descriptive_name)
+        scores_file = _write_scores_to_file(computed_scores, descriptive_name)
 
-        print(f"Accuracy: {round(accuracy * 100, 2)}%")
         print(f"Outputs: {predictions_file}, {scores_file}")
-
