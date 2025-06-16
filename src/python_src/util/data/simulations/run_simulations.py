@@ -29,10 +29,8 @@ TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 def _write_metrics_to_file(metrics_report: str, file_prefix: str) -> str:
     filename = f"{file_prefix}_{TIMESTAMP}_metrics.txt"
-
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
         f.write(metrics_report)
-        
     return filename
 
 
@@ -135,7 +133,9 @@ if __name__ == "__main__":
         labels.sort()
 
         metrics_file = _write_metrics_to_file(
-            classification_report(expected_classifications, c.predictions, target_names=labels, zero_division=1), c.name
+            classification_report(expected_classifications, c.predictions, 
+                labels=labels, target_names=labels, zero_division=1), 
+            c.name
         )
 
         print(f"Outputs: {predictions_file}, {metrics_file}\n")
