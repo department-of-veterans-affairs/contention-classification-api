@@ -51,7 +51,7 @@ psoriasis,9016
 
 @patch('src.python_src.util.data.simulations.run_simulations.SIMULATIONS_DIR', tempfile.tempdir)
 @patch('src.python_src.util.data.simulations.run_simulations.INPUT_FILE', "inputs_mini.csv")
-def test_get_metrics_from_file() -> None:
+def test_get_conditions_to_test_from_input_file() -> None:
     os.makedirs(str(tempfile.tempdir), exist_ok=True)
     with open(os.path.join(str(tempfile.tempdir), "inputs_mini.csv"), 'w') as f:
         f.write(SAMPLE_INPUT_FILE_CONTENT)
