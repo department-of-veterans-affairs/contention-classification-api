@@ -21,7 +21,6 @@ class ProductionClassifier(BaseClassifierForSimulation):
                 prediction = str(expanded_lookup_table.get(condition).get("classification_code"))
             except Exception as e:
                 print("error: ", e)
-                prediction = "no-classification"
 
             predicted_classifications.append(prediction)
         self.predictions = predicted_classifications
