@@ -2,6 +2,7 @@ from typing import List
 
 from python_src.util.app_utilities import expanded_lookup_table
 
+
 class BaseClassifierForSimulation:
     name: str
     predictions: List[str]

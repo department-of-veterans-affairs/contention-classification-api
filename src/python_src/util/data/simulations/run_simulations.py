@@ -50,8 +50,12 @@ def _write_predictions_to_file(
         
         for i in range(len(conditions_to_test)):
             prediction = classifier.predictions[i]
-            csv_writer.writerow([conditions_to_test[i], expected_classifications[i], prediction, str(expected_classifications[i]) == str(prediction)]
-                )
+            csv_writer.writerow(
+                [conditions_to_test[i], 
+                expected_classifications[i], 
+                prediction, 
+                str(expected_classifications[i]) == str(prediction)]
+            )
 
     return filename
 
@@ -97,7 +101,7 @@ def _get_input_from_file() -> Tuple[List[str], List[str]]:
     expected_classifications = []
 
     with open(os.path.join(SIMULATIONS_DIR, INPUT_FILE), "r") as f:
-        csv_reader = csv.reader(f);
+        csv_reader = csv.reader(f)
 
         for row in csv_reader:
             if row and row[0].strip().startswith("#"):
