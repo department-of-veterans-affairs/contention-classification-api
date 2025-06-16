@@ -1,5 +1,8 @@
-import pickle
-from typing import Any, List
+import logging
+import os
+from typing import List
+
+import joblib
 
 from python_src.util.app_utilities import app_config
 from python_src.util.brd_classification_codes import get_classification_code
@@ -7,20 +10,24 @@ from python_src.util.brd_classification_codes import get_classification_code
 
 class MLClassifier:
 
-    def __init__(self, features_file: str, model_file: str):
-        self.loaded_model = pickle.load(open(model_file, 'rb'))
-        self.x_test = pickle.load(open(features_file, 'rb'))
-     
-    def make_predictions(self, conditions: list[str]) -> List[str] | Any:
-        return self.loaded_model.predict(conditions).astype(str).tolist()
-        
+    def __init__(self, model_file: str):
+        if os.path.exists(model_file):
+            self.model = joblib.load(open(model_file, 'rb'))
+        else:
+            logging.error(f"File not found: {model_file}")
+
+    def make_predictions(self, conditions: list[str]) -> List[str]:
+        """Returns a list of the predicted classification names, for example:
+        ['Musculoskeletal - Wrist', 'Eye (Vision)', 'Hearing Loss']
+        """
+        return [str(c) or "no-classification" for c in self.model.predict(conditions)]
+
+
 if __name__ == "__main__":
 
     # usage: python -W "ignore" src/python_src/util/ml_classifier.py
 
-    ml_classifier = MLClassifier(
-        app_config["ml_classifier"]["features_file"],
-        app_config["ml_classifier"]["model_file"] )
+    ml_classifier = MLClassifier(app_config["ml_classifier"]["model_file"] )
     
     sample_test_cases = [
         "numbness in right lower arm",
