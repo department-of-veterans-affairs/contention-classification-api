@@ -7,12 +7,11 @@ from fastapi.responses import Response
 from .pydantic_models import (
     AiRequest,
     AiResponse,
-    ClassifiedContention,
     ClassifierResponse,
     VaGovClaim,
 )
 from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
-from .util.classifier_utilities import classify_claim, ml_classification
+from .util.classifier_utilities import classify_claim, ml_classification, ml_classify_claim
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 
 app = FastAPI(
@@ -72,18 +71,8 @@ def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierR
 
 
 @app.post("/ml-contention-classification")
-def fake_endpoint(contentions: AiRequest) -> AiResponse:
-    c: list[ClassifiedContention] = []
-    for contention in contentions.contentions:
-        temp_classification = ClassifiedContention(
-            classification_code=9999,
-            classification_name="ml classification",
-            diagnostic_code=contention.diagnostic_code,
-            contention_type=contention.contention_type,
-        )
-        c.append(temp_classification)
-    response = AiResponse(classified_contentions=c)
-
+def ml_classifications_endpoint(contentions: AiRequest) -> AiResponse:
+    response = ml_classify_claim(contentions)
     return response
 
 
