@@ -27,11 +27,12 @@ INPUT_FILE = "inputs_mini.csv"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
-def _write_scores_to_file(classification_report: str, file_prefix: str) -> str:
-    filename = f"{file_prefix}_{TIMESTAMP}_scores.txt"
+def _write_metrics_to_file(metrics_report: str, file_prefix: str) -> str:
+    filename = f"{file_prefix}_{TIMESTAMP}_metrics.txt"
 
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
-        f.writelines(classification_report)
+        f.write(metrics_report)
+        
     return filename
 
 
@@ -44,17 +45,18 @@ def _write_predictions_to_file(
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
-        
         csv_writer = csv.writer(f, delimiter=",")
-        csv_writer.writerow(["text_to_classify","expected_classification","prediction","is_accurate"])
-        
+        csv_writer.writerow(["text_to_classify", "expected_classification", "prediction", "is_accurate"])
+
         for i in range(len(conditions_to_test)):
             prediction = classifier.predictions[i]
             csv_writer.writerow(
-                [conditions_to_test[i], 
-                expected_classifications[i], 
-                prediction, 
-                str(expected_classifications[i]) == str(prediction)]
+                [
+                    conditions_to_test[i],
+                    expected_classifications[i],
+                    prediction,
+                    str(expected_classifications[i]) == str(prediction),
+                ]
             )
 
     return filename
@@ -131,11 +133,12 @@ if __name__ == "__main__":
 
         labels = list(set(expected_classifications + c.predictions))
         labels.sort()
-        computed_scores = classification_report(expected_classifications, c.predictions, target_names=labels, zero_division=1)
 
-        scores_file = _write_scores_to_file(computed_scores, c.name)
+        metrics_file = _write_metrics_to_file(
+            classification_report(expected_classifications, c.predictions, target_names=labels, zero_division=1), c.name
+        )
 
-        print(f"Outputs: {predictions_file}, {scores_file}\n")
+        print(f"Outputs: {predictions_file}, {metrics_file}\n")
 
     if len(classifiers) > 1:
         _write_aggregate_predictions_to_file(
