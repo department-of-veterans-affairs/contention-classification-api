@@ -4,6 +4,7 @@ import pytest
 
 from src.python_src.util.ml_classifier import MLClassifier
 
+
 @patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.joblib.load")
 def test_instantiation(mock_joblib: MagicMock, mock_os_path: MagicMock) -> None:
