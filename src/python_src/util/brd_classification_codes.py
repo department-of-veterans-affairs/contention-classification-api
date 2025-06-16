@@ -17,7 +17,10 @@ def get_classification_names_by_code() -> Dict[int, str]:
 
 
 CLASSIFICATION_NAMES_BY_CODE = get_classification_names_by_code()
-
+CLASSIFICATION_CODES_BY_NAME = {v: k for k, v in CLASSIFICATION_NAMES_BY_CODE.items()}
 
 def get_classification_name(classification_code: int) -> Optional[str]:
     return CLASSIFICATION_NAMES_BY_CODE.get(classification_code)
+
+def get_classification_code(classification_name: str) -> Optional[int]:
+    return CLASSIFICATION_CODES_BY_NAME.get(classification_name)
