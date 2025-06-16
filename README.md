@@ -98,6 +98,15 @@ docker compose build --no-cache
 docker compose up -d
 ```
 
+## Running the ML Classifier locally
+
+For the purposes of local development environment only, a .pkl version of the classifier can be downloaded from the VA Sharepoint: [Cata Discovery/CAIO Collaboration Documentation](
+https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention%20Classification/4%20-%20Data%20Discovery/CAIO%20Collaboration%20Documentation/model_6_2_25?csf=1&web=1&e=nb72My)
+
+Update the app_config to point to where you have saved the file locally. https://github.com/department-of-veterans-affairs/contention-classification-api/blob/994d2bfc170b9e8074529e3ea172a2d70faaf3b3/src/python_src/util/app_config.yaml#L179
+
+The .pkl file is not appropriate for production environment use.
+
 ## Testing locally
 With the application running using either Docker or Python, tests requests can be sent using the following curl commands.
 
