@@ -28,9 +28,10 @@ class ProductionClassifier(BaseClassifierForSimulation):
 
 
 class RespiratoryClassifier(BaseClassifierForSimulation):
-    """For demo purposes: a classifier that always predicts the label '9012' (classification: respiratory)"""
+    """For demo purposes: a classifier that always predicts a classification
+    of respiratory, which maps to classification code '9012' """
 
     name = "respiratory_classifier"
 
     def make_predictions(self, conditions: List[str]) -> None:
-        self.predictions = ["9016"] * len(conditions)
+        self.predictions = ["9012"] * len(conditions)
