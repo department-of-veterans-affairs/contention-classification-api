@@ -38,7 +38,7 @@ def _write_scores_to_file(classification_report: str, file_prefix: str) -> str:
 def _write_predictions_to_file(
     conditions_to_test: List[str], expected_classifications: List[str], classifier: BaseClassifierForSimulation
 ) -> str:
-    filename = f"{c.name.replace(" ", "_")}_{TIMESTAMP}.csv"
+    filename = f"{classifier.name.replace(' ', '_')}_{TIMESTAMP}.csv"
 
     assert len(conditions_to_test) == len(expected_classifications) == len(classifier.predictions)
 
