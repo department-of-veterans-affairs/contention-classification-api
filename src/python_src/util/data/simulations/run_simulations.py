@@ -9,6 +9,7 @@ Usage: (from the codebase root directory)
 
 """
 
+import csv
 import os
 from datetime import datetime
 from typing import List, Tuple
@@ -43,16 +44,14 @@ def _write_predictions_to_file(
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
-        # initial row: columns
-        f.write("text_to_classify,expected_classification,prediction,is_accurate\n")
-
+        
+        csv_writer = csv.writer(f, delimiter=",")
+        csv_writer.writerow(["text_to_classify","expected_classification","prediction","is_accurate"])
+        
         for i in range(len(conditions_to_test)):
             prediction = classifier.predictions[i]
-            f.write(
-                f"{conditions_to_test[i]},{expected_classifications[i]},{prediction},{
-                    str(expected_classifications[i]) == str(prediction)
-                }\n"
-            )
+            csv_writer.writerow([conditions_to_test[i], expected_classifications[i], prediction, str(expected_classifications[i]) == str(prediction)]
+                )
 
     return filename
 
@@ -67,7 +66,7 @@ def _write_aggregate_predictions_to_file(
     Create a csv file that documents the inputs and the predictions across all of the classifiers.
 
     rows: text_to_classify, expected_classification, model_a_prediction,
-     is_model_a_accurate, model_b_prediction, is_model_b_accurate, ...
+     model_a_is_accurate, model_b_prediction, model_b_is_accurate, ...
     """
     filename = f"{file_prefix}_{TIMESTAMP}.csv"
 
@@ -77,7 +76,7 @@ def _write_aggregate_predictions_to_file(
     column_names = ["text_to_classify", "expected_classification"]
     for c in classifiers:
         assert len(c.predictions) == len(expected_classifications)
-        column_names += [c.name, f"{c.name} accurate?"]
+        column_names += [f"{c.name}_prediction", f"{c.name}_is_accurate"]
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
@@ -98,14 +97,15 @@ def _get_input_from_file() -> Tuple[List[str], List[str]]:
     expected_classifications = []
 
     with open(os.path.join(SIMULATIONS_DIR, INPUT_FILE), "r") as f:
-        file_data = f.readlines()
+        csv_reader = csv.reader(f);
 
-        for row in file_data:
-            row = row.split("#")[0]
-            if len(row.split(",")) != 2:
+        for row in csv_reader:
+            if row and row[0].strip().startswith("#"):
+                continue
+            if len(row) != 2:
                 continue
 
-            tokens = [token.strip() for token in row.split(",")]
+            tokens = [token.strip() for token in row]
             conditions_to_test.append(tokens[0])
             expected_classifications.append(tokens[1])
 

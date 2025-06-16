@@ -51,7 +51,7 @@ alopecia,9016,1234,False
 Additionally, if more than one classifier is being considered, then an output file of the predictions across all of the classifiers is created.  
 As an example of rows in this output file:
 ```
-text_to_classify,expected_classification,prediction_by_model_a,is_model_a_accurate,prediction_by_model_b,is_model_b_accurate
+text_to_classify,expected_classification,model_a_prediction,model_a_is_accurate,model_b_prediction,is_model_b_accurate
 acne,9016,9016,True,9012,False
 adjustment disorder,8989,9012,False,8989,True
 agoraphobia,8989,8989,True,8989,True
