@@ -6,7 +6,7 @@ The intent is to gather outputs for comparing and tracking behavior of the class
 
 
 ## Inputs
-The input file is expected to be a csv with these columns: text_to_classify, expected_classification
+The input file is expected to be a csv with these columns: text_to_classify, expected_classification.   
 As an example of rows in an input file:
 
 ```
@@ -20,7 +20,7 @@ alopecia,9016
 
 For each classifier being considered, two files are created:
 
-1. a txt file that shows computed scores for the classifier (eg accuracy, precision, recall)
+1. a txt file that shows computed scores for the classifier (eg accuracy, precision, recall)  
 As an example of this file:
 ```
               precision    recall  f1-score   support
@@ -37,7 +37,7 @@ weighted avg       0.76      0.60      0.45        10
 (where `8968`, `9012`, and `9016` are the possible classifications)
 
 
-2. a csv file that shows the predictions made by the classifier for the inputs.
+2. a csv file that shows the predictions made by the classifier for the inputs.  
 As an example of rows in this output file:
 
 ```
@@ -48,7 +48,7 @@ agoraphobia,8989,8989,True
 alopecia,9016,1234,False
 ```
 
-Additionally,if more than one classifier is being considered, then an output file of the predictions across all of the classifiers is created.
+Additionally, if more than one classifier is being considered, then an output file of the predictions across all of the classifiers is created.  
 As an example of rows in this output file:
 ```
 text_to_classify,expected_classification,prediction_by_model_a,is_model_a_accurate,prediction_by_model_b,is_model_b_accurate

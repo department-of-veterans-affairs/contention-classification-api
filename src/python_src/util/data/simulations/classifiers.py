@@ -11,7 +11,7 @@ class BaseClassifierForSimulation:
 
 
 class ProductionClassifier(BaseClassifierForSimulation):
-    name = "csv lookup"
+    name = "csv_lookup"
 
     def make_predictions(self, conditions: List[str]) -> None:
         predicted_classifications: List[str] = []
@@ -29,7 +29,7 @@ class ProductionClassifier(BaseClassifierForSimulation):
 class RespiratoryClassifier(BaseClassifierForSimulation):
     """For demo purposes: a classifier that always predicts the label '9012' (classification: respiratory)"""
 
-    name = "respiratory classifier"
+    name = "respiratory_classifier"
 
     def make_predictions(self, conditions: List[str]) -> None:
         self.predictions = ["9016"] * len(conditions)
