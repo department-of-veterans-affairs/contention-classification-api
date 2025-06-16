@@ -105,7 +105,10 @@ https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention
 
 Update the app_config to point to where you have saved the file locally. https://github.com/department-of-veterans-affairs/contention-classification-api/blob/994d2bfc170b9e8074529e3ea172a2d70faaf3b3/src/python_src/util/app_config.yaml#L178-L179
 
-The .pkl file is not appropriate for production environment use.
+The .pkl file is not appropriate for use beyond the local dev environment due to known security weaknesses. As noted in official [python documentation](https://docs.python.org/3/library/pickle.html): 
+**Warning:** The pickle module **is not secure**. Only unpickle data you trust.
+
+For non-local dev, an [ONNX](https://onnx.ai/) format is intended.
 
 ## Testing locally
 With the application running using either Docker or Python, tests requests can be sent using the following curl commands.
