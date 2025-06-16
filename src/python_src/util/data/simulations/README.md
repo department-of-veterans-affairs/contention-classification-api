@@ -20,7 +20,7 @@ alopecia,9016
 
 For each classifier being considered, two files are created:
 
-1. a txt file that shows computed scores for the classifier (eg accuracy, precision, recall)  
+1. a txt file that shows computed metrics for the classifier (eg accuracy, precision, recall)  
 As an example of this file:
 ```
               precision    recall  f1-score   support
