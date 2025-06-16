@@ -35,11 +35,11 @@ def _write_scores_to_file(classification_report: str, file_prefix: str) -> str:
 
 
 def _write_predictions_to_file(
-    conditions_to_test: List[str], expected_classifications: List[str], predictions: List[str], file_prefix: str
+    conditions_to_test: List[str], expected_classifications: List[str], classifier: BaseClassifierForSimulation
 ) -> str:
-    filename = f"{file_prefix}_{TIMESTAMP}.csv"
+    filename = f"{c.name.replace(" ", "_")}_{TIMESTAMP}.csv"
 
-    assert len(conditions_to_test) == len(expected_classifications) == len(predictions)
+    assert len(conditions_to_test) == len(expected_classifications) == len(classifier.predictions)
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
@@ -47,7 +47,7 @@ def _write_predictions_to_file(
         f.write("text_to_classify,expected_classification,prediction,is_accurate\n")
 
         for i in range(len(conditions_to_test)):
-            prediction = conditions_to_test[i]
+            prediction = classifier.predictions[i]
             f.write(
                 f"{conditions_to_test[i]},{expected_classifications[i]},{prediction},{
                     str(expected_classifications[i]) == str(prediction)
@@ -115,9 +115,6 @@ def _get_input_from_file() -> Tuple[List[str], List[str]]:
 if __name__ == "__main__":
     conditions_to_test, expected_classifications = _get_input_from_file()
 
-    labels = list(set(expected_classifications))
-    labels.sort()
-
     classifiers: List[BaseClassifierForSimulation] = [ProductionClassifier(), RespiratoryClassifier()]
 
     for c in classifiers:
@@ -125,9 +122,11 @@ if __name__ == "__main__":
 
         c.make_predictions(conditions_to_test)
 
-        predictions_file = _write_predictions_to_file(conditions_to_test, expected_classifications, c.predictions, c.name)
-
         print(c.predictions)
+        predictions_file = _write_predictions_to_file(conditions_to_test, expected_classifications, c)
+
+        labels = list(set(expected_classifications + c.predictions))
+        labels.sort()
         computed_scores = classification_report(expected_classifications, c.predictions, target_names=labels, zero_division=1)
 
         scores_file = _write_scores_to_file(computed_scores, c.name)
