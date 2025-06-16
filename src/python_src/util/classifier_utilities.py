@@ -146,7 +146,7 @@ def ml_classify_claim(contentions: AiRequest) -> AiResponse:
         classified_contentions=classified_contentions,
     )
 
-def ml_classification(response: ClassifierResponse, claim: VaGovClaim) -> ClassifierResponse:
+def supplement_with_ml_classification(response: ClassifierResponse, claim: VaGovClaim) -> ClassifierResponse:
     
     non_classified_indices, ai_request = build_ai_request(response, claim)
     ai_response = ml_classify_claim(ai_request)

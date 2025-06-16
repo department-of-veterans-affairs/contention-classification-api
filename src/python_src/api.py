@@ -11,7 +11,7 @@ from .pydantic_models import (
     VaGovClaim,
 )
 from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
-from .util.classifier_utilities import classify_claim, ml_classification, ml_classify_claim
+from .util.classifier_utilities import classify_claim, ml_classify_claim, supplement_with_ml_classification
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 
 app = FastAPI(
@@ -85,7 +85,7 @@ def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResp
     if response.is_fully_classified:
         return response
 
-    response = ml_classification(response, claim)
+    response = supplement_with_ml_classification(response, claim)
 
     num_classified = len([c for c in response.contentions if c.classification_code])
     response.num_classified_contentions = num_classified
