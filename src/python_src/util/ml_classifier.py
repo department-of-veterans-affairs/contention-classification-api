@@ -1,4 +1,3 @@
-import logging
 import os
 from typing import List
 
@@ -11,11 +10,10 @@ from python_src.util.brd_classification_codes import get_classification_code
 class MLClassifier:
 
     def __init__(self, model_file: str):
-        if os.path.exists(model_file):
-            self.model = joblib.load(open(model_file, 'rb'))
-        else:
-            logging.error(f"File not found: {model_file}")
-
+        if not os.path.exists(model_file):
+            raise Exception(f"File not found: {model_file}")
+        self.model = joblib.load(model_file)
+    
     def make_predictions(self, conditions: list[str]) -> List[str]:
         """Returns a list of the predicted classification names, for example:
         ['Musculoskeletal - Wrist', 'Eye (Vision)', 'Hearing Loss']
