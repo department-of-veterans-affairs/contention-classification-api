@@ -123,14 +123,13 @@ def update_classifications(response: ClassifierResponse, indices: list[int], ai_
 
 
 def ml_classify_claim(contentions: AiRequest) -> AiResponse:
-    
     if not ml_classifier:
-        return AiResponse(classified_contentions = [])
+        return AiResponse(classified_contentions=[])
 
     contentions_to_classify = contentions.contentions
     texts_to_classify = [c.contention_text for c in contentions_to_classify]
     classifications = ml_classifier.make_predictions(texts_to_classify)
-    
+
     classified_contentions: list[ClassifiedContention] = []
 
     for i in range(len(contentions_to_classify)):
@@ -146,8 +145,8 @@ def ml_classify_claim(contentions: AiRequest) -> AiResponse:
         classified_contentions=classified_contentions,
     )
 
+
 def supplement_with_ml_classification(response: ClassifierResponse, claim: VaGovClaim) -> ClassifierResponse:
-    
     non_classified_indices, ai_request = build_ai_request(response, claim)
     ai_response = ml_classify_claim(ai_request)
     response = update_classifications(response, non_classified_indices, ai_response)

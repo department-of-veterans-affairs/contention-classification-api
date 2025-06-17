@@ -177,4 +177,3 @@ ai_classification_endpoint:
   endpoint: 'ml-contention-classification'
 ml_classifier:
   model_file: 'src/python_src/util/models/LR_tfidf_fit_model_20250613.pkl'
-        

@@ -94,6 +94,7 @@ def test_get_classification_name_file_error(test_client: TestClient) -> None:
         result = get_classification_name(8989)
         assert result is None
 
+
 def test_get_classification_code_file_error(test_client: TestClient) -> None:
     """Test error handling when file cannot be opened."""
     with patch.dict(CLASSIFICATION_CODES_BY_NAME, {}, clear=True):
