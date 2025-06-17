@@ -175,3 +175,5 @@ lut_default_value:
 ai_classification_endpoint:
   url: 'http://localhost:8120/'
   endpoint: 'ml-contention-classification'
+ml_classifier:
+  model_file: 'src/python_src/util/models/LR_tfidf_fit_model_20250613.pkl'

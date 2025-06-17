@@ -6,9 +6,9 @@ from src.python_src.pydantic_models import ClassifiedContention, ClassifierRespo
 
 
 @patch("src.python_src.api.classify_claim")
-@patch("src.python_src.api.ml_classification")
+@patch("src.python_src.api.supplement_with_ml_classification")
 def test_hybrid_classifier_fully_classified(
-    mock_ml_class: MagicMock, mock_classify_claim: MagicMock, test_client: TestClient
+    mock_supplement_with_ml_classifier: MagicMock, mock_classify_claim: MagicMock, test_client: TestClient
 ) -> None:
     test_claim = VaGovClaim(
         claim_id=100,
@@ -44,13 +44,13 @@ def test_hybrid_classifier_fully_classified(
     )
     test_client.post("/hybrid-contention-classification", json=test_claim.model_dump())
     mock_classify_claim.assert_called_once()
-    mock_ml_class.assert_not_called()
+    mock_supplement_with_ml_classifier.assert_not_called()
 
 
 @patch("src.python_src.api.classify_claim")
-@patch("src.python_src.api.ml_classification")
+@patch("src.python_src.api.supplement_with_ml_classification")
 def test_hybrid_classifier_partially_classified(
-    mock_ml_class: MagicMock, mock_classify_claim: MagicMock, test_client: TestClient
+    mock_supplement_with_ml_classifier: MagicMock, mock_classify_claim: MagicMock, test_client: TestClient
 ) -> None:
     test_claim = VaGovClaim(
         claim_id=100,
@@ -84,7 +84,7 @@ def test_hybrid_classifier_partially_classified(
         num_processed_contentions=2,
         num_classified_contentions=1,
     )
-    mock_ml_class.return_value = ClassifierResponse(
+    mock_supplement_with_ml_classifier.return_value = ClassifierResponse(
         contentions=[
             ClassifiedContention(
                 classification_code=8998,
@@ -107,6 +107,6 @@ def test_hybrid_classifier_partially_classified(
     )
     test_response = test_client.post("/hybrid-contention-classification", json=test_claim.model_dump())
     mock_classify_claim.assert_called_once()
-    mock_ml_class.assert_called_once()
+    mock_supplement_with_ml_classifier.assert_called_once()
     assert test_response.json()["num_classified_contentions"] == 2
     assert test_response.json()["is_fully_classified"]

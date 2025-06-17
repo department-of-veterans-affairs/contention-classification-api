@@ -1,6 +1,4 @@
-from unittest.mock import MagicMock, patch
-
-import httpx
+from unittest.mock import MagicMock, call, patch
 
 from src.python_src.pydantic_models import (
     AiRequest,
@@ -10,8 +8,7 @@ from src.python_src.pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from src.python_src.util.app_utilities import app_config
-from src.python_src.util.classifier_utilities import build_ai_request, ml_classification, update_classifications
+from src.python_src.util.classifier_utilities import build_ai_request, ml_classify_claim, update_classifications
 
 TEST_CLAIM = VaGovClaim(
     claim_id=100,
@@ -53,6 +50,13 @@ TEST_RESPONSE = ClassifierResponse(
     is_fully_classified=False,
     num_processed_contentions=3,
     num_classified_contentions=0,
+)
+
+TEST_AI_REQUEST = AiRequest(
+    contentions=[
+        Contention(contention_text="lower back", contention_type="NEW", diagnostic_code=1234),
+        Contention(contention_text="blurry vision", contention_type="claim_for_increase", diagnostic_code=5678),
+    ],
 )
 
 
@@ -121,106 +125,33 @@ def test_update_classifications() -> None:
     assert expected.contentions[0].classification_code == 8998
 
 
-@patch("src.python_src.util.classifier_utilities.AiClient")
-@patch("src.python_src.util.classifier_utilities.build_ai_request")
-@patch("src.python_src.util.classifier_utilities.update_classifications")
-def test_ml_classifications_success(mock_update: MagicMock, mock_build: MagicMock, mock_ai_client: MagicMock) -> None:
-    mock_client_instance = mock_ai_client.return_value
+@patch("src.python_src.util.classifier_utilities.get_classification_code")
+@patch("src.python_src.util.classifier_utilities.ml_classifier")
+def test_ml_classify_claim(mock_ml_classifier: MagicMock, mock_get_classification_code: MagicMock) -> None:
+    mock_ml_classifier.make_predictions.return_value = ["musculoskeletal", "Eye (Vision)"]
+    mock_get_classification_code.return_value = "777"
 
-    mock_build.return_value = ([1, 2], AiRequest(contentions=TEST_CLAIM.contentions[1:]))
+    ai_response = ml_classify_claim(TEST_AI_REQUEST)
 
-    mock_client_instance.classify_contention.return_value = AiResponse(
-        classified_contentions=[
-            ClassifiedContention(
-                classification_code=9999,
-                classification_name="ml classification",
-                diagnostic_code=5678,
-                contention_type="claim_for_increase",
-            ),
-            ClassifiedContention(
-                classification_code=9999,
-                classification_name="ml classification",
-                diagnostic_code=2,
-                contention_type="NEW",
-            ),
-        ]
-    )
-
-    mock_update.return_value = ClassifierResponse(
-        contentions=[
-            ClassifiedContention(
-                classification_code=8998,
-                classification_name="Classification Name",
-                contention_type="NEW",
-            ),
-            ClassifiedContention(
-                classification_code=9999,
-                classification_name="ml classification",
-                contention_type="NEW",
-            ),
-            ClassifiedContention(
-                classification_code=9999,
-                classification_name="ml classification",
-                contention_type="NEW",
-            ),
-        ],
-        claim_id=1,
-        form526_submission_id=1,
-        is_fully_classified=False,
-        num_processed_contentions=3,
-        num_classified_contentions=1,
-    )
-
-    # Call the ml_classification function
-    ml_classification(TEST_RESPONSE, TEST_CLAIM)
-
-    # Assert that the functions are called with the expected arguments
-    mock_build.assert_called_once_with(TEST_RESPONSE, TEST_CLAIM)
-    mock_client_instance.classify_contention.assert_called_once_with(
-        endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=mock_build.return_value[1]
-    )
-    mock_update.assert_called_once_with(
-        TEST_RESPONSE, mock_build.return_value[0], mock_client_instance.classify_contention.return_value
-    )
+    mock_ml_classifier.make_predictions.assert_called_with(["lower back", "blurry vision"])
+    mock_get_classification_code.assert_has_calls([call("musculoskeletal"), call("Eye (Vision)")])
+    assert ai_response.classified_contentions == [
+        ClassifiedContention(
+            classification_code="777",
+            classification_name="musculoskeletal",
+            diagnostic_code="1234",
+            contention_type="NEW",
+        ),
+        ClassifiedContention(
+            classification_code="777",
+            classification_name="Eye (Vision)",
+            diagnostic_code="5678",
+            contention_type="claim_for_increase",
+        ),
+    ]
 
 
-@patch("src.python_src.util.classifier_utilities.log_as_json")
-@patch("src.python_src.util.classifier_utilities.update_classifications")
-@patch("src.python_src.util.classifier_utilities.build_ai_request")
-@patch("src.python_src.util.classifier_utilities.AiClient")
-def test_ml_classifications_http_error(
-    mock_ai_client: MagicMock, mock_build: MagicMock, mock_update: MagicMock, mock_log: MagicMock
-) -> None:
-    mock_ai_client_instance = mock_ai_client.return_value
-
-    mock_build.return_value = ([1, 2], AiRequest(contentions=TEST_CLAIM.contentions[1:]))
-    mock_ai_client_instance.classify_contention.side_effect = httpx.HTTPStatusError(
-        "Error reaching service", request=MagicMock(), response=MagicMock(status_code=500)
-    )
-    result = ml_classification(TEST_RESPONSE, TEST_CLAIM)
-    mock_ai_client_instance.classify_contention.assert_called_once_with(
-        endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=mock_build.return_value[1]
-    )
-    mock_update.assert_not_called()
-    mock_log.assert_called_once_with({"message": "Failure to reach AI Endpoint", "error": "Error reaching service"})
-    assert result == TEST_RESPONSE
-
-
-@patch("src.python_src.util.classifier_utilities.log_as_json")
-@patch("src.python_src.util.classifier_utilities.update_classifications")
-@patch("src.python_src.util.classifier_utilities.build_ai_request")
-@patch("src.python_src.util.classifier_utilities.AiClient")
-def test_ml_classifications_request_error(
-    mock_ai_client: MagicMock, mock_build: MagicMock, mock_update: MagicMock, mock_log: MagicMock
-) -> None:
-    mock_ai_client_instance = mock_ai_client.return_value
-
-    mock_build.return_value = ([1, 2], AiRequest(contentions=TEST_CLAIM.contentions[1:]))
-    mock_ai_client_instance.classify_contention.side_effect = httpx.RequestError("Network error", request=MagicMock())
-    result = ml_classification(TEST_RESPONSE, TEST_CLAIM)
-    mock_ai_client_instance.classify_contention.assert_called_once_with(
-        endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=mock_build.return_value[1]
-    )
-    mock_update.assert_not_called()
-    mock_log.assert_called_once_with({"message": "Failure to reach AI Endpoint", "error": "Network error"})
-    assert result == TEST_RESPONSE
+@patch("src.python_src.util.classifier_utilities.ml_classifier", None)
+def test_ml_classify_claim_returns_empty_list_if_no_ml_model() -> None:
+    ai_response = ml_classify_claim(TEST_AI_REQUEST)
+    assert ai_response.classified_contentions == []
