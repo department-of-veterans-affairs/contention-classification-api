@@ -1,6 +1,7 @@
 from typing import List
 
-from python_src.util.app_utilities import expanded_lookup_table
+from python_src.util.app_utilities import expanded_lookup_table, ml_classifier
+from python_src.util.brd_classification_codes import get_classification_code
 
 
 class BaseClassifierForSimulation:
@@ -26,9 +27,17 @@ class ProductionClassifier(BaseClassifierForSimulation):
         self.predictions = predicted_classifications
 
 
+class MLClassifier(BaseClassifierForSimulation):
+    name = "ml_classifier"
+
+    def make_predictions(self, conditions: List[str]) -> None:
+        classification_names = ml_classifier.make_predictions(conditions)
+        self.predictions = [str(get_classification_code(n)) for n in classification_names]
+
+
 class RespiratoryClassifier(BaseClassifierForSimulation):
     """For demo purposes: a classifier that always predicts a classification
-    of respiratory, which maps to classification code '9012' """
+    of respiratory, which maps to classification code '9012'"""
 
     name = "respiratory_classifier"
 

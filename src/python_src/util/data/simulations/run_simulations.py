@@ -18,6 +18,7 @@ from sklearn.metrics import classification_report
 
 from python_src.util.data.simulations.classifiers import (
     BaseClassifierForSimulation,
+    MLClassifier,
     ProductionClassifier,
     RespiratoryClassifier,
 )
@@ -119,7 +120,7 @@ def _get_input_from_file() -> Tuple[List[str], List[str]]:
 if __name__ == "__main__":
     conditions_to_test, expected_classifications = _get_input_from_file()
 
-    classifiers: List[BaseClassifierForSimulation] = [ProductionClassifier(), RespiratoryClassifier()]
+    classifiers: List[BaseClassifierForSimulation] = [MLClassifier(), ProductionClassifier(), RespiratoryClassifier()]
 
     for c in classifiers:
         print(f"---{c.name}---")
@@ -133,9 +134,10 @@ if __name__ == "__main__":
         labels.sort()
 
         metrics_file = _write_metrics_to_file(
-            classification_report(expected_classifications, c.predictions, 
-                labels=labels, target_names=labels, zero_division=1), 
-            c.name
+            classification_report(
+                expected_classifications, c.predictions, labels=labels, target_names=labels, zero_division=1
+            ),
+            c.name,
         )
 
         print(f"Outputs: {predictions_file}, {metrics_file}\n")
