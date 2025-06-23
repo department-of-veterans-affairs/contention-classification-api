@@ -1,0 +1,11 @@
+text_to_classify,expected_classification,ml_classifier_prediction,ml_classifier_is_accurate,csv_lookup_prediction,csv_lookup_is_accurate,respiratory_classifier_prediction,respiratory_classifier_is_accurate
+acne,9016,9016,True,9016,True,9012,False
+alopecia,9016,9016,True,9016,True,9012,False
+asthma,9012,9012,True,9012,True,9012,True
+athlete's foot,9016,9016,True,9016,True,9012,False
+bronchiectasis,9012,9012,True,9012,True,9012,True
+eczema,9016,9016,True,9016,True,9012,False
+emphysema,9012,9012,True,9012,True,9012,True
+gallstones,8968,8989,False,8968,True,9012,False
+psoriasis,9016,9016,True,9016,True,9012,False
+vitiligo,9016,9016,True,9016,True,9012,False
