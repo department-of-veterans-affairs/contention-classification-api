@@ -24,7 +24,8 @@ from python_src.util.data.simulations.classifiers import (
 )
 
 SIMULATIONS_DIR = "src/python_src/util/data/simulations/"
-INPUT_FILE = "inputs_mini.csv"
+#INPUT_FILE = "inputs_mini.csv"
+INPUT_FILE="datadog/extract-2025-06-23.csv"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
@@ -120,7 +121,8 @@ def _get_input_from_file() -> Tuple[List[str], List[str]]:
 if __name__ == "__main__":
     conditions_to_test, expected_classifications = _get_input_from_file()
 
-    classifiers: List[BaseClassifierForSimulation] = [MLClassifier(), ProductionClassifier(), RespiratoryClassifier()]
+    #classifiers: List[BaseClassifierForSimulation] = [MLClassifier(), ProductionClassifier(), RespiratoryClassifier()]
+    classifiers: List[BaseClassifierForSimulation] = [MLClassifier(), ProductionClassifier()]
 
     for c in classifiers:
         print(f"---{c.name}---")
