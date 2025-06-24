@@ -16,16 +16,16 @@ from typing import List, Tuple
 
 from sklearn.metrics import classification_report
 
+from python_src.util.brd_classification_codes import get_classification_name
 from python_src.util.data.simulations.classifiers import (
     BaseClassifierForSimulation,
     MLClassifier,
     ProductionClassifier,
-    RespiratoryClassifier,
 )
 
 SIMULATIONS_DIR = "src/python_src/util/data/simulations/"
-INPUT_FILE = "inputs_mini.csv"
-#INPUT_FILE="datadog/extract-2025-06-23.csv"
+# INPUT_FILE = "inputs_mini.csv"
+INPUT_FILE = "datadog/extract-2025-06-23.csv"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
@@ -46,7 +46,16 @@ def _write_predictions_to_file(
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
         csv_writer = csv.writer(f, delimiter=",")
-        csv_writer.writerow(["text_to_classify", "expected_classification", "prediction", "is_accurate"])
+        csv_writer.writerow(
+            [
+                "text_to_classify",
+                "expected_classification",
+                "expected_classification_label",
+                "prediction",
+                "prediction_label",
+                "is_accurate",
+            ]
+        )
 
         for i in range(len(conditions_to_test)):
             prediction = classifier.predictions[i]
@@ -54,7 +63,9 @@ def _write_predictions_to_file(
                 [
                     conditions_to_test[i],
                     expected_classifications[i],
+                    get_classification_name(int(expected_classifications[i])),
                     prediction,
+                    get_classification_name(int(prediction)),
                     str(expected_classifications[i]) == str(prediction),
                 ]
             )
@@ -79,10 +90,10 @@ def _write_aggregate_predictions_to_file(
     assert len(conditions_to_test) == len(expected_classifications)
 
     # build the list of column names and verify that ## verify that the classifiers have the expected number of predictions
-    column_names = ["text_to_classify", "expected_classification"]
+    column_names = ["text_to_classify", "expected_classification", "expected_classification_label"]
     for c in classifiers:
         assert len(c.predictions) == len(expected_classifications)
-        column_names += [f"{c.name}_prediction", f"{c.name}_is_accurate"]
+        column_names += [f"{c.name}_prediction", f"{c.name}_prediction_label", f"{c.name}_is_accurate"]
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
@@ -90,10 +101,18 @@ def _write_aggregate_predictions_to_file(
         csv_writer.writerow(column_names)
 
         for i in range(len(conditions_to_test)):
-            row_tokens = [conditions_to_test[i],expected_classifications[i]]
+            row_tokens = [
+                conditions_to_test[i],
+                expected_classifications[i],
+                get_classification_name(int(expected_classifications[i])),
+            ]
 
             for c in classifiers:
-                row_tokens += [c.predictions[i],c.predictions[i] == expected_classifications[i]]
+                row_tokens += [
+                    c.predictions[i],
+                    get_classification_name(int(c.predictions[i])),
+                    c.predictions[i] == expected_classifications[i],
+                ]
 
             csv_writer.writerow(row_tokens)
     return filename
@@ -122,17 +141,13 @@ def _get_input_from_file() -> Tuple[List[str], List[str]]:
 if __name__ == "__main__":
     conditions_to_test, expected_classifications = _get_input_from_file()
 
-    #classifiers: List[BaseClassifierForSimulation] = [MLClassifier(), ProductionClassifier(), RespiratoryClassifier()]
-    classifiers: List[BaseClassifierForSimulation] = [MLClassifier(), ProductionClassifier()]
+    classifiers: List[BaseClassifierForSimulation] = [ProductionClassifier(), MLClassifier()]
 
     for c in classifiers:
         print(f"---{c.name}---")
 
         c.make_predictions(conditions_to_test)
-
-        print(c.predictions)
         predictions_file = _write_predictions_to_file(conditions_to_test, expected_classifications, c)
-
         labels = list(set(expected_classifications + c.predictions))
         labels.sort()
 

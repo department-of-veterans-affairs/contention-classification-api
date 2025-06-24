@@ -22,21 +22,21 @@ METRICS_REPORT_CONTENT = """
 weighted avg       1.00      1.00      1.00        10
 """
 
-PREDICTIONS_CSV_CONTENT = """text_to_classify,expected_classification,prediction,is_accurate
-acne,9016,9016,True
-alopecia,9016,9016,True
-asthma,9012,9032,False
-psoriasis,9016,9016,True
-vitiligo,9016,9012,False
+PREDICTIONS_CSV_CONTENT = """text_to_classify,expected_classification,expected_classification_label,prediction,prediction_label,is_accurate
+acne,9016,Skin,9016,Skin,True
+alopecia,9016,Skin,9016,Skin,True
+asthma,9012,Respiratory,8968,Digestive,False
+psoriasis,9016,Skin,9016,Skin,True
+vitiligo,9016,Skin,9012,Respiratory,False
 """
 
-AGGREGATE_PREDICTIONS_CSV_CONTENT = """text_to_classify,expected_classification,apple_prediction,\
-apple_is_accurate,banana_prediction,banana_is_accurate
-acne,9016,9016,True,9000,False
-alopecia,9016,9016,True,9001,False
-asthma,9012,9032,False,9002,False
-psoriasis,9016,9016,True,9003,False
-vitiligo,9016,9012,False,9016,True
+AGGREGATE_PREDICTIONS_CSV_CONTENT = """text_to_classify,expected_classification,expected_classification_label,apple_prediction,apple_prediction_label,\
+apple_is_accurate,banana_prediction,banana_prediction_label,banana_is_accurate
+acne,9016,Skin,9016,Skin,True,9000,Musculoskeletal - Osteomyelitis,False
+alopecia,9016,Skin,9016,Skin,True,9001,Musculoskeletal - Other,False
+asthma,9012,Respiratory,8968,Digestive,False,9002,Musculoskeletal - Shoulder,False
+psoriasis,9016,Skin,9016,Skin,True,9003,Musculoskeletal - Toe Amputations,False
+vitiligo,9016,Skin,9012,Respiratory,False,9016,Skin,True
 """
 
 SAMPLE_INPUT_FILE_CONTENT = """
@@ -84,7 +84,7 @@ def test_write_predictions_to_file() -> None:
     expected_classifications = ["9016", "9016", "9012", "9016", "9016"]
     classifier = BaseClassifierForSimulation()
     classifier.name = "demo_classifier"
-    classifier.predictions = ["9016", "9016", "9032", "9016", "9012"]
+    classifier.predictions = ["9016", "9016", "8968", "9016", "9012"]
 
     output_file = _write_predictions_to_file(conditions_to_test, expected_classifications, classifier)
     assert output_file == "demo_classifier_2025-06-16_12-23-34.csv"
@@ -104,7 +104,7 @@ def test_write_aggregate_predictions_to_file() -> None:
 
     classifier_apple = BaseClassifierForSimulation()
     classifier_apple.name = "apple"
-    classifier_apple.predictions = ["9016", "9016", "9032", "9016", "9012"]
+    classifier_apple.predictions = ["9016", "9016", "8968", "9016", "9012"]
 
     classifier_banana = BaseClassifierForSimulation()
     classifier_banana.name = "banana"
