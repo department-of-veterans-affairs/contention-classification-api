@@ -86,15 +86,16 @@ def _write_aggregate_predictions_to_file(
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
-        f.write(f"{','.join(column_names)}\n")
+        csv_writer = csv.writer(f, delimiter=",")
+        csv_writer.writerow(column_names)
 
         for i in range(len(conditions_to_test)):
-            row_to_write = f"{conditions_to_test[i]},{expected_classifications[i]}"
+            row_tokens = [conditions_to_test[i],expected_classifications[i]]
 
             for c in classifiers:
-                row_to_write += f",{c.predictions[i]},{c.predictions[i] == expected_classifications[i]}"
+                row_tokens += [c.predictions[i],c.predictions[i] == expected_classifications[i]]
 
-            f.write(f"{row_to_write}\n")
+            csv_writer.writerow(row_tokens)
     return filename
 
 
