@@ -29,7 +29,7 @@ hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 traumatic brain injury (TBI),9020,9020,True,9020,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['allergic rhinitis'],9012,9012,True,None,False
+allergic rhinitis,9012,9012,True,9012,True
 Sinusitis,9012,9012,True,9012,True
 migraines (headaches),9007,8989,False,9007,True
 hearing loss,3140,3140,True,3140,True
@@ -37,7 +37,7 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 knee strain or sprain, left,8997,8997,True,8997,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 greater trochanteric pain syndrome (lateral hip pain), bilateral,8996,8996,True,8996,True
-unmapped contention text ['gastritis'],8968,8968,True,None,False
+gastritis,8968,8968,True,8968,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 hearing loss,3140,3140,True,3140,True
 migraines (headaches),9007,8989,False,9007,True
@@ -61,12 +61,12 @@ degenerative arthritis (osteoarthritis) in knee, bilateral,8997,8997,True,8997,T
 sleep apnea,9012,9012,True,9012,True
 shoulder replacement (shoulder arthroplasty), right,9002,9002,True,9002,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['pes planus'],8994,8994,True,None,False
+pes planus,8994,8994,True,8994,True
 erectile dysfunction (ED),8975,8975,True,8975,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 adjustment disorder,8989,8989,True,8989,True
 KNEE CONDITION, BILATERAL,8997,8997,True,8997,True
-unmapped contention text ['back low'],8998,8998,True,None,False
+back low,8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
@@ -76,7 +76,7 @@ generalized anxiety disorder (GAD),8989,8989,True,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
 knee strain or sprain, left,8997,8997,True,8997,True
-unmapped contention text ['hip'],8996,8996,True,None,False
+hip,8996,8996,True,8996,True
 hip sprain, left,8996,8996,True,8996,True
 neck strain (cervical strain),8999,8999,True,8999,True
 shoulder strain, right,9002,9002,True,9002,True
@@ -145,9 +145,9 @@ generalized anxiety disorder (GAD),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
-unmapped contention text ['wrist strain'],9004,9004,True,None,False
-unmapped contention text ['knee strain'],8997,8997,True,None,False
-unmapped contention text ['elbow strain'],8993,8993,True,None,False
+wrist strain,9004,9004,True,9004,True
+knee strain,8997,8997,True,8997,True
+elbow strain,8993,8993,True,8993,True
 lumbar strain,8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
@@ -175,44 +175,44 @@ migraines (headaches),9007,8989,False,9007,True
 radiculopathy, bilateral lower extremities,8998,9006,False,8998,True
 sleep apnea,9012,9012,True,9012,True
 asthma,9012,9012,True,9012,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['erectile dysfunction'],8975,8975,True,None,False
-unmapped contention text ['ankle sprain'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
+erectile dysfunction,8975,8975,True,8975,True
+ankle sprain,8991,8991,True,8991,True
 shoulder dislocation, right,9002,9002,True,9002,True
-unmapped contention text ['low back'],8998,8998,True,None,False
+low back,8998,8998,True,8998,True
 non-diabetic peripheral neuropathy, left lower extremities,9006,9006,True,9006,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 PTSD,8989,9010,False,8989,True
 hip sprain, bilateral,8996,8996,True,8996,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
-unmapped contention text ['jaw'],8967,8967,True,None,False
-unmapped contention text ['ringing ears'],3140,3140,True,None,False
+lower back,8998,8998,True,8998,True
+jaw,8967,249481,False,8967,True
+ringing ears,3140,3140,True,3140,True
 hypertension (high blood pressure),8979,8979,True,8979,True
-unmapped contention text ['hip'],8996,8996,True,None,False
+hip,8996,8996,True,8996,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
-unmapped contention text ['pes planus'],8994,8994,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+pes planus,8994,8994,True,8994,True
+shoulder,9002,9002,True,9002,True
 Hypertension,8979,8979,True,8979,True
 Erectile Dysfunction,8975,8975,True,8975,True
-unmapped contention text ['neck'],8999,8999,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['sensorineural hearing loss'],3140,3140,True,None,False
+neck,8999,8999,True,8999,True
+knee,8997,8997,True,8997,True
+sensorineural hearing loss,3140,3140,True,3140,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 shoulder strain, right,9002,9002,True,9002,True
 hearing loss,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['psoriasis'],9016,9016,True,None,False
+psoriasis,9016,9016,True,9016,True
 bursitis in shoulder, left,9002,9002,True,9002,True
 Sleep Apnea,9012,9012,True,9012,True
 Neck Strain,8999,8999,True,8999,True
 High Blood Pressure,8979,8979,True,8979,True
 sleep apnea,9012,9012,True,9012,True
-unmapped contention text ['digestive'],8968,8968,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
+digestive,8968,8968,True,8968,True
+knee,8997,8997,True,8997,True
 Sinusitis,9012,9012,True,9012,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['plantar fasciitis'],8994,8994,True,None,False
+plantar fasciitis,8994,8994,True,8994,True
 Tinnitus,3140,3140,True,3140,True
 knee condition, right,8997,8997,True,8997,True
 Hand condition, right,8995,8995,True,8995,True
@@ -220,10 +220,10 @@ Sinus Condition,9012,9012,True,9012,True
 Tinnitus,3140,3140,True,3140,True
 PTSD,8989,9010,False,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['depression'],8989,8989,True,None,False
+depression,8989,8989,True,8989,True
 diabetic peripheral neuropathy, bilateral lower extremities,9006,9006,True,9006,True
-unmapped contention text ['hearing loss'],3140,3140,True,None,False
-unmapped contention text ['tinnitus'],3140,3140,True,None,False
+hearing loss,3140,3140,True,3140,True
+tinnitus,3140,3140,True,3140,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 fibromyalgia,9007,9007,True,9007,True
 hysterectomy (removal of uterus),8978,8978,True,8978,True
@@ -247,7 +247,7 @@ neck strain (cervical strain),8999,8999,True,8999,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 bursitis in shoulder, left,9002,9002,True,9002,True
 ankylosis in hip, right,8996,8996,True,8996,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 knee instability, left,8997,8997,True,8997,True
 Diabetes,8973,8973,True,8973,True
 Ankle condition, bilateral,8991,8991,True,8991,True
@@ -257,10 +257,10 @@ Elbow condition, bilateral,8993,8993,True,8993,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 PTSD,8989,9010,False,8989,True
-unmapped contention text ['knee instability'],8997,8997,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
+knee instability,8997,8997,True,8997,True
+ankle,8991,8991,True,8991,True
 Sleep Apnea,9012,9012,True,9012,True
 Headaches,9007,8989,False,9007,True
 Hypertension,8979,8979,True,8979,True
@@ -314,7 +314,7 @@ adjustment disorder,8989,8989,True,8989,True
 High blood pressure,8979,8979,True,8979,True
 PTSD,8989,9010,False,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 PTSD,8989,9010,False,8989,True
 Tinnitus,3140,3140,True,3140,True
 shoulder strain, left,9002,9002,True,9002,True
@@ -326,7 +326,7 @@ generalized anxiety disorder (GAD),8989,8989,True,8989,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 erectile dysfunction (ED),8975,8975,True,8975,True
 Adjustment Disorder,8989,8989,True,8989,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 Chronic Bronchitis,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
@@ -355,7 +355,7 @@ Tinnitus,3140,3140,True,3140,True
 migraine,9007,9007,True,9007,True
 sleep apnea,9012,9012,True,9012,True
 PTSD,8989,9010,False,8989,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 High Blood Pressure,8979,8979,True,8979,True
 ankylosis in shoulder, bilateral,9002,9002,True,9002,True
 neck strain (cervical strain),8999,8999,True,8999,True
@@ -372,7 +372,7 @@ carpal tunnel syndrome, bilateral,9006,9006,True,9006,True
 endometriosis,8978,8978,True,8978,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 asthma,9012,9012,True,9012,True
-unmapped contention text ['knee strain'],8997,8997,True,None,False
+knee strain,8997,8997,True,8997,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 non-diabetic peripheral neuropathy, bilateral upper extremities,9006,9006,True,9006,True
 erectile dysfunction (ED),8975,8975,True,8975,True
@@ -388,11 +388,11 @@ migraines (headaches),9007,8989,False,9007,True
 adjustment disorder,8989,8989,True,8989,True
 rhinitis,9012,9012,True,9012,True
 eczema,9016,9016,True,9016,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['depression'],8989,8989,True,None,False
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+lower back,8998,8998,True,8998,True
+neck,8999,8999,True,8999,True
+shoulder,9002,9002,True,9002,True
+depression,8989,8989,True,8989,True
+anxiety,8989,8989,True,8989,True
 coronary artery disease (CAD or arteriosclerotic heart disease),8979,8979,True,8979,True
 sleep apnea,9012,9012,True,9012,True
 erectile dysfunction (ED),8975,8975,True,8975,True
@@ -444,11 +444,11 @@ migraines (headaches),9007,8989,False,9007,True
 ankylosis in knee, right,8997,8997,True,8997,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['female sexual arousal disorder fsad'],8978,8978,True,None,False
+ankle,8991,8991,True,8991,True
+knee,8997,8997,True,8997,True
+female sexual arousal disorder fsad,8978,8978,True,8978,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
-unmapped contention text ['urticaria'],9016,9016,True,None,False
+urticaria,9016,9016,True,9016,True
 Migraines,9007,8989,False,9007,True
 sleep apnea,9012,9012,True,9012,True
 Hip condition, right,8996,8996,True,8996,True
@@ -461,25 +461,25 @@ migraines (headaches),9007,8989,False,9007,True
 depression (major depressive disorder),8989,8989,True,8989,True
 illness anxiety disorder (hypochondria),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
+knee,8997,8997,True,8997,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 tachycardia,8979,8979,True,8979,True
 degenerative arthritis (osteoarthritis) in hand or fingers, bilateral,8995,8992,False,8995,True
 migraines (headaches),9007,8989,False,9007,True
 Neck strain,8999,8999,True,8999,True
-unmapped contention text ['eye'],8974,8974,True,None,False
+eye,8974,8974,True,8974,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
 carpal tunnel syndrome, right,9006,9006,True,9006,True
 carpal tunnel syndrome, left,9006,9006,True,9006,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
+ankle,8991,8991,True,8991,True
+ankle,8991,8991,True,8991,True
+knee,8997,8997,True,8997,True
+knee,8997,8997,True,8997,True
 depression (major depressive disorder),8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 deviated septum,9012,9012,True,9012,True
 cervical spinal stenosis (narrowing of spinal canal in neck),8999,8999,True,8999,True
@@ -508,7 +508,7 @@ diabetes, type 1 or type 2,8973,8973,True,8973,True
 sleep apnea,9012,9012,True,9012,True
 Hypertension,8979,8979,True,8979,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['low back'],8998,8998,True,None,False
+low back,8998,8998,True,8998,True
 hammer toe, right,8994,8994,True,8994,True
 hallux rigidus (big toe arthritis), right,8994,8994,True,8994,True
 degenerative arthritis (osteoarthritis) in hip, right,8996,8996,True,8996,True
@@ -517,7 +517,7 @@ GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 chronic sinusitis,9012,9012,True,9012,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['neck'],8999,8999,True,None,False
+neck,8999,8999,True,8999,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 depression,8989,8989,True,8989,True
 sleep apnea,9012,9012,True,9012,True
@@ -581,14 +581,14 @@ degenerative arthritis (osteoarthritis) in shoulder, bilateral,9002,9002,True,90
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 neck strain (cervical strain),8999,8999,True,8999,True
 intervertebral disc syndrome (IVDS), back,8998,8998,True,8998,True
-unmapped contention text ['foot'],8994,8994,True,None,False
+foot,8994,8994,True,8994,True
 knee instability, left,8997,8997,True,8997,True
 hip sprain, bilateral,8996,8996,True,8996,True
 chronic fatigue syndrome,8986,8986,True,8986,True
-unmapped contention text ['hearing loss'],3140,3140,True,None,False
-unmapped contention text ['tinnitus'],3140,3140,True,None,False
+hearing loss,3140,3140,True,3140,True
+tinnitus,3140,3140,True,3140,True
 radiculopathy, bilateral lower extremities,8998,9006,False,8998,True
-unmapped contention text ['hip'],8996,8996,True,None,False
+hip,8996,8996,True,8996,True
 chronic sinusitis,9012,9012,True,9012,True
 chronic fatigue syndrome,8986,8986,True,8986,True
 hemorrhoids,8968,8989,False,8968,True
@@ -603,7 +603,7 @@ depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 sleep apnea,9012,9012,True,9012,True
 migraines,9007,8989,False,9007,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
 degenerative arthritis (osteoarthritis) in shoulder, left,9002,9002,True,9002,True
 Hearing loss,3140,3140,True,3140,True
 Tinnitus,3140,3140,True,3140,True
@@ -631,18 +631,18 @@ rotator cuff tear, right,9002,9002,True,9002,True
 rotator cuff tear, left,9002,9002,True,9002,True
 hearing loss,3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
-unmapped contention text ['erectile dysfunction'],8975,8975,True,None,False
-unmapped contention text ['urinary incontinence'],8975,8975,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['foot'],8994,8994,True,None,False
-unmapped contention text ['foot'],8994,8994,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['hip'],8996,8996,True,None,False
-unmapped contention text ['hip'],8996,8996,True,None,False
+erectile dysfunction,8975,8975,True,8975,True
+urinary incontinence,8975,8975,True,8975,True
+shoulder,9002,9002,True,9002,True
+shoulder,9002,9002,True,9002,True
+foot,8994,8994,True,8994,True
+foot,8994,8994,True,8994,True
+ankle,8991,8991,True,8991,True
+ankle,8991,8991,True,8991,True
+knee,8997,8997,True,8997,True
+knee,8997,8997,True,8997,True
+hip,8996,8996,True,8996,True
+hip,8996,8996,True,8996,True
 lower back sprain (lumbosacral sprain),8998,8998,True,8998,True
 ankylosis in elbow, bilateral,8993,8993,True,8993,True
 ankylosis in ankle, bilateral,8991,8991,True,8991,True
@@ -662,7 +662,7 @@ neck sprain (cervical sprain),8999,8999,True,8999,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 depression (major depressive disorder),8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 traumatic brain injury (TBI),9020,9020,True,9020,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 degenerative arthritis (osteoarthritis) in knee, right,8997,8997,True,8997,True
@@ -708,10 +708,10 @@ chronic sinusitis,9012,9012,True,9012,True
 coronary artery disease (CAD or arteriosclerotic heart disease),8979,8979,True,8979,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 diabetes, type 1 or type 2,8973,8973,True,8973,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
+knee,8997,8997,True,8997,True
+knee,8997,8997,True,8997,True
+shoulder,9002,9002,True,9002,True
 migraines (headaches),9007,8989,False,9007,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 greater trochanteric pain syndrome (lateral hip pain), left,8996,8996,True,8996,True
@@ -723,12 +723,12 @@ depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 athlete's foot (tinea pedis),9016,9016,True,9016,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 shin splints, left,8997,8997,True,8997,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 temporomandibular disorder, including TMJ,249481,249481,True,249481,True
-unmapped contention text ['tinnitus'],3140,3140,True,None,False
-unmapped contention text ['hearing loss'],3140,3140,True,None,False
+tinnitus,3140,3140,True,3140,True
+hearing loss,3140,3140,True,3140,True
 TBI,9020,9020,True,9020,True
 migraines (headaches),9007,8989,False,9007,True
 PTSD,8989,9010,False,8989,True
@@ -736,19 +736,19 @@ Hearing loss,3140,3140,True,3140,True
 Tinnitus,3140,3140,True,3140,True
 pseudofolliculitis barbae (razor bumps, shave bumps, or ingrown hairs),9016,9016,True,9016,True
 Alcohol abuse,8989,8989,True,8989,True
-unmapped contention text ['fallen arches'],8994,8994,True,None,False
+fallen arches,8994,8994,True,8994,True
 acne,9016,9016,True,9016,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 bursitis in knee, bilateral,8997,8997,True,8997,True
 bursitis in foot, bilateral,8994,8994,True,8994,True
 bursitis in wrist, bilateral,9004,9004,True,9004,True
-unmapped contention text ['bursitis shoulder'],9002,9002,True,None,False
+bursitis shoulder,9002,9002,True,9002,True
 bursitis in elbow, bilateral,8993,8993,True,8993,True
 bursitis in ankle, bilateral,8991,8991,True,8991,True
 hypertension,8979,8979,True,8979,True
 sleep apnea,9012,9012,True,9012,True
-unmapped contention text ['tooth'],8967,8967,True,None,False
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+tooth,8967,8967,True,8967,True
+anxiety,8989,8989,True,8989,True
 depression,8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 migraines (headaches),9007,8989,False,9007,True
@@ -760,23 +760,23 @@ degenerative arthritis (osteoarthritis) in ankle, bilateral,8991,8991,True,8991,
 plantar warts (foot warts), bilateral,9016,8994,False,9016,True
 eczema (atopic dermatitis),9016,9016,True,9016,True
 alopecia,9016,9016,True,9016,True
-unmapped contention text ['hip'],8996,8996,True,None,False
+hip,8996,8996,True,8996,True
 sinusitis,9012,9012,True,9012,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 dry eye syndrome,8974,8974,True,8974,True
 temporomandibular disorder, including TMJ,249481,249481,True,249481,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['neck'],8999,8999,True,None,False
+neck,8999,8999,True,8999,True
 asthma,9012,9012,True,9012,True
 Gout,8994,8992,False,8994,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
-unmapped contention text ['bladder'],8975,8975,True,None,False
+bladder,8975,8975,True,8975,True
 Lumbar strain,8998,8998,True,8998,True
 lower back sprain (lumbosacral sprain),8998,8998,True,8998,True
 erectile dysfunction (ED),8975,8975,True,8975,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 shin splints, bilateral,8997,8997,True,8997,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 erectile dysfunction (ED),8975,8975,True,8975,True
@@ -795,16 +795,16 @@ degenerative arthritis (osteoarthritis) in knee, left,8997,8997,True,8997,True
 knee instability, left,8997,8997,True,8997,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['depression'],8989,8989,True,None,False
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+depression,8989,8989,True,8989,True
+anxiety,8989,8989,True,8989,True
+migraines headaches,9007,8989,False,9007,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['hearing loss'],3140,3140,True,None,False
+hearing loss,3140,3140,True,3140,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
-unmapped contention text ['shoulder strain'],9002,9002,True,None,False
-unmapped contention text ['wrist strain'],9004,9004,True,None,False
-unmapped contention text ['elbow strain'],8993,8993,True,None,False
+shoulder strain,9002,9002,True,9002,True
+wrist strain,9004,9004,True,9004,True
+elbow strain,8993,8993,True,8993,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
 migraines (headaches),9007,8989,False,9007,True
@@ -815,8 +815,8 @@ PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 dry eye syndrome,8974,8974,True,8974,True
 degenerative arthritis (osteoarthritis) in hip, right,8996,8996,True,8996,True
 asthma,9012,9012,True,9012,True
-unmapped contention text ['knee instability'],8997,8997,True,None,False
-unmapped contention text ['knee instability'],8997,8997,True,None,False
+knee instability,8997,8997,True,8997,True
+knee instability,8997,8997,True,8997,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 pseudofolliculitis barbae (razor bumps, shave bumps, or ingrown hairs),9016,9016,True,9016,True
@@ -829,10 +829,10 @@ migraines (headaches),9007,8989,False,9007,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 panic disorder,8989,8989,True,8989,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
+ankle,8991,8991,True,8991,True
+knee,8997,8997,True,8997,True
 greater trochanteric pain syndrome (lateral hip pain), bilateral,8996,8996,True,8996,True
-unmapped contention text ['hand'],8995,8995,True,None,False
+hand,8995,8995,True,8995,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 ankylosis in hand or fingers, bilateral,8995,8995,True,8995,True
@@ -863,7 +863,7 @@ generalized anxiety disorder (GAD),8989,8989,True,8989,True
 sleep apnea,9012,9012,True,9012,True
 tenosynovitis in wrist, right,9004,9004,True,9004,True
 hearing loss,3140,3140,True,3140,True
-unmapped contention text ['allergic rhinitis'],9012,9012,True,None,False
+allergic rhinitis,9012,9012,True,9012,True
 chronic sinusitis,9012,9012,True,9012,True
 migraines (headaches),9007,8989,False,9007,True
 PTSD,8989,9010,False,8989,True
@@ -899,7 +899,7 @@ hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
 kidney stones (nephrolithiasis),8975,8975,True,8975,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
 hyperthyroidism (overactive thyroid),8973,8973,True,8973,True
 depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
@@ -909,7 +909,7 @@ hypertension,8979,8979,True,8979,True
 neck strain (cervical strain),8999,8999,True,8999,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['plantar warts'],9016,8994,False,None,False
+plantar warts,9016,8994,False,9016,True
 knee instability, right,8997,8997,True,8997,True
 erectile dysfunction (ED),8975,8975,True,8975,True
 sleep apnea,9012,9012,True,9012,True
@@ -920,7 +920,7 @@ migraines (headaches),9007,8989,False,9007,True
 degenerative arthritis (osteoarthritis) in foot, left,8994,8994,True,8994,True
 pseudofolliculitis barbae (razor bumps, shave bumps, or ingrown hairs),9016,9016,True,9016,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 depression (major depressive disorder),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 persistent depressive disorder (dysthymic disorder),8989,8989,True,8989,True
@@ -942,9 +942,9 @@ lower back strain (lumbosacral strain),8998,8998,True,8998,True
 hearing loss,3140,3140,True,3140,True
 neck strain (cervical strain),8999,8999,True,8999,True
 traumatic brain injury (TBI),9020,9020,True,9020,True
-unmapped contention text ['wrist'],9004,9004,True,None,False
+wrist,9004,9004,True,9004,True
 Migraines,9007,8989,False,9007,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 depression (major depressive disorder),8989,8989,True,8989,True
@@ -959,11 +959,11 @@ knee instability, bilateral,8997,8997,True,8997,True
 asthma,9012,9012,True,9012,True
 sleep apnea,9012,9012,True,9012,True
 dry eye syndrome,8974,8974,True,8974,True
-unmapped contention text ['allergic rhinitis'],9012,9012,True,None,False
+allergic rhinitis,9012,9012,True,9012,True
 Acne,9016,9016,True,9016,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['foot'],8994,8994,True,None,False
-unmapped contention text ['foot'],8994,8994,True,None,False
+ankle,8991,8991,True,8991,True
+foot,8994,8994,True,8994,True
+foot,8994,8994,True,8994,True
 Lung Condition,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
@@ -973,9 +973,9 @@ hypothyroidism (underactive thyroid),8973,8973,True,8973,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 erectile dysfunction (ED),8975,8975,True,8975,True
 hypertension (high blood pressure),8979,8979,True,8979,True
-unmapped contention text ['depression'],8989,8989,True,None,False
-unmapped contention text ['sleep apnea'],9012,9012,True,None,False
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+depression,8989,8989,True,8989,True
+sleep apnea,9012,9012,True,9012,True
+anxiety,8989,8989,True,8989,True
 migraines (headaches),9007,8989,False,9007,True
 neck strain (cervical strain),8999,8999,True,8999,True
 shoulder strain, right,9002,9002,True,9002,True
@@ -1004,7 +1004,7 @@ shoulder condition, bilateral,9002,9002,True,9002,True
 neck strain (cervical strain),8999,8999,True,8999,True
 dry eye syndrome,8974,8974,True,8974,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
-unmapped contention text ['diabetes type'],8973,8973,True,None,False
+diabetes type,8973,8973,True,8973,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
@@ -1016,7 +1016,7 @@ Tinnitus,3140,3140,True,3140,True
 Sinusitis,9012,9012,True,9012,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 chronic fatigue syndrome,8986,8986,True,8986,True
-unmapped contention text ['allergic rhinitis'],9012,9012,True,None,False
+allergic rhinitis,9012,9012,True,9012,True
 migraines (headaches),9007,8989,False,9007,True
 eczema (atopic dermatitis),9016,9016,True,9016,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
@@ -1029,7 +1029,7 @@ chronic sinusitis,9012,9012,True,9012,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 diabetic peripheral neuropathy, bilateral upper extremities,9006,9006,True,9006,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 Sleep Apnea,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 chronic sinusitis,9012,9012,True,9012,True
@@ -1043,13 +1043,13 @@ hip condition, bilateral,8996,8996,True,8996,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 elbow condition, bilateral,8993,8993,True,8993,True
 shoulder condition, bilateral,9002,9002,True,9002,True
-unmapped contention text ['back low'],8998,8998,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+back low,8998,8998,True,8998,True
+neck,8999,8999,True,8999,True
 temporomandibular disorder, including TMJ,249481,249481,True,249481,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['ed'],8975,8975,True,None,False
+ed,8975,8975,True,8975,True
 erectile dysfunction (ED),8975,8975,True,8975,True
 athlete's foot (tinea pedis),9016,9016,True,9016,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
@@ -1094,16 +1094,16 @@ herpes (herpes simplex virus or HSV),9016,9016,True,9016,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 shoulder strain, left,9002,9002,True,9002,True
 neck strain (cervical strain),8999,8999,True,8999,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
 Rhinitis,9012,9012,True,9012,True
 Sleep Apnea,9012,9012,True,9012,True
-unmapped contention text ['knee replacement'],8997,8997,True,None,False
-unmapped contention text ['hip'],8996,8996,True,None,False
+knee replacement,8997,8997,True,8997,True
+hip,8996,8996,True,8996,True
 erectile dysfunction (ED),8975,8975,True,8975,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 erectile dysfunction (ED),8975,8975,True,8975,True
-unmapped contention text ['low back'],8998,8998,True,None,False
+low back,8998,8998,True,8998,True
 fibromyalgia,9007,9007,True,9007,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
@@ -1125,7 +1125,7 @@ sleep apnea,9012,9012,True,9012,True
 neck strain (cervical strain),8999,8999,True,8999,True
 shoulder impingement syndrome, right,9002,9002,True,9002,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 pseudofolliculitis barbae (razor bumps, shave bumps, or ingrown hairs),9016,9016,True,9016,True
 hemorrhoids,8968,8989,False,8968,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
@@ -1165,9 +1165,9 @@ hip condition, left,8996,8996,True,8996,True
 foot pain,8994,8994,True,8994,True
 knee condition, right,8997,8997,True,8997,True
 knee condition, left,8997,8997,True,8997,True
-unmapped contention text ['low back'],8998,8998,True,None,False
+low back,8998,8998,True,8998,True
 chronic sinusitis,9012,9012,True,9012,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 chronic fatigue syndrome,8986,8986,True,8986,True
 scars, extremities or trunk,9013,9013,True,9013,True
 Parkinson's disease,9007,9007,True,9007,True
@@ -1207,7 +1207,7 @@ PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 erectile dysfunction (ED),8975,8975,True,8975,True
-unmapped contention text ['tooth'],8967,8967,True,None,False
+tooth,8967,8967,True,8967,True
 Hearing Loss,3140,3140,True,3140,True
 hypertension,8979,8979,True,8979,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
@@ -1216,13 +1216,13 @@ generalized anxiety disorder (GAD),8989,8989,True,8989,True
 plantar fasciitis, right,8994,8994,True,8994,True
 illness anxiety disorder (hypochondria),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
-unmapped contention text ['peripheral neuropathy'],9006,9006,True,None,False
+peripheral neuropathy,9006,9006,True,9006,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['acne'],9016,9016,True,None,False
+acne,9016,9016,True,9016,True
 athlete's foot (tinea pedis),9016,9016,True,9016,True
-unmapped contention text ['gerd gastroesophageal reflux disease'],8968,8968,True,None,False
-unmapped contention text ['erectile dysfunction ed'],8975,8975,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+gerd gastroesophageal reflux disease,8968,8968,True,8968,True
+erectile dysfunction ed,8975,8975,True,8975,True
+migraines headaches,9007,8989,False,9007,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 diabetes, type 1 or type 2,8973,8973,True,8973,True
@@ -1233,9 +1233,9 @@ depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 migraines (headaches),9007,8989,False,9007,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
-unmapped contention text ['neck'],8999,8999,True,None,False
+neck,8999,8999,True,8999,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
-unmapped contention text ['otitis media middle ear infection'],3140,8969,False,None,False
+otitis media middle ear infection,3140,8969,False,3140,True
 hearing loss,3140,3140,True,3140,True
 fibromyalgia,9007,9007,True,9007,True
 sleep apnea,9012,9012,True,9012,True
@@ -1281,7 +1281,7 @@ middle back strain (thoracic strain),8998,8998,True,8998,True
 neck strain (cervical strain),8999,8999,True,8999,True
 knee strain or sprain, left,8997,8997,True,8997,True
 knee strain or sprain, right,8997,8997,True,8997,True
-unmapped contention text ['foot'],8994,8994,True,None,False
+foot,8994,8994,True,8994,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 diabetic peripheral neuropathy, bilateral lower extremities,9006,9006,True,9006,True
 depression (major depressive disorder),8989,8989,True,8989,True
@@ -1296,11 +1296,11 @@ enlarged prostate (benign prostatic hyperplasia or BPH),8975,8975,True,8975,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 erectile dysfunction (ED),8975,8975,True,8975,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['migraines'],9007,9012,False,None,False
+knee,8997,8997,True,8997,True
+knee,8997,8997,True,8997,True
+migraines,9007,8989,False,9007,True
 ACL tear (anterior cruciate ligament tear), left,8997,8997,True,8997,True
-unmapped contention text ['hip'],8996,8996,True,None,False
+hip,8996,8996,True,8996,True
 migraines (headaches),9007,8989,False,9007,True
 sleep apnea,9012,9012,True,9012,True
 metatarsalgia (pain in ball of foot), left,8994,8994,True,8994,True
@@ -1312,7 +1312,7 @@ chronic sinusitis,9012,9012,True,9012,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 Rectal Bleeding,8968,8968,True,8968,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 ankylosis in knee, right,8997,8997,True,8997,True
@@ -1322,7 +1322,7 @@ hip impingement (femoroacetabular impingement or FAI), right,8996,8996,True,8996
 hip impingement (femoroacetabular impingement or FAI), left,8996,8996,True,8996,True
 sleep apnea,9012,9012,True,9012,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 non-diabetic peripheral neuropathy, bilateral upper extremities,9006,9006,True,9006,True
 non-diabetic peripheral neuropathy, bilateral lower extremities,9006,9006,True,9006,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
@@ -1331,15 +1331,15 @@ PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
 sleep apnea,9012,9012,True,9012,True
-unmapped contention text ['depressive disorder'],8989,8989,True,None,False
+depressive disorder,8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 somatic symptom disorder (SSD),8989,8989,True,8989,True
 neck strain (cervical strain),8999,8999,True,8999,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['hearing loss'],3140,3140,True,None,False
-unmapped contention text ['tinnitus'],3140,3140,True,None,False
 hearing loss,3140,3140,True,3140,True
-unmapped contention text ['skin'],9016,9016,True,None,False
+tinnitus,3140,3140,True,3140,True
+hearing loss,3140,3140,True,3140,True
+skin,9016,9016,True,9016,True
 knee instability, right,8997,8997,True,8997,True
 atrial fibrillation (A-fib),8979,8979,True,8979,True
 carpal tunnel syndrome, bilateral,9006,9006,True,9006,True
@@ -1361,7 +1361,7 @@ migraines (headaches),9007,8989,False,9007,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 PTSD,8989,9010,False,8989,True
 tinnitus,3140,3140,True,3140,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
@@ -1376,7 +1376,7 @@ ankylosis in ankle, right,8991,8991,True,8991,True
 tendonitis (tendinitis) in foot, bilateral,8994,8994,True,8994,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 hypertension (high blood pressure),8979,8979,True,8979,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 knee instability, right,8997,8997,True,8997,True
 greater trochanteric pain syndrome (lateral hip pain), right,8996,8996,True,8996,True
 bursitis in hip, right,8996,8996,True,8996,True
@@ -1394,9 +1394,9 @@ panic disorder,8989,8989,True,8989,True
 illness anxiety disorder (hypochondria),8989,8989,True,8989,True
 depression (major depressive disorder),8989,8989,True,8989,True
 adjustment disorder,8989,8989,True,8989,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
-unmapped contention text ['neck'],8999,8999,True,None,False
+neck,8999,8999,True,8999,True
 degenerative arthritis (osteoarthritis) in elbow, bilateral,8993,8993,True,8993,True
 erectile dysfunction (ED),8975,8975,True,8975,True
 degenerative arthritis (osteoarthritis) in shoulder, bilateral,9002,9002,True,9002,True
@@ -1415,7 +1415,7 @@ generalized anxiety disorder (GAD),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 hearing loss,3140,3140,True,3140,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
-unmapped contention text ['vaginitis'],8978,8978,True,None,False
+vaginitis,8978,8978,True,8978,True
 plantar warts (foot warts), left,9016,8994,False,9016,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
@@ -1425,29 +1425,29 @@ degenerative arthritis (osteoarthritis) in hand or fingers, right,8995,8992,Fals
 degenerative arthritis (osteoarthritis) in hand or fingers, right,8995,8992,False,8995,True
 degenerative arthritis (osteoarthritis) in hand or fingers, right,8995,8992,False,8995,True
 Costochondritis,249482,9005,False,249482,True
-unmapped contention text ['knee instability'],8997,8997,True,None,False
+knee instability,8997,8997,True,8997,True
 degenerative arthritis (osteoarthritis) in hand or fingers, right,8995,8992,False,8995,True
 depression,8989,8989,True,8989,True
 diabetes, type 1 or type 2,8973,8973,True,8973,True
 hiatal hernia,8968,8968,True,8968,True
 multiple sclerosis,9007,9007,True,9007,True
 tinnitus,3140,3140,True,3140,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
+shoulder,9002,9002,True,9002,True
 migraines (headaches),9007,8989,False,9007,True
 multiple sclerosis (MS),9007,9007,True,9007,True
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
+knee,8997,8997,True,8997,True
 knee condition, right,8997,8997,True,8997,True
-unmapped contention text ['back low'],8998,8998,True,None,False
+back low,8998,8998,True,8998,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 migraines (headaches),9007,8989,False,9007,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 sleep apnea,9012,9012,True,9012,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['lower back'],8998,8998,True,None,False
+knee,8997,8997,True,8997,True
+lower back,8998,8998,True,8998,True
 depression (major depressive disorder),8989,8989,True,8989,True
 scars, head, face or neck,9014,9014,True,9014,True
 scars, extremities or trunk,9013,9013,True,9013,True
@@ -1455,12 +1455,12 @@ erectile dysfunction (ED),8975,8975,True,8975,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
-unmapped contention text ['foot'],8994,8994,True,None,False
+foot,8994,8994,True,8994,True
 ankle sprain, bilateral,8991,8991,True,8991,True
 knee strain or sprain, bilateral,8997,8997,True,8997,True
-unmapped contention text ['hand'],8995,8995,True,None,False
+hand,8995,8995,True,8995,True
 wrist sprain, bilateral,9004,9004,True,9004,True
-unmapped contention text ['elbow strain'],8993,8993,True,None,False
+elbow strain,8993,8993,True,8993,True
 hearing loss,3140,3140,True,3140,True
 migraines (headaches),9007,8989,False,9007,True
 traumatic brain injury (TBI),9020,9020,True,9020,True
@@ -1499,7 +1499,7 @@ asthma,9012,9012,True,9012,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 migraines (headaches),9007,8989,False,9007,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['ankle strain'],8991,8991,True,None,False
+ankle strain,8991,8991,True,8991,True
 hearing loss,3140,3140,True,3140,True
 TINNITUS,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
@@ -1519,7 +1519,7 @@ lower back sprain (lumbosacral sprain),8998,8998,True,8998,True
 hip sprain, right,8996,8996,True,8996,True
 hip sprain, bilateral,8996,8996,True,8996,True
 PTSD,8989,9010,False,8989,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 sleep apnea,9012,9012,True,9012,True
 patellofemoral pain syndrome, left,8997,8997,True,8997,True
@@ -1543,7 +1543,7 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 Ankle condition, right,8991,8991,True,8991,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 spinal arthritis, neck,8999,8999,True,8999,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 cervical spinal stenosis (narrowing of spinal canal in neck),8999,8999,True,8999,True
 radiculopathy, right upper extremities,8999,9006,False,8999,True
 radiculopathy, right lower extremities,8998,9006,False,8998,True
@@ -1622,7 +1622,7 @@ hypertension (high blood pressure),8979,8979,True,8979,True
 depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 degenerative arthritis (osteoarthritis) in hand or fingers, right,8995,8992,False,8995,True
 degenerative arthritis (osteoarthritis) in hand or fingers, left,8995,8992,False,8995,True
 sleep apnea,9012,9012,True,9012,True
@@ -1688,22 +1688,22 @@ ankle condition, left,8991,8991,True,8991,True
 athlete's foot,9016,9016,True,9016,True
 deep vein thrombosis (DVT) in leg, right,8987,8987,True,8987,True
 knee strain or sprain, left,8997,8997,True,8997,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['skin'],9016,9016,True,None,False
-unmapped contention text ['foot'],8994,8994,True,None,False
-unmapped contention text ['eye'],8974,8974,True,None,False
+shoulder,9002,9002,True,9002,True
+skin,9016,9016,True,9016,True
+foot,8994,8994,True,8994,True
+eye,8974,8974,True,8974,True
 inguinal hernia (hernia in groin),8968,8968,True,8968,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['low back'],8998,8998,True,None,False
+low back,8998,8998,True,8998,True
 migraines (headaches),9007,8989,False,9007,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 chronic sinusitis,9012,9012,True,9012,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 adjustment disorder,8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
-unmapped contention text ['low back'],8998,8998,True,None,False
+low back,8998,8998,True,8998,True
 post-traumatic arthritis in ankle, bilateral,8991,8991,True,8991,True
 degenerative arthritis (osteoarthritis) in wrist, bilateral,9004,9004,True,9004,True
 post-traumatic arthritis in knee, right,8997,8997,True,8997,True
@@ -1791,9 +1791,9 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
 persistent depressive disorder (dysthymic disorder),8989,8989,True,8989,True
 depression (major depressive disorder),8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['knee sprain'],8997,8997,True,None,False
-unmapped contention text ['knee strain'],8997,8997,True,None,False
+anxiety,8989,8989,True,8989,True
+knee sprain,8997,8997,True,8997,True
+knee strain,8997,8997,True,8997,True
 Lumbar spinal stenosis,8998,8998,True,8998,True
 lumbar spinal stenosis (narrowing of spinal canal in lower back),8998,8998,True,8998,True
 Asthma,9012,9012,True,9012,True
@@ -1818,9 +1818,9 @@ illness anxiety disorder (hypochondria),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 chronic sinusitis,9012,9012,True,9012,True
 hypertension (high blood pressure),8979,8979,True,8979,True
-unmapped contention text ['gastroesophageal reflux disease gerd'],8968,8968,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+gastroesophageal reflux disease gerd,8968,8968,True,8968,True
+ankle,8991,8991,True,8991,True
+anxiety,8989,8989,True,8989,True
 shoulder strain, right,9002,9002,True,9002,True
 knee instability, right,8997,8997,True,8997,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
@@ -1878,7 +1878,7 @@ tendinosis in hand or fingers, right,8995,8995,True,8995,True
 tendinosis in hand or fingers, left,8995,8995,True,8995,True
 migraines (headaches),9007,8989,False,9007,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
 Hip Condition, left,8996,8996,True,8996,True
 Knee Condition, left,8997,8997,True,8997,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
@@ -1894,24 +1894,24 @@ erectile dysfunction (ED),8975,8975,True,8975,True
 tendonitis (tendinitis) in foot, right,8994,8994,True,8994,True
 tendonitis (tendinitis) in foot, left,8994,8994,True,8994,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
-unmapped contention text ['post traumatic stress disorder ptsd'],8989,9010,False,None,False
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+post traumatic stress disorder ptsd,8989,9010,False,8989,True
+anxiety,8989,8989,True,8989,True
 hypertension,8979,8979,True,8979,True
 hearing loss,3140,3140,True,3140,True
-unmapped contention text ['shin splints'],8997,8997,True,None,False
+shin splints,8997,8997,True,8997,True
 erectile dysfunction (ED),8975,8975,True,8975,True
-unmapped contention text ['knee instability'],8997,8997,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['lower back'],8998,8998,True,None,False
-unmapped contention text ['migraines'],9007,9012,False,None,False
+knee instability,8997,8997,True,8997,True
+ankle,8991,8991,True,8991,True
+lower back,8998,8998,True,8998,True
+migraines,9007,8989,False,9007,True
 Meniere's disease,8969,8969,True,8969,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 adjustment disorder,8989,8989,True,8989,True
 depression (major depressive disorder),8989,8989,True,8989,True
 cataract,8974,8974,True,8974,True
 Chronic sinusitis,9012,9012,True,9012,True
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['conjunctivitis'],8974,8974,True,None,False
+knee,8997,8997,True,8997,True
+conjunctivitis,8974,8974,True,8974,True
 cancer - colon,8932,8932,True,8932,True
 cancer - tongue,8931,8931,True,8931,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
@@ -1929,13 +1929,13 @@ depression (major depressive disorder),8989,8989,True,8989,True
 bipolar disorder,8989,8989,True,8989,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['neck'],8999,8999,True,None,False
-unmapped contention text ['foot'],8994,8994,True,None,False
-unmapped contention text ['hearing loss'],3140,3140,True,None,False
+neck,8999,8999,True,8999,True
+foot,8994,8994,True,8994,True
+hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['lower back'],8998,8998,True,None,False
+knee,8997,8997,True,8997,True
+shoulder,9002,9002,True,9002,True
+lower back,8998,8998,True,8998,True
 degenerative arthritis (osteoarthritis) in wrist, bilateral,9004,9004,True,9004,True
 degenerative arthritis (osteoarthritis) in ankle, bilateral,8991,8991,True,8991,True
 degenerative arthritis (osteoarthritis) in hand or fingers, bilateral,8995,8992,False,8995,True
@@ -1961,29 +1961,29 @@ plantar fasciitis, bilateral,8994,8994,True,8994,True
 PTSD (post-traumatic stress disorder), non-combat-related,8989,9010,False,8989,True
 ankylosis in ankle, left,8991,8991,True,8991,True
 ankylosis in knee, bilateral,8997,8997,True,8997,True
-unmapped contention text ['migraines'],9007,9012,False,None,False
+migraines,9007,8989,False,9007,True
 ankylosis in hip, left,8996,8996,True,8996,True
 sleep apnea,9012,9012,True,9012,True
 migraines (headaches),9007,8989,False,9007,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['elbow'],8993,8993,True,None,False
-unmapped contention text ['foot'],8994,8994,True,None,False
+elbow,8993,8993,True,8993,True
+foot,8994,8994,True,8994,True
 radiculopathy, bilateral upper extremities,8999,9006,False,8999,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['neck'],8999,8999,True,None,False
+neck,8999,8999,True,8999,True
 greater trochanteric pain syndrome (lateral hip pain), bilateral,8996,8996,True,8996,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 knee strain or sprain, bilateral,8997,8997,True,8997,True
-unmapped contention text ['ankle sprain'],8991,8991,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+ankle sprain,8991,8991,True,8991,True
+ankle,8991,8991,True,8991,True
+shoulder,9002,9002,True,9002,True
 sleep apnea,9012,9012,True,9012,True
 arrhythmia (irregular heartbeat),8979,8979,True,8979,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['knee instability'],8997,8997,True,None,False
+knee instability,8997,8997,True,8997,True
 traumatic brain injury (TBI),9020,9020,True,9020,True
 lumbar spinal stenosis (narrowing of spinal canal in lower back),8998,8998,True,8998,True
 cervical spinal stenosis (narrowing of spinal canal in neck),8999,8999,True,8999,True
@@ -2120,7 +2120,7 @@ hearing loss,3140,3140,True,3140,True
 depression (major depressive disorder),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 knee strain or sprain, right,8997,8997,True,8997,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 erectile dysfunction (ED),8975,8975,True,8975,True
 sleep apnea,9012,9012,True,9012,True
@@ -2140,7 +2140,7 @@ middle back sprain (thoracic sprain),8998,8998,True,8998,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 migraines (headaches),9007,8989,False,9007,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['tinnitus ringing hissing ears'],3140,3140,True,None,False
+tinnitus ringing hissing ears,3140,3140,True,3140,True
 wrist fracture, left,9004,9004,True,9004,True
 lumbar spinal stenosis (narrowing of spinal canal in lower back),8998,8998,True,8998,True
 sleep apnea,9012,9012,True,9012,True
@@ -2185,7 +2185,7 @@ shoulder impingement syndrome, right,9002,9002,True,9002,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 Tinnitus,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['renal disease'],8975,8975,True,None,False
+renal disease,8975,8975,True,8975,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 migraines (headaches),9007,8989,False,9007,True
@@ -2230,7 +2230,7 @@ chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 degenerative arthritis (osteoarthritis) in foot, left,8994,8994,True,8994,True
 sleep apnea,9012,9012,True,9012,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 chronic rhinitis, allergic,9012,9012,True,9012,True
@@ -2287,7 +2287,7 @@ asthma,9012,9012,True,9012,True
 lupus,8986,8986,True,8986,True
 sleep apnea,9012,9012,True,9012,True
 temporomandibular disorder, including TMJ,249481,249481,True,249481,True
-unmapped contention text ['wrist strain'],9004,9004,True,None,False
+wrist strain,9004,9004,True,9004,True
 PTSD,8989,9010,False,8989,True
 lumbar spinal stenosis (narrowing of spinal canal in lower back),8998,8998,True,8998,True
 migraines (headaches),9007,8989,False,9007,True
@@ -2388,8 +2388,8 @@ bunions (hallux valgus), right,8994,8994,True,8994,True
 bunions (hallux valgus), left,8994,8994,True,8994,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
 neck strain (cervical strain),8999,8999,True,8999,True
-unmapped contention text ['hip'],8996,8996,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
+hip,8996,8996,True,8996,True
+ankle,8991,8991,True,8991,True
 migraines (headaches),9007,8989,False,9007,True
 non-diabetic peripheral neuropathy, left upper extremities,9006,9006,True,9006,True
 spinal arthritis, neck,8999,8999,True,8999,True
@@ -2478,7 +2478,7 @@ Endometriosis,8978,8978,True,8978,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 sleep apnea,9012,9012,True,9012,True
 carpal tunnel syndrome, bilateral,9006,9006,True,9006,True
-unmapped contention text ['wrist strain'],9004,9004,True,None,False
+wrist strain,9004,9004,True,9004,True
 chronic sinusitis,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
@@ -2541,7 +2541,7 @@ knee instability, left,8997,8997,True,8997,True
 hearing loss,3140,3140,True,3140,True
 neck strain (cervical strain),8999,8999,True,8999,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 Depression,8989,8989,True,8989,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
 Migraines (headaches),9007,8989,False,9007,True
@@ -2553,7 +2553,7 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 Dupuytren's contracture (abnormal thickening of tissues in palm of hand), right,8995,8995,True,8995,True
 sleep apnea,9012,9012,True,9012,True
 scars, extremities or trunk,9013,9013,True,9013,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 bursitis in knee, right,8997,8997,True,8997,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
@@ -2573,7 +2573,7 @@ hip impingement (femoroacetabular impingement or FAI), left,8996,8996,True,8996,
 Depression,8989,8989,True,8989,True
 hip impingement (femoroacetabular impingement or FAI), bilateral,8996,8996,True,8996,True
 erectile dysfunction (ED),8975,8975,True,8975,True
-unmapped contention text ['metatarsalgia'],8994,8994,True,None,False
+metatarsalgia,8994,8994,True,8994,True
 chronic fatigue syndrome,8986,8986,True,8986,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 depression (major depressive disorder),8989,8989,True,8989,True
@@ -2604,7 +2604,7 @@ prostate cancer,8935,8935,True,8935,True
 shoulder strain, bilateral,9002,9002,True,9002,True
 degenerative arthritis (osteoarthritis) in wrist, bilateral,9004,9004,True,9004,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 Migraines,9007,8989,False,9007,True
 Hearing loss,3140,3140,True,3140,True
 Tinnitus,3140,3140,True,3140,True
@@ -2705,9 +2705,9 @@ acne,9016,9016,True,9016,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 degenerative arthritis (osteoarthritis) in hand or fingers, bilateral,8995,8992,False,8995,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 depression (major depressive disorder),8989,8989,True,8989,True
@@ -2759,7 +2759,7 @@ traumatic brain injury (TBI),9020,9020,True,9020,True
 gout in foot, left,8994,8994,True,8994,True
 migraines (headaches),9007,8989,False,9007,True
 erectile dysfunction (ED),8975,8975,True,8975,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 knee instability, right,8997,8997,True,8997,True
 Diabetes Mellitus,8973,8973,True,8973,True
 Heart Condition,8979,8979,True,8979,True
@@ -2768,17 +2768,17 @@ Bronchitis,9012,9012,True,9012,True
 Chronic Fatigue Syndrome,8986,8986,True,8986,True
 Fibromyalgia,9007,9007,True,9007,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['hearing loss'],3140,3140,True,None,False
+hearing loss,3140,3140,True,3140,True
 chronic fatigue syndrome,8986,8986,True,8986,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
+shoulder,9002,9002,True,9002,True
+knee,8997,8997,True,8997,True
+ankle,8991,8991,True,8991,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 enlarged prostate (benign prostatic hyperplasia or BPH),8975,8975,True,8975,True
 chronic kidney disease (CKD),8975,8975,True,8975,True
 hypothyroidism (underactive thyroid),8973,8973,True,8973,True
-unmapped contention text ['type diabetes'],8973,8973,True,None,False
+type diabetes,8973,8973,True,8973,True
 atrial fibrillation (A-fib),8979,8979,True,8979,True
 congestive heart failure (CHF),8979,8979,True,8979,True
 chronic obstructive pulmonary disease (COPD),9012,9012,True,9012,True
@@ -2798,7 +2798,7 @@ sleep apnea,9012,9012,True,9012,True
 hemorrhoids,8968,8989,False,8968,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
-unmapped contention text ['tinnitus ringing hissing ears'],3140,3140,True,None,False
+tinnitus ringing hissing ears,3140,3140,True,3140,True
 erectile dysfunction (ED),8975,8975,True,8975,True
 middle back sprain (thoracic sprain),8998,8998,True,8998,True
 lower back sprain (lumbosacral sprain),8998,8998,True,8998,True
@@ -2846,15 +2846,15 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 degenerative arthritis (osteoarthritis) in shoulder, left,9002,9002,True,9002,True
 degenerative arthritis (osteoarthritis) in knee, right,8997,8997,True,8997,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
-unmapped contention text ['bursitis elbow'],8993,8993,True,None,False
+bursitis elbow,8993,8993,True,8993,True
 knee replacement (knee arthroplasty), bilateral,8997,8997,True,8997,True
 erectile dysfunction (ED),8975,8975,True,8975,True
-unmapped contention text ['foot'],8994,8994,True,None,False
+foot,8994,8994,True,8994,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 asthma,9012,9012,True,9012,True
 dry eye syndrome,8974,8974,True,8974,True
-unmapped contention text ['lower back sprain lumbosacral sprain'],8998,8998,True,None,False
+lower back sprain lumbosacral sprain,8998,8998,True,8998,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 chronic sinusitis,9012,9012,True,9012,True
 migraines (headaches),9007,8989,False,9007,True
@@ -2888,8 +2888,8 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 Sleep Apnea,9012,9012,True,9012,True
 depression (major depressive disorder),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['hip'],8996,8996,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
+hip,8996,8996,True,8996,True
+knee,8997,8997,True,8997,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
@@ -2903,7 +2903,7 @@ GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 neck strain (cervical strain),8999,8999,True,8999,True
 hysterectomy and ovariectomy (removal of uterus and both ovaries),8978,8978,True,8978,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
-unmapped contention text ['bladder'],8975,8975,True,None,False
+bladder,8975,8975,True,8975,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 depression (major depressive disorder),8989,8989,True,8989,True
 degenerative arthritis (osteoarthritis) in knee, right,8997,8997,True,8997,True
@@ -2934,7 +2934,7 @@ sleep apnea,9012,9012,True,9012,True
 patellofemoral pain syndrome, bilateral,8997,8997,True,8997,True
 sleep apnea,9012,9012,True,9012,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 basal cell carcinoma of the skin, head or neck,1250,1250,True,1250,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
@@ -2942,7 +2942,7 @@ depression (major depressive disorder),8989,8989,True,8989,True
 pulmonary fibrosis,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['shoulder strain'],9002,9002,True,None,False
+shoulder strain,9002,9002,True,9002,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 middle back strain (thoracic strain),8998,8998,True,8998,True
 hypertension (high blood pressure),8979,8979,True,8979,True
@@ -2962,7 +2962,7 @@ temporomandibular disorder, including TMJ,249481,249481,True,249481,True
 knee strain or sprain, left,8997,8997,True,8997,True
 migraines (headaches),9007,8989,False,9007,True
 Tinnitus,3140,3140,True,3140,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 chronic sinusitis,9012,9012,True,9012,True
 neck strain (cervical strain),8999,8999,True,8999,True
 shoulder strain, right,9002,9002,True,9002,True
@@ -2998,7 +2998,7 @@ chronic sinusitis,9012,9012,True,9012,True
 depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 adjustment disorder,8989,8989,True,8989,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 degenerative arthritis (osteoarthritis) in ankle, right,8991,8991,True,8991,True
 tendonitis (tendinitis) in ankle, right,8991,8991,True,8991,True
 degenerative arthritis (osteoarthritis) in ankle, left,8991,8991,True,8991,True
@@ -3019,25 +3019,25 @@ hemorrhoids,8968,8989,False,8968,True
 tendonitis (tendinitis) in ankle, left,8991,8991,True,8991,True
 radiculopathy, bilateral upper extremities,8999,9006,False,8999,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['neck'],8999,8999,True,None,False
+neck,8999,8999,True,8999,True
 depression (major depressive disorder),8989,8989,True,8989,True
 hypertension (high blood pressure),8979,8979,True,8979,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 Erectile Dysfunction,8975,8975,True,8975,True
-unmapped contention text ['foot'],8994,8994,True,None,False
+foot,8994,8994,True,8994,True
 Migraines,9007,8989,False,9007,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['elbow'],8993,8993,True,None,False
-unmapped contention text ['wrist'],9004,9004,True,None,False
+shoulder,9002,9002,True,9002,True
+elbow,8993,8993,True,8993,True
+wrist,9004,9004,True,9004,True
 Cervical strain,8999,8999,True,8999,True
 Lumbosacral strain,8998,8998,True,8998,True
-unmapped contention text ['skin'],9016,9016,True,None,False
-unmapped contention text ['ankle'],8991,8991,True,None,False
+skin,9016,9016,True,9016,True
+ankle,8991,8991,True,8991,True
 Hypertension,8979,8979,True,8979,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 Sinusitis,9012,9012,True,9012,True
-unmapped contention text ['allergic rhinitis'],9012,9012,True,None,False
-unmapped contention text ['hand'],8995,8995,True,None,False
+allergic rhinitis,9012,9012,True,9012,True
+hand,8995,8995,True,8995,True
 tinnitus,3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
 deep vein thrombosis (DVT) in leg, left,8987,8987,True,8987,True
@@ -3048,9 +3048,9 @@ knee instability, right,8997,8997,True,8997,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
+anxiety,8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['tinnitus ringing hissing ears'],3140,3140,True,None,False
+tinnitus ringing hissing ears,3140,3140,True,3140,True
 wrist sprain, bilateral,9004,9004,True,9004,True
 urinary incontinence (loss of bladder control),8975,8975,True,8975,True
 hip sprain, bilateral,8996,8996,True,8996,True
@@ -3059,14 +3059,14 @@ plantar fasciitis, bilateral,8994,8994,True,8994,True
 shoulder strain, right,9002,9002,True,9002,True
 knee instability, bilateral,8997,8997,True,8997,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['conjunctivitis pink eye'],8974,8974,True,None,False
+conjunctivitis pink eye,8974,8974,True,8974,True
 gastroenteritis,8968,8968,True,8968,True
 chronic sinusitis,9012,9012,True,9012,True
 chronic bronchitis,9012,9012,True,9012,True
 hemorrhoids,8968,8989,False,8968,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
-unmapped contention text ['athletes foot tinea pedis'],9016,9016,True,None,False
-unmapped contention text ['eye'],8974,8974,True,None,False
+athletes foot tinea pedis,9016,9016,True,9016,True
+eye,8974,8974,True,8974,True
 migraine,9007,9007,True,9007,True
 depression,8989,8989,True,8989,True
 anxiety condition,8989,8989,True,8989,True
@@ -3074,9 +3074,9 @@ lung condition,9012,9012,True,9012,True
 shoulder strain,9002,9002,True,9002,True
 foot pain,8994,8994,True,8994,True
 knee strain,8997,8997,True,8997,True
-unmapped contention text ['low back'],8998,8998,True,None,False
+low back,8998,8998,True,8998,True
 ears-ringing,3140,3140,True,3140,True
-unmapped contention text ['ptsd post traumatic stress disorder'],8989,9010,False,None,False
+ptsd post traumatic stress disorder,8989,9010,False,8989,True
 degenerative arthritis (osteoarthritis) in ankle, bilateral,8991,8991,True,8991,True
 migraines (headaches),9007,8989,False,9007,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
@@ -3099,7 +3099,7 @@ middle back strain (thoracic strain),8998,8998,True,8998,True
 non-diabetic peripheral neuropathy, bilateral lower extremities,9006,9006,True,9006,True
 temporomandibular disorder, including TMJ,249481,249481,True,249481,True
 golfer's elbow (medial epicondylitis), bilateral,8993,8993,True,8993,True
-unmapped contention text ['respiratory'],9012,9012,True,None,False
+respiratory,9012,9012,True,9012,True
 tendonitis (tendinitis) in hand or fingers, bilateral,8995,8995,True,8995,True
 tendonitis (tendinitis) in wrist, bilateral,9004,9004,True,9004,True
 patellofemoral pain syndrome, bilateral,8997,8997,True,8997,True
@@ -3191,9 +3191,9 @@ bulimia (type of eating disorder),8970,8970,True,8970,True
 pseudofolliculitis barbae (razor bumps, shave bumps, or ingrown hairs),9016,9016,True,9016,True
 knee instability, left,8997,8997,True,8997,True
 hip sprain, bilateral,8996,8996,True,8996,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['elbow'],8993,8993,True,None,False
-unmapped contention text ['feet'],8994,9012,False,None,False
+ankle,8991,8991,True,8991,True
+elbow,8993,8993,True,8993,True
+feet,8994,8989,False,8994,True
 Ibs,8968,8968,True,8968,True
 knee or patellar fracture, right,8997,8997,True,8997,True
 ankylosis in knee, bilateral,8997,8997,True,8997,True
@@ -3337,7 +3337,7 @@ migraines (headaches),9007,8989,False,9007,True
 agoraphobia,8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
 shin splints, bilateral,8997,8997,True,8997,True
 hearing loss,3140,3140,True,3140,True
 High blood pressure,8979,8979,True,8979,True
@@ -3354,7 +3354,7 @@ shin splints, bilateral,8997,8997,True,8997,True
 neck sprain (cervical sprain),8999,8999,True,8999,True
 shoulder strain, left,9002,9002,True,9002,True
 shoulder strain, right,9002,9002,True,9002,True
-unmapped contention text ['foot'],8994,8994,True,None,False
+foot,8994,8994,True,8994,True
 lower back sprain (lumbosacral sprain),8998,8998,True,8998,True
 shoulder strain, bilateral,9002,9002,True,9002,True
 tendonitis (tendinitis) in ankle, bilateral,8991,8991,True,8991,True
@@ -3465,26 +3465,26 @@ chronic fatigue syndrome,8986,8986,True,8986,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 chronic sinusitis,9012,9012,True,9012,True
-unmapped contention text ['hip'],8996,8996,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+hip,8996,8996,True,8996,True
+shoulder,9002,9002,True,9002,True
 wrist sprain, left,9004,9004,True,9004,True
 iron deficiency anemia,8981,8981,True,8981,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
-unmapped contention text ['diabetes type'],8973,8973,True,None,False
+diabetes type,8973,8973,True,8973,True
 inguinal hernia (hernia in groin),8968,8968,True,8968,True
 temporomandibular disorder, including TMJ,249481,249481,True,249481,True
 prostate cancer,8935,8935,True,8935,True
 lower back sprain (lumbosacral sprain),8998,8998,True,8998,True
 eye,8974,8974,True,8974,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
 knee hyperextension (genu recurvatum), right,8997,8997,True,8997,True
 knee instability, right,8997,8997,True,8997,True
 middle back strain (thoracic strain),8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
+shoulder,9002,9002,True,9002,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 chronic sinusitis,9012,9012,True,9012,True
 sleep apnea,9012,9012,True,9012,True
@@ -3493,7 +3493,7 @@ athlete's foot (tinea pedis),9016,9016,True,9016,True
 lumbar spinal stenosis (narrowing of spinal canal in lower back),8998,8998,True,8998,True
 sleep apnea,9012,9012,True,9012,True
 hearing loss,3140,3140,True,3140,True
-unmapped contention text ['loss sense smell'],8969,8969,True,None,False
+loss sense smell,8969,8969,True,8969,True
 traumatic brain injury (TBI),9020,9020,True,9020,True
 visual impairment, including blurry vision, blindness and double vision,8974,8974,True,8974,True
 hypertension (high blood pressure),8979,8979,True,8979,True
@@ -3504,7 +3504,7 @@ depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 spinal arthritis, back,8998,8998,True,8998,True
-unmapped contention text ['ptsd post traumatic stress disorder'],8989,9010,False,None,False
+ptsd post traumatic stress disorder,8989,9010,False,8989,True
 Musculoskeletal - Ankle,8991,8991,True,8991,True
 sleep apnea,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
@@ -3530,7 +3530,7 @@ hemorrhoids,8968,8989,False,8968,True
 sleep apnea,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 wrist sprain, bilateral,9004,9004,True,9004,True
-unmapped contention text ['feet'],8994,9012,False,None,False
+feet,8994,8989,False,8994,True
 traumatic brain injury (TBI),9020,9020,True,9020,True
 knee instability, right,8997,8997,True,8997,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
@@ -3577,12 +3577,12 @@ PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 migraines (headaches),9007,8989,False,9007,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 adjustment disorder,8989,8989,True,8989,True
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+shoulder,9002,9002,True,9002,True
+shoulder,9002,9002,True,9002,True
+anxiety,8989,8989,True,8989,True
+knee,8997,8997,True,8997,True
+knee,8997,8997,True,8997,True
+neck,8999,8999,True,8999,True
 migraines (headaches),9007,8989,False,9007,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 neck strain (cervical strain),8999,8999,True,8999,True
@@ -3724,16 +3724,16 @@ neck strain (cervical strain),8999,8999,True,8999,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 stress fracture in leg, bilateral,8997,8997,True,8997,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 epiphora (watery eyes),8974,8974,True,8974,True
 neck strain (cervical strain),8999,8999,True,8999,True
 complete loss of sense of smell (anosmia),8969,8969,True,8969,True
-unmapped contention text ['neck'],8999,8999,True,None,False
+neck,8999,8999,True,8999,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 traumatic brain injury (TBI),9020,9020,True,9020,True
 shoulder strain, bilateral,9002,9002,True,9002,True
 knee strain or sprain, bilateral,8997,8997,True,8997,True
@@ -3763,7 +3763,7 @@ GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 chronic sinusitis,9012,9012,True,9012,True
 hearing loss, other than tinnitus,3140,3140,True,3140,True
 urinary incontinence (loss of bladder control),8975,8975,True,8975,True
-unmapped contention text ['female sexual arousal disorder fsad'],8978,8978,True,None,False
+female sexual arousal disorder fsad,8978,8978,True,8978,True
 high blood pressure,8979,8979,True,8979,True
 greater trochanteric pain syndrome (lateral hip pain), left,8996,8996,True,8996,True
 temporomandibular disorder, including TMJ,249481,249481,True,249481,True
@@ -3780,7 +3780,7 @@ sleep apnea,9012,9012,True,9012,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 asthma,9012,9012,True,9012,True
 hip condition, bilateral,8996,8996,True,8996,True
-unmapped contention text ['low back'],8998,8998,True,None,False
+low back,8998,8998,True,8998,True
 tinnitus,3140,3140,True,3140,True
 sleep apnea,9012,9012,True,9012,True
 sleep apnea,9012,9012,True,9012,True
@@ -3810,15 +3810,15 @@ hemorrhoids,8968,8989,False,8968,True
 sleep apnea,9012,9012,True,9012,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 neck strain (cervical strain),8999,8999,True,8999,True
-unmapped contention text ['foot'],8994,8994,True,None,False
-unmapped contention text ['hand'],8995,8995,True,None,False
+foot,8994,8994,True,8994,True
+hand,8995,8995,True,8995,True
 wrist sprain, left,9004,9004,True,9004,True
 knee instability, bilateral,8997,8997,True,8997,True
 middle back sprain (thoracic sprain),8998,8998,True,8998,True
 lower back sprain (lumbosacral sprain),8998,8998,True,8998,True
 pseudofolliculitis barbae (razor bumps, shave bumps, or ingrown hairs),9016,9016,True,9016,True
-unmapped contention text ['tinnitus ringing hissing ears'],3140,3140,True,None,False
-unmapped contention text ['hearing loss'],3140,3140,True,None,False
+tinnitus ringing hissing ears,3140,3140,True,3140,True
+hearing loss,3140,3140,True,3140,True
 chronic bronchitis,9012,9012,True,9012,True
 knee instability, left,8997,8997,True,8997,True
 migraines (headaches),9007,8989,False,9007,True
@@ -3833,7 +3833,7 @@ eczema (atopic dermatitis),9016,9016,True,9016,True
 enlarged prostate (benign prostatic hyperplasia or BPH),8975,8975,True,8975,True
 intervertebral disc syndrome (IVDS), back,8998,8998,True,8998,True
 plantar fasciitis, bilateral,8994,8994,True,8994,True
-unmapped contention text ['elbow'],8993,8993,True,None,False
+elbow,8993,8993,True,8993,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 migraines (headaches),9007,8989,False,9007,True
 chronic sinusitis,9012,9012,True,9012,True
@@ -3846,13 +3846,13 @@ anxiety condition,8989,8989,True,8989,True
 shoulder condition, bilateral,9002,9002,True,9002,True
 hip condition, bilateral,8996,8996,True,8996,True
 hypertension,8979,8979,True,8979,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 degenerative arthritis (osteoarthritis) in knee, right,8997,8997,True,8997,True
 degenerative arthritis (osteoarthritis) in foot, left,8994,8994,True,8994,True
 spinal arthritis, back,8998,8998,True,8998,True
 lower back sprain (lumbosacral sprain),8998,8998,True,8998,True
-unmapped contention text ['neck'],8999,8999,True,None,False
+neck,8999,8999,True,8999,True
 hip sprain, left,8996,8996,True,8996,True
 depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
@@ -3870,7 +3870,7 @@ rotator cuff tear, right,9002,9002,True,9002,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 hearing loss,3140,3140,True,3140,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 depression (major depressive disorder),8989,8989,True,8989,True
@@ -3896,12 +3896,12 @@ GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 shin splints, bilateral,8997,8997,True,8997,True
 middle back sprain (thoracic sprain),8998,8998,True,8998,True
 ankle sprain, left,8991,8991,True,8991,True
-unmapped contention text ['ankle strain'],8991,8991,True,None,False
-unmapped contention text ['shoulder strain'],9002,9002,True,None,False
+ankle strain,8991,8991,True,8991,True
+shoulder strain,9002,9002,True,9002,True
 eczema (atopic dermatitis),9016,9016,True,9016,True
 irritable bowel syndrome (IBS),8968,8968,True,8968,True
-unmapped contention text ['elbow strain'],8993,8993,True,None,False
-unmapped contention text ['elbow strain'],8993,8993,True,None,False
+elbow strain,8993,8993,True,8993,True
+elbow strain,8993,8993,True,8993,True
 wrist sprain, right,9004,9004,True,9004,True
 wrist sprain, left,9004,9004,True,9004,True
 shoulder strain, left,9002,9002,True,9002,True
@@ -3916,8 +3916,8 @@ knee strain or sprain, right,8997,8997,True,8997,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+anxiety,8989,8989,True,8989,True
+neck,8999,8999,True,8999,True
 hearing loss, other than tinnitus,3140,3140,True,3140,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 asthma,9012,9012,True,9012,True
@@ -3937,17 +3937,17 @@ radiculopathy, bilateral lower extremities,8998,9006,False,8998,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 adjustment disorder,8989,8989,True,8989,True
 migraines,9007,8989,False,9007,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+ankle,8991,8991,True,8991,True
+neck,8999,8999,True,8999,True
 depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['shoulder'],9002,9002,True,None,False
-unmapped contention text ['knee'],8997,8997,True,None,False
+anxiety,8989,8989,True,8989,True
+shoulder,9002,9002,True,9002,True
+knee,8997,8997,True,8997,True
 asthma,9012,9012,True,9012,True
 migraines (headaches),9007,8989,False,9007,True
-unmapped contention text ['female sexual arousal disorder fsad'],8978,8978,True,None,False
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+female sexual arousal disorder fsad,8978,8978,True,8978,True
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 depression (major depressive disorder),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 radiculopathy, right lower extremities,8998,9006,False,8998,True
@@ -3972,7 +3972,7 @@ chronic fatigue syndrome,8986,8986,True,8986,True
 knee strain or sprain, bilateral,8997,8997,True,8997,True
 migraines (headaches),9007,8989,False,9007,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
-unmapped contention text ['diabetes type'],8973,8973,True,None,False
+diabetes type,8973,8973,True,8973,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 ankylosis in knee, bilateral,8997,8997,True,8997,True
 depression (major depressive disorder),8989,8989,True,8989,True
@@ -3985,14 +3985,14 @@ scars, head, face or neck,9014,9014,True,9014,True
 migraines (headaches),9007,8989,False,9007,True
 rotator cuff tear, left,9002,9002,True,9002,True
 hearing loss,3140,3140,True,3140,True
-unmapped contention text ['tinnitus'],3140,3140,True,None,False
+tinnitus,3140,3140,True,3140,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 bipolar disorder,8989,8989,True,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 coronary artery disease (CAD or arteriosclerotic heart disease),8979,8979,True,8979,True
 diabetic peripheral neuropathy, bilateral lower extremities,9006,9006,True,9006,True
 diabetes, type 1 or type 2,8973,8973,True,8973,True
@@ -4057,7 +4057,7 @@ erectile dysfunction (ED),8975,8975,True,8975,True
 sleep apnea,9012,9012,True,9012,True
 neck strain (cervical strain),8999,8999,True,8999,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
-unmapped contention text ['knee degenerative arthritis osteoarthritis knee'],8997,8997,True,None,False
+knee degenerative arthritis osteoarthritis knee,8997,8997,True,8997,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 depression (major depressive disorder),8989,8989,True,8989,True
@@ -4069,7 +4069,7 @@ lower back strain (lumbosacral strain),8998,8998,True,8998,True
 hip sprain, bilateral,8996,8996,True,8996,True
 knee strain or sprain, bilateral,8997,8997,True,8997,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
-unmapped contention text ['stomach'],8968,8968,True,None,False
+stomach,8968,8968,True,8968,True
 migraines (headaches),9007,8989,False,9007,True
 urinary incontinence (loss of bladder control),8975,8975,True,8975,True
 fecal incontinence (loss of bowel control),8968,8968,True,8968,True
@@ -4101,7 +4101,7 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 non-diabetic peripheral neuropathy, bilateral upper extremities,9006,9006,True,9006,True
 chronic sinusitis,9012,9012,True,9012,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
@@ -4114,15 +4114,15 @@ anxiety condition,8989,8989,True,8989,True
 shoulder condition, bilateral,9002,9002,True,9002,True
 hip condition, bilateral,8996,8996,True,8996,True
 hypertension,8979,8979,True,8979,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 radiculopathy, right lower extremities,8998,9006,False,8998,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 sleep apnea,9012,9012,True,9012,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 hearing loss,3140,3140,True,3140,True
 depression (major depressive disorder),8989,8989,True,8989,True
@@ -4161,13 +4161,13 @@ erectile dysfunction (ED),8975,8975,True,8975,True
 sleep apnea,9012,9012,True,9012,True
 neck strain (cervical strain),8999,8999,True,8999,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
-unmapped contention text ['knee degenerative arthritis osteoarthritis knee'],8997,8997,True,None,False
+knee degenerative arthritis osteoarthritis knee,8997,8997,True,8997,True
 bipolar disorder,8989,8989,True,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 hearing loss,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
@@ -4178,8 +4178,8 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
-unmapped contention text ['knee'],8997,8997,True,None,False
-unmapped contention text ['diabetes type'],8973,8973,True,None,False
+knee,8997,8997,True,8997,True
+diabetes type,8973,8973,True,8973,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 migraines (headaches),9007,8989,False,9007,True
 iron deficiency anemia,8981,8981,True,8981,True
@@ -4193,7 +4193,7 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 bipolar disorder,8989,8989,True,8989,True
 scars, head, face or neck,9014,9014,True,9014,True
 epididymitis,8975,8975,True,8975,True
@@ -4205,7 +4205,7 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 hearing loss,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 flatfoot (pes planus), bilateral,8994,8994,True,8994,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 bipolar disorder,8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 degenerative arthritis (osteoarthritis) in knee, bilateral,8997,8997,True,8997,True
@@ -4216,7 +4216,7 @@ erectile dysfunction (ED),8975,8975,True,8975,True
 sleep apnea,9012,9012,True,9012,True
 neck strain (cervical strain),8999,8999,True,8999,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
-unmapped contention text ['knee degenerative arthritis osteoarthritis knee'],8997,8997,True,None,False
+knee degenerative arthritis osteoarthritis knee,8997,8997,True,8997,True
 scars, head, face or neck,9014,9014,True,9014,True
 hearing loss,3140,3140,True,3140,True
 hallux rigidus (big toe arthritis), bilateral,8994,8994,True,8994,True
@@ -4262,7 +4262,7 @@ erectile dysfunction (ED),8975,8975,True,8975,True
 sleep apnea,9012,9012,True,9012,True
 neck strain (cervical strain),8999,8999,True,8999,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
-unmapped contention text ['knee degenerative arthritis osteoarthritis knee'],8997,8997,True,None,False
+knee degenerative arthritis osteoarthritis knee,8997,8997,True,8997,True
 hearing loss,3140,3140,True,3140,True
 hallux rigidus (big toe arthritis), bilateral,8994,8994,True,8994,True
 bunions (hallux valgus), bilateral,8994,8994,True,8994,True
@@ -4280,8 +4280,8 @@ carpal tunnel syndrome, bilateral,9006,9006,True,9006,True
 shoulder impingement syndrome, bilateral,9002,9002,True,9002,True
 shoulder strain, left,9002,9002,True,9002,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 sleep apnea,9012,9012,True,9012,True
 ankylosis in ankle, bilateral,8991,8991,True,8991,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
@@ -4295,7 +4295,7 @@ erectile dysfunction (ED),8975,8975,True,8975,True
 sleep apnea,9012,9012,True,9012,True
 neck strain (cervical strain),8999,8999,True,8999,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
-unmapped contention text ['knee degenerative arthritis osteoarthritis knee'],8997,8997,True,None,False
+knee degenerative arthritis osteoarthritis knee,8997,8997,True,8997,True
 radiculopathy, right lower extremities,8998,9006,False,8998,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 sleep apnea,9012,9012,True,9012,True
@@ -4322,7 +4322,7 @@ chronic sinusitis,9012,9012,True,9012,True
 depression (major depressive disorder),8989,8989,True,8989,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 adjustment disorder,8989,8989,True,8989,True
-unmapped contention text ['ankle'],8991,8991,True,None,False
+ankle,8991,8991,True,8991,True
 degenerative arthritis (osteoarthritis) in ankle, right,8991,8991,True,8991,True
 tendonitis (tendinitis) in ankle, right,8991,8991,True,8991,True
 degenerative arthritis (osteoarthritis) in ankle, left,8991,8991,True,8991,True
@@ -4363,7 +4363,7 @@ erectile dysfunction (ED),8975,8975,True,8975,True
 sleep apnea,9012,9012,True,9012,True
 neck strain (cervical strain),8999,8999,True,8999,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
-unmapped contention text ['knee degenerative arthritis osteoarthritis knee'],8997,8997,True,None,False
+knee degenerative arthritis osteoarthritis knee,8997,8997,True,8997,True
 knee instability, left,8997,8997,True,8997,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 radiculopathy, bilateral lower extremities,8998,9006,False,8998,True
@@ -4399,8 +4399,8 @@ lower back strain (lumbosacral strain),8998,8998,True,8998,True
 adjustment disorder,8989,8989,True,8989,True
 knee instability, left,8997,8997,True,8997,True
 knee instability, right,8997,8997,True,8997,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 congestive heart failure (CHF),8979,8979,True,8979,True
 Migraines,9007,8989,False,9007,True
 knee instability, left,8997,8997,True,8997,True
@@ -4426,8 +4426,8 @@ tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 radiculopathy, bilateral lower extremities,8998,9006,False,8998,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 adjustment disorder,8989,8989,True,8989,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 sleep apnea,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 Raynaud's disease,8979,8979,True,8979,True
@@ -4443,10 +4443,10 @@ heart attack (myocardial infarction),8971,8971,True,8971,True
 knee strain or sprain, right,8997,8997,True,8997,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['diabetes type'],8973,8973,True,None,False
+diabetes type,8973,8973,True,8973,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 temporomandibular disorder, including TMJ,249481,249481,True,249481,True
 hyperhidrosis (excessive sweating),9016,9016,True,9016,True
@@ -4457,8 +4457,8 @@ migraines (headaches),9007,8989,False,9007,True
 radiculopathy, right lower extremities,8998,9006,False,8998,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 sleep apnea,9012,9012,True,9012,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 temporomandibular disorder, including TMJ,249481,249481,True,249481,True
 hyperhidrosis (excessive sweating),9016,9016,True,9016,True
@@ -4467,8 +4467,8 @@ chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 migraines (headaches),9007,8989,False,9007,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+anxiety,8989,8989,True,8989,True
+neck,8999,8999,True,8999,True
 radiculopathy, right lower extremities,8998,9006,False,8998,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 hearing loss, other than tinnitus,3140,3140,True,3140,True
@@ -4479,9 +4479,9 @@ sleep apnea,9012,9012,True,9012,True
 radiculopathy, right lower extremities,8998,9006,False,8998,True
 GERD (gastroesophageal reflux disease),8968,8968,True,8968,True
 sleep apnea,9012,9012,True,9012,True
-unmapped contention text ['diabetes type'],8973,8973,True,None,False
+diabetes type,8973,8973,True,8973,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['diabetes type'],8973,8973,True,None,False
+diabetes type,8973,8973,True,8973,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 chronic sinusitis,9012,9012,True,9012,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
@@ -4499,7 +4499,7 @@ PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 sleep apnea,9012,9012,True,9012,True
 migraines (headaches),9007,8989,False,9007,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['diabetes type'],8973,8973,True,None,False
+diabetes type,8973,8973,True,8973,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 foot fracture (tarsal or metatarsal fracture), right,8994,8994,True,8994,True
 degenerative arthritis (osteoarthritis) in hip, left,8996,8996,True,8996,True
@@ -4515,9 +4515,9 @@ hip condition, bilateral,8996,8996,True,8996,True
 hypertension,8979,8979,True,8979,True
 depression (major depressive disorder),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
-unmapped contention text ['diabetes type'],8973,8973,True,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
+diabetes type,8973,8973,True,8973,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 knee instability, left,8997,8997,True,8997,True
 knee instability, right,8997,8997,True,8997,True
@@ -4639,8 +4639,8 @@ sleep apnea,9012,9012,True,9012,True
 ankylosis in ankle, bilateral,8991,8991,True,8991,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 depression,8989,8989,True,8989,True
 glaucoma, left,8974,8974,True,8974,True
 Leg Condition - Heart/Veins/Arteries,8987,8979,False,8987,True
@@ -4664,8 +4664,8 @@ anxiety condition,8989,8989,True,8989,True
 shoulder condition, bilateral,9002,9002,True,9002,True
 hip condition, bilateral,8996,8996,True,8996,True
 hypertension,8979,8979,True,8979,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 depression (major depressive disorder),8989,8989,True,8989,True
 chronic sinusitis,9012,9012,True,9012,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
@@ -4690,12 +4690,12 @@ anxiety condition,8989,8989,True,8989,True
 shoulder condition, bilateral,9002,9002,True,9002,True
 hip condition, bilateral,8996,8996,True,8996,True
 hypertension,8979,8979,True,8979,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 chronic sinusitis,9012,9012,True,9012,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 ankle sprain, right,8991,8991,True,8991,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
@@ -4708,11 +4708,11 @@ hip condition, bilateral,8996,8996,True,8996,True
 hypertension,8979,8979,True,8979,True
 chronic sinusitis,9012,9012,True,9012,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+anxiety,8989,8989,True,8989,True
+neck,8999,8999,True,8999,True
 hearing loss, other than tinnitus,3140,3140,True,3140,True
 depression,8989,8989,True,8989,True
 glaucoma, left,8974,8974,True,8974,True
@@ -4721,11 +4721,11 @@ anxiety condition,8989,8989,True,8989,True
 shoulder condition, bilateral,9002,9002,True,9002,True
 hip condition, bilateral,8996,8996,True,8996,True
 hypertension,8979,8979,True,8979,True
-unmapped contention text ['irritable bowel syndrome ibs'],8968,8968,True,None,False
-unmapped contention text ['migraines headaches'],9007,9012,False,None,False
+irritable bowel syndrome ibs,8968,8968,True,8968,True
+migraines headaches,9007,8989,False,9007,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 ankle sprain, right,8991,8991,True,8991,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
@@ -4740,13 +4740,13 @@ lower back strain (lumbosacral strain),8998,8998,True,8998,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 ankle sprain, right,8991,8991,True,8991,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 ankle sprain, right,8991,8991,True,8991,True
-unmapped contention text ['lower back'],8998,8998,True,None,False
+lower back,8998,8998,True,8998,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 hearing loss,3140,3140,True,3140,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
@@ -4765,7 +4765,7 @@ chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 sleep apnea,9012,9012,True,9012,True
 chronic sinusitis,9012,9012,True,9012,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
-unmapped contention text ['knee'],8997,8997,True,None,False
+knee,8997,8997,True,8997,True
 hearing loss,3140,3140,True,3140,True
 generalized anxiety disorder (GAD),8989,8989,True,8989,True
 depression (major depressive disorder),8989,8989,True,8989,True
@@ -4828,8 +4828,8 @@ chronic sinusitis,9012,9012,True,9012,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 neck strain (cervical strain),8999,8999,True,8999,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+anxiety,8989,8989,True,8989,True
+neck,8999,8999,True,8999,True
 hearing loss, other than tinnitus,3140,3140,True,3140,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 sleep apnea,9012,9012,True,9012,True
@@ -4860,8 +4860,8 @@ lower back strain (lumbosacral strain),8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+anxiety,8989,8989,True,8989,True
+neck,8999,8999,True,8999,True
 hearing loss, other than tinnitus,3140,3140,True,3140,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 heart attack (myocardial infarction),8971,8971,True,8971,True
@@ -4875,15 +4875,15 @@ knee strain or sprain, right,8997,8997,True,8997,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 tinnitus (ringing or hissing in ears),3140,3140,True,3140,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+anxiety,8989,8989,True,8989,True
+neck,8999,8999,True,8999,True
 hearing loss, other than tinnitus,3140,3140,True,3140,True
 depression (major depressive disorder),8989,8989,True,8989,True
 PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+anxiety,8989,8989,True,8989,True
+neck,8999,8999,True,8999,True
 hearing loss, other than tinnitus,3140,3140,True,3140,True
 Migraines,9007,8989,False,9007,True
 Tinnitus,3140,3140,True,3140,True
@@ -4891,8 +4891,8 @@ PTSD (post-traumatic stress disorder),8989,9010,False,8989,True
 thyroid cancer,8933,8933,True,8933,True
 chronic rhinitis, allergic or non-allergic,9012,9012,True,9012,True
 Depression,8989,8989,True,8989,True
-unmapped contention text ['anxiety'],8989,8989,True,None,False
-unmapped contention text ['neck'],8999,8999,True,None,False
+anxiety,8989,8989,True,8989,True
+neck,8999,8999,True,8999,True
 hearing loss, other than tinnitus,3140,3140,True,3140,True
 lower back strain (lumbosacral strain),8998,8998,True,8998,True
 middle back strain (thoracic strain),8998,8998,True,8998,True
