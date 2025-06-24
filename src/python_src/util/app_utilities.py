@@ -102,6 +102,6 @@ dropdown_values = build_logging_table(
 
 ml_classifier = None
 try:
-    ml_classifier = MLClassifier(app_config["ml_classifier"]["model_file"])
+    ml_classifier = MLClassifier(app_config["ml_classifier"]["model_file"], app_config["ml_classifier"]["vectorizer_file"])
 except Exception as e:
     logging.error(f"Error creating ML Classifier - {e}")

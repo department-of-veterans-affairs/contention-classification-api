@@ -24,8 +24,8 @@ from python_src.util.data.simulations.classifiers import (
 )
 
 SIMULATIONS_DIR = "src/python_src/util/data/simulations/"
-#INPUT_FILE = "inputs_mini.csv"
-INPUT_FILE="datadog/extract-2025-06-23.csv"
+INPUT_FILE = "inputs_mini.csv"
+#INPUT_FILE="datadog/extract-2025-06-23.csv"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
