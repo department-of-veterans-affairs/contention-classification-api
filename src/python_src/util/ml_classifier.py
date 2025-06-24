@@ -26,7 +26,8 @@ class MLClassifier:
                         "asthma", "generalized anxiety disorder"]
         """
         try:
-            predictions = self.session.run(self.get_outputs_for_session(), self.get_inputs_for_session(conditions))
+            outputs = self.session.run(self.get_outputs_for_session(), self.get_inputs_for_session(conditions))
+            predictions = outputs[0]
         except Exception as e:
             logging.error(e)
             predictions = ["error"] * len(conditions)

@@ -46,7 +46,7 @@ def test_classify_conditions(mock_joblib: MagicMock, mock_onnx_session: MagicMoc
     classifier.get_inputs_for_session = MagicMock()
     classifier.get_inputs_for_session.return_value = {"input_label": ndarray(1)}
     classifier.session.run = MagicMock()
-    classifier.session.run.return_value = ["lorem", "ipsum", "dolor"]
+    classifier.session.run.return_value = [["lorem", "ipsum", "dolor"]]
 
     predictions = classifier.make_predictions(["asthma", "emphysema", "hearing loss"])
     classifier.get_outputs_for_session.assert_called_once()
