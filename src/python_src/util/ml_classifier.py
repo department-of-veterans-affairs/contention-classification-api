@@ -1,10 +1,10 @@
 import logging
 import os
-from numpy import float32
-import onnxruntime as ort
-from typing import List
+from typing import Any, Dict, List
 
 import joblib
+import onnxruntime as ort
+from numpy import float32, ndarray
 
 
 class MLClassifier:
@@ -16,7 +16,7 @@ class MLClassifier:
         self.session = ort.InferenceSession(model_file)
         self.vectorizer = joblib.load(vectorizer_file)
 
-    def make_predictions(self, conditions: list[str]) -> List[str]:
+    def make_predictions(self, conditions: list[str]) -> List[str] | Any:
         """Returns a list of the predicted classification names, for example:
         ['Musculoskeletal - Wrist', 'Eye (Vision)', 'Hearing Loss']
 
@@ -25,16 +25,17 @@ class MLClassifier:
                         ["numbness in right arm", "ringing noise in ears",
                         "asthma", "generalized anxiety disorder"]
         """
-
         try:
-            transformed_value_to_test = self.vectorizer.transform(conditions).toarray().astype(float32)
-            output_names = [self.session.get_outputs()[0].name]
-            input_name = self.session.get_inputs()[0].name
-            predictions = self.session.run(output_names, {input_name: transformed_value_to_test})
+            predictions = self.session.run(self.get_outputs_for_session(), self.get_inputs_for_session(conditions))
         except Exception as e:
             logging.error(e)
-            predictions = ['error']*len(conditions)
+            predictions = ["error"] * len(conditions)
         return predictions
 
+    def get_outputs_for_session(self) -> list[str]:
+        return [self.session.get_outputs()[0].name]
 
-        
+    def get_inputs_for_session(self, conditions: list[str]) -> Dict[str, ndarray]:
+        transformed_inputs = self.vectorizer.transform(conditions)
+
+        return {self.session.get_inputs()[0].name: transformed_inputs.toarray().astype(float32)}
