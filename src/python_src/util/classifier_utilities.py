@@ -122,7 +122,7 @@ def update_classifications(response: ClassifierResponse, indices: list[int], ai_
             response.contentions[idx].classification_code = c.classification_code
             response.contentions[idx].classification_name = c.classification_name
     except ValueError:
-        log_as_json({"message": "Mismatched contentions between AI and original classifications"})
+        log_as_json({"message": "Mismatched contentions between AiResponse and original classifications"})
     return response
 
 

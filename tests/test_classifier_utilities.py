@@ -148,7 +148,7 @@ def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
         ],
         test_ai_response,
     )
-    mocked_func.assert_called_once_with({"message": "Mismatched contentions between AI and original classifications"})
+    mocked_func.assert_called_once_with({"message": "Mismatched contentions between AiResponse and original classifications"})
 
 
 @patch("src.python_src.util.classifier_utilities.get_classification_code")
