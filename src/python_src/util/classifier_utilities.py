@@ -1,6 +1,5 @@
 from typing import Any, Dict, Optional, Protocol, Tuple, Union, runtime_checkable
 
-import httpx
 from fastapi import Request
 
 from ..pydantic_models import (
@@ -11,8 +10,8 @@ from ..pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from .api_client import AiClient
-from .app_utilities import app_config, dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
+from .app_utilities import dc_lookup_table, expanded_lookup_table, ml_classifier
+from .brd_classification_codes import get_classification_code
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_utilities import log_as_json, log_contention_stats_decorator, log_ml_stats_decorator
 from .lookup_table import ContentionTextLookupTable
@@ -69,11 +68,7 @@ def get_classification_code_name(
 
 @log_contention_stats_decorator
 def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> Tuple[ClassifiedContention, str]:
-    lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable]
-    if request.url.path == "/va-gov-claim-classifier":
-        lookup_table = dropdown_lookup_table
-    else:
-        lookup_table = expanded_lookup_table
+    lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable] = expanded_lookup_table
 
     classification_code, classification_name, classified_by = get_classification_code_name(contention, lookup_table)
 
@@ -122,7 +117,6 @@ def update_classifications(response: ClassifierResponse, indices: list[int], ai_
     """
     Updates the originally classified claim with classifications from the ml classifier
     """
-
     try:
         for idx, c in zip(indices, ai_classified.classified_contentions, strict=True):
             response.contentions[idx].classification_code = c.classification_code
@@ -132,22 +126,33 @@ def update_classifications(response: ClassifierResponse, indices: list[int], ai_
     return response
 
 
-def ml_classification(response: ClassifierResponse, claim: VaGovClaim) -> ClassifierResponse:
-    """
-    Establishes and calls the AI client to classify unclassified contentions
-    """
-    non_classified_indices, ai_request = build_ai_request(response, claim)
-    client = AiClient(base_url=app_config["ai_classification_endpoint"]["url"])
-    try:
-        ai_response = client.classify_contention(
-            endpoint=app_config["ai_classification_endpoint"]["endpoint"], data=ai_request
+def ml_classify_claim(contentions: AiRequest) -> AiResponse:
+    if not ml_classifier:
+        return AiResponse(classified_contentions=[])
+
+    contentions_to_classify = contentions.contentions
+    texts_to_classify = [c.contention_text for c in contentions_to_classify]
+    classifications = ml_classifier.make_predictions(texts_to_classify)
+
+    classified_contentions: list[ClassifiedContention] = []
+
+    for i in range(len(contentions_to_classify)):
+        classified_contention = ClassifiedContention(
+            classification_code=get_classification_code(classifications[i]),
+            classification_name=classifications[i],
+            diagnostic_code=contentions_to_classify[i].diagnostic_code,
+            contention_type=contentions_to_classify[i].contention_type,
         )
 
-        response = update_classifications(response, non_classified_indices, ai_response)
+        classified_contentions.append(classified_contention)
+    return AiResponse(
+        classified_contentions=classified_contentions,
+    )
 
-        return response
-    except httpx.HTTPStatusError as e:
-        log_as_json({"message": "Failure to reach AI Endpoint", "error": str(e)})
-    except httpx.RequestError as e:
-        log_as_json({"message": "Failure to reach AI Endpoint", "error": str(e)})
+
+def supplement_with_ml_classification(response: ClassifierResponse, claim: VaGovClaim) -> ClassifierResponse:
+    non_classified_indices, ai_request = build_ai_request(response, claim)
+    ai_response = ml_classify_claim(ai_request)
+    response = update_classifications(response, non_classified_indices, ai_response)
+
     return response

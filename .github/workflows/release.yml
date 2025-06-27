@@ -11,9 +11,13 @@ on:
           - dev staging
           - dev staging sandbox
           - dev staging sandbox prod
+      commit_sha:
+        type: string
+        description: 'Commit SHA to deploy (must belong to the selected branch, defaults to latest SHA if not specified)'
+        required: false
   workflow_run:
     workflows:
-      - 'Build and push to ECR'
+      - 'Build and Push to ECR'
     branches:
       - main
     types:
@@ -31,8 +35,38 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
+  validate-sha:
+    runs-on: ubuntu-latest
+    outputs:
+      validated_sha: ${{ steps.validate-sha.outputs.validated_sha }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate SHA or use current workflow SHA
+        id: validate-sha
+        run: |
+          COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
+          if [[ -n "$COMMIT_SHA" ]]; then
+            echo "Validating provided SHA: $COMMIT_SHA"
+            git fetch origin ${{ github.ref_name }}
+            if git merge-base --is-ancestor $COMMIT_SHA origin/${{ github.ref_name }}; then
+              echo "Using SHA $COMMIT_SHA from branch ${{ github.ref_name }}"
+              echo "validated_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+            else
+              echo "Error: SHA $COMMIT_SHA does not exist on branch ${{ github.ref_name }}"
+              exit 1
+            fi
+          else
+            echo "No SHA provided, using current workflow SHA: ${{ github.sha }}"
+            echo "validated_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
+
   prepare-environments:
     runs-on: ubuntu-latest
+    needs: [validate-sha]
     outputs:
       environments: ${{ steps.set-environments.outputs.environments }}
     steps:
@@ -51,13 +85,35 @@ jobs:
         run: |
           echo "environments=${{ env.environments }}" >> $GITHUB_OUTPUT
 
-  update_image_tag:
+  can-deploy-to-environment-check:
+    runs-on: ubuntu-latest
+    needs: [prepare-environments]
+    steps:
+      - name: Check deployment restrictions
+        run: |
+          environments="${{ needs.prepare-environments.outputs.environments }}"
+          current_branch="${{ github.ref_name }}"
+
+          echo "Current branch: $current_branch"
+          echo "Target environments: $environments"
+
+          if [[ ("$environments" == *"sandbox"* || "$environments" == *"prod"*) && "$current_branch" != "main" ]]; then
+            echo "Error: Cannot deploy to sandbox or prod environments from branch '$current_branch'"
+            echo "Sandbox and prod deployments are only allowed from the main branch"
+            exit 1
+          fi
+
+          echo "✅ Deployment(s) to '$environments' allowed"
+
+  update-image-tag:
     runs-on: ubuntu-latest
     if: >
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     needs:
       - prepare-environments
+      - validate-sha
+      - can-deploy-to-environment-check
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -85,7 +141,7 @@ jobs:
           envs=( ${{ needs.prepare-environments.outputs.environments }} )
           for env in ${envs[*]};
           do
-            yq e -i '(.image.tag) |= "${{ github.sha }}"' $env/values.yaml
+            yq e -i '(.image.tag) |= "${{ needs.validate-sha.outputs.validated_sha }}"' $env/values.yaml
           done
           git diff --unified=0
 
@@ -96,4 +152,4 @@ jobs:
           author_name: va-vsp-bot
           cwd: vsp-infra-application-manifests/apps/contention-classification-api
           fetch: false
-          message: 'auto-updating contention-classification-api to commit: ${{ github.sha }} for env(s): ${{ needs.prepare-environments.outputs.environments }}'
+          message: 'auto-updating contention-classification-api to commit: ${{ needs.validate-sha.outputs.validated_sha }} for env(s): ${{ needs.prepare-environments.outputs.environments }}'

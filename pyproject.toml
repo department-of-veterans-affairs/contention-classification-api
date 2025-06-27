@@ -7,7 +7,7 @@ authors = [
 	{name = "Department of Veterans Affairs"}
 ]
 readme = "README.md"
-license = {file = "LICENSE.md"}
+license = "CC0-1.0"
 keywords = ["veterans", "contention", "classification", "api", "fastapi"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -31,7 +31,7 @@ testpaths = [
 
 [tool.coverage.run]
 omit = [
-    "src/python_src/pull_api_documentation.py",
+    "src/python_src/util/pull_api_documentation.py",
 ]
 
 [tool.ruff]
@@ -76,23 +76,25 @@ packages = [{include = "python_src", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "3.12.3"
-poetry = "2.1.1"
-fastapi = "0.115.11"
+poetry = "2.1.3"
+fastapi = "0.115.13"
 httpx = "0.28.1"
-pydantic = "2.10.6"
+pandas = "^2.3.0"
+pydantic = "2.11.7"
 pyyaml = "6.0.2"
-setuptools = "75.8.2"
-uvicorn = {extras = ["standard"], version = "0.34.0"}
+scikit-learn = "^1.7.0"
+uvicorn = {extras = ["standard"], version = "0.34.3"}
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = "1.15.0"
-pre-commit = "4.1.0"
-ruff = "0.9.9"
-pytest = "8.3.5"
-pytest-cov = "6.0.0"
-bandit = {version = "1.8.3", extras = ["toml"]}
-types-pyyaml = "6.0.12.20241230"
+mypy = "1.16.1"
+pre-commit = "4.2.0"
+ruff = "0.12.0"
+pytest = "8.4.1"
+pytest-cov = "6.2.1"
+bandit = {version = "1.8.5", extras = ["toml"]}
+types-pyyaml = "6.0.12.20250516"
+scikit-learn = "^1.7.0"
 
 [tool.bandit]
 exclude_dirs = ["tests"]

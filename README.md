@@ -10,7 +10,7 @@
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 [![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-`/contention-classification/va-gov-claim-classifier` maps contention text and diagnostic codes from 526 submission to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
+`/contention-classification/expanded-contention-classification` maps contention text and diagnostic codes from 526 submission to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
 
 ## Getting started
 
@@ -98,6 +98,20 @@ docker compose build --no-cache
 docker compose up -d
 ```
 
+## Running the ML Classifier locally
+
+For the purposes of local development environment, a .pkl ("pickle") version of the classifier can be downloaded from the VA Sharepoint: [Data Discovery/CAIO Collaboration Documentation](
+https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention%20Classification/4%20-%20Data%20Discovery/CAIO%20Collaboration%20Documentation/model_6_2_25?csf=1&web=1&e=nb72My)
+
+Update the app_config to point to where you have saved the file locally. https://github.com/department-of-veterans-affairs/contention-classification-api/blob/994d2bfc170b9e8074529e3ea172a2d70faaf3b3/src/python_src/util/app_config.yaml#L178-L179
+
+The .pkl file is not appropriate for use beyond the local dev environment due to known security weaknesses. As noted in official [python documentation](https://docs.python.org/3/library/pickle.html):
+> **Warning:** The pickle module **is not secure**. Only unpickle data you trust.
+
+For non-local dev, an [ONNX](https://onnx.ai/) format is intended.
+
+Neither the .pkl nor .onnx files should be committed to the GitHub repository, as we cannot guarantee that they are free of PII/PHI. As a precaution, both file extensions are flagged in `.gitignore`.
+
 ## Testing locally
 With the application running using either Docker or Python, tests requests can be sent using the following curl commands.
 
@@ -106,31 +120,7 @@ To test the health of the application or to check if the application is running 
 curl -X 'GET' 'http://localhost:8120/health'
 ```
 
-To test the classification provided at the `contention-classification/va-gov-claim-classifier` endpoint:
-
-```
-curl -X 'POST'   'http://localhost:8120/va-gov-claim-classifier'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
-  "claim_id": 44,
-  "form526_submission_id": 55,
-  "contentions": [
-        {
-            "contention_text": "PTSD (post-traumatic stress disorder)",
-            "contention_type": "NEW"
-        },
-        {
-            "contention_text": "acl tear, right",
-            "contention_type": "NEW"
-        },
-        {
-            "contention_text": "",
-            "contention_type": "INCREASE",
-            "diagnostic_code": 5012
-        }
-    ]
-}'
-```
-
-To test the classification provided by the experimental endpoint at `contention-classification/expanded-contention-classification`:
+To test the classification provided by the endpoint at `contention-classification/expanded-contention-classification`:
 ```
 curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
   "claim_id": 44,
@@ -153,6 +143,58 @@ curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H
 }'
 ```
 
+To test the classification provided by the endpoint at `contention-classification/ml-contention-classification`:
+(note: absence of `claim_id` and `form526_submission_id` in the data posted in the request)
+```
+curl -X 'POST'   'http://localhost:8120/ml-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "contentions": [
+        {
+            "contention_text": "PTSD (post-traumatic stress disorder)",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "acl tear, right",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 5012
+        }
+    ]
+}'
+```
+
+
+To test the classification provided by the endpoint at `contention-classification/hybrid-contention-classification`:
+```
+curl -X 'POST'   'http://localhost:8120/hybrid-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "claim_id": 44,
+  "form526_submission_id": 55,
+  "contentions": [
+        {
+            "contention_text": "lorem ipsum unclassifiable",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "acl tear, right",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 5012
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 7777777777777
+        }
+    ]
+}'
+```
+
+
 An alternative to the above `curl` commands is to use a local testing application like [Bruno](https://www.usebruno.com/) or [Postman](https://www.postman.com/).  Different JSON request bodies can be set up for testing each of the above endpoints and tests can be saved using Collections within these tools.
 
 
@@ -163,7 +205,7 @@ API Documentation is automatically created by FastAPI. This can be viewed by vis
 For exporting the open API spec:
 
 ```bash
-poetry run python src/python_src/pull_api_documentation.py
+poetry run python src/python_src/util/pull_api_documentation.py
 ```
 
 <!--
