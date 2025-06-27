@@ -119,6 +119,41 @@ def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.python_src.util.logging_utilities.log_expanded_contention_text")
+def test_requests_for_hybrid_endpoint_calls_expanded_logging(
+    log_expanded_contention_text: Mock, mock_log_as_json: Mock
+) -> None:
+    hybrid_request = Request(
+        scope={
+            "type": "http",
+            "method": "POST",
+            "path": "/hybrid-contention-classification",
+            "headers": Headers(),
+        }
+    )
+    test_contention = Contention(
+        contention_text="knee",
+        contention_type="NEW",
+    )
+    test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=[test_contention])
+    classified_contention = ClassifiedContention(
+        classification_code=8997,
+        classification_name="Musculoskeletal - Knee",
+        diagnostic_code=None,
+        contention_type="NEW",
+    )
+    classified_by = "not classified"
+    log_contention_stats(
+        test_contention,
+        classified_contention,
+        test_claim,
+        hybrid_request,
+        classified_by,
+    )
+    log_expanded_contention_text.assert_called_once()
+
+
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_non_classified_contentions(mocked_func: Mock) -> None:
     """
     Tests the logging of a contention that is not classified
