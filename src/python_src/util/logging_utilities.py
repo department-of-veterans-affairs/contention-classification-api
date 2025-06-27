@@ -161,7 +161,7 @@ def log_contention_stats_decorator(
 
 def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiResponse) -> None:
     """
-    Builds and logs the dictionary based on the returned AI Classification
+    Builds and logs the dictionary based on the returned ML Classification
     """
     for classified_contention in ai_response.classified_contentions:
         log_contention_type = (
@@ -175,13 +175,13 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
             "claim_type": sanitize_log(log_contention_type),
             "classification_code": classified_contention.classification_code,
             "classification_name": classified_contention.classification_name,
-            "contention_text": "FILTERED [AI Classification]",
+            "contention_text": "FILTERED [ML Classification]",
             "diagnostic_code": classified_contention.diagnostic_code,
             "is_in_dropdown": False,
             "is_lookup_table_match": False,
             "is_multi_contention": is_multi_contention,
-            "endpoint": "AI Classification Endpoint",
-            "classification_method": "AI Classification",
+            "endpoint": "ML Classification Endpoint",
+            "classification_method": "ML Classification",
         }
 
         log_as_json(logging_dict)

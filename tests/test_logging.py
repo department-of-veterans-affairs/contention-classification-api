@@ -543,13 +543,13 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
         "claim_type": "new",
         "classification_code": 9999,
         "classification_name": "ML Classified",
-        "contention_text": "FILTERED [AI Classification]",
+        "contention_text": "FILTERED [ML Classification]",
         "diagnostic_code": None,
         "is_in_dropdown": False,
         "is_lookup_table_match": False,
         "is_multi_contention": True,
-        "endpoint": "AI Classification Endpoint",
-        "classification_method": "AI Classification",
+        "endpoint": "ML Classification Endpoint",
+        "classification_method": "ML Classification",
     }
     mock_log.assert_called_with(expected_logs)
     assert mock_log.call_count == 2
