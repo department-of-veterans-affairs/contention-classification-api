@@ -161,7 +161,7 @@ def log_contention_stats_decorator(
 
 def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiResponse) -> None:
     """
-    Builds and logs the dictionary based on the returned ML Classification
+    Logs stats about each contention processed by the ML classifier.
     """
     for classified_contention in ai_response.classified_contentions:
         log_contention_type = (
