@@ -55,7 +55,7 @@ def log_expanded_contention_text(
         )
     # log none as the processed text if it is not in the LUT and leave unmapped contention text as is
     else:
-        logging_dict.update({"processed_contention_text": None})
+        logging_dict.update({"processed_contention_text": None, "ml_sample": processed_text})
 
     return logging_dict
 
@@ -69,7 +69,7 @@ def log_contention_stats(
 ) -> None:
     """
     Logs stats about each contention process by the classifier. This will maintain
-    compatability with the existing datadog widgets.
+    compatibility with the existing datadog widgets.
     """
     classification_code = classified_contention.classification_code or None
     classification_name = classified_contention.classification_name or None
