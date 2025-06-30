@@ -127,9 +127,11 @@ def test_update_classifications() -> None:
 
 @patch("src.python_src.util.classifier_utilities.log_as_json")
 def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
-    # if we indicate that 2 contentions were to be updated and
-    # the AiResponse contains only 1, we should log a mismatch
-
+    """
+    Tests that a log message is generated if there is a mismatch
+    between how many contentions were expected to be updated versus
+    how many were returned in the AiResponse
+    """
     test_ai_response = AiResponse(
         classified_contentions=[
             ClassifiedContention(
