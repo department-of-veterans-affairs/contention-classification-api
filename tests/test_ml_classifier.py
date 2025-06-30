@@ -37,20 +37,26 @@ def test_instantiation_raises_exception_if_file_not_found(mock_joblib: MagicMock
 @patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.ort.InferenceSession")
 @patch("src.python_src.util.ml_classifier.joblib.load")
-def test_classify_conditions(mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock) -> None:
+@patch("src.python_src.util.ml_classifier.MLClassifier.get_inputs_for_session")
+@patch("src.python_src.util.ml_classifier.MLClassifier.get_outputs_for_session")
+def test_classify_conditions(
+    mock_outputs_for_session: MagicMock,
+    mock_inputs_for_session: MagicMock,
+    mock_joblib: MagicMock,
+    mock_onnx_session: MagicMock,
+    mock_os_path: MagicMock,
+) -> None:
     mock_os_path.return_value = True
 
     classifier = MLClassifier("model.onnx", "vectorizer.pkl")
-    classifier.get_outputs_for_session = MagicMock()
-    classifier.get_outputs_for_session.return_value = ["output_label"]
-    classifier.get_inputs_for_session = MagicMock()
-    classifier.get_inputs_for_session.return_value = {"input_label": ndarray(1)}
+    mock_outputs_for_session.return_value = ["output_label"]
+    mock_inputs_for_session.return_value = {"input_label": ndarray(1)}
     classifier.session.run = MagicMock()
     classifier.session.run.return_value = [["lorem", "ipsum", "dolor"]]
 
     predictions = classifier.make_predictions(["asthma", "emphysema", "hearing loss"])
-    classifier.get_outputs_for_session.assert_called_once()
-    classifier.get_inputs_for_session.assert_called_with(["asthma", "emphysema", "hearing loss"])
+    mock_outputs_for_session.assert_called_once()
+    mock_inputs_for_session.assert_called_with(["asthma", "emphysema", "hearing loss"])
     classifier.session.run.assert_called_with(["output_label"], {"input_label": ndarray(1)})
     assert predictions == ["lorem", "ipsum", "dolor"]
 
