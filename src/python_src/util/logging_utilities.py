@@ -187,7 +187,7 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
         log_as_json(logging_dict)
 
 
-def log_ml_stats_decorator(func: Callable[..., ClassifierResponse]) -> Callable[..., ClassifierResponse]:
+def log_ml_contention_stats_decorator(func: Callable[..., ClassifierResponse]) -> Callable[..., ClassifierResponse]:
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> ClassifierResponse:
         result = func(*args, **kwargs)

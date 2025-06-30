@@ -13,7 +13,7 @@ from ..pydantic_models import (
 from .app_utilities import dc_lookup_table, expanded_lookup_table, ml_classifier
 from .brd_classification_codes import get_classification_code
 from .expanded_lookup_table import ExpandedLookupTable
-from .logging_utilities import log_as_json, log_contention_stats_decorator, log_ml_stats_decorator
+from .logging_utilities import log_as_json, log_contention_stats_decorator, log_ml_contention_stats_decorator
 from .lookup_table import ContentionTextLookupTable
 
 
@@ -112,7 +112,7 @@ def build_ai_request(response: ClassifierResponse, claim: VaGovClaim) -> tuple[l
     return non_classified_indices, ai_request
 
 
-@log_ml_stats_decorator
+@log_ml_contention_stats_decorator
 def update_classifications(response: ClassifierResponse, indices: list[int], ai_classified: AiResponse) -> ClassifierResponse:
     """
     Updates the originally classified claim with classifications from the ml classifier
