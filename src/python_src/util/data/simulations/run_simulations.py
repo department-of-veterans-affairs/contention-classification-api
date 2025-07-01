@@ -10,6 +10,7 @@ Usage: (from the codebase root directory)
 """
 
 import csv
+import logging
 import os
 from datetime import datetime
 from typing import List, Tuple
@@ -60,11 +61,11 @@ def _write_predictions_to_file(
         for i in range(len(conditions_to_test)):
             prediction = classifier.predictions[i]
 
-            prediction_label = "none"
+            prediction_label = ""
             try:
                 prediction_label = get_classification_name(int(prediction))
             except ValueError:
-                pass
+                logging.warn(f"ValueError getting classification name from [{prediction}] (condition: [{conditions_to_test[i]}])")
 
             csv_writer.writerow(
                 [
@@ -115,10 +116,11 @@ def _write_aggregate_predictions_to_file(
             ]
 
             for c in classifiers:
-                prediction_label = "none"
+                prediction_label = ""
                 try:
                     prediction_label = get_classification_name(int(c.predictions[i]))
                 except ValueError:
+                    logging.warn(f"ValueError getting classification name from [{c.predictions[i]}] (condition: [{conditions_to_test[i]}])")
                     pass
 
                 row_tokens += [
