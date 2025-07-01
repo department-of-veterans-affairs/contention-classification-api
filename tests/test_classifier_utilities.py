@@ -125,6 +125,34 @@ def test_update_classifications() -> None:
     assert expected.contentions[0].classification_code == 8998
 
 
+@patch("src.python_src.util.classifier_utilities.log_as_json")
+def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
+    """
+    Tests that a log message is generated if there is a mismatch
+    between how many contentions were expected to be updated versus
+    how many were returned in the AiResponse
+    """
+    test_ai_response = AiResponse(
+        classified_contentions=[
+            ClassifiedContention(
+                classification_code=9999,
+                classification_name="ml classification",
+                diagnostic_code=5678,
+                contention_type="claim_for_increase",
+            ),
+        ]
+    )
+    update_classifications(
+        TEST_RESPONSE,
+        [
+            1,
+            2,
+        ],
+        test_ai_response,
+    )
+    mocked_func.assert_called_once_with({"message": "Mismatched contentions between AiResponse and original classifications"})
+
+
 @patch("src.python_src.util.classifier_utilities.get_classification_code")
 @patch("src.python_src.util.classifier_utilities.ml_classifier")
 def test_ml_classify_claim(mock_ml_classifier: MagicMock, mock_get_classification_code: MagicMock) -> None:
