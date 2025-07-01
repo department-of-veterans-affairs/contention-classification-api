@@ -146,7 +146,9 @@ if __name__ == "__main__":
     for c in classifiers:
         print(f"---{c.name}---")
 
-        c.make_predictions(conditions_to_test)
+        success = c.make_predictions(conditions_to_test)
+        if not success:
+            raise Exception("mismatch between length of conditions_to_test and predictions")
         predictions_file = _write_predictions_to_file(conditions_to_test, expected_classifications, c)
         labels = list(set(expected_classifications + c.predictions))
         labels.sort()

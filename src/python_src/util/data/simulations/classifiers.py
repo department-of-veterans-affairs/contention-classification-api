@@ -8,14 +8,18 @@ class BaseClassifierForSimulation:
     name: str
     predictions: List[str]
 
-    def make_predictions(self, conditions: List[str]) -> None:
-        pass
+    def make_predictions(self, conditions: List[str]) -> bool:
+        """
+        returns True if the count of predictions matches the count
+        of input conditions
+        """
+        return True
 
 
 class ProductionClassifier(BaseClassifierForSimulation):
     name = "csv_lookup"
 
-    def make_predictions(self, conditions: List[str]) -> None:
+    def make_predictions(self, conditions: List[str]) -> bool:
         predicted_classifications: List[str] = []
         for condition in conditions:
             try:
@@ -25,14 +29,16 @@ class ProductionClassifier(BaseClassifierForSimulation):
 
             predicted_classifications.append(prediction)
         self.predictions = predicted_classifications
+        return len(self.predictions) == len(conditions)
 
 
 class MLClassifier(BaseClassifierForSimulation):
     name = "ml_classifier"
 
-    def make_predictions(self, conditions: List[str]) -> None:
+    def make_predictions(self, conditions: List[str]) -> bool:
         classification_names = ml_classifier.make_predictions(conditions)
         self.predictions = [str(get_classification_code(n)) for n in classification_names]
+        return len(self.predictions) == len(conditions)
 
 
 class RespiratoryClassifier(BaseClassifierForSimulation):
@@ -41,5 +47,6 @@ class RespiratoryClassifier(BaseClassifierForSimulation):
 
     name = "respiratory_classifier"
 
-    def make_predictions(self, conditions: List[str]) -> None:
+    def make_predictions(self, conditions: List[str]) -> bool:
         self.predictions = ["9012"] * len(conditions)
+        return len(self.predictions) == len(conditions)
