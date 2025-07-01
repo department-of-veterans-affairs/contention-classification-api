@@ -27,13 +27,13 @@ class MLClassifier:
                         ["numbness in right arm", "ringing noise in ears",
                         "asthma", "generalized anxiety disorder"]
         """
+        predictions = ["error"] * len(conditions)
         try:
             cleaned_conditions = [self.clean_text(c) for c in conditions]
             outputs = self.session.run(self.get_outputs_for_session(), self.get_inputs_for_session(cleaned_conditions))
             predictions = outputs[0]
         except Exception as e:
             logging.error(e)
-            predictions = ["error"] * len(conditions)
         return predictions
 
     def get_outputs_for_session(self) -> list[str]:
