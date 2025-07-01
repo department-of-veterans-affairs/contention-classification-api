@@ -65,7 +65,10 @@ def _write_predictions_to_file(
             try:
                 prediction_label = get_classification_name(int(prediction))
             except ValueError:
-                logging.warn(f"ValueError getting classification name from [{prediction}] (condition: [{conditions_to_test[i]}])")
+                logging.warning(
+                    f"ValueError getting classification name from [{prediction}]" +
+                    f"(condition: [{conditions_to_test[i]}])"
+                )
 
             csv_writer.writerow(
                 [
@@ -120,7 +123,10 @@ def _write_aggregate_predictions_to_file(
                 try:
                     prediction_label = get_classification_name(int(c.predictions[i]))
                 except ValueError:
-                    logging.warn(f"ValueError getting classification name from [{c.predictions[i]}] (condition: [{conditions_to_test[i]}])")
+                    logging.warning(
+                        f"ValueError getting classification name from [{c.predictions[i]}]" +
+                        f"(condition: [{conditions_to_test[i]}])"
+                    )
                     pass
 
                 row_tokens += [
