@@ -1,3 +1,4 @@
+import string
 from unittest.mock import MagicMock, call, patch
 
 import pytest
@@ -39,7 +40,9 @@ def test_instantiation_raises_exception_if_file_not_found(mock_joblib: MagicMock
 @patch("src.python_src.util.ml_classifier.joblib.load")
 @patch("src.python_src.util.ml_classifier.MLClassifier.get_inputs_for_session")
 @patch("src.python_src.util.ml_classifier.MLClassifier.get_outputs_for_session")
+@patch("src.python_src.util.ml_classifier.MLClassifier.clean_text")
 def test_classify_conditions(
+    mock_clean_text: MagicMock,
     mock_outputs_for_session: MagicMock,
     mock_inputs_for_session: MagicMock,
     mock_joblib: MagicMock,
@@ -53,10 +56,12 @@ def test_classify_conditions(
     mock_inputs_for_session.return_value = {"input_label": ndarray(1)}
     classifier.session.run = MagicMock()
     classifier.session.run.return_value = [["lorem", "ipsum", "dolor"]]
+    mock_clean_text.return_value = "asthma"
 
-    predictions = classifier.make_predictions(["asthma", "emphysema", "hearing loss"])
+    predictions = classifier.make_predictions(["ASTHMA", "asthma", "asth.ma"])
+    mock_clean_text.assert_has_calls([call("ASTHMA"), call("asthma"), call("asth.ma")])
     mock_outputs_for_session.assert_called_once()
-    mock_inputs_for_session.assert_called_with(["asthma", "emphysema", "hearing loss"])
+    mock_inputs_for_session.assert_called_with(["asthma", "asthma", "asthma"])
     classifier.session.run.assert_called_with(["output_label"], {"input_label": ndarray(1)})
     assert predictions == ["lorem", "ipsum", "dolor"]
 
@@ -81,3 +86,21 @@ def test_inputs_is_dictionary_of_transformed_values_as_ndarray(
     classifier.session.get_inputs.assert_called_once()
 
     assert inputs == {"node_name": csr_matrix(1).toarray().astype(float32)}
+
+
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
+@patch("src.python_src.util.ml_classifier.joblib.load")
+def test_clean_text(
+    mock_joblib: MagicMock,
+    mock_onnx_session: MagicMock,
+    mock_os_path: MagicMock,
+) -> None:
+    mock_os_path.return_value = True
+
+    classifier = MLClassifier("model.onnx", "vectorizer.pkl")
+    assert classifier.clean_text("LOREM") == "lorem"
+    assert classifier.clean_text("a.b!c?d") == "abcd"
+    assert classifier.clean_text(f"abc${string.punctuation} def") == "abc def"
+    assert classifier.clean_text("lorem    ipsum  dolor") == "lorem ipsum dolor"
+    assert classifier.clean_text(" Lorem Ipsum Dolor ") == "lorem ipsum dolor"
