@@ -6,7 +6,6 @@ import joblib
 
 class MLClassifier:
     def __init__(self, model_file: str):
-        logging.info("trying to init")
         if not os.path.exists(model_file):
             raise Exception(f"File not found: {model_file}")
         self.model = joblib.load(model_file)
