@@ -1,4 +1,16 @@
-from src.python_src.util.data.simulations.classifiers import ProductionClassifier, RespiratoryClassifier
+from unittest.mock import MagicMock, patch
+
+from src.python_src.util.data.simulations.classifiers import MLClassifier, ProductionClassifier, RespiratoryClassifier
+
+
+@patch("src.python_src.util.data.simulations.classifiers.ml_classifier")
+def test_ml_classifier(mock_ml_classifier: MagicMock) -> None:
+    mock_ml_classifier.make_predictions.return_value = ["Respiratory", "Skin", "Digestive"]
+
+    ml_classifier = MLClassifier()
+    assert ml_classifier.name == "ml_classifier"
+    ml_classifier.make_predictions(["asthma", "acne", "gallstones"])
+    assert ml_classifier.predictions == ["9012", "9016", "8968"]
 
 
 def test_production_classifier() -> None:

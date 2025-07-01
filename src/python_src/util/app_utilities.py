@@ -100,7 +100,8 @@ dropdown_values = build_logging_table(
 
 ml_classifier = None
 model_file = app_config["ml_classifier"]["model_file"]
-if os.path.exists(model_file):
+vectorizer_file = app_config["ml_classifier"]["vectorizer_file"]
+if os.path.exists(model_file) and os.path.exists(vectorizer_file):
     from .ml_classifier import MLClassifier
 
-    ml_classifier = MLClassifier(model_file)
+    ml_classifier = MLClassifier(model_file, vectorizer_file)
