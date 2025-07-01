@@ -63,7 +63,7 @@ def _write_predictions_to_file(
             prediction_label = "none"
             try:
                 prediction_label = get_classification_name(int(prediction))
-            except:
+            except ValueError:
                 pass
 
             csv_writer.writerow(
@@ -118,7 +118,7 @@ def _write_aggregate_predictions_to_file(
                 prediction_label = "none"
                 try:
                     prediction_label = get_classification_name(int(c.predictions[i]))
-                except:
+                except ValueError:
                     pass
 
                 row_tokens += [
