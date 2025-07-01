@@ -127,12 +127,13 @@ def update_classifications(response: ClassifierResponse, indices: list[int], ai_
 
 
 def ml_classify_claim(contentions: AiRequest) -> AiResponse:
-    if not ml_classifier:
-        return AiResponse(classified_contentions=[])
-
     contentions_to_classify = contentions.contentions
     texts_to_classify = [c.contention_text for c in contentions_to_classify]
-    classifications = ml_classifier.make_predictions(texts_to_classify)
+
+    if ml_classifier:
+        classifications = ml_classifier.make_predictions(texts_to_classify)
+    else:
+        classifications = ["no-model"]*len(texts_to_classify)
 
     classified_contentions: list[ClassifiedContention] = []
 
