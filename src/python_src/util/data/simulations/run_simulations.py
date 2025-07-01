@@ -25,7 +25,7 @@ from python_src.util.data.simulations.classifiers import (
 
 SIMULATIONS_DIR = "src/python_src/util/data/simulations/"
 # INPUT_FILE = "inputs_mini.csv"
-INPUT_FILE = "datadog/extract-2025-06-23.csv"
+INPUT_FILE = "datadog/extracts/2025-06-23.csv"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
@@ -59,13 +59,20 @@ def _write_predictions_to_file(
 
         for i in range(len(conditions_to_test)):
             prediction = classifier.predictions[i]
+
+            prediction_label = "none"
+            try:
+                prediction_label = get_classification_name(int(prediction))
+            except:
+                pass
+
             csv_writer.writerow(
                 [
                     conditions_to_test[i],
                     expected_classifications[i],
                     get_classification_name(int(expected_classifications[i])),
                     prediction,
-                    get_classification_name(int(prediction)),
+                    prediction_label,
                     str(expected_classifications[i]) == str(prediction),
                 ]
             )
@@ -108,9 +115,15 @@ def _write_aggregate_predictions_to_file(
             ]
 
             for c in classifiers:
+                prediction_label = "none"
+                try:
+                    prediction_label = get_classification_name(int(c.predictions[i]))
+                except:
+                    pass
+
                 row_tokens += [
                     c.predictions[i],
-                    get_classification_name(int(c.predictions[i])),
+                    prediction_label,
                     c.predictions[i] == expected_classifications[i],
                 ]
 
