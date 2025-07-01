@@ -18,7 +18,7 @@ expanded_lookup_table
 dropdown_values
     List of autosuggestions
 """
-
+import logging
 import os
 from typing import Any, Dict, cast
 
@@ -28,7 +28,6 @@ from .expanded_lookup_table import ExpandedLookupTable
 from .logging_dropdown_selections import build_logging_table
 from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .lookup_tables_utilities import InitValues
-from .ml_classifier import MLClassifier
 
 
 def load_config(config_file: str) -> Dict[str, Any]:
@@ -99,8 +98,16 @@ dropdown_values = build_logging_table(
     app_config["autosuggestion_table"]["active_autocomplete"],
 )
 
+logging.info("ml_classifier - start")
 ml_classifier = None
 try:
-    ml_classifier = MLClassifier(app_config["ml_classifier"]["model_file"])
+    model_file = app_config["ml_classifier"]["model_file"]
+    logging.info("looking for file")
+    if os.path.exists(model_file):
+        from .ml_classifier import MLClassifier
+        ml_classifier = MLClassifier(model_file)
+        logging.info("created MLClassifier")
 except Exception as e:
+    logging.error("couldn't find file")
     pass
+logging.info("ml_classifier - end")
