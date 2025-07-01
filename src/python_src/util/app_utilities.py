@@ -18,7 +18,7 @@ expanded_lookup_table
 dropdown_values
     List of autosuggestions
 """
-import logging
+
 import os
 from typing import Any, Dict, cast
 
@@ -98,16 +98,11 @@ dropdown_values = build_logging_table(
     app_config["autosuggestion_table"]["active_autocomplete"],
 )
 
-logging.info("ml_classifier - start")
 ml_classifier = None
 try:
     model_file = app_config["ml_classifier"]["model_file"]
-    logging.info("looking for file")
     if os.path.exists(model_file):
         from .ml_classifier import MLClassifier
         ml_classifier = MLClassifier(model_file)
-        logging.info("created MLClassifier")
 except Exception as e:
-    logging.error("couldn't find file")
     pass
-logging.info("ml_classifier - end")
