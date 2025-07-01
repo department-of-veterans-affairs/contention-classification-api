@@ -8,6 +8,7 @@ from typing import Any, Callable, Dict, Tuple, TypeVar, cast
 from fastapi import Request
 
 from ..pydantic_models import (
+    AiResponse,
     ClassifiedContention,
     ClassifierResponse,
     Contention,
@@ -98,7 +99,7 @@ def log_contention_stats(
         "classification_method": classified_by,
     }
 
-    if request.url.path == "/expanded-contention-classification":
+    if request.url.path == "/expanded-contention-classification" or request.url.path == "/hybrid-contention-classification":
         logging_dict = log_expanded_contention_text(logging_dict, contention.contention_text, log_contention_text)
 
     log_as_json(logging_dict)
@@ -153,6 +154,46 @@ def log_contention_stats_decorator(
             request = args[2]
             log_contention_stats(contention, result, claim, request, classified_by)
 
+        return result
+
+    return wrapper
+
+
+def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiResponse) -> None:
+    """
+    Logs stats about each contention processed by the ML classifier.
+    """
+    for classified_contention in ai_response.classified_contentions:
+        log_contention_type = (
+            "claim_for_increase"
+            if classified_contention.contention_type == "INCREASE"
+            else classified_contention.contention_type.lower()
+        )
+        is_multi_contention = len(response.contentions) > 1
+        logging_dict = {
+            "vagov_claim_id": sanitize_log(response.claim_id),
+            "claim_type": sanitize_log(log_contention_type),
+            "classification_code": classified_contention.classification_code,
+            "classification_name": classified_contention.classification_name,
+            "contention_text": "FILTERED [ML Classification]",
+            "diagnostic_code": classified_contention.diagnostic_code,
+            "is_in_dropdown": False,
+            "is_lookup_table_match": False,
+            "is_multi_contention": is_multi_contention,
+            "endpoint": "ML Classification Endpoint",
+            "classification_method": "ML Classification",
+        }
+
+        log_as_json(logging_dict)
+
+
+def log_ml_contention_stats_decorator(func: Callable[..., ClassifierResponse]) -> Callable[..., ClassifierResponse]:
+    @wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> ClassifierResponse:
+        result = func(*args, **kwargs)
+        response = args[0]
+        ai_response = args[2]
+        log_ml_contention_stats(response, ai_response)
         return result
 
     return wrapper

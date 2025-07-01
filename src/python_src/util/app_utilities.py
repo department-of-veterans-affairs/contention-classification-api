@@ -19,7 +19,6 @@ dropdown_values
     List of autosuggestions
 """
 
-import logging
 import os
 from typing import Any, Dict, cast
 
@@ -29,7 +28,6 @@ from .expanded_lookup_table import ExpandedLookupTable
 from .logging_dropdown_selections import build_logging_table
 from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .lookup_tables_utilities import InitValues
-from .ml_classifier import MLClassifier
 
 
 def load_config(config_file: str) -> Dict[str, Any]:
@@ -101,7 +99,9 @@ dropdown_values = build_logging_table(
 )
 
 ml_classifier = None
-try:
-    ml_classifier = MLClassifier(app_config["ml_classifier"]["model_file"], app_config["ml_classifier"]["vectorizer_file"])
-except Exception as e:
-    logging.error(f"Error creating ML Classifier - {e}")
+model_file = app_config["ml_classifier"]["model_file"]
+vectorizer_file = app_config["ml_classifier"]["vectorizer_file"]
+if os.path.exists(model_file) and os.path.exists(vectorizer_file):
+    from .ml_classifier import MLClassifier
+
+    ml_classifier = MLClassifier(model_file, vectorizer_file)
