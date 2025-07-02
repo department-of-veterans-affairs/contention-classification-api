@@ -13,7 +13,7 @@ repos:
       - id: validate-pyproject
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.13
+    rev: v0.12.1
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -28,14 +28,14 @@ repos:
       - id: poetry-install
 
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.8.3
+    rev: 1.8.5
     hooks:
       - id: bandit
         args: ["-c", "pyproject.toml", "-r", "src", "tests"]
         additional_dependencies: ["bandit[toml]"]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v1.16.0'
+    rev: 'v1.16.1'
     hooks:
       - id: mypy
         pass_filenames: false  # Pass all files in the repository except those excluded in pyproject.toml
