@@ -50,5 +50,9 @@ The search parameters:
 | `index:main` |  limit to the production environment   |
 | `service:contention-classification-api` | limit to service `contention-classification-api`  |
 | `@ml_sample:*` |  limit to logs that have a value for attribute `ml_sample`    |
+| -@classification_code:* | exclude logs that have an attribute named `classification_code` that has a value |
 
-[Link](https://vagov.ddog-gov.com/logs?query=service%3Acontention-classification-api%20%40ml_sample%3A%2A&agg_m=count&agg_m_source=base&agg_t=count&cols=%40ml_sample%2C%40classification_code%2C%40classification_method%2C%40classification_name%2C%40claim_type&fromUser=true&index=main&messageDisplay=inline&refresh_mode=sliding&storage=hot&stream_sort=time%2Cdesc&viz=stream&from_ts=1751727109483&to_ts=1751899909483&live=true) to this query in Datadog Log Explorer.
+[Link](https://vagov.ddog-gov.com/logs?query=service%3Acontention-classification-api%20%40ml_sample%3A%2A%20-%40classification_code%3A%2A&agg_m=count&agg_m_source=base&agg_t=count&clustering_pattern_field_path=message&cols=%40ml_sample%2C%40classification_code%2C%40classification_method%2C%40classification_name%2C%40claim_type&index=main&messageDisplay=inline&refresh_mode=sliding&storage=hot&stream_sort=time%2Cdesc&viz=stream&from_ts=1751894831291&to_ts=1751909231291&live=true) to this query in Datadog Log Explorer.
+
+
+
