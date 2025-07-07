@@ -50,16 +50,22 @@ def _write_predictions_to_file(
         csv_writer.writerow(
             [
                 "text_to_classify",
-                "expected_classification",
-                "expected_classification_label",
-                "prediction",
-                "prediction_label",
+                "expected_code",
+                "expected_label",
+                "predicted_code",
+                "predicted_label",
+                "prediction_probability",
                 "is_accurate",
             ]
         )
 
+        prediction_probabilities = classifier.prediction_probabilities
+        if not prediction_probabilities:
+            prediction_probabilities = [1.0] * len(expected_classifications)
+
         for i in range(len(conditions_to_test)):
             prediction = classifier.predictions[i]
+            probability = prediction_probabilities[i]
 
             csv_writer.writerow(
                 [
@@ -68,6 +74,7 @@ def _write_predictions_to_file(
                     get_classification_name_from_str_code(expected_classifications[i]),
                     prediction,
                     get_classification_name_from_str_code(prediction),
+                    probability,
                     str(expected_classifications[i]) == str(prediction),
                 ]
             )
@@ -92,10 +99,10 @@ def _write_aggregate_predictions_to_file(
     assert len(conditions_to_test) == len(expected_classifications)
 
     # build the list of column names and verify that ## verify that the classifiers have the expected number of predictions
-    column_names = ["text_to_classify", "expected_classification", "expected_classification_label"]
+    column_names = ["text_to_classify", "expected_code", "expected_label"]
     for c in classifiers:
         assert len(c.predictions) == len(expected_classifications)
-        column_names += [f"{c.name}_prediction", f"{c.name}_prediction_label", f"{c.name}_is_accurate"]
+        column_names += [f"{c.name}_code", f"{c.name}_label", f"{c.name}_is_accurate"]
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
