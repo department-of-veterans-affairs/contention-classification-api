@@ -25,8 +25,7 @@ from python_src.util.data.simulations.classifiers import (
 )
 
 SIMULATIONS_DIR = "src/python_src/util/data/simulations/"
-# INPUT_FILE = "inputs_mini.csv"
-INPUT_FILE = "datadog/extracts/2025-06-23.csv"
+INPUT_FILE = "inputs_mini.csv"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
@@ -50,33 +49,31 @@ def _write_predictions_to_file(
         csv_writer.writerow(
             [
                 "text_to_classify",
-                "expected_classification",
-                "expected_classification_label",
-                "prediction",
-                "prediction_label",
+                "expected_code",
+                "expected_label",
+                "predicted_code",
+                "predicted_label",
+                "prediction_probability",
                 "is_accurate",
             ]
         )
 
+        prediction_probabilities = classifier.prediction_probabilities
+        if not prediction_probabilities:
+            prediction_probabilities = [1.0] * len(expected_classifications)
+
         for i in range(len(conditions_to_test)):
             prediction = classifier.predictions[i]
-
-            prediction_label = ""
-            try:
-                prediction_label = get_classification_name(int(prediction))
-            except ValueError:
-                logging.warning(
-                    f"ValueError getting classification name from [{prediction}]" +
-                    f"(condition: [{conditions_to_test[i]}])"
-                )
+            probability = prediction_probabilities[i]
 
             csv_writer.writerow(
                 [
                     conditions_to_test[i],
                     expected_classifications[i],
-                    get_classification_name(int(expected_classifications[i])),
+                    get_classification_name_from_str_code(expected_classifications[i]),
                     prediction,
-                    prediction_label,
+                    get_classification_name_from_str_code(prediction),
+                    probability,
                     str(expected_classifications[i]) == str(prediction),
                 ]
             )
@@ -101,10 +98,10 @@ def _write_aggregate_predictions_to_file(
     assert len(conditions_to_test) == len(expected_classifications)
 
     # build the list of column names and verify that ## verify that the classifiers have the expected number of predictions
-    column_names = ["text_to_classify", "expected_classification", "expected_classification_label"]
+    column_names = ["text_to_classify", "expected_code", "expected_label"]
     for c in classifiers:
         assert len(c.predictions) == len(expected_classifications)
-        column_names += [f"{c.name}_prediction", f"{c.name}_prediction_label", f"{c.name}_is_accurate"]
+        column_names += [f"{c.name}_code", f"{c.name}_label", f"{c.name}_is_accurate"]
 
     os.makedirs(os.path.join(SIMULATIONS_DIR, "outputs"), exist_ok=True)
     with open(os.path.join(SIMULATIONS_DIR, "outputs", filename), "w") as f:
@@ -115,23 +112,13 @@ def _write_aggregate_predictions_to_file(
             row_tokens = [
                 conditions_to_test[i],
                 expected_classifications[i],
-                get_classification_name(int(expected_classifications[i])),
+                get_classification_name_from_str_code(expected_classifications[i]),
             ]
 
             for c in classifiers:
-                prediction_label = ""
-                try:
-                    prediction_label = get_classification_name(int(c.predictions[i]))
-                except ValueError:
-                    logging.warning(
-                        f"ValueError getting classification name from [{c.predictions[i]}]" +
-                        f"(condition: [{conditions_to_test[i]}])"
-                    )
-                    pass
-
                 row_tokens += [
                     c.predictions[i],
-                    prediction_label,
+                    get_classification_name_from_str_code(c.predictions[i]),
                     c.predictions[i] == expected_classifications[i],
                 ]
 
@@ -157,6 +144,20 @@ def _get_input_from_file() -> Tuple[List[str], List[str]]:
             expected_classifications.append(tokens[1])
 
     return (conditions_to_test, expected_classifications)
+
+
+def get_classification_name_from_str_code(classification_code: str) -> str:
+    classification_name = ""
+
+    if not classification_code or classification_code == "None":
+        return classification_name
+
+    try:
+        classification_name = get_classification_name(int(classification_code))
+    except ValueError:
+        logging.warning(f"ValueError getting classification name from [{prediction}]")
+
+    return classification_name
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ from src.python_src.util.data.simulations.classifiers import MLClassifier, Produ
 
 @patch("src.python_src.util.data.simulations.classifiers.ml_classifier")
 def test_ml_classifier(mock_ml_classifier: MagicMock) -> None:
-    mock_ml_classifier.make_predictions.return_value = ["Respiratory", "Skin", "Digestive"]
+    mock_ml_classifier.make_predictions.return_value = [("Respiratory", 1.0), ("Skin", .92), ("Digestive", .78)]
 
     ml_classifier = MLClassifier()
     assert ml_classifier.name == "ml_classifier"
