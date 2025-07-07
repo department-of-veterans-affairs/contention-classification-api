@@ -91,10 +91,10 @@ uvicorn = {extras = ["standard"], version = "0.35.0"}
 [tool.poetry.group.dev.dependencies]
 mypy = "1.16.1"
 pre-commit = "4.2.0"
-ruff = "0.12.1"
+ruff = "0.12.2"
 pytest = "8.4.1"
 pytest-cov = "6.2.1"
-bandit = {version = "1.8.5", extras = ["toml"]}
+bandit = {version = "1.8.6", extras = ["toml"]}
 types-pyyaml = "6.0.12.20250516"
 scikit-learn = "^1.7.0"
 
