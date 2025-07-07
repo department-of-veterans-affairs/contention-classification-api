@@ -1,17 +1,30 @@
 # Simulations: Inputs informed by Datadog
 
-From application logging visible in Datadog Log Explorer, we can see the contention classification requests sent to the Contention Classification API, and whether the API was able to determine classifications.
+- [Process](#process)
+- [Inputs, type A: contentention texts covered by the CSV lookup](#inputs-type-a-contentention-texts-covered-by-the-csv-lookup)
+- [Inputs, type B: contentention texts NOT covered by the CSV lookup](#inputs-type-b-contentention-texts-not-covered-by-the-csv-lookup)
 
-The Log Explorer allows for downloading results to a CSV file, which can then be processed for input to the simulator script. 
+## Process
+We can leverage application logging visible in Datadog Log Explorer to create sample inputs for simulations.
 
-Screenshot of the "Download as CSV" option:  
+Among other data points, the logs show:
+1) the text of the contention that the API was asked to classify
+2) the name and code of the classification (or null values, if the csv lookup was unable to classify the contention)
+3) the type of contention: whether it was submitted as a new condition, or as a claim for an increased disability rating ("claim for increase", CFI).
+
+
+The Datadog Log Explorer allows for downloading results to a CSV file, which can then be further processed for compabitility with the simulator script.  Screenshot of the "Download as CSV" option:  
 <img src='https://github.com/user-attachments/assets/3b8f8ef9-1863-47ff-9adf-3544bba6096f' alt='screenshot of the "Download as CSV" option in Datadog' width=400/>
 
-## Samples, type 1: covered by csv lookup
+
+> For more about what data points are logged, see `def log_contention_stats()` and `def log_expanded_contention_text()` in [util/logging_utilities.py](https://github.com/department-of-veterans-affairs/contention-classification-api/blob/main/src/python_src/util/logging_utilities.py).
+
+
+## Inputs, type A: contentention texts covered by the CSV lookup
 
 These are contention texts that have been successfully classified by the csv lookup.
 
-These can be browsed in Datadog's Log Explorer with these search parameters:
+The search parameters:
 
 | tag | description |
 | --- | --- |
@@ -26,11 +39,11 @@ These can be browsed in Datadog's Log Explorer with these search parameters:
 A sample of these results are in [2025-06-23.csv](./extracts/2025-06-23.csv) (5k rows)
 
 
-## Samples, type 2: not covered by csv lookup
+## Inputs, type B: contentention texts NOT covered by the CSV lookup
 
-In July 2025 we deployed a change to the logging to capture the contention texts that were NOT successfully classified by the csv lookup. These values are exposed in log attribute `ml_sample`.
+In June 2025 we deployed a change (https://github.com/department-of-veterans-affairs/contention-classification-api/pull/115) to the logging to capture the contention texts that were NOT successfully classified by the csv lookup . These values are exposed in log attribute `ml_sample`.
 
-These can be browsed in Datadog's Log Explorer with these search parameters:
+The search parameters:
 
 | tag | description |
 | --- | --- |
