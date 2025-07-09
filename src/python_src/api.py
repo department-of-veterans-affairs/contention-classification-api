@@ -66,8 +66,7 @@ def get_health_status() -> Dict[str, str]:
 @app.post("/expanded-contention-classification")
 @log_claim_stats_decorator
 def expanded_classifications(claim: VaGovClaim, request: Request) -> ClassifierResponse:
-    response = classify_claim(claim, request)
-    return response
+    return classify_claim(claim, request)
 
 
 @app.post("/ml-contention-classification")

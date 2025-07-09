@@ -68,16 +68,8 @@ contention_text_csv_filepath = os.path.join(
     contention_lut_csv_filename,
 )
 
-contention_text_csv_filepath_2 = os.path.join(
-    os.path.dirname(__file__),
-    "data",
-    "master_taxonomy",
-    "combined_df.csv",
-)
-
 dropdown_expanded_table_inits = InitValues(
-    # csv_filepath=contention_text_csv_filepath,
-    csv_filepath=contention_text_csv_filepath_2,
+    csv_filepath=contention_text_csv_filepath,
     input_key=app_config["condition_dropdown_table"]["input_key"],
     classification_code=app_config["condition_dropdown_table"]["classification_code"],
     classification_name=app_config["condition_dropdown_table"]["classification_name"],
@@ -92,6 +84,8 @@ expanded_lookup_table = ExpandedLookupTable(
     common_words=app_config["common_words"],
     musculoskeletal_lut=app_config["musculoskeletal_lut"],
 )
+
+
 
 autosuggestions_path = os.path.join(
     os.path.dirname(__file__),

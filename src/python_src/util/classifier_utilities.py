@@ -16,6 +16,11 @@ from .expanded_lookup_table import ExpandedLookupTable
 from .logging_utilities import log_as_json, log_contention_stats_decorator, log_ml_contention_stats_decorator
 from .lookup_table import ContentionTextLookupTable
 
+from .brd_classification_codes import BRD_CLASSIFICATIONS_PATH
+
+import json
+import datetime
+
 
 @runtime_checkable
 class LookupTable(Protocol):
@@ -23,8 +28,7 @@ class LookupTable(Protocol):
 
 
 def get_classification_code_name(
-    contention: Contention, lookup_table: LookupTable
-) -> Tuple[Optional[int], Optional[str], str]:
+    contention: Contention, lookup_table: LookupTable) -> Tuple[Optional[int], Optional[str], str]:
     """
     check contention type and match contention to appropriate table's
     classification code (if available)
@@ -47,7 +51,6 @@ def get_classification_code_name(
     classified_by = "not classified"
     classification_code = None
     classification_name = None
-
     if contention.contention_type == "INCREASE" and contention.diagnostic_code is not None:
         classification = dc_lookup_table.get(str(contention.diagnostic_code))
         if classification:
@@ -62,15 +65,54 @@ def get_classification_code_name(
         classification_name = classification["classification_name"]
         if classification_code is not None:
             classified_by = "contention_text"
-
+    classification_code, classification_name = check_if_classification_expired(classification_code =classification_code, classification_name = classification_name)
     return classification_code, classification_name, classified_by
+
+def get_path_of_brd():
+    return BRD_CLASSIFICATIONS_PATH
+
+def check_if_classification_expired(
+    classification_code: int,
+    classification_name: str
+):
+    if classification_code:
+        # my_dict = get_dict_of_brd_items()
+        json_data = get_dict_of_brd()
+        my_dict = {}
+        for _, element in enumerate(json_data["items"]):
+            my_dict[element["id"]] = element
+        print(f"my_dict: {my_dict}")
+
+        if  classification_code in my_dict.keys() and \
+            'endDateTime' in my_dict.get(classification_code).keys() and \
+            my_dict.get(classification_code)['endDateTime'] is not None: 
+            temp = datetime.datetime.strptime(my_dict.get(classification_code)['endDateTime'],'%Y-%m-%dT%H:%M:%SZ')
+            print(f"temp: {temp}")
+            if temp < datetime.datetime.now():
+                classification_code = None
+                classification_name = None
+    return classification_code, classification_name
+
+def get_dict_of_brd():
+    with open(get_path_of_brd(), "r") as json_file:
+        json_data = json.load(json_file)
+    return json_data
+
+# def get_dict_of_brd_items():
+#     with open(get_path_of_brd(), "r") as json_file:
+#         json_data = json.load(json_file)
+#     my_dict = {}
+#     for _, element in enumerate(json_data["items"]):
+#         my_dict[element["id"]] = element
+#     return my_dict
 
 
 @log_contention_stats_decorator
-def classify_contention(contention: Contention, claim: VaGovClaim, request: Request) -> Tuple[ClassifiedContention, str]:
+def classify_contention(
+    contention: Contention, claim: VaGovClaim, request: Request) -> Tuple[ClassifiedContention, str]:
     lookup_table: Union[ExpandedLookupTable, ContentionTextLookupTable] = expanded_lookup_table
-
     classification_code, classification_name, classified_by = get_classification_code_name(contention, lookup_table)
+    classification_code, classification_name = check_if_classification_expired(classification_code, classification_name)
 
     response = ClassifiedContention(
         classification_code=classification_code,
@@ -83,6 +125,7 @@ def classify_contention(contention: Contention, claim: VaGovClaim, request: Requ
 
 def classify_claim(claim: VaGovClaim, request: Request) -> ClassifierResponse:
     classified_contentions: list[ClassifiedContention] = []
+
     for contention in claim.contentions:
         classification = classify_contention(contention, claim, request)
         classified_contentions.append(classification)
@@ -113,7 +156,9 @@ def build_ai_request(response: ClassifierResponse, claim: VaGovClaim) -> tuple[l
 
 
 @log_ml_contention_stats_decorator
-def update_classifications(response: ClassifierResponse, indices: list[int], ai_classified: AiResponse) -> ClassifierResponse:
+def update_classifications(
+    response: ClassifierResponse, indices: list[int], ai_classified: AiResponse
+) -> ClassifierResponse:
     """
     Updates the originally classified claim with classifications from the ml classifier
     """
@@ -133,14 +178,19 @@ def ml_classify_claim(contentions: AiRequest) -> AiResponse:
     if ml_classifier:
         classifications = ml_classifier.make_predictions(texts_to_classify)
     else:
-        classifications = ["no-model"]*len(texts_to_classify)
+        classifications = ["no-model"] * len(texts_to_classify)
 
     classified_contentions: list[ClassifiedContention] = []
 
     for i in range(len(contentions_to_classify)):
+        classification_code = (get_classification_code(classifications[i]),)
+        classification_name = (classifications[i],)
+        # classification_code, classification_name = check_if_classification_expired(
+        #     classification_code, classification_name
+        # )
         classified_contention = ClassifiedContention(
-            classification_code=get_classification_code(classifications[i]),
-            classification_name=classifications[i],
+            classification_code=classification_code,
+            classification_name=classification_name,
             diagnostic_code=contentions_to_classify[i].diagnostic_code,
             contention_type=contentions_to_classify[i].contention_type,
         )

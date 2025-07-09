@@ -5,9 +5,10 @@ from typing import Dict, Optional
 # sourced from Lighthouse Benefits Reference Data /disabilities endpoint:
 # https://developer.va.gov/explore/benefits/docs/benefits_reference_data?version=current
 BRD_CLASSIFICATIONS_PATH = os.path.join(os.path.dirname(__file__), "data", "lh_brd_classification_ids.json")
+# BRD_CLASSIFICATIONS_TEST_PATH = os.path.join(os.path.dirname(__file__), "data", "lh_brd_classification_ids_test.json")
 
 
-def get_classification_names_by_code() -> Dict[int, str]:
+def get_classification_names_by_code(brd_classification: str = None) -> Dict[int, str]:
     name_by_code = {}
     with open(BRD_CLASSIFICATIONS_PATH, "r") as fh:
         disability_items = json.load(fh)["items"]
