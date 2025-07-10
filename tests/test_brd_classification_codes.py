@@ -105,9 +105,7 @@ def test_get_classification_code_file_error(test_client: TestClient) -> None:
 
 
 @patch("src.python_src.util.brd_classification_codes.get_classification_by_code")
-# @patch("src.python_src.util.brd_classification_codes.CLASSIFICATION_CODES_BY_ID")
 def test_temp(get_classification_by_code: MagicMock, 
-            #   CLASSIFICATION_CODES_BY_ID: MagicMock
               ) -> None:
     get_classification_by_code.return_value = {
         "8989": {"id": 8989, "name": "Mental Disorders"},
@@ -115,16 +113,9 @@ def test_temp(get_classification_by_code: MagicMock,
         "3140": {"id": 3140, "name": "Hearing Loss", "endDateTime": "2036-03-20T00:11:43Z"},
         "8968": {"id": 8968, "name": "digestive", "endDateTime": "2016-03-20T00:11:43Z"},
     }
-    # CLASSIFICATION_CODES_BY_ID.return_value = get_classification_by_code
-    # with patch("builtins.open", mock_open(read_data=json.dumps(mock_data))):
     print(f"\n *** \nget_classification_by_code.return_value: {get_classification_by_code.return_value}")
-    # print(CLASSIFICATION_CODES_BY_ID)
     print(get_classification(classification_code = 8989))
-    # print(get_classification(classification_code = 8997))
-    # print(get_classification(classification_code = 3140))
-    # print(get_classification(classification_code = 8968))
     assert get_classification(8989)['id'] == 8989
     assert get_classification(8997)['id'] == 8997
     assert get_classification(3140)['id'] == 3140
     assert get_classification(8968)['id'] == None
-    # assert get_classification(9999)['id'] is None
