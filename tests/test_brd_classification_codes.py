@@ -2,7 +2,7 @@
 
 import json
 from typing import Any, Dict, List
-from unittest.mock import mock_open, patch
+from unittest.mock import mock_open, patch, MagicMock
 
 import pytest
 from fastapi.testclient import TestClient
@@ -13,6 +13,8 @@ from src.python_src.util.brd_classification_codes import (
     get_classification_code,
     get_classification_name,
     get_classification_names_by_code,
+    get_classification,
+    CLASSIFICATION_CODES_BY_ID
 )
 
 
@@ -100,3 +102,25 @@ def test_get_classification_code_file_error(test_client: TestClient) -> None:
     with patch.dict(CLASSIFICATION_CODES_BY_NAME, {}, clear=True):
         result = get_classification_code("lorem ipsum")
         assert result is None
+
+
+@patch("src.python_src.util.brd_classification_codes.get_classification_by_code")
+@patch("src.python_src.util.brd_classification_codes.CLASSIFICATION_CODES_BY_ID")
+def test_temp(get_classification_by_code: MagicMock = MagicMock, CLASSIFICATION_CODES_BY_ID: MagicMock = MagicMock) -> None:
+    get_classification_by_code().return_value = {
+        "8989": {"id": 8989, "name": "Mental Disorders"},
+        "8997": {"id": 8997, "name": "Musculoskeletal - Knee", "endDateTime": None},
+        "3140": {"id": 3140, "name": "Hearing Loss", "endDateTime": "2036-03-20T00:11:43Z"},
+        "8968": {"id": 8968, "name": "digestive", "endDateTime": "2016-03-20T00:11:43Z"},
+    }
+    # CLASSIFICATION_CODES_BY_ID().return_value = get_classification_by_code
+    # with patch("builtins.open", mock_open(read_data=json.dumps(mock_data))):
+    print(get_classification_by_code().return_value)
+    print(CLASSIFICATION_CODES_BY_ID)
+    print(get_classification(classification_code = 8989))
+    print(get_classification(classification_code = 8997))
+    print(get_classification(classification_code = 3140))
+    print(get_classification(classification_code = 8968))
+    
+    assert get_classification(9999) is not None
+    assert get_classification(9999) is None
