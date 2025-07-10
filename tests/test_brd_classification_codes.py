@@ -13,10 +13,11 @@ from src.python_src.util.brd_classification_codes import (
     get_classification_code,
     get_classification_name,
     get_classification_names_by_code,
-    get_classification,
-    CLASSIFICATION_CODES_BY_ID
+    # get_classification,
+    # CLASSIFICATION_CODES_BY_ID
 )
-
+import tempfile
+import os
 
 def test_get_classification_names_by_code(test_client: TestClient) -> None:
     """Test get_classification_names_by_code with mock data."""
@@ -104,18 +105,24 @@ def test_get_classification_code_file_error(test_client: TestClient) -> None:
         assert result is None
 
 
-@patch("src.python_src.util.brd_classification_codes.get_classification_by_code")
-def test_temp(get_classification_by_code: MagicMock, 
-              ) -> None:
-    get_classification_by_code.return_value = {
-        "8989": {"id": 8989, "name": "Mental Disorders"},
-        "8997": {"id": 8997, "name": "Musculoskeletal - Knee", "endDateTime": None},
-        "3140": {"id": 3140, "name": "Hearing Loss", "endDateTime": "2036-03-20T00:11:43Z"},
-        "8968": {"id": 8968, "name": "digestive", "endDateTime": "2016-03-20T00:11:43Z"},
-    }
-    print(f"\n *** \nget_classification_by_code.return_value: {get_classification_by_code.return_value}")
-    print(get_classification(classification_code = 8989))
-    assert get_classification(8989)['id'] == 8989
-    assert get_classification(8997)['id'] == 8997
-    assert get_classification(3140)['id'] == 3140
-    assert get_classification(8968)['id'] == None
+def test_get_classification_code_with_endDateTime() -> None:
+    fd, path = tempfile.mkstemp()
+    print(fd)
+    print(path)
+    try:
+        with os.fdopen(fd, 'w') as tmp:
+            tmp.write(json.dumps({
+                "items": [ 
+                    {"id": 8989, "name": "Mental Disorders"},
+                    {"id": 8997, "name": "Musculoskeletal - Knee", "endDateTime": None},
+                    {"id": 3140, "name": "Hearing Loss", "endDateTime": "2036-03-20T00:11:43Z"},
+                    {"id": 8968, "name": "digestive", "endDateTime": "2016-03-20T00:11:43Z"},
+                ]
+            }))
+        dict_of_codes = get_classification_names_by_code(path)
+        assert dict_of_codes.get(8989) == "Mental Disorders"
+        assert dict_of_codes.get(8997) == "Musculoskeletal - Knee"
+        assert dict_of_codes.get(3140) == "Hearing Loss"
+        assert dict_of_codes.get(8968) == None
+    finally:
+        os.remove(path)

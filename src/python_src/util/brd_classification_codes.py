@@ -11,13 +11,17 @@ import datetime
 BRD_CLASSIFICATIONS_PATH = os.path.join(os.path.dirname(__file__), "data", "lh_brd_classification_ids.json")
 
 
-def get_classification_names_by_code() -> Dict[int, str]:
-    name_by_code = {}
-    with open(BRD_CLASSIFICATIONS_PATH, "r") as fh:
-        disability_items = json.load(fh)["items"]
-        for item in disability_items:
-            name_by_code[item["id"]] = item["name"]
-    return name_by_code
+def get_classification_names_by_code(brd_classification_path: str = BRD_CLASSIFICATIONS_PATH) -> Dict[int, str]:
+    with open(brd_classification_path, "r") as fh:
+        brd_classification_list = json.load(fh)["items"]
+    brd_classification_dict = {}
+    for item in brd_classification_list:
+        if "endDateTime" in item.keys() and \
+                item.get("endDateTime") is not None and \
+                datetime.datetime.strptime(item.get("endDateTime"), "%Y-%m-%dT%H:%M:%SZ") < datetime.datetime.now():
+                continue
+        brd_classification_dict[item['id']] = item['name']
+    return brd_classification_dict
 
 
 CLASSIFICATION_NAMES_BY_CODE = get_classification_names_by_code()
@@ -30,28 +34,3 @@ def get_classification_name(classification_code: int) -> Optional[str]:
 
 def get_classification_code(classification_name: str) -> Optional[int]:
     return CLASSIFICATION_CODES_BY_NAME.get(classification_name)
-
-
-def get_classification_by_code() -> Dict[int, str]:
-    return_dict = {}
-    with open(BRD_CLASSIFICATIONS_PATH, "r") as fh:
-        disability_items = json.load(fh)["items"]
-        for item in disability_items:
-            return_dict[item["id"]] = item
-    return return_dict
-
-
-CLASSIFICATION_CODES_BY_ID = get_classification_by_code()
-
-
-def get_classification(classification_code: int = None, classification_name: str = None) -> Optional[dict]:
-    if classification_code:
-        classification = get_classification_by_code().get(str(classification_code))
-    elif classification_name: 
-        classification = get_classification_by_code().get(str(classification_name))
-    if  "endDateTime" in classification.keys() and \
-            classification.get("endDateTime") is not None and \
-            datetime.datetime.strptime(classification.get("endDateTime"), "%Y-%m-%dT%H:%M:%SZ") < datetime.datetime.now():
-        classification['id'] = None
-        classification['name'] = None 
-    return classification
