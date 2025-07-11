@@ -1,11 +1,12 @@
 """Tests for the BRD classification codes module."""
 
+from fastapi.testclient import TestClient
 import json
+import os
+import pytest
+import tempfile
 from typing import Any, Dict, List
 from unittest.mock import mock_open, patch, MagicMock
-
-import pytest
-from fastapi.testclient import TestClient
 
 from src.python_src.util.brd_classification_codes import (
     CLASSIFICATION_CODES_BY_NAME,
@@ -13,11 +14,8 @@ from src.python_src.util.brd_classification_codes import (
     get_classification_code,
     get_classification_name,
     get_classification_names_by_code,
-    # get_classification,
-    # CLASSIFICATION_CODES_BY_ID
 )
-import tempfile
-import os
+
 
 def test_get_classification_names_by_code(test_client: TestClient) -> None:
     """Test get_classification_names_by_code with mock data."""
@@ -110,15 +108,19 @@ def test_get_classification_code_with_endDateTime() -> None:
     print(fd)
     print(path)
     try:
-        with os.fdopen(fd, 'w') as tmp:
-            tmp.write(json.dumps({
-                "items": [ 
-                    {"id": 8989, "name": "Mental Disorders"},
-                    {"id": 8997, "name": "Musculoskeletal - Knee", "endDateTime": None},
-                    {"id": 3140, "name": "Hearing Loss", "endDateTime": "2036-03-20T00:11:43Z"},
-                    {"id": 8968, "name": "digestive", "endDateTime": "2016-03-20T00:11:43Z"},
-                ]
-            }))
+        with os.fdopen(fd, "w") as tmp:
+            tmp.write(
+                json.dumps(
+                    {
+                        "items": [
+                            {"id": 8989, "name": "Mental Disorders"},
+                            {"id": 8997, "name": "Musculoskeletal - Knee", "endDateTime": None},
+                            {"id": 3140, "name": "Hearing Loss", "endDateTime": "2036-03-20T00:11:43Z"},
+                            {"id": 8968, "name": "digestive", "endDateTime": "2016-03-20T00:11:43Z"},
+                        ]
+                    }
+                )
+            )
         dict_of_codes = get_classification_names_by_code(path)
         assert dict_of_codes.get(8989) == "Mental Disorders"
         assert dict_of_codes.get(8997) == "Musculoskeletal - Knee"
