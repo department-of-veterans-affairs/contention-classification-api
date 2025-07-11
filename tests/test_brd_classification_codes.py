@@ -106,8 +106,6 @@ def test_get_classification_code_file_error(test_client: TestClient) -> None:
 
 def test_get_classification_code_with_endDateTime() -> None:
     fd, path = tempfile.mkstemp()
-    print(fd)
-    print(path)
     try:
         with os.fdopen(fd, "w") as tmp:
             tmp.write(
