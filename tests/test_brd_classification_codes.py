@@ -1,12 +1,13 @@
 """Tests for the BRD classification codes module."""
 
-from fastapi.testclient import TestClient
 import json
 import os
-import pytest
 import tempfile
 from typing import Any, Dict, List
-from unittest.mock import mock_open, patch, MagicMock
+from unittest.mock import mock_open, patch
+
+import pytest
+from fastapi.testclient import TestClient
 
 from src.python_src.util.brd_classification_codes import (
     CLASSIFICATION_CODES_BY_NAME,
@@ -125,6 +126,6 @@ def test_get_classification_code_with_endDateTime() -> None:
         assert dict_of_codes.get(8989) == "Mental Disorders"
         assert dict_of_codes.get(8997) == "Musculoskeletal - Knee"
         assert dict_of_codes.get(3140) == "Hearing Loss"
-        assert dict_of_codes.get(8968) == None
+        assert dict_of_codes.get(8968) is None
     finally:
         os.remove(path)
