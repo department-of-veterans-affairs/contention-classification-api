@@ -1,10 +1,7 @@
+import datetime
 import json
 import os
 from typing import Dict, Optional
-
-from .app_utilities import dc_lookup_table
-
-import datetime
 
 # sourced from Lighthouse Benefits Reference Data /disabilities endpoint:
 # https://developer.va.gov/explore/benefits/docs/benefits_reference_data?version=current
@@ -16,11 +13,13 @@ def get_classification_names_by_code(brd_classification_path: str = BRD_CLASSIFI
         brd_classification_list = json.load(fh)["items"]
     brd_classification_dict = {}
     for item in brd_classification_list:
-        if "endDateTime" in item.keys() and \
-                item.get("endDateTime") is not None and \
-                datetime.datetime.strptime(item.get("endDateTime"), "%Y-%m-%dT%H:%M:%SZ") < datetime.datetime.now():
-                continue
-        brd_classification_dict[item['id']] = item['name']
+        if (
+            "endDateTime" in item.keys()
+            and item.get("endDateTime") is not None
+            and datetime.datetime.strptime(item.get("endDateTime"), "%Y-%m-%dT%H:%M:%SZ") < datetime.datetime.now()
+        ):
+            continue
+        brd_classification_dict[item["id"]] = item["name"]
     return brd_classification_dict
 
 
