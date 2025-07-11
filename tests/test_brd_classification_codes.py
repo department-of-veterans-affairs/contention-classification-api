@@ -1,8 +1,6 @@
 """Tests for the BRD classification codes module."""
 
 import json
-import os
-import tempfile
 from typing import Any, Dict, List
 from unittest.mock import mock_open, patch
 
@@ -105,25 +103,17 @@ def test_get_classification_code_file_error(test_client: TestClient) -> None:
 
 
 def test_get_classification_code_with_endDateTime() -> None:
-    fd, path = tempfile.mkstemp()
-    try:
-        with os.fdopen(fd, "w") as tmp:
-            tmp.write(
-                json.dumps(
-                    {
-                        "items": [
-                            {"id": 8989, "name": "Mental Disorders"},
-                            {"id": 8997, "name": "Musculoskeletal - Knee", "endDateTime": None},
-                            {"id": 3140, "name": "Hearing Loss", "endDateTime": "2036-03-20T00:11:43Z"},
-                            {"id": 8968, "name": "digestive", "endDateTime": "2016-03-20T00:11:43Z"},
-                        ]
-                    }
-                )
-            )
-        dict_of_codes = get_classification_names_by_code(path)
+    mock_data = {
+        "items": [
+            {"id": 8989, "name": "Mental Disorders"},
+            {"id": 8997, "name": "Musculoskeletal - Knee", "endDateTime": None},
+            {"id": 3140, "name": "Hearing Loss", "endDateTime": "2036-03-20T00:11:43Z"},
+            {"id": 8968, "name": "Digestive", "endDateTime": "2016-03-20T00:11:43Z"},
+        ]
+    }
+    with patch("builtins.open", mock_open(read_data=json.dumps(mock_data))):
+        dict_of_codes = get_classification_names_by_code()
         assert dict_of_codes.get(8989) == "Mental Disorders"
         assert dict_of_codes.get(8997) == "Musculoskeletal - Knee"
         assert dict_of_codes.get(3140) == "Hearing Loss"
         assert dict_of_codes.get(8968) is None
-    finally:
-        os.remove(path)
