@@ -133,7 +133,7 @@ def ml_classify_claim(contentions: AiRequest) -> AiResponse:
     if ml_classifier:
         classifications = ml_classifier.make_predictions(texts_to_classify)
     else:
-        classifications = ["no-model"]*len(texts_to_classify)
+        classifications = ["no-model"] * len(texts_to_classify)
 
     classified_contentions: list[ClassifiedContention] = []
 

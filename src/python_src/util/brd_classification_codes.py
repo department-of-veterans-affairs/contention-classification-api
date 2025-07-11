@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 from typing import Dict, Optional
@@ -8,12 +9,17 @@ BRD_CLASSIFICATIONS_PATH = os.path.join(os.path.dirname(__file__), "data", "lh_b
 
 
 def get_classification_names_by_code() -> Dict[int, str]:
-    name_by_code = {}
     with open(BRD_CLASSIFICATIONS_PATH, "r") as fh:
-        disability_items = json.load(fh)["items"]
-        for item in disability_items:
-            name_by_code[item["id"]] = item["name"]
-    return name_by_code
+        brd_classification_list = json.load(fh)["items"]
+    brd_classification_dict = {}
+    for item in brd_classification_list:
+        if (
+            item.get("endDateTime")
+            and datetime.datetime.strptime(item.get("endDateTime"), "%Y-%m-%dT%H:%M:%SZ") < datetime.datetime.now()
+        ):
+            continue
+        brd_classification_dict[item["id"]] = item["name"]
+    return brd_classification_dict
 
 
 CLASSIFICATION_NAMES_BY_CODE = get_classification_names_by_code()

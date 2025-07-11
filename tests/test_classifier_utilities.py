@@ -183,4 +183,4 @@ def test_ml_classify_claim(mock_ml_classifier: MagicMock, mock_get_classificatio
 def test_ml_classify_claim_returns_list_of_no_classification_codes_if_no_ml_model() -> None:
     ai_response = ml_classify_claim(TEST_AI_REQUEST)
     assert len(ai_response.classified_contentions) == len(TEST_AI_REQUEST.contentions)
-    assert [c.classification_code for c in ai_response.classified_contentions] == [None]*len(TEST_AI_REQUEST.contentions)
+    assert [c.classification_code for c in ai_response.classified_contentions] == [None] * len(TEST_AI_REQUEST.contentions)
