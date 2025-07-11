@@ -14,8 +14,7 @@ def get_classification_names_by_code(brd_classification_path: str = BRD_CLASSIFI
     brd_classification_dict = {}
     for item in brd_classification_list:
         if (
-            "endDateTime" in item.keys()
-            and item.get("endDateTime") is not None
+            item.get("endDateTime") 
             and datetime.datetime.strptime(item.get("endDateTime"), "%Y-%m-%dT%H:%M:%SZ") < datetime.datetime.now()
         ):
             continue
