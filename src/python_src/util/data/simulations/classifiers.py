@@ -5,8 +5,9 @@ from python_src.util.brd_classification_codes import get_classification_code
 
 
 class BaseClassifierForSimulation:
-    name: str
-    predictions: List[str]
+    name: str = None
+    predictions: List[str] = None
+    prediction_probabilities: List[float] = None
 
     def make_predictions(self, conditions: List[str]) -> bool:
         """
@@ -36,8 +37,11 @@ class MLClassifier(BaseClassifierForSimulation):
     name = "ml_classifier"
 
     def make_predictions(self, conditions: List[str]) -> bool:
-        classification_names = ml_classifier.make_predictions(conditions)
-        self.predictions = [str(get_classification_code(n)) for n in classification_names]
+        classifier_output = ml_classifier.make_predictions(conditions)
+        predicted_labels = [i[0] for i in classifier_output]
+        self.predictions = [str(get_classification_code(label)) for label in predicted_labels]
+        self.prediction_probabilities = [round(i[1], 2) for i in classifier_output]
+
         return len(self.predictions) == len(conditions)
 
 
