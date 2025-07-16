@@ -13,11 +13,14 @@ def get_classification_names_by_code() -> Dict[int, str]:
         brd_classification_list = json.load(fh)["items"]
     brd_classification_dict = {}
     for item in brd_classification_list:
-        if (
-            item.get("endDateTime")
-            and datetime.datetime.strptime(item.get("endDateTime"), "%Y-%m-%dT%H:%M:%SZ") < datetime.datetime.now()
-        ):
-            continue
+        if item.get("endDateTime"):
+            try:
+                item_datetime = datetime.datetime.strptime(item.get("endDateTime"), "%Y-%m-%dT%H:%M:%SZ")
+                if item_datetime is None or item_datetime < datetime.datetime.now():
+                    continue
+            except Exception as e:
+                print(e)
+                continue
         brd_classification_dict[item["id"]] = item["name"]
     return brd_classification_dict
 
