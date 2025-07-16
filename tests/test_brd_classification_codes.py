@@ -100,3 +100,22 @@ def test_get_classification_code_file_error(test_client: TestClient) -> None:
     with patch.dict(CLASSIFICATION_CODES_BY_NAME, {}, clear=True):
         result = get_classification_code("lorem ipsum")
         assert result is None
+
+
+def test_get_classification_code_with_endDateTime() -> None:
+    mock_data = {
+        "items": [
+            {"id": 8989, "name": "Mental Disorders"},
+            {"id": 8997, "name": "Musculoskeletal - Knee", "endDateTime": None},
+            {"id": 3140, "name": "Hearing Loss", "endDateTime": "2036-03-20T00:11:43Z"},
+            {"id": 8968, "name": "Digestive", "endDateTime": "2016-03-20T00:11:43Z"},
+            {"id": 9999, "name": "Test", "endDateTime": "2016-03-20"},
+        ]
+    }
+    with patch("builtins.open", mock_open(read_data=json.dumps(mock_data))):
+        dict_of_codes = get_classification_names_by_code()
+        assert dict_of_codes.get(8989) == "Mental Disorders"
+        assert dict_of_codes.get(8997) == "Musculoskeletal - Knee"
+        assert dict_of_codes.get(3140) == "Hearing Loss"
+        assert dict_of_codes.get(8968) is None
+        assert dict_of_codes.get(9999) is None

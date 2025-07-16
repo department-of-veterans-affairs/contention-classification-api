@@ -66,8 +66,7 @@ def _write_predictions_to_file(
                 prediction_label = get_classification_name(int(prediction))
             except ValueError:
                 logging.warning(
-                    f"ValueError getting classification name from [{prediction}]" +
-                    f"(condition: [{conditions_to_test[i]}])"
+                    f"ValueError getting classification name from [{prediction}]" + f"(condition: [{conditions_to_test[i]}])"
                 )
 
             csv_writer.writerow(
@@ -124,8 +123,8 @@ def _write_aggregate_predictions_to_file(
                     prediction_label = get_classification_name(int(c.predictions[i]))
                 except ValueError:
                     logging.warning(
-                        f"ValueError getting classification name from [{c.predictions[i]}]" +
-                        f"(condition: [{conditions_to_test[i]}])"
+                        f"ValueError getting classification name from [{c.predictions[i]}]"
+                        + f"(condition: [{conditions_to_test[i]}])"
                     )
                     pass
 
