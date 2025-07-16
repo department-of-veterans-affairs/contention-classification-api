@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 import os
 from typing import Dict, Optional
 
@@ -19,7 +20,7 @@ def get_classification_names_by_code() -> Dict[int, str]:
                 if item_datetime is None or item_datetime < datetime.datetime.now():
                     continue
             except Exception as e:
-                print(e)
+                logging.error(f"endDateTime format error: {e}")
                 continue
         brd_classification_dict[item["id"]] = item["name"]
     return brd_classification_dict
