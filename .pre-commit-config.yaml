@@ -13,7 +13,7 @@ repos:
       - id: validate-pyproject
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.2
+    rev: v0.12.3
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -35,7 +35,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v1.16.1'
+    rev: 'v1.17.0'
     hooks:
       - id: mypy
         pass_filenames: false  # Pass all files in the repository except those excluded in pyproject.toml
