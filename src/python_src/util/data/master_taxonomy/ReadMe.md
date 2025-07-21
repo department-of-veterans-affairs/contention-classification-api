@@ -44,7 +44,7 @@ Trace start for "CC Taxonomy master"
          write_to_js(autosuggestion_terms, WRITE_FILENAME)
          print("done")
       # ...
-      def write_to_js(data:list, filepath: str=None) -> None:
+      def write_to_js(data: list, filepath: str=None) -> None:
          """
          writes list of dicts to js file
          """
