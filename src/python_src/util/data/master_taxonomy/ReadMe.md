@@ -55,7 +55,7 @@ Trace start for "CC Taxonomy master"
                   js_obj += f'  {c}: "{t}",\n'
             else:
                   js_obj += f"  {c}: '{t}',\n"
-            c+=1
+            c += 1
          js_obj += "}"
 
          with open(filepath, "w") as j:
