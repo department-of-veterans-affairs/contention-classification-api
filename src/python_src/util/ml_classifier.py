@@ -2,13 +2,16 @@ import logging
 import os
 import re
 import string
+import sys
 from typing import Any, Dict, List
 
-import app_utilities
 import boto3
 import joblib
 import onnxruntime as ort
 from numpy import float32, ndarray
+
+sys.path.append("src/python_src/util")
+from . import app_utilities
 
 
 class MLClassifier:

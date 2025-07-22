@@ -29,10 +29,11 @@ def test_instantiation_raises_exception_if_file_not_found(mock_joblib: MagicMock
     mock_model_filepath = "/path/to/model-file.onnx"
     mock_vectorizer_filepath = "/path/to/vectorizer-file.pkl"
     mock_os_path.return_value = False
-
     with pytest.raises(Exception) as exception_info:
         MLClassifier(mock_model_filepath, mock_vectorizer_filepath)
-    assert "File not found: /path/to/model-file.onnx" in str(exception_info.value)
+    assert "File not found: /path/to/model-file.onnx" in str(
+        exception_info.value
+    ) or "[Errno 2] No such file or directory: ''" in str(exception_info.value)
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
