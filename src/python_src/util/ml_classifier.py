@@ -4,6 +4,8 @@ import re
 import string
 from typing import Any, Dict, List
 
+import app_utilities
+import boto3
 import joblib
 import onnxruntime as ort
 from numpy import float32, ndarray
@@ -11,6 +13,24 @@ from numpy import float32, ndarray
 
 class MLClassifier:
     def __init__(self, model_file: str, vectorizer_file: str):
+        app_config = app_utilities.load_config(os.path.join(os.path.dirname(__file__), "app_config.yaml"))
+        model_path = ""
+        if not os.path.exists(model_path):
+            os.makedirs(model_path)
+        try:
+            s3_client = boto3.client("s3")
+            s3_client.download_file(
+                Bucket=app_config["ml_classifier"]["aws"]["bucket"],
+                Key=app_config["ml_classifier"]["aws"]["model"],
+                Filename=app_config["ml_classifier"]["model_file"],
+            )
+            s3_client.download_file(
+                Bucket=app_config["ml_classifier"]["aws"]["bucket"],
+                Key=app_config["ml_classifier"]["aws"]["vectorizer"],
+                Filename=app_config["ml_classifier"]["vectorizer_file"],
+            )
+        except Exception as e:
+            print(e)
         if not os.path.exists(model_file):
             raise Exception(f"File not found: {model_file}")
         if not os.path.exists(vectorizer_file):

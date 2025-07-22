@@ -176,5 +176,10 @@ ai_classification_endpoint:
   url: 'http://localhost:8120/'
   endpoint: 'ml-contention-classification'
 ml_classifier:
+  aws:
+    bucket: dsva-vagov-dev-contention-classification-api
+    model: LR_tfidf_fit_model_20250623_151434.onnx
+    vectorizer: LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl
+  model_path: 'src/python_src/util/models/'
   model_file: 'src/python_src/util/models/LR_tfidf_fit_model_20250623_151434.onnx'
   vectorizer_file: 'src/python_src/util/models/LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl'
