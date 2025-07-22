@@ -177,7 +177,7 @@ ai_classification_endpoint:
   endpoint: 'ml-contention-classification'
 ml_classifier:
   aws:
-    bucket: dsva-vagov-dev-contention-classification-api
+    bucket: dsva-vagov-staging-contention-classification-api
     model: LR_tfidf_fit_model_20250623_151434.onnx
     vectorizer: LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl
   model_path: 'src/python_src/util/models/'
