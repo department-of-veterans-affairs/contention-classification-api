@@ -5,7 +5,7 @@ def sanitize_log(obj: Union[str, bool, int, None]) -> Union[str, bool, int]:
     """
     Removes all newlines and carriage returns from the input log statement. This
     prevents the CodeQL warning stemming from Log entries created from user input
-    https://codeql.github.com/codeql-query-help/go/go-log-injection/
+    https://codeql.github.com/codeql-query-help/go/go-log-injection/ 
     """
     if isinstance(obj, bool):
         sanitized_str = str(obj).replace("\r\n", "").replace("\n", "")
