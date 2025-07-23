@@ -44,6 +44,7 @@ jobs:
         uses: paambaati/codeclimate-action@v9.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+          debug: true
 
       - name: "Run Bandit security scan"
         run: poetry run bandit -c pyproject.toml -r src tests
