@@ -1,3 +1,4 @@
+import os
 import string
 from unittest.mock import MagicMock, call, patch
 
@@ -6,6 +7,7 @@ from numpy import float32, ndarray
 from onnx.helper import make_node
 from scipy.sparse import csr_matrix
 
+from src.python_src.util.app_utilities import app_config, model_file, vectorizer_file
 from src.python_src.util.ml_classifier import MLClassifier
 
 
@@ -105,3 +107,24 @@ def test_clean_text(
     assert classifier.clean_text(f"abc${string.punctuation} def") == "abc def"
     assert classifier.clean_text("lorem    ipsum  dolor") == "lorem ipsum dolor"
     assert classifier.clean_text(" Lorem Ipsum Dolor ") == "lorem ipsum dolor"
+
+
+def test_check_for_existing_files() -> None:
+    assert os.path.exists(model_file)
+    assert os.path.exists(vectorizer_file)
+    os.path.isfile(model_file)
+    os.path.isfile(vectorizer_file)
+
+
+def test_make_prediction() -> None:
+    ml_classifier = MLClassifier(
+        model_file=app_config["ml_classifier"]["model_file"],
+        vectorizer_file=app_config["ml_classifier"]["vectorizer_file"],
+        model_path=app_config["ml_classifier"]["model_file"],
+    )
+    output_list = ml_classifier.make_predictions(
+        conditions=["numbness in right arm", "ringing noise in ears", "asthma", "generalized anxiety disorder"]
+    )
+    assert sorted(output_list) == sorted(
+        ["Arm Condition - Neurological other System", "Hearing Loss", "Respiratory", "Mental Disorders"]
+    )

@@ -15,9 +15,8 @@ from . import app_utilities
 
 
 class MLClassifier:
-    def __init__(self, model_file: str, vectorizer_file: str):
+    def __init__(self, model_file: str, vectorizer_file: str, model_path: str = ""):
         app_config = app_utilities.load_config(os.path.join(os.path.dirname(__file__), "app_config.yaml"))
-        model_path = ""
         if not os.path.exists(model_path):
             os.makedirs(model_path)
         try:
