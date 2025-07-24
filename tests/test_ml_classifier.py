@@ -1,6 +1,6 @@
+import logging
 import os
 import string
-import sys
 from unittest.mock import MagicMock, call, patch
 
 import boto3
@@ -9,11 +9,9 @@ from numpy import float32, ndarray
 from onnx.helper import make_node
 from scipy.sparse import csr_matrix
 
+from src.python_src.util import app_utilities
 from src.python_src.util.app_utilities import app_config, model_file, vectorizer_file
 from src.python_src.util.ml_classifier import MLClassifier
-
-sys.path.append("src/python_src/util")
-from src.python_src.util import app_utilities
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
@@ -133,7 +131,7 @@ def test_s3() -> None:
             model_file,
         )
     except Exception as e:
-        print(e)
+        logging.error(e)
         assert str(e) == "An error occurred (403) when calling the HeadObject operation: Forbidden"
     try:
         s3_client.download_file(
@@ -142,11 +140,10 @@ def test_s3() -> None:
             vectorizer_file,
         )
     except Exception as e:
-        print(e)
+        logging.error(e)
         assert str(e) == "An error occurred (403) when calling the HeadObject operation: Forbidden"
 
 
 def test_invoke_mlClassifier() -> None:
     classifier = MLClassifier()
     classifier.download_models_from_s3()
-    assert True
