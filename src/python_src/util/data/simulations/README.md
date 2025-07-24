@@ -6,7 +6,7 @@ The intent is to gather outputs for comparing and tracking behavior of the class
 
 
 ## Inputs
-The input file is expected to be a csv with these columns: text_to_classify, expected_classification.
+The input file is expected to be a csv with two columns, representing the text to classify and (optional) the expected classification code.
 As an example of rows in an input file:
 
 ```
