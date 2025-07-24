@@ -2,7 +2,6 @@ import logging
 import os
 import re
 import string
-import sys
 from typing import Any, Dict, List
 
 import boto3
@@ -10,8 +9,7 @@ import joblib
 import onnxruntime as ort
 from numpy import float32, ndarray
 
-sys.path.append("src/python_src/util")
-from . import app_utilities
+from src.python_src.util import app_utilities
 
 
 class MLClassifier:
@@ -29,25 +27,24 @@ class MLClassifier:
     def download_models_from_s3(
         self, model_file: str = "", vectorizer_file: str = "", model_directory_path: str = ""
     ) -> tuple[str, str, str]:
-        app_config = app_utilities.load_config(os.path.join(os.path.dirname(__file__), "app_config.yaml"))
         if not model_directory_path:
-            model_directory_path = app_config["ml_classifier"]["data"]["directory"]
+            model_directory_path = app_utilities.app_config["ml_classifier"]["data"]["directory"]
         os.makedirs(model_directory_path, exist_ok=True)
         if not model_file:
-            model_file = model_directory_path + "/" + app_config["ml_classifier"]["aws"]["model"]
+            model_file = model_directory_path + "/" + app_utilities.app_config["ml_classifier"]["model_file"]
         if not vectorizer_file:
-            vectorizer_file = model_directory_path + "/" + app_config["ml_classifier"]["aws"]["vectorizer"]
+            vectorizer_file = model_directory_path + "/" + app_utilities.app_config["ml_classifier"]["vectorizer_file"]
         try:
             s3_client = boto3.client("s3")
             s3_client.download_file(
-                app_config["ml_classifier"]["aws"]["bucket"],
+                app_utilities.app_config["ml_classifier"]["aws"]["bucket"],
+                app_utilities.app_config["ml_classifier"]["aws"]["model"],
                 model_file,
-                app_config["ml_classifier"]["model_file"],
             )
             s3_client.download_file(
-                app_config["ml_classifier"]["aws"]["bucket"],
+                app_utilities.app_config["ml_classifier"]["aws"]["bucket"],
+                app_utilities.app_config["ml_classifier"]["aws"]["model"],
                 vectorizer_file,
-                app_config["ml_classifier"]["vectorizer_file"],
             )
         except Exception as e:
             print(e)
