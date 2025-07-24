@@ -17,6 +17,7 @@ class MLClassifier:
         model_file, vectorizer_file, model_directory_path = self.download_models_from_s3(
             model_file, vectorizer_file, model_directory_path
         )
+
         if not os.path.exists(model_file):
             raise Exception(f"File not found: {model_file}")
         if not os.path.exists(vectorizer_file):
@@ -31,9 +32,9 @@ class MLClassifier:
             model_directory_path = app_utilities.app_config["ml_classifier"]["data"]["directory"]
         os.makedirs(model_directory_path, exist_ok=True)
         if not model_file:
-            model_file = model_directory_path + "/" + app_utilities.app_config["ml_classifier"]["model_file"]
+            model_file = app_utilities.app_config["ml_classifier"]["model_file"]
         if not vectorizer_file:
-            vectorizer_file = model_directory_path + "/" + app_utilities.app_config["ml_classifier"]["vectorizer_file"]
+            vectorizer_file = app_utilities.app_config["ml_classifier"]["vectorizer_file"]
         try:
             s3_client = boto3.client("s3")
             s3_client.download_file(
