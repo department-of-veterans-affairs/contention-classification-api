@@ -1,4 +1,6 @@
+import os
 import string
+import sys
 from unittest.mock import MagicMock, call, patch
 
 import boto3
@@ -9,6 +11,9 @@ from scipy.sparse import csr_matrix
 
 from src.python_src.util.app_utilities import app_config, model_file, vectorizer_file
 from src.python_src.util.ml_classifier import MLClassifier
+
+sys.path.append("src/python_src/util")
+from src.python_src.util import app_utilities
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
@@ -107,6 +112,16 @@ def test_clean_text(
     assert classifier.clean_text(f"abc${string.punctuation} def") == "abc def"
     assert classifier.clean_text("lorem    ipsum  dolor") == "lorem ipsum dolor"
     assert classifier.clean_text(" Lorem Ipsum Dolor ") == "lorem ipsum dolor"
+
+
+def test_app_config_values_exist() -> None:
+    app_config = app_utilities.load_config(os.path.join("src/python_src/util", "app_config.yaml"))
+    assert app_config["ml_classifier"]["data"]["directory"]
+    assert app_config["ml_classifier"]["aws"]["model"]
+    assert app_config["ml_classifier"]["aws"]["vectorizer"]
+    assert app_config["ml_classifier"]["data"]["directory"]
+    assert app_config["ml_classifier"]["model_file"]
+    assert app_config["ml_classifier"]["vectorizer_file"]
 
 
 def test_s3() -> None:
