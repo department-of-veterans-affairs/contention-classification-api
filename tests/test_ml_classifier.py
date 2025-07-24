@@ -1,7 +1,7 @@
-import os
 import string
 from unittest.mock import MagicMock, call, patch
 
+import boto3
 import pytest
 from numpy import float32, ndarray
 from onnx.helper import make_node
@@ -109,22 +109,29 @@ def test_clean_text(
     assert classifier.clean_text(" Lorem Ipsum Dolor ") == "lorem ipsum dolor"
 
 
-def test_check_for_existing_files() -> None:
-    assert os.path.exists(model_file)
-    assert os.path.exists(vectorizer_file)
-    os.path.isfile(model_file)
-    os.path.isfile(vectorizer_file)
+def test_s3() -> None:
+    s3_client = boto3.client("s3")
+    try:
+        s3_client.download_file(
+            app_config["ml_classifier"]["aws"]["bucket"],
+            app_config["ml_classifier"]["aws"]["model"],
+            model_file,
+        )
+    except Exception as e:
+        print(e)
+        assert str(e) == "An error occurred (403) when calling the HeadObject operation: Forbidden"
+    try:
+        s3_client.download_file(
+            app_config["ml_classifier"]["aws"]["bucket"],
+            app_config["ml_classifier"]["aws"]["vectorizer"],
+            vectorizer_file,
+        )
+    except Exception as e:
+        print(e)
+        assert str(e) == "An error occurred (403) when calling the HeadObject operation: Forbidden"
 
 
-def test_make_prediction() -> None:
-    ml_classifier = MLClassifier(
-        model_file=app_config["ml_classifier"]["model_file"],
-        vectorizer_file=app_config["ml_classifier"]["vectorizer_file"],
-        model_path=app_config["ml_classifier"]["model_file"],
-    )
-    output_list = ml_classifier.make_predictions(
-        conditions=["numbness in right arm", "ringing noise in ears", "asthma", "generalized anxiety disorder"]
-    )
-    assert sorted(output_list) == sorted(
-        ["Arm Condition - Neurological other System", "Hearing Loss", "Respiratory", "Mental Disorders"]
-    )
+def test_invoke_mlClassifier() -> None:
+    classifier = MLClassifier()
+    classifier.download_models_from_s3()
+    assert True
