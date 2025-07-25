@@ -1,0 +1,41 @@
+,text_to_classify,csv_lookup_prediction,csv_lookup_prediction_label,ml_classifier_prediction,ml_classifier_prediction_label
+1,migraines (headaches),9007,Neurological other System,8989,Mental Disorders
+9,PTSD (post-traumatic stress disorder),8989,Mental Disorders,9010,Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders
+126,"radiculopathy, bilateral upper extremities",8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),9006,Neurological - Cranial/Peripheral Nerves
+140,Bell's Palsy,9007,Neurological other System,9006,Neurological - Cranial/Peripheral Nerves
+173,"radiculopathy, bilateral lower extremities",8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),9006,Neurological - Cranial/Peripheral Nerves
+184,PTSD,8989,Mental Disorders,9010,Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders
+187,jaw,8967,Dental and Oral,249481,Dental and Oral - Musculoskeletal
+229,ovarian cysts,8951,Cyst/Benign Growth - Gynecological,8978,Gynecological
+263,Headaches,9007,Neurological other System,8989,Mental Disorders
+298,costochondritis,249482,Musculoskeletal - Bones,9005,Musculoskeletal and Muscle Injuries
+333,Migraines (headaches),9007,Neurological other System,8989,Mental Disorders
+341,"degenerative arthritis (osteoarthritis) in hand or fingers, right",8995,Musculoskeletal - Hand,8992,Musculoskeletal - Arthritis
+342,"degenerative arthritis (osteoarthritis) in hand or fingers, left",8995,Musculoskeletal - Hand,8992,Musculoskeletal - Arthritis
+420,Musculoskeletal - Bones,249482,Musculoskeletal - Bones,9001,Musculoskeletal - Other
+450,Migraines,9007,Neurological other System,8989,Mental Disorders
+466,"degenerative arthritis (osteoarthritis) in hand or fingers, bilateral",8995,Musculoskeletal - Hand,8992,Musculoskeletal - Arthritis
+486,"radiculopathy, right upper extremities",8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),9006,Neurological - Cranial/Peripheral Nerves
+487,"radiculopathy, left upper extremities",8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),9006,Neurological - Cranial/Peripheral Nerves
+492,hemorrhoids,8968,Digestive,8989,Mental Disorders
+603,migraines,9007,Neurological other System,8989,Mental Disorders
+758,"plantar warts (foot warts), bilateral",9016,Skin,8994,Musculoskeletal - Foot
+769,Gout,8994,Musculoskeletal - Foot,8992,Musculoskeletal - Arthritis
+798,migraines headaches,9007,Neurological other System,8989,Mental Disorders
+910,plantar warts,9016,Skin,8994,Musculoskeletal - Foot
+1109,"radiculopathy, left lower extremities",8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),9006,Neurological - Cranial/Peripheral Nerves
+1236,otitis media middle ear infection,3140,Hearing Loss,8969,Ear Disease and Other Sense Organs
+1417,"plantar warts (foot warts), left",9016,Skin,8994,Musculoskeletal - Foot
+1425,Costochondritis,249482,Musculoskeletal - Bones,9005,Musculoskeletal and Muscle Injuries
+1547,"radiculopathy, right lower extremities",8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),9006,Neurological - Cranial/Peripheral Nerves
+1634,headaches,9007,Neurological other System,8989,Mental Disorders
+1837,"PTSD (post-traumatic stress disorder), non-combat-related",8989,Mental Disorders,9010,Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders
+1895,post traumatic stress disorder ptsd,8989,Mental Disorders,9010,Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders
+2413,Ptsd,8989,Mental Disorders,9010,Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders
+2548,"dysphagia (difficulty swallowing), associated with neurological disorder",9007,Neurological other System,8968,Digestive
+2629,vaginal cancer,8937,Cancer - Gynecological,8978,Gynecological
+2950,"PTSD (post-traumatic stress disorder), combat-related",8989,Mental Disorders,9010,Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders
+3077,ptsd post traumatic stress disorder,8989,Mental Disorders,9010,Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders
+3156,Unemployability,6990,Unemployability,8989,Mental Disorders
+3194,feet,8994,Musculoskeletal - Foot,8989,Mental Disorders
+3842,Leg Condition - Heart/Veins/Arteries,8987,Leg Condition - Heart/Veins/Arteries,8979,Heart/Veins/Arteries
