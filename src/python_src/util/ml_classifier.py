@@ -2,7 +2,6 @@ import logging
 import os
 import re
 import string
-import sys
 from typing import Any, Dict, List
 
 import boto3
@@ -10,12 +9,7 @@ import joblib
 import onnxruntime as ort
 from numpy import float32, ndarray
 
-<<<<<<< HEAD
 from src.python_src.util import app_utilities
-=======
-sys.path.append("src/python_src/util")
-from . import app_utilities
->>>>>>> c18a86a (boto3 added)
 
 
 class MLClassifier:
