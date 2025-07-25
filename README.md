@@ -2,8 +2,6 @@
 
 [![Build and Push to ECR](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml/badge.svg?event=push)](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml)
 [![Continuous Integration](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/e48f6ba9d97c1ff3ecab/maintainability)](https://codeclimate.com/github/department-of-veterans-affairs/contention-classification-api/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/e48f6ba9d97c1ff3ecab/test_coverage)](https://codeclimate.com/github/department-of-veterans-affairs/contention-classification-api/test_coverage)
 [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
 ![Python Version from PEP 621 TOML](https://img.shields.io/badge/Python-3.12-blue)
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
