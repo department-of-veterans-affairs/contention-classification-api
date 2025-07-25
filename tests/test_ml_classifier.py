@@ -13,6 +13,8 @@ from src.python_src.util import app_utilities
 from src.python_src.util.app_utilities import app_config, model_file, vectorizer_file
 from src.python_src.util.ml_classifier import MLClassifier
 
+IN_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
+
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.ort.InferenceSession")
@@ -122,6 +124,7 @@ def test_app_config_values_exist() -> None:
     assert app_config["ml_classifier"]["vectorizer_file"]
 
 
+@pytest.mark.skipif(IN_GITHUB_ACTIONS, reason="Test doesn't work in Github Actions.")
 def test_s3() -> None:
     s3_client = boto3.client("s3")
     try:
@@ -144,6 +147,7 @@ def test_s3() -> None:
         assert str(e) == "An error occurred (403) when calling the HeadObject operation: Forbidden"
 
 
+@pytest.mark.skipif(IN_GITHUB_ACTIONS, reason="Test doesn't work in Github Actions.")
 def test_invoke_mlClassifier() -> None:
     classifier = MLClassifier()
     classifier.download_models_from_s3()
