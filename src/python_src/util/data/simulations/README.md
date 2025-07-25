@@ -66,7 +66,7 @@ poetry run python src/python_src/util/data/simulations/run_simulations.py
 ```
 
 
-## Getting sample contentions and classifications from Datadog
+## Getting sample inputs from Datadog
 
 We can leverage application logging visible in Datadog Log Explorer to create sample inputs for simulations.
 
@@ -76,8 +76,7 @@ Among other data points, the logs show:
 3) the type of contention: whether it was submitted as a new condition, or as a claim for an increased disability rating ("claim for increase", CFI).
 
 
-The Datadog Log Explorer allows for downloading results to a CSV file, which can then be further processed for compatibility with the simulator script.  Screenshot of the "Download as CSV" option:
-<img src='https://github.com/user-attachments/assets/3b8f8ef9-1863-47ff-9adf-3544bba6096f' alt='screenshot of the "Download as CSV" option in Datadog' width=400/>
+The Datadog Log Explorer allows for downloading results to a CSV file, which can then be further processed for compatibility with the simulator script.
 
 
 > For more about what data points are logged, see `def log_contention_stats()` and `def log_expanded_contention_text()` in [util/logging_utilities.py](https://github.com/department-of-veterans-affairs/contention-classification-api/blob/main/src/python_src/util/logging_utilities.py).
@@ -95,4 +94,4 @@ The search parameters for contention texts covered by the CSV lookup:
 
 [Link](https://vagov.ddog-gov.com/logs?query=service%3Acontention-classification-api%20%40classification_code%3A%2A%20%40classification_name%3A%2A&agg_m=count&agg_m_source=base&agg_t=count&clustering_pattern_field_path=%40contention_text&cols=%40contention_text%2C%40classification_code%2C%40classification_name&fromUser=true&messageDisplay=inline&refresh_mode=sliding&storage=hot&stream_sort=desc&viz=stream&from_ts=1751728044281&to_ts=1751900844281&live=true) to this query in Datadog Log Explorer.
 
-A sample of these results are in VA's Sharepoint (see https://github.com/department-of-veterans-affairs/vagov-claim-classification/issues/819).
+For a sample of these results, see https://github.com/department-of-veterans-affairs/vagov-claim-classification/issues/819.
