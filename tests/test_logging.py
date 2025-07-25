@@ -191,7 +191,6 @@ def test_non_classified_contentions(mocked_func: Mock) -> None:
         "endpoint": "/expanded-contention-classification",
         "processed_contention_text": None,
         "classification_method": classified_by,
-        "ml_sample": "john acl tear",
     }
     mocked_func.assert_called_once_with(expected_log)
 
@@ -317,7 +316,6 @@ def test_contentions_with_pii(mocked_func: Mock) -> None:
             "endpoint": "/expanded-contention-classification",
             "processed_contention_text": None,
             "classification_method": classified_by,
-            "ml_sample": "dependent claim child",
         },
         {
             "vagov_claim_id": test_claim.claim_id,
@@ -332,7 +330,6 @@ def test_contentions_with_pii(mocked_func: Mock) -> None:
             "endpoint": "/expanded-contention-classification",
             "processed_contention_text": None,
             "classification_method": classified_by,
-            "ml_sample": "john doe acl tear",
         },
     ]
 
@@ -445,7 +442,6 @@ def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
             "endpoint": "/expanded-contention-classification",
             "classification_method": classified_by,
             "processed_contention_text": None,
-            "ml_sample": "john doe acl tear",
         },
         {
             "vagov_claim_id": test_claim.claim_id,

@@ -5,9 +5,9 @@ from python_src.util.brd_classification_codes import get_classification_code
 
 
 class BaseClassifierForSimulation:
-    name: str = None
-    predictions: List[str] = None
-    prediction_probabilities: List[float] = None
+    name: str
+    predictions: List[str]
+    prediction_probabilities: List[float]
 
     def make_predictions(self, conditions: List[str]) -> bool:
         """

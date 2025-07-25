@@ -155,7 +155,7 @@ def get_classification_name_from_str_code(classification_code: str) -> str:
     try:
         classification_name = get_classification_name(int(classification_code))
     except ValueError:
-        logging.warning(f"ValueError getting classification name from [{prediction}]")
+        logging.warning(f"ValueError getting classification name from [{classification_code}]")
 
     return classification_name
 
