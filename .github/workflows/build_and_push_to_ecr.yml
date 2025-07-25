@@ -40,7 +40,6 @@ jobs:
 
       - name: Check if image already exists in ECR
         id: check-image
-        if:
         run: |
           if aws ecr describe-images --repository-name ${{ secrets.ECR_REPOSITORY }} --image-ids imageTag=${{ github.sha }} >/dev/null 2>&1; then
             echo "Image with tag ${{ github.sha }} already exists in ECR."
