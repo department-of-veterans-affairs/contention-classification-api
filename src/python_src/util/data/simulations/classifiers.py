@@ -6,8 +6,8 @@ from python_src.util.brd_classification_codes import get_classification_code
 
 class BaseClassifierForSimulation:
     name: str
-    predictions: List[str]
-    prediction_probabilities: List[float]
+    predictions: List[str] = None
+    prediction_probabilities: List[float] = None
 
     def make_predictions(self, conditions: List[str]) -> bool:
         """
