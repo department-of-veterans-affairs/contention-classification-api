@@ -33,7 +33,6 @@ class MLClassifier:
         try:
             cleaned_conditions = [self.clean_text(c) for c in conditions]
             outputs = self.session.run(self.get_outputs_for_session(), self.get_inputs_for_session(cleaned_conditions))
-
             labels = outputs[0]
             probabilities = outputs[1]
 
@@ -47,7 +46,6 @@ class MLClassifier:
 
     def get_inputs_for_session(self, conditions: list[str]) -> Dict[str, ndarray]:
         transformed_inputs = self.vectorizer.transform(conditions)
-
         return {self.session.get_inputs()[0].name: transformed_inputs.toarray().astype(float32)}
 
     def clean_text(self, text: str) -> str:
