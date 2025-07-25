@@ -156,7 +156,10 @@ def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
 @patch("src.python_src.util.classifier_utilities.get_classification_code")
 @patch("src.python_src.util.classifier_utilities.ml_classifier")
 def test_ml_classify_claim(mock_ml_classifier: MagicMock, mock_get_classification_code: MagicMock) -> None:
-    mock_ml_classifier.make_predictions.return_value = ["musculoskeletal", "Eye (Vision)"]
+    mock_ml_classifier.make_predictions.return_value = [
+        ("musculoskeletal", {"musculoskeletal": 0.92, "Eye (Vision)": 0.98}),
+        ("Eye (Vision)", {"musculoskeletal": 0.92, "Eye (Vision)": 0.98}),
+    ]
     mock_get_classification_code.return_value = "777"
 
     ai_response = ml_classify_claim(TEST_AI_REQUEST)

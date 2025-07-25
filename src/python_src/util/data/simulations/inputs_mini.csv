@@ -1,5 +1,3 @@
-# this data set represents three classifications:
-# 8968, 9012, 9016 (respectively: digestive, respiratory, skin)
 acne,9016
 alopecia,9016
 asthma,9012

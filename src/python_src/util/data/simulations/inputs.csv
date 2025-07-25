@@ -1,4 +1,4 @@
-## mappings we expect none of the classifiers to predict
+## inputs we expect none of the classifiers to predict, 000
 Africa,1010
 Antarctica,1010
 Asia,1010
@@ -6,7 +6,7 @@ Australia,1010
 Europe,1010
 North America,1010
 South America,1010
-## legitimate condition/classification mappings
+## legitimate condition/classification mappings, 000
 acne,9016
 adjustment disorder,8989
 agoraphobia,8989
