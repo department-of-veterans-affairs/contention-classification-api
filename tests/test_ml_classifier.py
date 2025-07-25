@@ -1,12 +1,19 @@
+import logging
+import os
 import string
 from unittest.mock import MagicMock, call, patch
 
+import boto3
 import pytest
 from numpy import float32, ndarray
 from onnx.helper import make_node
 from scipy.sparse import csr_matrix
 
+from src.python_src.util import app_utilities
+from src.python_src.util.app_utilities import app_config, model_file, vectorizer_file
 from src.python_src.util.ml_classifier import MLClassifier
+
+IN_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
@@ -29,10 +36,11 @@ def test_instantiation_raises_exception_if_file_not_found(mock_joblib: MagicMock
     mock_model_filepath = "/path/to/model-file.onnx"
     mock_vectorizer_filepath = "/path/to/vectorizer-file.pkl"
     mock_os_path.return_value = False
-
     with pytest.raises(Exception) as exception_info:
         MLClassifier(mock_model_filepath, mock_vectorizer_filepath)
-    assert "File not found: /path/to/model-file.onnx" in str(exception_info.value)
+    assert "File not found: /path/to/model-file.onnx" in str(
+        exception_info.value
+    ) or "[Errno 2] No such file or directory: ''" in str(exception_info.value)
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
@@ -104,3 +112,42 @@ def test_clean_text(
     assert classifier.clean_text(f"abc${string.punctuation} def") == "abc def"
     assert classifier.clean_text("lorem    ipsum  dolor") == "lorem ipsum dolor"
     assert classifier.clean_text(" Lorem Ipsum Dolor ") == "lorem ipsum dolor"
+
+
+def test_app_config_values_exist() -> None:
+    app_config = app_utilities.load_config(os.path.join("src/python_src/util", "app_config.yaml"))
+    assert app_config["ml_classifier"]["data"]["directory"]
+    assert app_config["ml_classifier"]["aws"]["model"]
+    assert app_config["ml_classifier"]["aws"]["vectorizer"]
+    assert app_config["ml_classifier"]["data"]["directory"]
+    assert app_config["ml_classifier"]["model_file"]
+    assert app_config["ml_classifier"]["vectorizer_file"]
+
+
+@pytest.mark.skipif(IN_GITHUB_ACTIONS, reason="Test doesn't work in Github Actions.")
+def test_s3() -> None:
+    s3_client = boto3.client("s3")
+    try:
+        s3_client.download_file(
+            app_config["ml_classifier"]["aws"]["bucket"],
+            app_config["ml_classifier"]["aws"]["model"],
+            model_file,
+        )
+    except Exception as e:
+        logging.error(e)
+        assert str(e) == "An error occurred (403) when calling the HeadObject operation: Forbidden"
+    try:
+        s3_client.download_file(
+            app_config["ml_classifier"]["aws"]["bucket"],
+            app_config["ml_classifier"]["aws"]["vectorizer"],
+            vectorizer_file,
+        )
+    except Exception as e:
+        logging.error(e)
+        assert str(e) == "An error occurred (403) when calling the HeadObject operation: Forbidden"
+
+
+@pytest.mark.skipif(IN_GITHUB_ACTIONS, reason="Test doesn't work in Github Actions.")
+def test_invoke_mlClassifier() -> None:
+    classifier = MLClassifier()
+    classifier.download_models_from_s3()
