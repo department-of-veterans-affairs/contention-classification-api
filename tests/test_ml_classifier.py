@@ -1,12 +1,11 @@
 import logging
 import os
 import string
-from typing import Any
 from unittest.mock import MagicMock, call, patch
 
 import boto3
 import pytest
-from moto import mock_aws
+from moto import mock_s3
 from numpy import float32, ndarray
 from onnx.helper import make_node
 from scipy.sparse import csr_matrix
@@ -16,6 +15,9 @@ from src.python_src.util.app_utilities import app_config, model_file, vectorizer
 from src.python_src.util.ml_classifier import MLClassifier
 
 IN_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
+BUCKET_NAME = "mybucket"
+FILE_NAME = "pyproject.toml"
+FILE_LOCATION = FILE_NAME
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
@@ -155,43 +157,40 @@ def test_invoke_mlClassifier() -> None:
     classifier.download_models_from_s3()
 
 
-BUCKET_NAME = "mybucket"
-FILE_NAME = "README.md"
-FILE_LOCATION = FILE_NAME
-
-
-@mock_aws  # type: ignore[misc]
-def test_client() -> None:
+@mock_s3
+def test_client():
     create_bucket()
-    s3 = boto3.client("s3", region_name="us-east-1")
+    s3 = boto3.client('s3')
 
-    with open(FILE_LOCATION, "rb") as data:
+    with open(FILE_LOCATION, 'rb') as data:
         s3.upload_fileobj(data, BUCKET_NAME, FILE_NAME)
     verify_upload()
 
 
-@mock_aws  # type: ignore[misc]
-def test_resource() -> None:
+@mock_s3
+def test_resource():
     s3_resource, _ = create_bucket()
     s3_resource.meta.client.upload_file(FILE_LOCATION, BUCKET_NAME, FILE_NAME)
+    #
     verify_upload()
 
 
-@mock_aws  # type: ignore[misc]
-def test_bucket_resource() -> None:
+@mock_s3
+def test_bucket_resource():
     _, bucket = create_bucket()
     bucket.upload_file(FILE_LOCATION, FILE_NAME)
+    #
     verify_upload()
 
 
-def verify_upload() -> None:
-    client = boto3.client("s3", region_name="us-east-1")
+def verify_upload():
+    client = boto3.client("s3")
     resp = client.get_object(Bucket=BUCKET_NAME, Key=FILE_NAME)
     content_length = resp["ResponseMetadata"]["HTTPHeaders"]["content-length"]
     print("Content-Length: {}".format(content_length))
 
 
-def create_bucket() -> tuple[Any, Any]:
-    s3 = boto3.resource("s3", region_name="us-east-1")
+def create_bucket():
+    s3 = boto3.resource("s3")
     bucket = s3.create_bucket(Bucket=BUCKET_NAME)
     return s3, bucket
