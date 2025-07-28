@@ -158,7 +158,7 @@ def test_invoke_mlClassifier() -> None:
     classifier.download_models_from_s3()
 
 
-@mock_aws  # type: ignore[misc]
+@mock_aws  # type: ignore
 def test_client() -> None:
     create_bucket()
     s3 = boto3.client("s3", region_name="us-east-1")
@@ -168,14 +168,14 @@ def test_client() -> None:
     verify_upload()
 
 
-@mock_aws  # type: ignore[misc]
+@mock_aws  # type: ignore
 def test_resource() -> None:
     s3_resource, _ = create_bucket()
     s3_resource.meta.client.upload_file(FILE_LOCATION, BUCKET_NAME, FILE_NAME)
     verify_upload()
 
 
-@mock_aws  # type: ignore[misc]
+@mock_aws  # type: ignore
 def test_bucket_resource() -> None:
     _, bucket = create_bucket()
     bucket.upload_file(FILE_LOCATION, FILE_NAME)
