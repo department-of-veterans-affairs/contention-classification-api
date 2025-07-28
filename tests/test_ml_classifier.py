@@ -1,11 +1,12 @@
 import logging
 import os
 import string
+from typing import Any
 from unittest.mock import MagicMock, call, patch
 
 import boto3
 import pytest
-from moto import mock_s3
+from moto import mock_aws
 from numpy import float32, ndarray
 from onnx.helper import make_node
 from scipy.sparse import csr_matrix
@@ -157,40 +158,38 @@ def test_invoke_mlClassifier() -> None:
     classifier.download_models_from_s3()
 
 
-@mock_s3
-def test_client():
+@mock_aws  # type: ignore[misc]
+def test_client() -> None:
     create_bucket()
-    s3 = boto3.client('s3')
+    s3 = boto3.client("s3", region_name="us-east-1")
 
-    with open(FILE_LOCATION, 'rb') as data:
+    with open(FILE_LOCATION, "rb") as data:
         s3.upload_fileobj(data, BUCKET_NAME, FILE_NAME)
     verify_upload()
 
 
-@mock_s3
-def test_resource():
+@mock_aws  # type: ignore[misc]
+def test_resource() -> None:
     s3_resource, _ = create_bucket()
     s3_resource.meta.client.upload_file(FILE_LOCATION, BUCKET_NAME, FILE_NAME)
-    #
     verify_upload()
 
 
-@mock_s3
-def test_bucket_resource():
+@mock_aws  # type: ignore[misc]
+def test_bucket_resource() -> None:
     _, bucket = create_bucket()
     bucket.upload_file(FILE_LOCATION, FILE_NAME)
-    #
     verify_upload()
 
 
-def verify_upload():
-    client = boto3.client("s3")
+def verify_upload() -> None:
+    client = boto3.client("s3", region_name="us-east-1")
     resp = client.get_object(Bucket=BUCKET_NAME, Key=FILE_NAME)
     content_length = resp["ResponseMetadata"]["HTTPHeaders"]["content-length"]
     print("Content-Length: {}".format(content_length))
 
 
-def create_bucket():
-    s3 = boto3.resource("s3")
+def create_bucket() -> tuple[Any, Any]:
+    s3 = boto3.resource("s3", region_name="us-east-1")
     bucket = s3.create_bucket(Bucket=BUCKET_NAME)
     return s3, bucket
