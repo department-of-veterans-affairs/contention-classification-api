@@ -98,6 +98,7 @@ pytest-cov = "6.2.1"
 bandit = {version = "1.8.6", extras = ["toml"]}
 types-pyyaml = "6.0.12.20250516"
 scikit-learn = "^1.7.1"
+moto = "^5.1.8"
 
 [tool.bandit]
 exclude_dirs = ["tests"]
