@@ -153,19 +153,19 @@ def test_app_config_values_exist() -> None:
 
     aws_model = app_config["ml_classifier"]["aws"]["model"]
     assert aws_model
-    assert any(term in aws_model.lower() for term in [".onnx", "model", "classifier"])
+    assert aws_model.lower().endswith(".onnx")
 
     aws_vectorizer = app_config["ml_classifier"]["aws"]["vectorizer"]
     assert aws_vectorizer
-    assert any(term in aws_vectorizer.lower() for term in [".pkl", "vectorizer", "features"])
+    assert aws_vectorizer.lower().endswith(".pkl")
 
     model_file_path = app_config["ml_classifier"]["model_file"]
     assert model_file_path
-    assert any(term in model_file_path.lower() for term in [".onnx", "model", "classifier"])
+    assert model_file_path.lower().endswith(".onnx")
 
     vectorizer_file_path = app_config["ml_classifier"]["vectorizer_file"]
     assert vectorizer_file_path
-    assert any(term in vectorizer_file_path.lower() for term in [".pkl", "vectorizer", "features"])
+    assert vectorizer_file_path.lower().endswith(".pkl")
 
 
 @patch("src.python_src.util.ml_classifier.boto3.client")
