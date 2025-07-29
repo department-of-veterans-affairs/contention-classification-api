@@ -2,7 +2,7 @@ import logging
 import os
 import re
 import string
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 import boto3
 import joblib
@@ -25,7 +25,6 @@ class MLClassifier:
         self.session = ort.InferenceSession(model_file)
         self.vectorizer = joblib.load(vectorizer_file)
 
-        
     def download_models_from_s3(
         self, model_file: str = "", vectorizer_file: str = "", model_directory_path: str = ""
     ) -> tuple[str, str, str]:
@@ -52,7 +51,6 @@ class MLClassifier:
             print(e)
         return model_file, vectorizer_file, model_directory_path
 
-      
     def make_predictions(self, conditions: list[str]) -> List[str] | Any:
         """Returns a list of the predicted classification names, for example:
         ['Musculoskeletal - Wrist', 'Eye (Vision)', 'Hearing Loss']
