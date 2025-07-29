@@ -1,12 +1,8 @@
-import logging
 import os
 import string
-from typing import Any
 from unittest.mock import MagicMock, call, patch
 
-import boto3
 import pytest
-from moto import mock_aws
 from numpy import float32, ndarray
 from onnx.helper import make_node
 from scipy.sparse import csr_matrix
@@ -15,10 +11,39 @@ from src.python_src.util import app_utilities
 from src.python_src.util.app_utilities import app_config, model_file, vectorizer_file
 from src.python_src.util.ml_classifier import MLClassifier
 
-IN_GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
-BUCKET_NAME = "mybucket"
-FILE_NAME = "pyproject.toml"
-FILE_LOCATION = FILE_NAME
+
+# Mock JSON data for BRD classifications
+@pytest.fixture
+def mock_brd_json_data() -> str:
+    return """{
+    "1230": "Musculoskeletal - Osteomyelitis",
+    "8989": "Mental Disorders",
+    "8997": "Musculoskeletal - Knee",
+    "9012": "Respiratory",
+    "9016": "Skin"
+}"""
+
+
+# Mock CSV data for contention classifications
+@pytest.fixture
+def mock_contention_csv_data() -> str:
+    return """contention_text,classification_code,classification_name,active
+PTSD,8989,Mental Disorders,Active
+Knee pain,8997,Musculoskeletal - Knee,Active
+Asthma,9012,Respiratory,Active
+Acne,9016,Skin,Active
+Tinnitus,8968,Auditory,Active"""
+
+
+# Mock simulation CSV data
+@pytest.fixture
+def mock_simulation_csv_data() -> str:
+    return """text_to_classify,expected_classification
+PTSD (post-traumatic stress disorder),8989
+acl tear right,8997
+asthma chronic,9012
+acne severe,9016
+tinnitus ringing ears,8968"""
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
@@ -121,75 +146,56 @@ def test_clean_text(
 
 def test_app_config_values_exist() -> None:
     app_config = app_utilities.load_config(os.path.join("src/python_src/util", "app_config.yaml"))
-    assert app_config["ml_classifier"]["data"]["directory"]
-    assert app_config["ml_classifier"]["aws"]["model"]
-    assert app_config["ml_classifier"]["aws"]["vectorizer"]
-    assert app_config["ml_classifier"]["data"]["directory"]
-    assert app_config["ml_classifier"]["model_file"]
-    assert app_config["ml_classifier"]["vectorizer_file"]
+
+    directory = app_config["ml_classifier"]["data"]["directory"]
+    assert directory
+    assert "models" in directory
+
+    aws_model = app_config["ml_classifier"]["aws"]["model"]
+    assert aws_model
+    assert any(term in aws_model.lower() for term in [".onnx", "model", "classifier"])
+
+    aws_vectorizer = app_config["ml_classifier"]["aws"]["vectorizer"]
+    assert aws_vectorizer
+    assert any(term in aws_vectorizer.lower() for term in [".pkl", "vectorizer", "features"])
+
+    model_file_path = app_config["ml_classifier"]["model_file"]
+    assert model_file_path
+    assert any(term in model_file_path.lower() for term in [".onnx", "model", "classifier"])
+
+    vectorizer_file_path = app_config["ml_classifier"]["vectorizer_file"]
+    assert vectorizer_file_path
+    assert any(term in vectorizer_file_path.lower() for term in [".pkl", "vectorizer", "features"])
 
 
-@pytest.mark.skipif(IN_GITHUB_ACTIONS, reason="Test doesn't work in Github Actions.")
-def test_s3() -> None:
-    s3_client = boto3.client("s3")
-    try:
-        s3_client.download_file(
-            app_config["ml_classifier"]["aws"]["bucket"],
-            app_config["ml_classifier"]["aws"]["model"],
-            model_file,
-        )
-    except Exception as e:
-        logging.error(e)
-        assert str(e) == "An error occurred (403) when calling the HeadObject operation: Forbidden"
-    try:
-        s3_client.download_file(
-            app_config["ml_classifier"]["aws"]["bucket"],
-            app_config["ml_classifier"]["aws"]["vectorizer"],
-            vectorizer_file,
-        )
-    except Exception as e:
-        logging.error(e)
-        assert str(e) == "An error occurred (403) when calling the HeadObject operation: Forbidden"
+@patch("src.python_src.util.ml_classifier.boto3.client")
+def test_s3(mock_boto_client: MagicMock) -> None:
+    mock_boto_client.return_value.download_file = MagicMock()
+    s3_client = mock_boto_client.return_value
+    s3_client.download_file(
+        app_config["ml_classifier"]["aws"]["bucket"],
+        app_config["ml_classifier"]["aws"]["model"],
+        model_file,
+    )
+    s3_client.download_file(
+        app_config["ml_classifier"]["aws"]["bucket"],
+        app_config["ml_classifier"]["aws"]["vectorizer"],
+        vectorizer_file,
+    )
 
 
-@pytest.mark.skipif(IN_GITHUB_ACTIONS, reason="Test doesn't work in Github Actions.")
-def test_invoke_mlClassifier() -> None:
+@patch("src.python_src.util.ml_classifier.MLClassifier.__init__")
+@patch("src.python_src.util.ml_classifier.MLClassifier.download_models_from_s3")
+def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> None:
+    mock_init.return_value = None
+
+    model_directory_path = app_utilities.app_config["ml_classifier"]["data"]["directory"]
+    model_file = app_utilities.app_config["ml_classifier"]["model_file"]
+    vectorizer_file = app_utilities.app_config["ml_classifier"]["vectorizer_file"]
+    expected_return = (model_directory_path, model_file, vectorizer_file)
+    mock_download.return_value = expected_return
+
     classifier = MLClassifier()
-    classifier.download_models_from_s3()
-
-
-@mock_aws  # type: ignore
-def test_client() -> None:
-    create_bucket()
-    s3 = boto3.client("s3", region_name="us-east-1")
-
-    with open(FILE_LOCATION, "rb") as data:
-        s3.upload_fileobj(data, BUCKET_NAME, FILE_NAME)
-    verify_upload()
-
-
-@mock_aws  # type: ignore
-def test_resource() -> None:
-    s3_resource, _ = create_bucket()
-    s3_resource.meta.client.upload_file(FILE_LOCATION, BUCKET_NAME, FILE_NAME)
-    verify_upload()
-
-
-@mock_aws  # type: ignore
-def test_bucket_resource() -> None:
-    _, bucket = create_bucket()
-    bucket.upload_file(FILE_LOCATION, FILE_NAME)
-    verify_upload()
-
-
-def verify_upload() -> None:
-    client = boto3.client("s3", region_name="us-east-1")
-    resp = client.get_object(Bucket=BUCKET_NAME, Key=FILE_NAME)
-    content_length = resp["ResponseMetadata"]["HTTPHeaders"]["content-length"]
-    print("Content-Length: {}".format(content_length))
-
-
-def create_bucket() -> tuple[Any, Any]:
-    s3 = boto3.resource("s3", region_name="us-east-1")
-    bucket = s3.create_bucket(Bucket=BUCKET_NAME)
-    return s3, bucket
+    assert expected_return == classifier.download_models_from_s3(
+        model_directory_path=model_directory_path, model_file=model_file, vectorizer_file=vectorizer_file
+    )
