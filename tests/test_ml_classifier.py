@@ -172,6 +172,8 @@ def test_app_config_values_exist() -> None:
 def test_s3(mock_boto_client: MagicMock) -> None:
     mock_boto_client.return_value.download_file = MagicMock()
     s3_client = mock_boto_client.return_value
+
+    # Call the download_file methods
     s3_client.download_file(
         app_config["ml_classifier"]["aws"]["bucket"],
         app_config["ml_classifier"]["aws"]["model"],
@@ -181,6 +183,25 @@ def test_s3(mock_boto_client: MagicMock) -> None:
         app_config["ml_classifier"]["aws"]["bucket"],
         app_config["ml_classifier"]["aws"]["vectorizer"],
         vectorizer_file,
+    )
+
+    # Assert download_file was called exactly twice
+    assert s3_client.download_file.call_count == 2
+
+    # Assert download_file was called with the correct arguments
+    s3_client.download_file.assert_has_calls(
+        [
+            call(
+                app_config["ml_classifier"]["aws"]["bucket"],
+                app_config["ml_classifier"]["aws"]["model"],
+                model_file,
+            ),
+            call(
+                app_config["ml_classifier"]["aws"]["bucket"],
+                app_config["ml_classifier"]["aws"]["vectorizer"],
+                vectorizer_file,
+            ),
+        ]
     )
 
 
