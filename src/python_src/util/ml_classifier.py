@@ -2,7 +2,7 @@ import logging
 import os
 import re
 import string
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 import boto3
 import joblib
@@ -25,6 +25,7 @@ class MLClassifier:
         self.session = ort.InferenceSession(model_file)
         self.vectorizer = joblib.load(vectorizer_file)
 
+        
     def download_models_from_s3(
         self, model_file: str = "", vectorizer_file: str = "", model_directory_path: str = ""
     ) -> tuple[str, str, str]:
@@ -51,30 +52,34 @@ class MLClassifier:
             print(e)
         return model_file, vectorizer_file, model_directory_path
 
+      
     def make_predictions(self, conditions: list[str]) -> List[str] | Any:
         """Returns a list of the predicted classification names, for example:
         ['Musculoskeletal - Wrist', 'Eye (Vision)', 'Hearing Loss']
-
         arg conditions: a list of strings, each element
                         representing a condition to be classified. for example,
                         ["numbness in right arm", "ringing noise in ears",
                         "asthma", "generalized anxiety disorder"]
         """
-        predictions = ["error"] * len(conditions)
+
+        predictions = [("error", 0.0)] * len(conditions)
+
         try:
             cleaned_conditions = [self.clean_text(c) for c in conditions]
             outputs = self.session.run(self.get_outputs_for_session(), self.get_inputs_for_session(cleaned_conditions))
-            predictions = outputs[0]
+            labels = outputs[0]
+            probabilities = outputs[1]
+
+            predictions = [(labels[i], probabilities[i][labels[i]]) for i in range(len(labels))]
         except Exception as e:
             logging.error(e)
         return predictions
 
     def get_outputs_for_session(self) -> list[str]:
-        return [self.session.get_outputs()[0].name]
+        return [i.name for i in self.session.get_outputs()]
 
     def get_inputs_for_session(self, conditions: list[str]) -> Dict[str, ndarray]:
         transformed_inputs = self.vectorizer.transform(conditions)
-
         return {self.session.get_inputs()[0].name: transformed_inputs.toarray().astype(float32)}
 
     def clean_text(self, text: str) -> str:

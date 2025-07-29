@@ -95,8 +95,9 @@ tmp/
 temp/
 
 ###############################################################################
-# Data models
+# Data models and simulations
 ###############################################################################
 src/python_src/util/models/
 *.pkl
 *.onnx
+src/python_src/util/data/simulations/outputs/

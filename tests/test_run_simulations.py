@@ -22,18 +22,18 @@ METRICS_REPORT_CONTENT = """
 weighted avg       1.00      1.00      1.00        10
 """
 
-PREDICTIONS_CSV_CONTENT = """text_to_classify,expected_classification,\
-expected_classification_label,prediction,prediction_label,is_accurate
-acne,9016,Skin,9016,Skin,True
-alopecia,9016,Skin,9016,Skin,True
-asthma,9012,Respiratory,8968,Digestive,False
-psoriasis,9016,Skin,9016,Skin,True
-vitiligo,9016,Skin,9012,Respiratory,False
+PREDICTIONS_CSV_CONTENT = """text_to_classify,expected_code,\
+expected_label,predicted_code,predicted_label,prediction_probability,is_accurate
+acne,9016,Skin,9016,Skin,1.0,True
+alopecia,9016,Skin,9016,Skin,1.0,True
+asthma,9012,Respiratory,8968,Digestive,1.0,False
+psoriasis,9016,Skin,9016,Skin,1.0,True
+vitiligo,9016,Skin,9012,Respiratory,1.0,False
 """
 
-AGGREGATE_PREDICTIONS_CSV_CONTENT = """text_to_classify,expected_classification,\
-expected_classification_label,apple_prediction,apple_prediction_label,\
-apple_is_accurate,banana_prediction,banana_prediction_label,banana_is_accurate
+AGGREGATE_PREDICTIONS_CSV_CONTENT = """text_to_classify,expected_code,\
+expected_label,apple_code,apple_label,\
+apple_is_accurate,banana_code,banana_label,banana_is_accurate
 acne,9016,Skin,9016,Skin,True,9000,Musculoskeletal - Osteomyelitis,False
 alopecia,9016,Skin,9016,Skin,True,9001,Musculoskeletal - Other,False
 asthma,9012,Respiratory,8968,Digestive,False,9002,Musculoskeletal - Shoulder,False

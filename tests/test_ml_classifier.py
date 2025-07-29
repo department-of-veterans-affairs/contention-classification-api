@@ -90,18 +90,25 @@ def test_classify_conditions(
     mock_os_path.return_value = True
 
     classifier = MLClassifier("model.onnx", "vectorizer.pkl")
-    mock_outputs_for_session.return_value = ["output_label"]
+    mock_outputs_for_session.return_value = ["output_label", "output_probability"]
     mock_inputs_for_session.return_value = {"input_label": ndarray(1)}
     classifier.session.run = MagicMock()
-    classifier.session.run.return_value = [["lorem", "ipsum", "dolor"]]
+    classifier.session.run.return_value = [
+        ["lorem", "ipsum", "dolor"],
+        [
+            {"lorem": 0.74, "ipsum": 0.1, "dolor": 0.1},
+            {"lorem": 0.24, "ipsum": 0.92, "dolor": 0.1},
+            {"lorem": 0.24, "ipsum": 0.92, "dolor": 0.95},
+        ],
+    ]
     mock_clean_text.return_value = "asthma"
 
     predictions = classifier.make_predictions(["ASTHMA", "asthma", "asth.ma"])
     mock_clean_text.assert_has_calls([call("ASTHMA"), call("asthma"), call("asth.ma")])
     mock_outputs_for_session.assert_called_once()
     mock_inputs_for_session.assert_called_with(["asthma", "asthma", "asthma"])
-    classifier.session.run.assert_called_with(["output_label"], {"input_label": ndarray(1)})
-    assert predictions == ["lorem", "ipsum", "dolor"]
+    classifier.session.run.assert_called_with(["output_label", "output_probability"], {"input_label": ndarray(1)})
+    assert predictions == [("lorem", 0.74), ("ipsum", 0.92), ("dolor", 0.95)]
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
