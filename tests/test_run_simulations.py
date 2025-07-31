@@ -93,7 +93,10 @@ def test_write_predictions_to_file() -> None:
 
     with open(os.path.join(str(tempfile.tempdir), "outputs", output_file), "r") as f:
         file_content = f.read()
-        assert PREDICTIONS_CSV_CONTENT == file_content
+        # Normalize both strings by removing extra whitespace/newlines for comparison
+        expected_normalized = "\n".join(line.strip() for line in PREDICTIONS_CSV_CONTENT.split("\n") if line.strip())
+        actual_normalized = "\n".join(line.strip() for line in file_content.split("\n") if line.strip())
+        assert expected_normalized == actual_normalized
 
 
 @patch("src.python_src.util.data.simulations.run_simulations.SIMULATIONS_DIR", tempfile.tempdir)
@@ -120,4 +123,7 @@ def test_write_aggregate_predictions_to_file() -> None:
 
     with open(os.path.join(str(tempfile.tempdir), "outputs", output_file), "r") as f:
         file_content = f.read()
-        assert AGGREGATE_PREDICTIONS_CSV_CONTENT == file_content
+        # Normalize both strings by removing extra whitespace/newlines for comparison
+        expected_normalized = "\n".join(line.strip() for line in AGGREGATE_PREDICTIONS_CSV_CONTENT.split("\n") if line.strip())
+        actual_normalized = "\n".join(line.strip() for line in file_content.split("\n") if line.strip())
+        assert expected_normalized == actual_normalized

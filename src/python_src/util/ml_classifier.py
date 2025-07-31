@@ -2,7 +2,7 @@ import logging
 import os
 import re
 import string
-from typing import Any, Dict, List
+from typing import Dict, List
 
 import boto3
 import joblib
@@ -52,9 +52,9 @@ class MLClassifier:
             raise Exception("S3 download failed") from e
         return model_file, vectorizer_file, model_directory_path
 
-    def make_predictions(self, conditions: list[str]) -> List[str]:
-        """Returns a list of the predicted classification names, for example:
-        ['Musculoskeletal - Wrist', 'Eye (Vision)', 'Hearing Loss']
+    def make_predictions(self, conditions: list[str]) -> List[tuple[str, float]]:
+        """Returns a list of the predicted classification names with probabilities, for example:
+        [('Musculoskeletal - Wrist', 0.95), ('Eye (Vision)', 0.88), ('Hearing Loss', 0.92)]
         arg conditions: a list of strings, each element
                         representing a condition to be classified. for example,
                         ["numbness in right arm", "ringing noise in ears",
