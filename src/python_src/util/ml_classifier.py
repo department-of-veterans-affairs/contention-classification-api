@@ -52,7 +52,7 @@ class MLClassifier:
             raise Exception("S3 download failed") from e
         return model_file, vectorizer_file, model_directory_path
 
-    def make_predictions(self, conditions: list[str]) -> List[str] | Any:
+    def make_predictions(self, conditions: list[str]) -> List[str]:
         """Returns a list of the predicted classification names, for example:
         ['Musculoskeletal - Wrist', 'Eye (Vision)', 'Hearing Loss']
         arg conditions: a list of strings, each element
