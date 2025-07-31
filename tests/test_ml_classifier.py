@@ -161,31 +161,38 @@ def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> 
     )
 
 
+@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
+@patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.boto3.client")
-def test_vectorizer_key_download(mock_boto_client: MagicMock) -> None:
-    """Test that the vectorizer key is correctly retrieved from config and used in S3 download."""
+def test_vectorizer_key_download(
+    mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_onnx_session: MagicMock, mock_joblib: MagicMock
+) -> None:
+    """Test that vectorizer key is properly retrieved from S3 during model download.
+
+    Validates that when downloading models from S3, the vectorizer key is:
+    - Successfully downloaded from the configured S3 bucket
+    - Properly stored in the expected local path
+    - Accessible for use in the classification process
+    Tests the S3 integration for vectorizer key retrieval.
+    """
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
+    mock_os_path.return_value = True
 
-    # Create a temporary MLClassifier instance to test the download method
-    with (
-        patch("src.python_src.util.ml_classifier.os.path.exists", return_value=True),
-        patch("src.python_src.util.ml_classifier.ort.InferenceSession"),
-        patch("src.python_src.util.ml_classifier.joblib.load"),
-    ):
-        MLClassifier()
+    # Create MLClassifier instance with mocked dependencies
+    classifier = MLClassifier()
 
-        # Test that the vectorizer key from config is used in S3 download
-        expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
-        expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]
-        expected_local_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+    # Call the download method to test S3 integration
+    classifier.download_models_from_s3()
 
-        # Verify the S3 download was called with the correct vectorizer key
-        mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_local_vectorizer_file)
+    # Test that the vectorizer key from config is used in S3 download
+    expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]
+    expected_local_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
 
-        # Verify the vectorizer key is the expected format
-        assert expected_vectorizer_key.endswith(".pkl"), "Vectorizer key should end with .pkl"
-        assert "vectorizer" in expected_vectorizer_key.lower(), "Vectorizer key should contain 'vectorizer'"
+    # Verify the S3 download was called with the correct vectorizer key
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_local_vectorizer_file)
 
 
 def test_vectorizer_key_config_validation() -> None:
