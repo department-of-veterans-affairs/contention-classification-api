@@ -48,7 +48,8 @@ class MLClassifier:
                 vectorizer_file,
             )
         except Exception as e:
-            print(e)
+            logging.error("Failed to download models from S3: %s", e)
+            raise Exception("S3 download failed") from e
         return model_file, vectorizer_file, model_directory_path
 
     def make_predictions(self, conditions: list[str]) -> List[str] | Any:
