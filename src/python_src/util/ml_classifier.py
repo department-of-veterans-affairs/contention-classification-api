@@ -32,9 +32,9 @@ class MLClassifier:
             model_directory_path = app_utilities.app_config["ml_classifier"]["data"]["directory"]
         os.makedirs(model_directory_path, exist_ok=True)
         if not model_file:
-            model_file = app_utilities.app_config["ml_classifier"]["model_file"]
+            model_file = app_utilities.app_config["ml_classifier"]["data"]["model_file"]
         if not vectorizer_file:
-            vectorizer_file = app_utilities.app_config["ml_classifier"]["vectorizer_file"]
+            vectorizer_file = app_utilities.app_config["ml_classifier"]["data"]["vectorizer_file"]
         try:
             s3_client = boto3.client("s3")
             s3_client.download_file(
@@ -44,7 +44,7 @@ class MLClassifier:
             )
             s3_client.download_file(
                 app_utilities.app_config["ml_classifier"]["aws"]["bucket"],
-                app_utilities.app_config["ml_classifier"]["aws"]["model"],
+                app_utilities.app_config["ml_classifier"]["aws"]["vectorizer"],
                 vectorizer_file,
             )
         except Exception as e:

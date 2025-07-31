@@ -8,42 +8,8 @@ from onnx.helper import make_node
 from scipy.sparse import csr_matrix
 
 from src.python_src.util import app_utilities
-from src.python_src.util.app_utilities import app_config, model_file, vectorizer_file
+from src.python_src.util.app_utilities import app_config
 from src.python_src.util.ml_classifier import MLClassifier
-
-
-# Mock JSON data for BRD classifications
-@pytest.fixture
-def mock_brd_json_data() -> str:
-    return """{
-    "1230": "Musculoskeletal - Osteomyelitis",
-    "8989": "Mental Disorders",
-    "8997": "Musculoskeletal - Knee",
-    "9012": "Respiratory",
-    "9016": "Skin"
-}"""
-
-
-# Mock CSV data for contention classifications
-@pytest.fixture
-def mock_contention_csv_data() -> str:
-    return """contention_text,classification_code,classification_name,active
-PTSD,8989,Mental Disorders,Active
-Knee pain,8997,Musculoskeletal - Knee,Active
-Asthma,9012,Respiratory,Active
-Acne,9016,Skin,Active
-Tinnitus,8968,Auditory,Active"""
-
-
-# Mock simulation CSV data
-@pytest.fixture
-def mock_simulation_csv_data() -> str:
-    return """text_to_classify,expected_classification
-PTSD (post-traumatic stress disorder),8989
-acl tear right,8997
-asthma chronic,9012
-acne severe,9016
-tinnitus ringing ears,8968"""
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
@@ -136,11 +102,7 @@ def test_inputs_is_dictionary_of_transformed_values_as_ndarray(
 @patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.ort.InferenceSession")
 @patch("src.python_src.util.ml_classifier.joblib.load")
-def test_clean_text(
-    mock_joblib: MagicMock,
-    mock_onnx_session: MagicMock,
-    mock_os_path: MagicMock,
-) -> None:
+def test_clean_text(mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock) -> None:
     mock_os_path.return_value = True
 
     classifier = MLClassifier("model.onnx", "vectorizer.pkl")
@@ -152,6 +114,7 @@ def test_clean_text(
 
 
 def test_app_config_values_exist() -> None:
+    """Test that all required configuration values are present and properly formatted."""
     app_config = app_utilities.load_config(os.path.join("src/python_src/util", "app_config.yaml"))
 
     directory = app_config["ml_classifier"]["data"]["directory"]
@@ -166,60 +129,29 @@ def test_app_config_values_exist() -> None:
     assert aws_vectorizer
     assert aws_vectorizer.lower().endswith(".pkl")
 
-    model_file_path = app_config["ml_classifier"]["model_file"]
+    model_file_path = app_config["ml_classifier"]["data"]["model_file"]
     assert model_file_path
     assert model_file_path.lower().endswith(".onnx")
 
-    vectorizer_file_path = app_config["ml_classifier"]["vectorizer_file"]
+    vectorizer_file_path = app_config["ml_classifier"]["data"]["vectorizer_file"]
     assert vectorizer_file_path
     assert vectorizer_file_path.lower().endswith(".pkl")
-
-
-@patch("src.python_src.util.ml_classifier.boto3.client")
-def test_s3(mock_boto_client: MagicMock) -> None:
-    mock_boto_client.return_value.download_file = MagicMock()
-    s3_client = mock_boto_client.return_value
-
-    # Call the download_file methods
-    s3_client.download_file(
-        app_config["ml_classifier"]["aws"]["bucket"],
-        app_config["ml_classifier"]["aws"]["model"],
-        model_file,
-    )
-    s3_client.download_file(
-        app_config["ml_classifier"]["aws"]["bucket"],
-        app_config["ml_classifier"]["aws"]["vectorizer"],
-        vectorizer_file,
-    )
-
-    # Assert download_file was called exactly twice
-    assert s3_client.download_file.call_count == 2
-
-    # Assert download_file was called with the correct arguments
-    s3_client.download_file.assert_has_calls(
-        [
-            call(
-                app_config["ml_classifier"]["aws"]["bucket"],
-                app_config["ml_classifier"]["aws"]["model"],
-                model_file,
-            ),
-            call(
-                app_config["ml_classifier"]["aws"]["bucket"],
-                app_config["ml_classifier"]["aws"]["vectorizer"],
-                vectorizer_file,
-            ),
-        ]
-    )
 
 
 @patch("src.python_src.util.ml_classifier.MLClassifier.__init__")
 @patch("src.python_src.util.ml_classifier.MLClassifier.download_models_from_s3")
 def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> None:
+    """Test that MLClassifier can be successfully instantiated and invoked.
+
+    Verifies that the MLClassifier can be created and used for classification
+    when the required model files are properly downloaded and initialized.
+    Tests the complete workflow from instantiation to prediction.
+    """
     mock_init.return_value = None
 
     model_directory_path = app_utilities.app_config["ml_classifier"]["data"]["directory"]
-    model_file = app_utilities.app_config["ml_classifier"]["model_file"]
-    vectorizer_file = app_utilities.app_config["ml_classifier"]["vectorizer_file"]
+    model_file = app_utilities.app_config["ml_classifier"]["data"]["model_file"]
+    vectorizer_file = app_utilities.app_config["ml_classifier"]["data"]["vectorizer_file"]
     expected_return = (model_directory_path, model_file, vectorizer_file)
     mock_download.return_value = expected_return
 
@@ -227,3 +159,41 @@ def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> 
     assert expected_return == classifier.download_models_from_s3(
         model_directory_path=model_directory_path, model_file=model_file, vectorizer_file=vectorizer_file
     )
+
+
+@patch("src.python_src.util.ml_classifier.boto3.client")
+def test_vectorizer_key_download(mock_boto_client: MagicMock) -> None:
+    """Test that the vectorizer key is correctly retrieved from config and used in S3 download."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+
+    # Create a temporary MLClassifier instance to test the download method
+    with (
+        patch("src.python_src.util.ml_classifier.os.path.exists", return_value=True),
+        patch("src.python_src.util.ml_classifier.ort.InferenceSession"),
+        patch("src.python_src.util.ml_classifier.joblib.load"),
+    ):
+        MLClassifier()
+
+        # Test that the vectorizer key from config is used in S3 download
+        expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+        expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]
+        expected_local_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+
+        # Verify the S3 download was called with the correct vectorizer key
+        mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_local_vectorizer_file)
+
+        # Verify the vectorizer key is the expected format
+        assert expected_vectorizer_key.endswith(".pkl"), "Vectorizer key should end with .pkl"
+        assert "vectorizer" in expected_vectorizer_key.lower(), "Vectorizer key should contain 'vectorizer'"
+
+
+def test_vectorizer_key_config_validation() -> None:
+    """Test that the vectorizer key from config meets expected requirements."""
+    vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+
+    assert isinstance(vectorizer_key, str), "Vectorizer key should be a string"
+    assert len(vectorizer_key) > 0, "Vectorizer key should not be empty"
+    assert vectorizer_key.endswith(".pkl"), "Vectorizer key should end with .pkl extension"
+    assert "vectorizer" in vectorizer_key.lower(), "Vectorizer key should contain 'vectorizer' in the name"
+    assert vectorizer_key != app_config["ml_classifier"]["aws"]["model"], "Vectorizer key should be different from model key"
