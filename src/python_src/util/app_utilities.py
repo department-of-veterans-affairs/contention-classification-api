@@ -102,7 +102,5 @@ ml_classifier = None
 model_file = app_config["ml_classifier"]["data"]["model_file"]
 vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
 model_path = app_config["ml_classifier"]["data"]["directory"]
-if os.path.exists(model_file) and os.path.exists(vectorizer_file):
-    from .ml_classifier import MLClassifier
-
-    ml_classifier = MLClassifier(model_file, vectorizer_file, model_path)
+from .ml_classifier import MLClassifier
+ml_classifier = MLClassifier(model_file, vectorizer_file, model_path)
