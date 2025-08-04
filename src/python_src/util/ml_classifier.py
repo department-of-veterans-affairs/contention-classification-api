@@ -35,18 +35,28 @@ class MLClassifier:
             model_file = app_utilities.app_config["ml_classifier"]["data"]["model_file"]
         if not vectorizer_file:
             vectorizer_file = app_utilities.app_config["ml_classifier"]["data"]["vectorizer_file"]
+
+        # Check if files already exist locally before attempting download
+        if os.path.exists(model_file) and os.path.exists(vectorizer_file):
+            logging.info("Model files found locally, skipping S3 download")
+            return model_file, vectorizer_file, model_directory_path
+
         try:
             s3_client = boto3.client("s3")
-            s3_client.download_file(
-                app_utilities.app_config["ml_classifier"]["aws"]["bucket"],
-                app_utilities.app_config["ml_classifier"]["aws"]["model"],
-                model_file,
-            )
-            s3_client.download_file(
-                app_utilities.app_config["ml_classifier"]["aws"]["bucket"],
-                app_utilities.app_config["ml_classifier"]["aws"]["vectorizer"],
-                vectorizer_file,
-            )
+            if not os.path.exists(model_file):
+                logging.info(f"Downloading model file from S3: {model_file}")
+                s3_client.download_file(
+                    app_utilities.app_config["ml_classifier"]["aws"]["bucket"],
+                    app_utilities.app_config["ml_classifier"]["aws"]["model"],
+                    model_file,
+                )
+            if not os.path.exists(vectorizer_file):
+                logging.info(f"Downloading vectorizer file from S3: {vectorizer_file}")
+                s3_client.download_file(
+                    app_utilities.app_config["ml_classifier"]["aws"]["bucket"],
+                    app_utilities.app_config["ml_classifier"]["aws"]["vectorizer"],
+                    vectorizer_file,
+                )
         except Exception as e:
             logging.error("Failed to download models from S3: %s", e)
             raise Exception("S3 download failed") from e
