@@ -278,3 +278,221 @@ def test_vectorizer_key_config_validation() -> None:
     assert vectorizer_key.endswith(".pkl"), "Vectorizer key should end with .pkl extension"
     assert "vectorizer" in vectorizer_key.lower(), "Vectorizer key should contain 'vectorizer' in the name"
     assert vectorizer_key != app_config["ml_classifier"]["aws"]["model"], "Vectorizer key should be different from model key"
+
+
+@patch("src.python_src.util.ml_classifier.os.environ.get")
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.boto3.client")
+def test_download_models_with_staging_environment(
+    mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_env_get: MagicMock
+) -> None:
+    """Test that S3 download uses the correct staging bucket when ENV=staging."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+    mock_os_path.return_value = False  # Files don't exist locally
+    mock_env_get.return_value = "staging"  # Set ENV to staging
+
+    from src.python_src.util.ml_classifier import MLClassifier
+
+    classifier = MLClassifier.__new__(MLClassifier)
+
+    result = classifier.download_models_from_s3()
+
+    # Verify staging bucket is used
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["staging"]
+    expected_model_key = app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+    expected_model_file = app_config["ml_classifier"]["data"]["model_file"]
+    expected_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, expected_model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_vectorizer_file)
+
+    assert result == (expected_model_file, expected_vectorizer_file, app_config["ml_classifier"]["data"]["directory"])
+
+
+@patch("src.python_src.util.ml_classifier.os.environ.get")
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.boto3.client")
+def test_download_models_with_prod_environment(
+    mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_env_get: MagicMock
+) -> None:
+    """Test that S3 download uses the correct prod bucket when ENV=prod."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+    mock_os_path.return_value = False  # Files don't exist locally
+    mock_env_get.return_value = "prod"  # Set ENV to prod
+
+    from src.python_src.util.ml_classifier import MLClassifier
+
+    classifier = MLClassifier.__new__(MLClassifier)
+
+    result = classifier.download_models_from_s3()
+
+    # Verify prod bucket is used
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["prod"]
+    expected_model_key = app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+    expected_model_file = app_config["ml_classifier"]["data"]["model_file"]
+    expected_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, expected_model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_vectorizer_file)
+
+    assert result == (expected_model_file, expected_vectorizer_file, app_config["ml_classifier"]["data"]["directory"])
+
+
+@patch("src.python_src.util.ml_classifier.os.environ.get")
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.boto3.client")
+def test_download_models_with_dev_environment(
+    mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_env_get: MagicMock
+) -> None:
+    """Test that S3 download uses the correct dev bucket when ENV=dev."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+    mock_os_path.return_value = False  # Files don't exist locally
+    mock_env_get.return_value = "dev"  # Set ENV to dev
+
+    from src.python_src.util.ml_classifier import MLClassifier
+
+    classifier = MLClassifier.__new__(MLClassifier)
+
+    result = classifier.download_models_from_s3()
+
+    # Verify dev bucket is used
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["dev"]
+    expected_model_key = app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+    expected_model_file = app_config["ml_classifier"]["data"]["model_file"]
+    expected_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, expected_model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_vectorizer_file)
+
+    assert result == (expected_model_file, expected_vectorizer_file, app_config["ml_classifier"]["data"]["directory"])
+
+
+@patch("src.python_src.util.ml_classifier.os.environ.get")
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.boto3.client")
+def test_download_models_with_sandbox_environment(
+    mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_env_get: MagicMock
+) -> None:
+    """Test that S3 download uses the correct sandbox bucket when ENV=sandbox."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+    mock_os_path.return_value = False  # Files don't exist locally
+    mock_env_get.return_value = "sandbox"  # Set ENV to sandbox
+
+    from src.python_src.util.ml_classifier import MLClassifier
+
+    classifier = MLClassifier.__new__(MLClassifier)
+
+    result = classifier.download_models_from_s3()
+
+    # Verify sandbox bucket is used
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["sandbox"]
+    expected_model_key = app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+    expected_model_file = app_config["ml_classifier"]["data"]["model_file"]
+    expected_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, expected_model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_vectorizer_file)
+
+    assert result == (expected_model_file, expected_vectorizer_file, app_config["ml_classifier"]["data"]["directory"])
+
+
+@patch("src.python_src.util.ml_classifier.os.environ.get")
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.boto3.client")
+@patch("src.python_src.util.ml_classifier.logging")
+def test_download_models_with_no_environment_defaults_to_staging(
+    mock_logging: MagicMock, mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_env_get: MagicMock
+) -> None:
+    """Test that S3 download defaults to staging bucket when ENV is not set."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+    mock_os_path.return_value = False  # Files don't exist locally
+    mock_env_get.return_value = None  # ENV not set
+
+    from src.python_src.util.ml_classifier import MLClassifier
+
+    classifier = MLClassifier.__new__(MLClassifier)
+
+    result = classifier.download_models_from_s3()
+
+    # Verify staging bucket is used as default
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["staging"]
+    expected_model_key = app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+    expected_model_file = app_config["ml_classifier"]["data"]["model_file"]
+    expected_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, expected_model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_vectorizer_file)
+
+    assert result == (expected_model_file, expected_vectorizer_file, app_config["ml_classifier"]["data"]["directory"])
+
+
+@patch("src.python_src.util.ml_classifier.os.environ.get")
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.boto3.client")
+@patch("src.python_src.util.ml_classifier.logging")
+def test_download_models_with_invalid_environment_fallback_to_staging(
+    mock_logging: MagicMock, mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_env_get: MagicMock
+) -> None:
+    """Test that S3 download falls back to staging bucket when ENV is set to an invalid value."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+    mock_os_path.return_value = False  # Files don't exist locally
+    mock_env_get.return_value = "invalid_env"  # Invalid ENV value
+
+    from src.python_src.util.ml_classifier import MLClassifier
+
+    classifier = MLClassifier.__new__(MLClassifier)
+
+    result = classifier.download_models_from_s3()
+
+    # Verify warning is logged for invalid environment
+    mock_logging.warning.assert_called_with("Environment 'invalid_env' not found in S3 bucket configuration")
+
+    # Verify staging bucket is used as fallback
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["staging"]
+    expected_model_key = app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+    expected_model_file = app_config["ml_classifier"]["data"]["model_file"]
+    expected_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, expected_model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_vectorizer_file)
+
+    assert result == (expected_model_file, expected_vectorizer_file, app_config["ml_classifier"]["data"]["directory"])
+
+
+@patch("src.python_src.util.ml_classifier.os.environ.get")
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.logging")
+def test_download_models_skips_s3_when_files_exist_regardless_of_environment(
+    mock_logging: MagicMock, mock_os_path: MagicMock, mock_env_get: MagicMock
+) -> None:
+    """Test that S3 download is skipped when files exist locally, regardless of environment setting."""
+    mock_os_path.return_value = True  # Files exist locally
+    mock_env_get.return_value = "prod"  # Set any environment
+
+    from src.python_src.util.ml_classifier import MLClassifier
+
+    classifier = MLClassifier.__new__(MLClassifier)
+
+    result = classifier.download_models_from_s3()
+
+    # Verify info log about skipping download
+    mock_logging.info.assert_called_with("Model files found locally, skipping S3 download")
+
+    # Verify expected file paths are returned
+    expected_model_file = app_config["ml_classifier"]["data"]["model_file"]
+    expected_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+    expected_directory = app_config["ml_classifier"]["data"]["directory"]
+
+    assert result == (expected_model_file, expected_vectorizer_file, expected_directory)

@@ -41,19 +41,24 @@ class MLClassifier:
             logging.info("Model files found locally, skipping S3 download")
             return model_file, vectorizer_file, model_directory_path
 
+        # Get ENV with a default value if not set
+        env = os.environ.get("ENV", "staging")  # defaults to 'development'
+        if env not in app_utilities.app_config["ml_classifier"]["aws"]["bucket"]:
+            logging.warning(f"Environment '{env}' not found in S3 bucket configuration")
+            env = "staging"
         try:
             s3_client = boto3.client("s3")
             if not os.path.exists(model_file):
                 logging.info(f"Downloading model file from S3: {model_file}")
                 s3_client.download_file(
-                    app_utilities.app_config["ml_classifier"]["aws"]["bucket"],
+                    app_utilities.app_config["ml_classifier"]["aws"]["bucket"][env],
                     app_utilities.app_config["ml_classifier"]["aws"]["model"],
                     model_file,
                 )
             if not os.path.exists(vectorizer_file):
                 logging.info(f"Downloading vectorizer file from S3: {vectorizer_file}")
                 s3_client.download_file(
-                    app_utilities.app_config["ml_classifier"]["aws"]["bucket"],
+                    app_utilities.app_config["ml_classifier"]["aws"]["bucket"][env],
                     app_utilities.app_config["ml_classifier"]["aws"]["vectorizer"],
                     vectorizer_file,
                 )
