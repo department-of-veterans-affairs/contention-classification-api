@@ -262,7 +262,7 @@ def test_download_models_from_s3_when_files_exist(mock_boto_client: MagicMock, m
     classifier = MLClassifier.__new__(MLClassifier)  # Create without calling __init__
 
     # Call download method directly
-    _result = classifier.download_models_from_s3()
+    classifier.download_models_from_s3()
 
     # Verify S3 download was NOT called since files exist locally
     mock_s3_client.download_file.assert_not_called()
