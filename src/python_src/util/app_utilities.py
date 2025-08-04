@@ -98,11 +98,10 @@ dropdown_values = build_logging_table(
     app_config["autosuggestion_table"]["active_autocomplete"],
 )
 
-ml_classifier = None
-model_file = app_config["ml_classifier"]["data"]["model_file"]
-vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
-model_path = app_config["ml_classifier"]["data"]["directory"]
 # delay import of MLClassifier to avoid circular dependency
 # MLClassifier may need to read from app_config, which is created in this file
 from .ml_classifier import MLClassifier
+model_path = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["data"]["directory"])
+model_file = os.path.join(model_path, app_config["ml_classifier"]["data"]["model_file"])
+vectorizer_file = os.path.join(model_path, app_config["ml_classifier"]["data"]["vectorizer_file"])
 ml_classifier = MLClassifier(model_file, vectorizer_file, model_path)
