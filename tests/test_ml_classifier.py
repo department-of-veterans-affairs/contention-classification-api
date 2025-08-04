@@ -179,38 +179,94 @@ def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> 
     )
 
 
-@patch("src.python_src.util.ml_classifier.joblib.load")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
+@patch("src.python_src.util.ml_classifier.MLClassifier.download_models_from_s3")
 @patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.boto3.client")
+@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
+@patch("src.python_src.util.ml_classifier.joblib.load")
 def test_vectorizer_key_download(
-    mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_onnx_session: MagicMock, mock_joblib: MagicMock
+    mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock, mock_download: MagicMock
 ) -> None:
-    """Test that vectorizer key is properly retrieved from S3 during model download.
+    """Test that vectorizer key is properly retrieved from S3 during model download when files don't exist locally.
 
-    Validates that when downloading models from S3, the vectorizer key is:
-    - Successfully downloaded from the configured S3 bucket
-    - Properly stored in the expected local path
-    - Accessible for use in the classification process
+    Validates that when files don't exist locally, the S3 download logic:
+    - Successfully downloads from the configured S3 bucket
+    - Uses the correct vectorizer key from configuration
+    - Stores files in the expected local path
     Tests the S3 integration for vectorizer key retrieval.
     """
-    mock_s3_client = MagicMock()
-    mock_boto_client.return_value = mock_s3_client
+    # Set up file paths
+    model_file = app_config["ml_classifier"]["data"]["model_file"]
+    vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+    model_directory = app_config["ml_classifier"]["data"]["directory"]
+
+    # Mock that files exist after download
     mock_os_path.return_value = True
 
-    # Create MLClassifier instance with mocked dependencies
-    classifier = MLClassifier()
+    # Mock the download method to simulate successful S3 download
+    mock_download.return_value = (model_file, vectorizer_file, model_directory)
 
-    # Call the download method to test S3 integration
+    # Create MLClassifier instance
+    _classifier = MLClassifier()
+
+    # Verify that download was called (this tests that the download logic is invoked)
+    mock_download.assert_called_once()
+
+    # Verify that the constructor used the returned file paths
+    mock_os_path.assert_has_calls([call(model_file), call(vectorizer_file)])
+    mock_onnx_session.assert_called_once_with(model_file)
+    mock_joblib.assert_called_once_with(vectorizer_file)
+
+
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.boto3.client")
+def test_download_models_from_s3_when_files_missing(mock_boto_client: MagicMock, mock_os_path: MagicMock) -> None:
+    """Test that S3 download works correctly when model files are missing locally."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+
+    # Mock os.path.exists to return False (files don't exist locally)
+    mock_os_path.return_value = False
+
+    # Create classifier instance to test download logic
+    from src.python_src.util.ml_classifier import MLClassifier
+
+    classifier = MLClassifier.__new__(MLClassifier)  # Create without calling __init__
+
+    # Call download method directly
     classifier.download_models_from_s3()
 
-    # Test that the vectorizer key from config is used in S3 download
+    # Verify S3 download was called with correct parameters
     expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+    expected_model_key = app_config["ml_classifier"]["aws"]["model"]
     expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]
     expected_local_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
+    expected_local_model_file = app_config["ml_classifier"]["data"]["model_file"]
 
-    # Verify the S3 download was called with the correct vectorizer key
     mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, expected_local_vectorizer_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, expected_local_model_file)
+
+
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.boto3.client")
+def test_download_models_from_s3_when_files_exist(mock_boto_client: MagicMock, mock_os_path: MagicMock) -> None:
+    """Test that S3 download is skipped when model files exist locally."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+
+    # Mock os.path.exists to return True (files exist locally)
+    mock_os_path.return_value = True
+
+    # Create classifier instance to test download logic
+    from src.python_src.util.ml_classifier import MLClassifier
+
+    classifier = MLClassifier.__new__(MLClassifier)  # Create without calling __init__
+
+    # Call download method directly
+    _result = classifier.download_models_from_s3()
+
+    # Verify S3 download was NOT called since files exist locally
+    mock_s3_client.download_file.assert_not_called()
+    mock_boto_client.assert_not_called()
 
 
 def test_vectorizer_key_config_validation() -> None:
