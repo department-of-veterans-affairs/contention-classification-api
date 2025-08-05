@@ -131,6 +131,7 @@ vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["dat
 
 # download all files from S3 if a full set is not already present locally
 if not os.path.exists(model_file) or not os.path.exists(vectorizer_file):
+    os.makedirs(model_directory, exist_ok=True)
     download_ml_models_from_s3(model_file, vectorizer_file)
 
 ml_classifier = None
