@@ -10,7 +10,7 @@ from .pydantic_models import (
     ClassifierResponse,
     VaGovClaim,
 )
-from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
+from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table, ml_classifier
 from .util.classifier_utilities import classify_claim, ml_classify_claim, supplement_with_ml_classification
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 
@@ -55,11 +55,15 @@ def get_health_status() -> Dict[str, str]:
         empty_tables.append("Expanded Lookup")
     if not len(dropdown_lookup_table):
         empty_tables.append("Contention Text Lookup")
-    if empty_tables:
+    if empty_tables or ml_classifier is None:
+        error_message = ""
         if len(empty_tables) == 1:
-            raise HTTPException(status_code=500, detail=f"{' and '.join(empty_tables)} table is empty")
-        else:
-            raise HTTPException(status_code=500, detail=f"{', '.join(empty_tables)} tables are empty")
+            error_message = f"{' and '.join(empty_tables)} table is empty."
+        elif empty_tables:
+            error_message = f"{', '.join(empty_tables)} tables are empty."
+        if ml_classifier is None:
+            error_message += " ML Classifier is not initialized."
+        raise HTTPException(status_code=500, detail=error_message.strip())
     return {"status": "ok"}
 
 
