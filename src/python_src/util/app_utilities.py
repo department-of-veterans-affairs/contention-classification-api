@@ -18,6 +18,7 @@ expanded_lookup_table
 dropdown_values
     List of autosuggestions
 """
+
 import logging
 import os
 from typing import Any, Dict, cast
@@ -100,6 +101,7 @@ dropdown_values = build_logging_table(
     app_config["autosuggestion_table"]["active_autocomplete"],
 )
 
+
 def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[str, str]:
     try:
         s3_client = boto3.client("s3")
@@ -128,9 +130,9 @@ model_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["
 vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["vectorizer_file"])
 
 # download all files from S3 if a full set is not already present locally
-if(not os.path.exists(model_file) or not os.path.exists(vectorizer_file)):
+if not os.path.exists(model_file) or not os.path.exists(vectorizer_file):
     download_ml_models_from_s3(model_file, vectorizer_file)
 
 ml_classifier = None
-if(os.path.exists(model_file) and os.path.exists(vectorizer_file)):
+if os.path.exists(model_file) and os.path.exists(vectorizer_file):
     ml_classifier = MLClassifier(model_file, vectorizer_file)

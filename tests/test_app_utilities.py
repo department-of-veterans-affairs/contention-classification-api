@@ -28,12 +28,14 @@ def test_download_models_from_s3_when_files_missing(mock_boto_client: MagicMock,
     mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, app_utilities.vectorizer_file)
     mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, app_utilities.model_file)
 
+
 @patch("src.python_src.util.ml_classifier.ort.InferenceSession")
 @patch("src.python_src.util.ml_classifier.joblib.load")
 @patch("src.python_src.util.app_utilities.os.path.exists")
 @patch("src.python_src.util.app_utilities.boto3.client")
 def test_does_not_download_models_from_s3_when_files_exist(
-    mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_joblib: MagicMock, mock_onnx_session: MagicMock) -> None:
+    mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_joblib: MagicMock, mock_onnx_session: MagicMock
+) -> None:
     """Test that S3 download is skipped when model files exist locally."""
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
