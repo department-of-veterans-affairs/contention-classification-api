@@ -18,16 +18,18 @@ expanded_lookup_table
 dropdown_values
     List of autosuggestions
 """
-
+import logging
 import os
 from typing import Any, Dict, cast
 
+import boto3
 from yaml import safe_load
 
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_dropdown_selections import build_logging_table
 from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .lookup_tables_utilities import InitValues
+from .ml_classifier import MLClassifier
 
 
 def load_config(config_file: str) -> Dict[str, Any]:
@@ -98,11 +100,37 @@ dropdown_values = build_logging_table(
     app_config["autosuggestion_table"]["active_autocomplete"],
 )
 
-ml_classifier = None
-model_file = app_config["ml_classifier"]["data"]["model_file"]
-vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
-model_path = app_config["ml_classifier"]["data"]["directory"]
-if os.path.exists(model_file) and os.path.exists(vectorizer_file):
-    from .ml_classifier import MLClassifier
+def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[str, str]:
+    try:
+        s3_client = boto3.client("s3")
 
-    ml_classifier = MLClassifier(model_file, vectorizer_file, model_path)
+        logging.info(f"Downloading model file from S3: {model_file}")
+        s3_client.download_file(
+            app_config["ml_classifier"]["aws"]["bucket"],
+            app_config["ml_classifier"]["aws"]["model"],
+            model_file,
+        )
+
+        logging.info(f"Downloading vectorizer file from S3: {vectorizer_file}")
+        s3_client.download_file(
+            app_config["ml_classifier"]["aws"]["bucket"],
+            app_config["ml_classifier"]["aws"]["vectorizer"],
+            vectorizer_file,
+        )
+    except Exception as e:
+        logging.error("Failed to download models from S3: %s", e)
+
+    return model_file, vectorizer_file
+
+
+model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["data"]["directory"])
+model_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["model_file"])
+vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["vectorizer_file"])
+
+# download all files from S3 if a full set is not already present locally
+if(not os.path.exists(model_file) or not os.path.exists(vectorizer_file)):
+    download_ml_models_from_s3(model_file, vectorizer_file)
+
+ml_classifier = None
+if(os.path.exists(model_file) and os.path.exists(vectorizer_file)):
+    ml_classifier = MLClassifier(model_file, vectorizer_file)
