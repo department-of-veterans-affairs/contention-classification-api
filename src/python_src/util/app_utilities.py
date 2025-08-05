@@ -113,6 +113,13 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
             model_file,
         )
 
+    except Exception as e:
+        logging.error("Failed to download models from S3: %s", e)
+        logging.error("attempted to download into %s", model_file)
+        logging.error(app_config["ml_classifier"]["aws"]["model"])
+        logging.error(s3_client.list_buckets())
+
+    try:
         logging.info(f"Downloading vectorizer file from S3: {vectorizer_file}")
         s3_client.download_file(
             app_config["ml_classifier"]["aws"]["bucket"],
@@ -121,6 +128,8 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
         )
     except Exception as e:
         logging.error("Failed to download models from S3: %s", e)
+        logging.error("attempted to download into %s", vectorizer_file)
+        logging.error(app_config["ml_classifier"]["aws"]["vectorizer"])
 
     return model_file, vectorizer_file
 
