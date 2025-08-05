@@ -103,38 +103,28 @@ dropdown_values = build_logging_table(
 
 
 def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[str, str]:
-    try:
-        s3_client = boto3.client("s3")
-        response = s3_client.list_buckets()
-        logging.info(response.get("Buckets"))
-    except Exception as e:
-        logging.error("Failed to list buckets: %s", e)
+    s3_client = boto3.client("s3")
+    bucket = app_config["ml_classifier"]["aws"]["bucket"]
 
     try:
         logging.info(f"Downloading model file from S3: {model_file}")
         s3_client.download_file(
-            app_config["ml_classifier"]["aws"]["bucket"],
+            bucket,
             app_config["ml_classifier"]["aws"]["model"],
             model_file,
         )
-
     except Exception as e:
-        logging.error("Failed to download models from S3: %s", e)
-        logging.error("attempted to download into %s", model_file)
-        logging.error(app_config["ml_classifier"]["aws"]["model"])
+        logging.error("Failed to download model file from S3: %s", e)
 
     try:
         logging.info(f"Downloading vectorizer file from S3: {vectorizer_file}")
         s3_client.download_file(
-            app_config["ml_classifier"]["aws"]["bucket"],
+            bucket,
             app_config["ml_classifier"]["aws"]["vectorizer"],
             vectorizer_file,
         )
     except Exception as e:
-        logging.error("Failed to download models from S3: %s", e)
-        logging.error("attempted to download into %s", vectorizer_file)
-        logging.error(app_config["ml_classifier"]["aws"]["vectorizer"])
-
+        logging.error("Failed to download vectorizer file from S3: %s", e)
     return model_file, vectorizer_file
 
 
