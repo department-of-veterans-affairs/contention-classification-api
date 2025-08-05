@@ -11,14 +11,12 @@ from numpy import float32, ndarray
 
 class MLClassifier:
     def __init__(self, model_file: str = "", vectorizer_file: str = ""):
-
         if not os.path.exists(model_file):
             raise Exception(f"File not found: {model_file}")
         if not os.path.exists(vectorizer_file):
             raise Exception(f"File not found: {vectorizer_file}")
         self.session = ort.InferenceSession(model_file)
         self.vectorizer = joblib.load(vectorizer_file)
-
 
     def make_predictions(self, conditions: list[str]) -> List[tuple[str, float]]:
         """Returns a list of the predicted classification names with probabilities, for example:

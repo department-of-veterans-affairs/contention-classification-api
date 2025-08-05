@@ -14,9 +14,7 @@ from src.python_src.util.ml_classifier import MLClassifier
 @patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.ort.InferenceSession")
 @patch("src.python_src.util.ml_classifier.joblib.load")
-def test_instantiation(
-    mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
-) -> None:
+def test_instantiation(mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock) -> None:
     mock_model_filepath = "/path/to/model-file.onnx"
     mock_vectorizer_filepath = "/path/to/vectorizer-file.pkl"
     mock_os_path.return_value = True
@@ -29,9 +27,7 @@ def test_instantiation(
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.joblib.load")
-def test_instantiation_raises_exception_if_file_not_found(
-    mock_joblib: MagicMock, mock_os_path: MagicMock
-) -> None:
+def test_instantiation_raises_exception_if_file_not_found(mock_joblib: MagicMock, mock_os_path: MagicMock) -> None:
     mock_model_filepath = "/path/to/model-file.onnx"
     mock_vectorizer_filepath = "/path/to/vectorizer-file.pkl"
     mock_os_path.return_value = False
@@ -107,9 +103,7 @@ def test_inputs_is_dictionary_of_transformed_values_as_ndarray(
 @patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.ort.InferenceSession")
 @patch("src.python_src.util.ml_classifier.joblib.load")
-def test_clean_text(
-    mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
-) -> None:
+def test_clean_text(mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock) -> None:
     mock_os_path.return_value = True
 
     classifier = MLClassifier("model.onnx", "vectorizer.pkl")
