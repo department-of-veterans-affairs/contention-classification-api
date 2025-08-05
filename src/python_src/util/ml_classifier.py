@@ -42,7 +42,7 @@ class MLClassifier:
             return model_file, vectorizer_file, model_directory_path
 
         # Get ENV with a default value if not set
-        env = os.environ.get("ENV", "staging")  # defaults to 'development'
+        env = os.environ.get("ENV", "staging")
         if env not in app_utilities.app_config["ml_classifier"]["aws"]["bucket"]:
             logging.warning(f"Environment '{env}' not found in S3 bucket configuration")
             env = "staging"
