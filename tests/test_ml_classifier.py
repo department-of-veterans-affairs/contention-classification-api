@@ -219,10 +219,14 @@ def test_vectorizer_key_download(
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.boto3.client")
-def test_download_models_from_s3_when_files_missing(mock_boto_client: MagicMock, mock_os_path: MagicMock) -> None:
+@patch("src.python_src.util.ml_classifier.os.environ.get")
+def test_download_models_from_s3_when_files_missing(
+    mock_env_get: MagicMock, mock_boto_client: MagicMock, mock_os_path: MagicMock
+) -> None:
     """Test that S3 download works correctly when model files are missing locally."""
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
+    mock_env_get.return_value = "staging"  # Set environment to staging
 
     # Mock os.path.exists to return False (files don't exist locally)
     mock_os_path.return_value = False
@@ -238,7 +242,7 @@ def test_download_models_from_s3_when_files_missing(mock_boto_client: MagicMock,
     # Verify S3 download was called with correct parameters
     expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
     expected_model_key = app_config["ml_classifier"]["aws"]["model"]
-    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["staging"]  # Use staging bucket
     expected_local_vectorizer_file = app_config["ml_classifier"]["data"]["vectorizer_file"]
     expected_local_model_file = app_config["ml_classifier"]["data"]["model_file"]
 
