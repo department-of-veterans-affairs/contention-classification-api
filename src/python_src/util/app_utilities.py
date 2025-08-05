@@ -119,7 +119,7 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
         )
     except Exception as e:
         logging.error("Failed to download models from S3: %s", e)
-        raise Exception("S3 download failed") from e
+
     return model_file, vectorizer_file
 
 
@@ -129,10 +129,7 @@ vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["dat
 
 # download all files from S3 if a full set is not already present locally
 if(not os.path.exists(model_file) or not os.path.exists(vectorizer_file)):
-    try:
-        download_ml_models_from_s3(model_file, vectorizer_file)
-    except Exception:
-        pass
+    download_ml_models_from_s3(model_file, vectorizer_file)
 
 ml_classifier = None
 if(os.path.exists(model_file) and os.path.exists(vectorizer_file)):
