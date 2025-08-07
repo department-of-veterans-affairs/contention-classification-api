@@ -103,6 +103,12 @@ dropdown_values = build_logging_table(
 
 
 def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[str, str]:
+    # Get ENV with a default value if not set
+    env = os.environ.get("ENV", "staging")  # defaults to 'staging'
+    if env not in app_config["ml_classifier"]["aws"]["bucket"]:
+        logging.warning(f"Environment '{env}' not found in S3 bucket configuration")
+        env = "staging"
+
     s3_client = boto3.client("s3")
     bucket = app_config["ml_classifier"]["aws"]["bucket"]
 
