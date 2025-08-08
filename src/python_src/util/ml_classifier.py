@@ -2,7 +2,7 @@ import logging
 import os
 import re
 import string
-from typing import Any, Dict, List, Tuple
+from typing import Dict, List
 
 import joblib
 import onnxruntime as ort
@@ -10,7 +10,7 @@ from numpy import float32, ndarray
 
 
 class MLClassifier:
-    def __init__(self, model_file: str, vectorizer_file: str):
+    def __init__(self, model_file: str = "", vectorizer_file: str = ""):
         if not os.path.exists(model_file):
             raise Exception(f"File not found: {model_file}")
         if not os.path.exists(vectorizer_file):
@@ -18,10 +18,9 @@ class MLClassifier:
         self.session = ort.InferenceSession(model_file)
         self.vectorizer = joblib.load(vectorizer_file)
 
-    def make_predictions(self, conditions: list[str]) -> List[Tuple[str, float]] | Any:
-        """Returns a list of the predicted classification names and the probability, for example:
-        [('Musculoskeletal - Wrist', 'Eye (Vision)', .971), ('Hearing Loss', .741)]
-
+    def make_predictions(self, conditions: list[str]) -> List[tuple[str, float]]:
+        """Returns a list of the predicted classification names with probabilities, for example:
+        [('Musculoskeletal - Wrist', 0.95), ('Eye (Vision)', 0.88), ('Hearing Loss', 0.92)]
         arg conditions: a list of strings, each element
                         representing a condition to be classified. for example,
                         ["numbness in right arm", "ringing noise in ears",
