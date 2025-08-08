@@ -39,6 +39,7 @@ def test_health_check_empty_contention_text_lookup(test_client: TestClient, monk
     assert response.status_code == 500
     assert response.json() == {"detail": "DC Lookup, Expanded Lookup, Contention Text Lookup tables are empty"}
 
+
 def test_health_check_no_ml_classifier(test_client: TestClient, monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr("src.python_src.api.dc_lookup_table", {"key1": "value:1"})
     monkeypatch.setattr("src.python_src.api.dropdown_lookup_table", {"key2": "value:2"})
@@ -47,6 +48,7 @@ def test_health_check_no_ml_classifier(test_client: TestClient, monkeypatch: Mon
     response = test_client.get("/health")
     assert response.status_code == 500
     assert response.json() == {"detail": "ML Classifier is not initialized"}
+
 
 def test_health_check_empty_dc_lookup_and_no_ml_classifier(test_client: TestClient, monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr("src.python_src.api.dc_lookup_table", {})

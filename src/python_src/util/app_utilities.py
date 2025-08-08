@@ -110,7 +110,7 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
         env = "staging"
 
     s3_client = boto3.client("s3")
-    bucket = app_config["ml_classifier"]["aws"]["bucket"]
+    bucket = app_config["ml_classifier"]["aws"]["bucket"][env]
 
     try:
         logging.info(f"Downloading model file from S3: {model_file}")

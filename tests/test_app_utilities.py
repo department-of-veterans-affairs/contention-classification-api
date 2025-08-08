@@ -1,7 +1,118 @@
 from importlib import reload
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, mock_open, patch
+
+import pytest
+from botocore.exceptions import ClientError, NoCredentialsError
+from yaml import YAMLError
 
 from src.python_src.util import app_utilities
+
+
+def test_load_config() -> None:
+    """Test that load_config successfully loads and parses a YAML file."""
+    mock_yaml_content = """
+    test_key: test_value
+    nested:
+        key: nested_value
+    list_key:
+        - item1
+        - item2
+    """
+    with patch("builtins.open", mock_open(read_data=mock_yaml_content)):
+        result = app_utilities.load_config("test_config.yaml")
+
+    expected = {"test_key": "test_value", "nested": {"key": "nested_value"}, "list_key": ["item1", "item2"]}
+    assert result == expected
+
+
+def test_load_config_file_error() -> None:
+    """Test that load_config raises appropriate error when file cannot be read."""
+    with patch("builtins.open", side_effect=FileNotFoundError("Config file not found")):
+        with pytest.raises(FileNotFoundError):
+            app_utilities.load_config("nonexistent_config.yaml")
+
+
+def test_load_config_yaml_parse_error() -> None:
+    """Test that load_config raises appropriate error for invalid YAML."""
+    invalid_yaml = "invalid: yaml: content: ["
+    with patch("builtins.open", mock_open(read_data=invalid_yaml)):
+        with pytest.raises(YAMLError):  # YAML parsing error
+            app_utilities.load_config("invalid_config.yaml")
+
+
+@patch("src.python_src.util.app_utilities.os.environ.get")
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_with_environment_staging(mock_boto_client: MagicMock, mock_env_get: MagicMock) -> None:
+    """Test download with staging environment."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+    mock_env_get.return_value = "staging"
+
+    model_file = "/tmp/test_model.onnx"
+    vectorizer_file = "/tmp/test_vectorizer.pkl"
+
+    result = app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+
+    # Verify staging bucket is used
+    expected_bucket = app_utilities.app_config["ml_classifier"]["aws"]["bucket"]["staging"]
+    expected_model_key = app_utilities.app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_utilities.app_config["ml_classifier"]["aws"]["vectorizer"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, vectorizer_file)
+    assert result == (model_file, vectorizer_file)
+
+
+@patch("src.python_src.util.app_utilities.os.environ.get")
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_with_environment_prod(mock_boto_client: MagicMock, mock_env_get: MagicMock) -> None:
+    """Test download with prod environment."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+    mock_env_get.return_value = "prod"
+
+    model_file = "/tmp/test_model.onnx"
+    vectorizer_file = "/tmp/test_vectorizer.pkl"
+
+    result = app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+
+    # Verify prod bucket is used
+    expected_bucket = app_utilities.app_config["ml_classifier"]["aws"]["bucket"]["prod"]
+    expected_model_key = app_utilities.app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_utilities.app_config["ml_classifier"]["aws"]["vectorizer"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, vectorizer_file)
+    assert result == (model_file, vectorizer_file)
+
+
+@patch("src.python_src.util.app_utilities.os.environ.get")
+@patch("src.python_src.util.app_utilities.logging")
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_invalid_environment_fallback(
+    mock_boto_client: MagicMock, mock_logging: MagicMock, mock_env_get: MagicMock
+) -> None:
+    """Test download with invalid environment falls back to staging."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+    mock_env_get.return_value = "invalid_env"
+
+    model_file = "/tmp/test_model.onnx"
+    vectorizer_file = "/tmp/test_vectorizer.pkl"
+
+    result = app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+
+    # Verify warning was logged
+    mock_logging.warning.assert_called_with("Environment 'invalid_env' not found in S3 bucket configuration")
+
+    # Verify staging bucket is used as fallback
+    expected_bucket = app_utilities.app_config["ml_classifier"]["aws"]["bucket"]["staging"]
+    expected_model_key = app_utilities.app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_utilities.app_config["ml_classifier"]["aws"]["vectorizer"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, vectorizer_file)
+    assert result == (model_file, vectorizer_file)
 
 
 @patch("src.python_src.util.app_utilities.os.path.exists")
@@ -23,10 +134,184 @@ def test_download_models_from_s3_when_files_missing(mock_boto_client: MagicMock,
     app_config = app_utilities.app_config
     expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
     expected_model_key = app_config["ml_classifier"]["aws"]["model"]
-    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["staging"]  # default env
 
     mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, app_utilities.vectorizer_file)
     mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, app_utilities.model_file)
+
+
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_success(mock_boto_client: MagicMock) -> None:
+    """Test successful download of ML models from S3."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+
+    model_file = "/tmp/test_model.onnx"
+    vectorizer_file = "/tmp/test_vectorizer.pkl"
+
+    # Call the function
+    result = app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+
+    # Verify return values
+    assert result == (model_file, vectorizer_file)
+
+    # Verify S3 client was created and called correctly
+    mock_boto_client.assert_called_once_with("s3")
+    assert mock_s3_client.download_file.call_count == 2
+
+    # Check the calls were made with correct parameters
+    app_config = app_utilities.app_config
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["staging"]  # default env
+    expected_model_key = app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, vectorizer_file)
+
+
+@patch("src.python_src.util.app_utilities.logging")
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_model_download_error(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
+    """Test handling of model download error from S3."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+
+    # Mock S3 client to raise an exception for model download
+    mock_s3_client.download_file.side_effect = [
+        ClientError({"Error": {"Code": "NoSuchKey"}}, "download_file"),  # Model download fails
+        None,  # Vectorizer download succeeds
+    ]
+
+    model_file = "/tmp/test_model.onnx"
+    vectorizer_file = "/tmp/test_vectorizer.pkl"
+
+    # Call the function
+    result = app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+
+    # Verify return values are still returned
+    assert result == (model_file, vectorizer_file)
+
+    # Verify error was logged
+    mock_logging.error.assert_called_once()
+    error_call = mock_logging.error.call_args[0]
+    assert "Failed to download model file from S3" in error_call[0]
+
+
+@patch("src.python_src.util.app_utilities.logging")
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_vectorizer_download_error(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
+    """Test handling of vectorizer download error from S3."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+
+    # Mock S3 client to raise an exception for vectorizer download
+    mock_s3_client.download_file.side_effect = [
+        None,  # Model download succeeds
+        ClientError({"Error": {"Code": "NoSuchKey"}}, "download_file"),  # Vectorizer download fails
+    ]
+
+    model_file = "/tmp/test_model.onnx"
+    vectorizer_file = "/tmp/test_vectorizer.pkl"
+
+    # Call the function
+    result = app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+
+    # Verify return values are still returned
+    assert result == (model_file, vectorizer_file)
+
+    # Verify error was logged
+    mock_logging.error.assert_called_once()
+    error_call = mock_logging.error.call_args[0]
+    assert "Failed to download vectorizer file from S3" in error_call[0]
+
+
+@patch("src.python_src.util.app_utilities.logging")
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_both_downloads_fail(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
+    """Test handling when both model and vectorizer downloads fail."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+
+    # Mock S3 client to raise exceptions for both downloads
+    mock_s3_client.download_file.side_effect = [
+        ClientError({"Error": {"Code": "NoSuchKey"}}, "download_file"),  # Model download fails
+        ClientError({"Error": {"Code": "AccessDenied"}}, "download_file"),  # Vectorizer download fails
+    ]
+
+    model_file = "/tmp/test_model.onnx"
+    vectorizer_file = "/tmp/test_vectorizer.pkl"
+
+    # Call the function
+    result = app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+
+    # Verify return values are still returned
+    assert result == (model_file, vectorizer_file)
+
+    # Verify both errors were logged
+    assert mock_logging.error.call_count == 2
+    error_calls = [call[0][0] for call in mock_logging.error.call_args_list]
+    assert any("Failed to download model file from S3" in call for call in error_calls)
+    assert any("Failed to download vectorizer file from S3" in call for call in error_calls)
+
+
+@patch("src.python_src.util.app_utilities.logging")
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_no_credentials(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
+    """Test handling of AWS credentials error."""
+    # Mock boto3.client to raise NoCredentialsError
+    mock_boto_client.side_effect = NoCredentialsError()
+
+    model_file = "/tmp/test_model.onnx"
+    vectorizer_file = "/tmp/test_vectorizer.pkl"
+
+    # Call the function and expect it to raise the exception
+    with pytest.raises(NoCredentialsError):
+        app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+
+
+@patch("src.python_src.util.app_utilities.logging")
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_logs_info_messages(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
+    """Test that info messages are logged during download process."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+
+    model_file = "/tmp/test_model.onnx"
+    vectorizer_file = "/tmp/test_vectorizer.pkl"
+
+    # Call the function
+    app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+
+    # Verify info messages were logged
+    assert mock_logging.info.call_count == 2
+    info_calls = [call[0][0] for call in mock_logging.info.call_args_list]
+    assert any("Downloading model file from S3" in call for call in info_calls)
+    assert any("Downloading vectorizer file from S3" in call for call in info_calls)
+
+
+@patch("src.python_src.util.app_utilities.boto3.client")
+def test_download_ml_models_from_s3_with_custom_paths(mock_boto_client: MagicMock) -> None:
+    """Test download with custom file paths."""
+    mock_s3_client = MagicMock()
+    mock_boto_client.return_value = mock_s3_client
+
+    custom_model_file = "/custom/path/my_model.onnx"
+    custom_vectorizer_file = "/custom/path/my_vectorizer.pkl"
+
+    # Call the function with custom paths
+    result = app_utilities.download_ml_models_from_s3(custom_model_file, custom_vectorizer_file)
+
+    # Verify return values match input
+    assert result == (custom_model_file, custom_vectorizer_file)
+
+    # Verify downloads were called with custom paths
+    app_config = app_utilities.app_config
+    expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["staging"]  # default env
+    expected_model_key = app_config["ml_classifier"]["aws"]["model"]
+    expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, custom_model_file)
+    mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, custom_vectorizer_file)
 
 
 @patch("src.python_src.util.ml_classifier.ort.InferenceSession")
