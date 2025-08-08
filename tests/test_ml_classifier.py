@@ -50,8 +50,7 @@ def test_instantiation_raises_exception_if_vectorizer_file_not_found(
     mock_vectorizer_filepath = "/path/to/vectorizer-file.pkl"
 
     # Mock model file exists but vectorizer file does not
-    # type: ignore
-    def mock_exists(path) -> bool:
+    def mock_exists(path: str) -> bool:
         return path == mock_model_filepath
 
     mock_os_path.side_effect = mock_exists
