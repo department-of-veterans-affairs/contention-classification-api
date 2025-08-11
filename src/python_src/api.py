@@ -1,6 +1,7 @@
 import time
 from typing import Awaitable, Callable, Dict
 
+import boto3
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import Response
 
@@ -92,3 +93,20 @@ def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResp
     response.is_fully_classified = num_classified == len(response.contentions)
 
     return response
+
+@app.get("/debug-aws")
+def debug_aws() -> Dict[str, str]:
+    sts_client = boto3.client('sts')
+    caller_identity = sts_client.get_caller_identity()
+
+    s3_resource = boto3.resource('s3')
+    try:
+        head_bucket = s3_resource.meta.client.head_bucket(Bucket='dsva-vagov-staging-contention-classification-api')
+        bucket_info = head_bucket.get('BucketArn')
+    except Exception as e:
+        bucket_info = str(e)
+
+    return {
+        "identity": caller_identity.get('Arn'),
+        "bucket": bucket_info
+        }
