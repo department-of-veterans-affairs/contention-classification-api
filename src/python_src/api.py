@@ -103,13 +103,15 @@ def get_aws_status() -> Dict[str, str]:
     try:
         caller_identity = sts_client.get_caller_identity().get('Arn')
     except Exception as e:
-        caller_identity = str(e)
+        log_as_json({"error": "Error retrieving AWS identity", "exception": str(e)})
+        caller_identity = "Error retrieving identity"
 
     try:
         head_bucket = s3_resource.meta.client.head_bucket(Bucket='dsva-vagov-staging-contention-classification-api')
         bucket_info = head_bucket.get('BucketArn')
     except Exception as e:
-        bucket_info = str(e)
+        log_as_json({"error": "Error accessing S3 bucket", "exception": str(e)})
+        bucket_info = "Error accessing bucket"
 
     return {
         "identity": caller_identity,
