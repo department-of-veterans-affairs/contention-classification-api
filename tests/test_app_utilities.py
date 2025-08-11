@@ -1,3 +1,19 @@
+"""
+Test suite for the app_utilities module.
+
+This module contains comprehensive tests for the app_utilities functions
+and global configurations, including YAML configuration loading, S3 model
+downloads, error handling, and module initialization.
+
+Test Categories:
+    - Configuration loading and validation tests
+    - S3 download functionality tests
+    - Environment-specific behavior tests
+    - Error handling and exception tests
+    - Module initialization and global variable tests
+    - AWS credential and permission tests
+"""
+
 from importlib import reload
 from unittest.mock import MagicMock, mock_open, patch
 
@@ -9,7 +25,12 @@ from src.python_src.util import app_utilities
 
 
 def test_load_config() -> None:
-    """Test that load_config successfully loads and parses a YAML file."""
+    """
+    Test that load_config successfully loads and parses a YAML file.
+
+    Verifies that the function correctly reads YAML content and converts
+    it into a Python dictionary with proper data type preservation.
+    """
     mock_yaml_content = """
     test_key: test_value
     nested:
@@ -26,14 +47,24 @@ def test_load_config() -> None:
 
 
 def test_load_config_file_error() -> None:
-    """Test that load_config raises appropriate error when file cannot be read."""
+    """
+    Test that load_config raises appropriate error when file cannot be read.
+
+    Verifies that the function properly handles file system errors
+    such as missing files or permission issues.
+    """
     with patch("builtins.open", side_effect=FileNotFoundError("Config file not found")):
         with pytest.raises(FileNotFoundError):
             app_utilities.load_config("nonexistent_config.yaml")
 
 
 def test_load_config_yaml_parse_error() -> None:
-    """Test that load_config raises appropriate error for invalid YAML."""
+    """
+    Test that load_config raises appropriate error for invalid YAML.
+
+    Verifies that malformed YAML content results in proper exception
+    handling and error reporting.
+    """
     invalid_yaml = "invalid: yaml: content: ["
     with patch("builtins.open", mock_open(read_data=invalid_yaml)):
         with pytest.raises(YAMLError):  # YAML parsing error
@@ -43,7 +74,12 @@ def test_load_config_yaml_parse_error() -> None:
 @patch("src.python_src.util.app_utilities.os.environ.get")
 @patch("src.python_src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_with_environment_staging(mock_boto_client: MagicMock, mock_env_get: MagicMock) -> None:
-    """Test download with staging environment."""
+    """
+    Test download functionality with staging environment configuration.
+
+    Verifies that when ENV is set to 'staging', the function correctly
+    selects the staging S3 bucket and downloads both model files.
+    """
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
     mock_env_get.return_value = "staging"
@@ -66,7 +102,12 @@ def test_download_ml_models_from_s3_with_environment_staging(mock_boto_client: M
 @patch("src.python_src.util.app_utilities.os.environ.get")
 @patch("src.python_src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_with_environment_prod(mock_boto_client: MagicMock, mock_env_get: MagicMock) -> None:
-    """Test download with prod environment."""
+    """
+    Test download functionality with production environment configuration.
+
+    Verifies that when ENV is set to 'prod', the function correctly
+    selects the production S3 bucket and handles downloads appropriately.
+    """
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
     mock_env_get.return_value = "prod"
@@ -92,7 +133,13 @@ def test_download_ml_models_from_s3_with_environment_prod(mock_boto_client: Magi
 def test_download_ml_models_from_s3_invalid_environment_fallback(
     mock_boto_client: MagicMock, mock_logging: MagicMock, mock_env_get: MagicMock
 ) -> None:
-    """Test download with invalid environment falls back to staging."""
+    """
+    Test download behavior with invalid environment falls back to staging.
+
+    Verifies that when an unrecognized environment is specified,
+    the function logs a warning and defaults to the staging environment
+    for safe fallback behavior.
+    """
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
     mock_env_get.return_value = "invalid_env"
@@ -118,7 +165,13 @@ def test_download_ml_models_from_s3_invalid_environment_fallback(
 @patch("src.python_src.util.app_utilities.os.path.exists")
 @patch("src.python_src.util.app_utilities.boto3.client")
 def test_download_models_from_s3_when_files_missing(mock_boto_client: MagicMock, mock_os_path: MagicMock) -> None:
-    """Test that S3 download works correctly when model files are missing locally."""
+    """
+    Test that S3 download works correctly when model files are missing locally.
+
+    Verifies the module initialization behavior when local model files
+    don't exist, ensuring S3 download is triggered automatically
+    during module import.
+    """
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
 
@@ -142,7 +195,15 @@ def test_download_models_from_s3_when_files_missing(mock_boto_client: MagicMock,
 
 @patch("src.python_src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_success(mock_boto_client: MagicMock) -> None:
-    """Test successful download of ML models from S3."""
+    """
+    Test successful download of ML models from S3.
+
+    Verifies the complete successful workflow including:
+    - S3 client creation
+    - Proper API calls with correct parameters
+    - Return value validation
+    - Expected number of download operations
+    """
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
 
@@ -172,7 +233,15 @@ def test_download_ml_models_from_s3_success(mock_boto_client: MagicMock) -> None
 @patch("src.python_src.util.app_utilities.logging")
 @patch("src.python_src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_model_download_error(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
-    """Test handling of model download error from S3."""
+    """
+    Test handling of model download error from S3.
+
+    Verifies that when the model file download fails due to S3 errors
+    (like missing keys or access issues), the function:
+    - Logs the error appropriately
+    - Continues execution for the vectorizer download
+    - Still returns the expected file paths
+    """
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
 
@@ -200,7 +269,13 @@ def test_download_ml_models_from_s3_model_download_error(mock_boto_client: Magic
 @patch("src.python_src.util.app_utilities.logging")
 @patch("src.python_src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_vectorizer_download_error(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
-    """Test handling of vectorizer download error from S3."""
+    """
+    Test handling of vectorizer download error from S3.
+
+    Verifies that when the vectorizer file download fails,
+    the function handles the error gracefully while maintaining
+    system stability and proper error logging.
+    """
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
 
@@ -228,7 +303,13 @@ def test_download_ml_models_from_s3_vectorizer_download_error(mock_boto_client: 
 @patch("src.python_src.util.app_utilities.logging")
 @patch("src.python_src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_both_downloads_fail(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
-    """Test handling when both model and vectorizer downloads fail."""
+    """
+    Test handling when both model and vectorizer downloads fail.
+
+    Verifies robust error handling when both S3 downloads encounter
+    failures, ensuring proper logging of all errors and graceful
+    degradation of functionality.
+    """
     mock_s3_client = MagicMock()
     mock_boto_client.return_value = mock_s3_client
 
@@ -257,7 +338,13 @@ def test_download_ml_models_from_s3_both_downloads_fail(mock_boto_client: MagicM
 @patch("src.python_src.util.app_utilities.logging")
 @patch("src.python_src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_no_credentials(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
-    """Test handling of AWS credentials error."""
+    """
+    Test handling of AWS credentials error.
+
+    Verifies that when AWS credentials are missing or invalid,
+    the function properly propagates the NoCredentialsError
+    to allow appropriate error handling at higher levels.
+    """
     # Mock boto3.client to raise NoCredentialsError
     mock_boto_client.side_effect = NoCredentialsError()
 
@@ -341,7 +428,15 @@ def test_does_not_download_models_from_s3_when_files_exist(
 
 
 def test_aws_model_key_config_validation() -> None:
-    """Test that the model key from config meets expected requirements."""
+    """
+    Test that the model key from config meets expected requirements.
+
+    Validates that the S3 model key configuration is properly formatted:
+    - Is a non-empty string
+    - Has correct file extension (.onnx)
+    - Contains identifying keywords
+    - Is unique from other configuration keys
+    """
     app_config = app_utilities.app_config
     model_key = app_config["ml_classifier"]["aws"]["model"]
 
@@ -353,7 +448,15 @@ def test_aws_model_key_config_validation() -> None:
 
 
 def test_aws_vectorizer_key_config_validation() -> None:
-    """Test that the vectorizer key from config meets expected requirements."""
+    """
+    Test that the vectorizer key from config meets expected requirements.
+
+    Validates that the S3 vectorizer key configuration is properly formatted:
+    - Is a non-empty string
+    - Has correct file extension (.pkl)
+    - Contains identifying keywords
+    - Is unique from other configuration keys
+    """
     app_config = app_utilities.app_config
     vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
 

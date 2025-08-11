@@ -1,3 +1,19 @@
+"""
+Test suite for the MLClassifier module.
+
+This module contains comprehensive tests for the MLClassifier class,
+including initialization, prediction functionality, text cleaning,
+error handling, and integration with configuration systems.
+
+Test Categories:
+    - Instantiation and validation tests
+    - Prediction and classification tests
+    - Input/output processing tests
+    - Text cleaning and preprocessing tests
+    - Error handling and exception tests
+    - Configuration validation tests
+"""
+
 import os
 import string
 from unittest.mock import MagicMock, call, patch
@@ -15,6 +31,7 @@ from src.python_src.util.ml_classifier import MLClassifier
 @patch("src.python_src.util.ml_classifier.ort.InferenceSession")
 @patch("src.python_src.util.ml_classifier.joblib.load")
 def test_instantiation(mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock) -> None:
+    """Test successful instantiation of MLClassifier with valid file paths."""
     mock_model_filepath = "/path/to/model-file.onnx"
     mock_vectorizer_filepath = "/path/to/vectorizer-file.pkl"
     mock_os_path.return_value = True
@@ -28,6 +45,7 @@ def test_instantiation(mock_joblib: MagicMock, mock_onnx_session: MagicMock, moc
 @patch("src.python_src.util.ml_classifier.os.path.exists")
 @patch("src.python_src.util.ml_classifier.joblib.load")
 def test_instantiation_raises_exception_if_file_not_found(mock_joblib: MagicMock, mock_os_path: MagicMock) -> None:
+    """Test that MLClassifier raises exception when model file is not found."""
     mock_model_filepath = "/path/to/model-file.onnx"
     mock_vectorizer_filepath = "/path/to/vectorizer-file.pkl"
     mock_os_path.return_value = False
@@ -74,6 +92,13 @@ def test_classify_conditions(
     mock_onnx_session: MagicMock,
     mock_os_path: MagicMock,
 ) -> None:
+    """
+    Test classification of multiple conditions with mocked model predictions.
+
+    Verifies that the make_predictions method correctly processes multiple
+    conditions through the full pipeline: text cleaning, vectorization,
+    model inference, and result formatting.
+    """
     mock_os_path.return_value = True
 
     classifier = MLClassifier("model.onnx", "vectorizer.pkl")
@@ -104,6 +129,13 @@ def test_classify_conditions(
 def test_inputs_is_dictionary_of_transformed_values_as_ndarray(
     mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
 ) -> None:
+    """
+    Test that input transformation produces correctly formatted model inputs.
+
+    Verifies that the get_inputs_for_session method properly transforms
+    text conditions into the expected dictionary format with numpy arrays
+    suitable for ONNX model inference.
+    """
     mock_os_path.return_value = True
     classifier = MLClassifier("model.onnx", "vectorizer.pkl")
 
@@ -125,6 +157,15 @@ def test_inputs_is_dictionary_of_transformed_values_as_ndarray(
 @patch("src.python_src.util.ml_classifier.ort.InferenceSession")
 @patch("src.python_src.util.ml_classifier.joblib.load")
 def test_clean_text(mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock) -> None:
+    """
+    Test text cleaning functionality for various input scenarios.
+
+    Verifies that the clean_text method properly handles:
+    - Case conversion (uppercase to lowercase)
+    - Punctuation removal
+    - Whitespace normalization
+    - Leading/trailing space trimming
+    """
     mock_os_path.return_value = True
 
     classifier = MLClassifier("model.onnx", "vectorizer.pkl")
@@ -136,7 +177,13 @@ def test_clean_text(mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_o
 
 
 def test_app_config_values_exist() -> None:
-    """Test that all required configuration values are present and properly formatted."""
+    """
+    Test that all required configuration values are present and properly formatted.
+
+    Validates the application configuration for ML classifier components,
+    ensuring all required paths, file extensions, and directory structures
+    are correctly defined.
+    """
     app_config = app_utilities.load_config(os.path.join("src/python_src/util", "app_config.yaml"))
 
     directory = app_config["ml_classifier"]["data"]["directory"]
@@ -163,11 +210,15 @@ def test_app_config_values_exist() -> None:
 @patch("src.python_src.util.ml_classifier.MLClassifier.__init__")
 @patch("src.python_src.util.app_utilities.download_ml_models_from_s3")
 def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> None:
-    """Test that MLClassifier can be successfully instantiated and invoked.
+    """
+    Test that MLClassifier can be successfully instantiated and invoked.
 
     Verifies that the MLClassifier can be created and used for classification
     when the required model files are properly downloaded and initialized.
     Tests the complete workflow from instantiation to prediction.
+
+    This test ensures the integration between the download functionality
+    and classifier initialization works correctly.
     """
     mock_init.return_value = None
 
@@ -186,7 +237,13 @@ def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> 
 def test_make_predictions_handles_exceptions(
     mock_logging: MagicMock, mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
 ) -> None:
-    """Test that make_predictions handles exceptions gracefully and logs errors."""
+    """
+    Test that make_predictions handles exceptions gracefully and logs errors.
+
+    Verifies that when the model inference fails due to exceptions,
+    the method returns appropriate error tuples for each input condition
+    and logs the error for debugging purposes.
+    """
     mock_model_filepath = "/path/to/model-file.onnx"
     mock_vectorizer_filepath = "/path/to/vectorizer-file.pkl"
     mock_os_path.return_value = True

@@ -34,6 +34,26 @@ from .ml_classifier import MLClassifier
 
 
 def load_config(config_file: str) -> Dict[str, Any]:
+    """
+    Load configuration from a YAML file.
+
+    Reads and parses a YAML configuration file into a Python dictionary.
+
+    Args:
+        config_file (str): Path to the YAML configuration file.
+
+    Returns:
+        Dict[str, Any]: Dictionary containing the parsed configuration data.
+
+    Raises:
+        FileNotFoundError: If the configuration file does not exist.
+        yaml.YAMLError: If the YAML file is malformed or cannot be parsed.
+
+    Example:
+        >>> config = load_config("app_config.yaml")
+        >>> print(config["lut_default_value"])
+        'Other'
+    """
     with open(config_file, "r") as f:
         return cast(Dict[str, Any], safe_load(f))
 
@@ -103,6 +123,34 @@ dropdown_values = build_logging_table(
 
 
 def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[str, str]:
+    """
+    Download machine learning model files from AWS S3.
+
+    Downloads both the ONNX model file and vectorizer pickle file from S3
+    based on the current environment configuration. The function determines
+    the appropriate S3 bucket based on the ENV environment variable.
+
+    Args:
+        model_file (str): Local path where the model file should be saved.
+        vectorizer_file (str): Local path where the vectorizer file should be saved.
+
+    Returns:
+        tuple[str, str]: Tuple of (model_file, vectorizer_file) paths.
+
+    Environment Variables:
+        ENV: Determines which S3 bucket to use ('dev', 'staging', 'prod', 'sandbox').
+             Defaults to 'staging' if not set or invalid.
+
+    Note:
+        - Logs info messages during download process
+        - Logs errors if downloads fail but continues execution
+        - Falls back to 'staging' environment for unknown ENV values
+
+    Example:
+        >>> model_path, vectorizer_path = download_ml_models_from_s3(
+        ...     "/tmp/model.onnx", "/tmp/vectorizer.pkl"
+        ... )
+    """
     # Get ENV with a default value if not set
     env = os.environ.get("ENV", "staging")  # defaults to 'staging'
     if env not in app_config["ml_classifier"]["aws"]["bucket"]:
