@@ -56,14 +56,14 @@ def get_health_status() -> Dict[str, str]:
     if not len(dropdown_lookup_table):
         empty_tables.append("Contention Text Lookup")
     if empty_tables or ml_classifier is None:
-        errors = []
+        error_message = ""
         if len(empty_tables) == 1:
-            errors.append(f"{empty_tables[0]} table is empty")
+            error_message = f"{' and '.join(empty_tables)} table is empty."
         elif empty_tables:
-            errors.append(f"{', '.join(empty_tables)} tables are empty")
+            error_message = f"{', '.join(empty_tables)} tables are empty."
         if ml_classifier is None:
-            errors.append("ML Classifier is not initialized")
-        raise HTTPException(status_code=500, detail=", ".join(errors))
+            error_message += " ML Classifier is not initialized."
+        raise HTTPException(status_code=500, detail=error_message.strip())
     return {"status": "ok"}
 
 
