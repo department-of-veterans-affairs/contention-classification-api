@@ -54,6 +54,49 @@ Use Poetry to install all dependencies:
 poetry install
 ```
 
+#### Configure AWS Credentials
+
+This application requires AWS credentials to be configured locally for accessing AWS services. You can set up your AWS credentials using one of the following methods:
+
+**Option 1: AWS CLI Configuration**
+Install the AWS CLI and configure your credentials:
+
+```bash
+pip install awscli
+aws configure
+```
+
+When prompted, enter your:
+- AWS Access Key ID
+- AWS Secret Access Key
+- Default region (e.g., `us-gov-west-1`)
+- Default output format (e.g., `json`)
+
+**Option 2: Environment Variables**
+Set the following environment variables in your shell:
+
+```bash
+export AWS_ACCESS_KEY_ID=your_access_key_id
+export AWS_SECRET_ACCESS_KEY=your_secret_access_key
+export AWS_DEFAULT_REGION=us-gov-west-1
+```
+
+**Option 3: AWS Credentials File**
+Create or update `~/.aws/credentials`:
+
+```ini
+[default]
+aws_access_key_id = your_access_key_id
+aws_secret_access_key = your_secret_access_key
+```
+
+And `~/.aws/config`:
+
+```ini
+[default]
+region = us-gov-west-1
+```
+
 #### Install pre-commit hooks
 
 ```bash
