@@ -16,7 +16,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # token with read/write repo access for abd-vro-machine
           token: ${{ secrets.ABD_VRO_MACHINE_READ_WRITE_REPO }}
