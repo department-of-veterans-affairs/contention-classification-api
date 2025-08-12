@@ -41,7 +41,7 @@ jobs:
       validated_sha: ${{ steps.validate-sha.outputs.validated_sha }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -128,7 +128,7 @@ jobs:
           env_variable_name: GITHUB_TOKEN
 
       - name: Check out vsp-infra-application-manifests
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: department-of-veterans-affairs/vsp-infra-application-manifests
           token: ${{ env.GITHUB_TOKEN }}
