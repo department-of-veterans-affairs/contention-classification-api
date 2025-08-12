@@ -93,14 +93,6 @@ class MLClassifier:
             If an error occurs during prediction, returns error tuples with
             ("error", 0.0) for each condition.
         """
-        """Returns a list of the predicted classification names with probabilities, for example:
-        [('Musculoskeletal - Wrist', 0.95), ('Eye (Vision)', 0.88), ('Hearing Loss', 0.92)]
-        arg conditions: a list of strings, each element
-                        representing a condition to be classified. for example,
-                        ["numbness in right arm", "ringing noise in ears",
-                        "asthma", "generalized anxiety disorder"]
-        """
-
         predictions = [("error", 0.0)] * len(conditions)
 
         try:
