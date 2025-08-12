@@ -1,6 +1,7 @@
 import time
 from typing import Awaitable, Callable, Dict
 
+import boto3
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import Response
 
@@ -92,3 +93,27 @@ def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResp
     response.is_fully_classified = num_classified == len(response.contentions)
 
     return response
+
+
+@app.get("/health-aws")
+def get_aws_status() -> Dict[str, str]:
+    sts_client = boto3.client('sts')
+    s3_resource = boto3.resource('s3')
+
+    try:
+        caller_identity = sts_client.get_caller_identity().get('Arn')
+    except Exception as e:
+        log_as_json({"error": "Error retrieving AWS identity", "exception": str(e)})
+        caller_identity = "Error retrieving identity"
+
+    try:
+        head_bucket = s3_resource.meta.client.head_bucket(Bucket='dsva-vagov-staging-contention-classification-api')
+        bucket_info = head_bucket.get('BucketArn')
+    except Exception as e:
+        log_as_json({"error": "Error accessing S3 bucket", "exception": str(e)})
+        bucket_info = "Error accessing bucket"
+
+    return {
+        "identity": caller_identity,
+        "bucket": bucket_info
+    }
