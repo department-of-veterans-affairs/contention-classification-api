@@ -188,3 +188,9 @@ ml_classifier:
     directory: 'models/'
     model_file: 'LR_tfidf_fit_model_20250623_151434.onnx'
     vectorizer_file: 'LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl'
+  verification:
+    enable_sha_check: true
+    expected_sha256:
+      model: 'af53814d71a48518c2d8c47eab8db9adf2ba40249d6f634b4f059268be750b8e'
+      vectorizer: '33052586943574c34884371d9f987e440e7a5d3cb5e85bb8a19fd334f1f610c5'
+    chunk_size: 4096
