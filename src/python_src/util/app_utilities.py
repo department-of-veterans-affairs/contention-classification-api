@@ -255,16 +255,19 @@ model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classif
 model_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["model_file"])
 vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["vectorizer_file"])
 
+# Check if we're in a testing environment or CI/CD where AWS credentials might not be available
+import_time_download_enabled = os.getenv("DISABLE_ML_DOWNLOAD_AT_IMPORT") != "true"
+
 # Check if SHA verification is enabled
 sha_check_enabled = app_config["ml_classifier"]["verification"]["enable_sha_check"]
 
 # Determine if we need to download files
 need_download = False
 
-if not os.path.exists(model_file) or not os.path.exists(vectorizer_file):
+if import_time_download_enabled and (not os.path.exists(model_file) or not os.path.exists(vectorizer_file)):
     need_download = True
     logging.info("Missing model files - will download from S3")
-elif sha_check_enabled:
+elif import_time_download_enabled and sha_check_enabled:
     # Verify existing files if SHA checking is enabled
     chunk_size = app_config["ml_classifier"]["verification"]["chunk_size"]
     expected_model_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["model"]
@@ -287,11 +290,21 @@ elif sha_check_enabled:
 # download all files from S3 if needed
 if need_download:
     os.makedirs(model_directory, exist_ok=True)
-    download_ml_models_from_s3(model_file, vectorizer_file)
+    try:
+        download_ml_models_from_s3(model_file, vectorizer_file)
+    except Exception as e:
+        logging.warning(f"Failed to download ML models from S3: {e}")
+        logging.warning("ML classifier will not be available")
 
 ml_classifier = None
-if os.path.exists(model_file) and os.path.exists(vectorizer_file):
-    ml_classifier = MLClassifier(model_file, vectorizer_file)
-    logging.info("ML classifier initialized successfully")
+if import_time_download_enabled and os.path.exists(model_file) and os.path.exists(vectorizer_file):
+    try:
+        ml_classifier = MLClassifier(model_file, vectorizer_file)
+        logging.info("ML classifier initialized successfully")
+    except Exception as e:
+        logging.error(f"Failed to initialize ML classifier: {e}")
+        ml_classifier = None
+elif not import_time_download_enabled:
+    logging.info("ML classifier initialization disabled at import time")
 else:
-    logging.error("ML classifier could not be initialized - model files not available")
+    logging.warning("ML classifier could not be initialized - model files not available")
