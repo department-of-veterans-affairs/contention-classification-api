@@ -11,7 +11,7 @@ from .pydantic_models import (
     ClassifierResponse,
     VaGovClaim,
 )
-from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table
+from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table, ml_classifier
 from .util.classifier_utilities import classify_claim, ml_classify_claim, supplement_with_ml_classification
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 
@@ -56,11 +56,15 @@ def get_health_status() -> Dict[str, str]:
         empty_tables.append("Expanded Lookup")
     if not len(dropdown_lookup_table):
         empty_tables.append("Contention Text Lookup")
-    if empty_tables:
+    if empty_tables or ml_classifier is None:
+        errors = []
         if len(empty_tables) == 1:
-            raise HTTPException(status_code=500, detail=f"{' and '.join(empty_tables)} table is empty")
-        else:
-            raise HTTPException(status_code=500, detail=f"{', '.join(empty_tables)} tables are empty")
+            errors.append(f"{empty_tables[0]} table is empty")
+        elif empty_tables:
+            errors.append(f"{', '.join(empty_tables)} tables are empty")
+        if ml_classifier is None:
+            errors.append("ML Classifier is not initialized")
+        raise HTTPException(status_code=500, detail=", ".join(errors))
     return {"status": "ok"}
 
 
@@ -97,23 +101,20 @@ def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResp
 
 @app.get("/health-aws")
 def get_aws_status() -> Dict[str, str]:
-    sts_client = boto3.client('sts')
-    s3_resource = boto3.resource('s3')
+    sts_client = boto3.client("sts")
+    s3_resource = boto3.resource("s3")
 
     try:
-        caller_identity = sts_client.get_caller_identity().get('Arn')
+        caller_identity = sts_client.get_caller_identity().get("Arn")
     except Exception as e:
         log_as_json({"error": "Error retrieving AWS identity", "exception": str(e)})
         caller_identity = "Error retrieving identity"
 
     try:
-        head_bucket = s3_resource.meta.client.head_bucket(Bucket='dsva-vagov-staging-contention-classification-api')
-        bucket_info = head_bucket.get('BucketArn')
+        head_bucket = s3_resource.meta.client.head_bucket(Bucket="dsva-vagov-staging-contention-classification-api")
+        bucket_info = head_bucket.get("BucketArn")
     except Exception as e:
         log_as_json({"error": "Error accessing S3 bucket", "exception": str(e)})
         bucket_info = "Error accessing bucket"
 
-    return {
-        "identity": caller_identity,
-        "bucket": bucket_info
-    }
+    return {"identity": caller_identity, "bucket": bucket_info}
