@@ -185,7 +185,7 @@ ml_classifier:
     model: LR_tfidf_fit_model_20250623_151434.onnx
     vectorizer: LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl
   data:
-    directory: 'models/'
+    directory: '../../contention_classification/util/models/'
     model_file: 'LR_tfidf_fit_model_20250623_151434.onnx'
     vectorizer_file: 'LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl'
   verification:
