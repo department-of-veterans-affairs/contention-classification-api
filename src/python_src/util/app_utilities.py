@@ -252,6 +252,10 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
 
 
 model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["data"]["directory"])
+
+# Ensure the model directory exists
+os.makedirs(model_directory, exist_ok=True)
+
 model_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["model_file"])
 vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["vectorizer_file"])
 
