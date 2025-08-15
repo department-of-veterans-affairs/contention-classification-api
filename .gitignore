@@ -101,3 +101,4 @@ src/python_src/util/models/
 *.pkl
 *.onnx
 src/python_src/util/data/simulations/outputs/
+*.out
