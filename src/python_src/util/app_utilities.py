@@ -29,7 +29,6 @@ from yaml import safe_load
 
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_dropdown_selections import build_logging_table
-from .logging_utilities import log_as_json
 from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .lookup_tables_utilities import InitValues
 from .ml_classifier import MLClassifier
@@ -155,31 +154,41 @@ def verify_file_sha256(file_path: str, expected_sha256: str, chunk_size: int = 4
             logging.error(f"Actual:   {actual_sha256}")
 
             # Log to DataDog for monitoring and alerting
-            log_as_json(
-                {
-                    "event": "sha256_verification_failed",
-                    "file_name": os.path.basename(file_path),
-                    "file_path": file_path,
-                    "expected_sha256": expected_sha256,
-                    "actual_sha256": actual_sha256,
-                    "error_type": "checksum_mismatch",
-                }
-            )
+            try:
+                from .logging_utilities import log_as_json
+
+                log_as_json(
+                    {
+                        "event": "sha256_verification_failed",
+                        "file_name": os.path.basename(file_path),
+                        "file_path": file_path,
+                        "expected_sha256": expected_sha256,
+                        "actual_sha256": actual_sha256,
+                        "error_type": "checksum_mismatch",
+                    }
+                )
+            except ImportError:
+                logging.warning("Could not import log_as_json for DataDog logging")
 
         return is_valid
     except Exception as e:
         logging.error(f"Error during SHA-256 verification for {file_path}: {e}")
 
         # Log to DataDog for monitoring and alerting
-        log_as_json(
-            {
-                "event": "sha256_verification_error",
-                "file_name": os.path.basename(file_path),
-                "file_path": file_path,
-                "error_message": str(e),
-                "error_type": "verification_exception",
-            }
-        )
+        try:
+            from .logging_utilities import log_as_json
+
+            log_as_json(
+                {
+                    "event": "sha256_verification_error",
+                    "file_name": os.path.basename(file_path),
+                    "file_path": file_path,
+                    "error_message": str(e),
+                    "error_type": "verification_exception",
+                }
+            )
+        except ImportError:
+            logging.warning("Could not import log_as_json for DataDog logging")
 
         return False
 
