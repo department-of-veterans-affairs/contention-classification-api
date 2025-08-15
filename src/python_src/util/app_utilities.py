@@ -224,20 +224,20 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
     """
     # Get ENV with a default value if not set
     env = os.environ.get("ENV", "staging")  # defaults to 'staging'
-    if env not in app_config["ml_classifier"]["aws"]["bucket"]:
+    if env not in app_config["aws"]["s3"]["buckets"]:
         logging.warning(f"Environment '{env}' not found in S3 bucket configuration")
         env = "staging"
 
     s3_client = boto3.client("s3")
-    bucket = app_config["ml_classifier"]["aws"]["bucket"][env]
+    bucket = app_config["aws"]["s3"]["buckets"][env]
 
     # Check if SHA verification is enabled
-    sha_check_enabled = app_config["ml_classifier"]["verification"]["enable_sha_check"]
-    chunk_size = app_config["ml_classifier"]["verification"]["chunk_size"]
+    sha_check_enabled = app_config["ml_classifier"]["integrity_verification"]["enabled"]
+    chunk_size = app_config["ml_classifier"]["integrity_verification"]["hash_config"]["chunk_size_bytes"]
 
     if sha_check_enabled:
-        expected_model_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["model"]
-        expected_vectorizer_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["vectorizer"]
+        expected_model_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["model"]
+        expected_vectorizer_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["vectorizer"]
 
         # Allow environment variables to override config values
         expected_model_sha = os.environ.get("ML_MODEL_SHA256", expected_model_sha)
@@ -251,7 +251,7 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
         logging.info(f"Downloading model file from S3: {model_file}")
         s3_client.download_file(
             bucket,
-            app_config["ml_classifier"]["aws"]["model"],
+            app_config["ml_classifier"]["s3_objects"]["model"],
             model_file,
         )
 
@@ -273,7 +273,7 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
         logging.info(f"Downloading vectorizer file from S3: {vectorizer_file}")
         s3_client.download_file(
             bucket,
-            app_config["ml_classifier"]["aws"]["vectorizer"],
+            app_config["ml_classifier"]["s3_objects"]["vectorizer"],
             vectorizer_file,
         )
 
@@ -294,19 +294,19 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
     return model_file, vectorizer_file
 
 
-model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["data"]["directory"])
+model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["storage"]["local_directory"])
 
 # Ensure the model directory exists
 os.makedirs(model_directory, exist_ok=True)
 
-model_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["model_file"])
-vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["vectorizer_file"])
+model_file = os.path.join(model_directory, app_config["ml_classifier"]["files"]["model_filename"])
+vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["files"]["vectorizer_filename"])
 
 # Check if we're in a testing environment or CI/CD where AWS credentials might not be available
 import_time_download_enabled = os.getenv("DISABLE_ML_DOWNLOAD_AT_IMPORT") != "true"
 
 # Check if SHA verification is enabled
-sha_check_enabled = app_config["ml_classifier"]["verification"]["enable_sha_check"]
+sha_check_enabled = app_config["ml_classifier"]["integrity_verification"]["enabled"]
 
 # Determine if we need to download files
 need_download = False
@@ -316,9 +316,9 @@ if import_time_download_enabled and (not os.path.exists(model_file) or not os.pa
     logging.info("Missing model files - will download from S3")
 elif import_time_download_enabled and sha_check_enabled:
     # Verify existing files if SHA checking is enabled
-    chunk_size = app_config["ml_classifier"]["verification"]["chunk_size"]
-    expected_model_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["model"]
-    expected_vectorizer_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["vectorizer"]
+    chunk_size = app_config["ml_classifier"]["integrity_verification"]["hash_config"]["chunk_size_bytes"]
+    expected_model_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["model"]
+    expected_vectorizer_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["vectorizer"]
 
     # Allow environment variables to override config values
     expected_model_sha = os.environ.get("ML_MODEL_SHA256", expected_model_sha)
