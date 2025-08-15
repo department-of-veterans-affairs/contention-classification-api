@@ -173,8 +173,8 @@ ml_classifier:
   verification:
     enable_sha_check: true
     expected_sha256:
-      model: 'af53814d71a48518c2d8c47eab8db9adf2ba40249d6f634b4f059268be750b8e'
-      vectorizer: '33052586943574c34884371d9f987e440e7a5d3cb5e85bb8a19fd334f1f610c5'
+      model: '<model_sha256_checksum>'
+      vectorizer: '<vectorizer_sha256_checksum>'
     chunk_size: 4096
 ```
 
@@ -194,8 +194,8 @@ Set the following environment variables to override the configuration values:
 
 **Example:**
 ```bash
-export ML_MODEL_SHA256="af53814d71a48518c2d8c47eab8db9adf2ba40249d6f634b4f059268be750b8e"
-export ML_VECTORIZER_SHA256="33052586943574c34884371d9f987e440e7a5d3cb5e85bb8a19fd334f1f610c5"
+export ML_MODEL_SHA256="<model_sha256_checksum>"
+export ML_VECTORIZER_SHA256="<vectorizer_sha256_checksum>"
 ```
 
 Environment variables take precedence over configuration file values, making them ideal for deployment environments where checksums may need to be updated without code changes.
@@ -210,7 +210,7 @@ print(f"New model checksum: {new_checksum}")
 **Example using command line:**
 ```bash
 sha256sum model.onnx
-# Output: af53814d71a48518c2d8c47eab8db9adf2ba40249d6f634b4f059268be750b8e  model.onnx
+# Output: <model_sha256_checksum>  model.onnx
 ```
 
 ### Troubleshooting
