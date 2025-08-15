@@ -114,7 +114,7 @@ poetry run pre-commit run --all-files
 Using Poetry, run the FastAPI server:
 
 ```bash
-poetry run uvicorn python_src.api:app --port 8120 --reload
+nohup poetry run uvicorn python_src.api:app --port 8120 --reload &
 ```
 
 ### Run tests
