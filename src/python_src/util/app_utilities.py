@@ -244,6 +244,8 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
         expected_vectorizer_sha = os.environ.get("ML_VECTORIZER_SHA256", expected_vectorizer_sha)
 
         logging.info("SHA-256 verification is enabled for ML model downloads")
+        logging.info(f"Expected model SHA-256: {expected_model_sha}")
+        logging.info(f"Expected vectorizer SHA-256: {expected_vectorizer_sha}")
 
     try:
         logging.info(f"Downloading model file from S3: {model_file}")
@@ -255,6 +257,7 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
 
         # Verify SHA-256 if enabled
         if sha_check_enabled:
+            logging.info(f"Verifying SHA-256 of downloaded model file: {os.path.basename(model_file)}")
             if not verify_file_sha256(model_file, expected_model_sha, chunk_size):
                 logging.error("Model file SHA-256 verification failed!")
                 # Remove the invalid file
@@ -276,6 +279,7 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
 
         # Verify SHA-256 if enabled
         if sha_check_enabled:
+            logging.info(f"Verifying SHA-256 of downloaded vectorizer file: {os.path.basename(vectorizer_file)}")
             if not verify_file_sha256(vectorizer_file, expected_vectorizer_sha, chunk_size):
                 logging.error("Vectorizer file SHA-256 verification failed!")
                 # Remove the invalid file
@@ -321,6 +325,8 @@ elif import_time_download_enabled and sha_check_enabled:
     expected_vectorizer_sha = os.environ.get("ML_VECTORIZER_SHA256", expected_vectorizer_sha)
 
     logging.info("Verifying SHA-256 of existing model files")
+    logging.info(f"Expected model SHA-256: {expected_model_sha}")
+    logging.info(f"Expected vectorizer SHA-256: {expected_vectorizer_sha}")
 
     model_valid = verify_file_sha256(model_file, expected_model_sha, chunk_size)
     vectorizer_valid = verify_file_sha256(vectorizer_file, expected_vectorizer_sha, chunk_size)
@@ -333,6 +339,11 @@ elif import_time_download_enabled and sha_check_enabled:
         if not vectorizer_valid and os.path.exists(vectorizer_file):
             os.remove(vectorizer_file)
         need_download = True
+    else:
+        logging.info("All existing model files passed SHA-256 verification - skipping download")
+elif import_time_download_enabled:
+    # Files exist but SHA checking is disabled
+    logging.info("Model files exist and SHA-256 verification is disabled - skipping download")
 
 # download all files from S3 if needed
 if need_download:
