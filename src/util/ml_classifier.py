@@ -63,14 +63,24 @@ class MLClassifier:
             vectorizer_file (str): Path to the vectorizer pickle file. Defaults to empty string.
 
         Raises:
-            Exception: If either file does not exist.
+            Exception: If either file does not exist or fails to load.
         """
-        if not os.path.exists(model_file):
-            raise Exception(f"File not found: {model_file}")
-        if not os.path.exists(vectorizer_file):
-            raise Exception(f"File not found: {vectorizer_file}")
-        self.session = ort.InferenceSession(model_file)
-        self.vectorizer = joblib.load(vectorizer_file)
+        try:
+            if not os.path.exists(model_file):
+                raise Exception(f"File not found: {model_file}")
+            if not os.path.exists(vectorizer_file):
+                raise Exception(f"File not found: {vectorizer_file}")
+
+            self.session = ort.InferenceSession(model_file)
+            self.vectorizer = joblib.load(vectorizer_file)
+            logging.info(f"Successfully loaded model: {model_file} and vectorizer: {vectorizer_file}")
+
+        except Exception as e:
+            logging.error(f"Failed to load model files: {e}")
+            # Set to None to indicate failed loading
+            self.session = None
+            self.vectorizer = None
+            raise
 
     def make_predictions(self, conditions: list[str]) -> List[tuple[str, float]]:
         """
@@ -96,8 +106,24 @@ class MLClassifier:
         predictions = [("error", 0.0)] * len(conditions)
 
         try:
+            # Check if model components are loaded
+            if self.session is None or self.vectorizer is None:
+                logging.error("Model or vectorizer not properly loaded. Cannot make predictions.")
+                return predictions
+
+            if not conditions:
+                logging.warning("Empty conditions list provided.")
+                return []
+
             cleaned_conditions = [self.clean_text(c) for c in conditions]
-            outputs = self.session.run(self.get_outputs_for_session(), self.get_inputs_for_session(cleaned_conditions))
+            inputs = self.get_inputs_for_session(cleaned_conditions)
+
+            # Check if inputs were successfully created
+            if not inputs:
+                logging.error("Failed to create model inputs.")
+                return predictions
+
+            outputs = self.session.run(self.get_outputs_for_session(), inputs)
             labels = outputs[0]
             probabilities = outputs[1]
 
@@ -113,7 +139,14 @@ class MLClassifier:
         Returns:
             list[str]: List of output node names from the ONNX model.
         """
-        return [i.name for i in self.session.get_outputs()]
+        try:
+            if self.session is None:
+                logging.error("Session not loaded. Cannot get outputs.")
+                return []
+            return [i.name for i in self.session.get_outputs()]
+        except Exception as e:
+            logging.error(f"Error getting session outputs: {e}")
+            return []
 
     def get_inputs_for_session(self, conditions: list[str]) -> Dict[str, ndarray]:
         """
@@ -129,8 +162,17 @@ class MLClassifier:
             Dict[str, ndarray]: Dictionary mapping input node names to
                 transformed feature arrays in float32 format.
         """
-        transformed_inputs = self.vectorizer.transform(conditions)
-        return {self.session.get_inputs()[0].name: transformed_inputs.toarray().astype(float32)}
+        try:
+            if self.vectorizer is None:
+                logging.error("Vectorizer not loaded. Cannot transform inputs.")
+                return {}
+
+            transformed_inputs = self.vectorizer.transform(conditions)
+            return {self.session.get_inputs()[0].name: transformed_inputs.toarray().astype(float32)}
+
+        except Exception as e:
+            logging.error(f"Error transforming inputs: {e}")
+            return {}
 
     def clean_text(self, text: str) -> str:
         """
@@ -152,8 +194,17 @@ class MLClassifier:
             >>> classifier.clean_text("HEARING LOSS!!!")
             'hearing loss'
         """
-        text = text.lower()
-        text = re.sub(rf"[{re.escape(string.punctuation)}]", "", text)
-        text = re.sub(r"\s+", " ", text)
-        text = text.strip()
-        return text
+        try:
+            if not isinstance(text, str):
+                logging.warning(f"Expected string input, got {type(text)}. Converting to string.")
+                text = str(text)
+
+            text = text.lower()
+            text = re.sub(rf"[{re.escape(string.punctuation)}]", "", text)
+            text = re.sub(r"\s+", " ", text)
+            text = text.strip()
+            return text
+
+        except Exception as e:
+            logging.error(f"Error cleaning text '{text}': {e}")
+            return ""

@@ -7,7 +7,7 @@ from unittest.mock import mock_open, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from src.python_src.util.brd_classification_codes import (
+from src.util.brd_classification_codes import (
     CLASSIFICATION_CODES_BY_NAME,
     CLASSIFICATION_NAMES_BY_CODE,
     get_classification_code,

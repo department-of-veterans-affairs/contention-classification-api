@@ -7,7 +7,7 @@ import tempfile
 from typing import Any
 from unittest.mock import patch
 
-from src.python_src.util.app_utilities import (
+from src.util.app_utilities import (
     app_config,
     calculate_file_sha256,
     model_file,
@@ -16,8 +16,8 @@ from src.python_src.util.app_utilities import (
 )
 
 
-@patch("src.python_src.util.app_utilities.open", create=True)
-@patch("src.python_src.util.app_utilities.os.path.exists", return_value=True)
+@patch("src.util.app_utilities.open", create=True)
+@patch("src.util.app_utilities.os.path.exists", return_value=True)
 def test_sha_verification_with_expected_config(mock_exists: Any, mock_open: Any) -> None:
     """Test SHA verification configuration and basic functionality."""
     # Verify configuration
@@ -40,8 +40,8 @@ def test_sha_verification_with_expected_config(mock_exists: Any, mock_open: Any)
     assert result is False, "SHA verification should fail with incorrect hash"
 
 
-@patch("src.python_src.util.app_utilities.open", create=True)
-@patch("src.python_src.util.app_utilities.os.path.exists", return_value=True)
+@patch("src.util.app_utilities.open", create=True)
+@patch("src.util.app_utilities.os.path.exists", return_value=True)
 def test_sha_verification_with_wrong_hash(mock_exists: Any, mock_open: Any) -> None:
     """Test that SHA verification properly fails with incorrect hash."""
     chunk_size = app_config["ml_classifier"]["integrity_verification"]["hash_config"]["chunk_size_bytes"]

@@ -5,14 +5,14 @@ from importlib import reload
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from src.python_src.util import app_utilities
+from src.util import app_utilities
 
 
-@patch("src.python_src.util.app_utilities.verify_file_sha256", return_value=True)
-@patch("src.python_src.util.app_utilities.os.makedirs")
-@patch("src.python_src.util.app_utilities.os.remove")
-@patch("src.python_src.util.app_utilities.os.path.exists")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.verify_file_sha256", return_value=True)
+@patch("src.util.app_utilities.os.makedirs")
+@patch("src.util.app_utilities.os.remove")
+@patch("src.util.app_utilities.os.path.exists")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_models_when_files_missing(
     mock_boto_client: MagicMock,
     mock_os_path: MagicMock,
@@ -67,17 +67,17 @@ def test_download_models_when_files_missing(
                 pass
 
 
-@patch("src.python_src.util.app_utilities.os.remove")
+@patch("src.util.app_utilities.os.remove")
 @patch.dict(
-    "src.python_src.util.app_utilities.app_config",
+    "src.util.app_utilities.app_config",
     {"ml_classifier": {"verification": {"enable_sha_check": False}}},
     clear=False,
 )
-@patch("src.python_src.util.app_utilities.download_ml_models_from_s3")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
-@patch("src.python_src.util.app_utilities.os.path.exists", return_value=True)
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.download_ml_models_from_s3")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
+@patch("src.util.app_utilities.os.path.exists", return_value=True)
+@patch("src.util.app_utilities.boto3.client")
 @patch.dict("os.environ", {"DISABLE_ML_DOWNLOAD_AT_IMPORT": "false"}, clear=False)
 def test_skip_download_when_files_exist(
     mock_boto_client: MagicMock,

@@ -2,13 +2,12 @@
 
 import os
 
-from src.python_src.util.app_utilities import load_config
-from src.python_src.util.logging_dropdown_selections import build_logging_table
+from src.util.app_utilities import load_config
+from src.util.logging_dropdown_selections import build_logging_table
 
-app_config = load_config(os.path.join("src", "python_src", "util", "app_config.yaml"))
+app_config = load_config(os.path.join("src", "util", "app_config.yaml"))
 filepath = os.path.join(
     "src",
-    "python_src",
     "util",
     "data",
     "master_taxonomy",
