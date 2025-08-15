@@ -153,6 +153,73 @@ For non-local dev, an [ONNX](https://onnx.ai/) format is intended.
 
 Neither the .pkl nor .onnx files should be committed to the GitHub repository, as we cannot guarantee that they are free of PII/PHI. As a precaution, both file extensions are flagged in `.gitignore`.
 
+## S3 File Integrity Verification
+
+This application implements SHA-256 checksum verification to ensure the integrity of ML model files downloaded from S3. This security feature helps protect against corrupted downloads or potential tampering.
+
+### How It Works
+
+1. **Checksum Storage**: Expected SHA-256 checksums for both the model (.onnx) and vectorizer (.pkl) files are stored in the application configuration
+2. **Automatic Verification**: When files are downloaded from S3, their checksums are automatically calculated and compared against expected values
+3. **File Rejection**: Files that fail checksum verification are immediately deleted and the application raises an exception
+4. **Monitoring**: Checksum failures are logged to DataDog for alerting and monitoring
+
+### Configuration
+
+SHA-256 verification is controlled by the following configuration in `app_config.yaml`:
+
+```yaml
+ml_classifier:
+  verification:
+    enable_sha_check: true
+    expected_sha256:
+      model: 'af53814d71a48518c2d8c47eab8db9adf2ba40249d6f634b4f059268be750b8e'
+      vectorizer: '33052586943574c34884371d9f987e440e7a5d3cb5e85bb8a19fd334f1f610c5'
+    chunk_size: 4096
+```
+
+### Updating Checksums
+
+When new model files are uploaded to S3, the checksums must be updated. You can use either configuration files or environment variables:
+
+#### Option 1: Configuration File (app_config.yaml)
+1. **Calculate SHA-256**: Use the `calculate_file_sha256()` function or any SHA-256 tool to compute the hash of the new file
+2. **Update Configuration**: Replace the corresponding SHA-256 value in `app_config.yaml`
+3. **Deploy**: Ensure the updated configuration is deployed with the application
+
+#### Option 2: Environment Variables (Recommended for Production)
+Set the following environment variables to override the configuration values:
+- `ML_MODEL_SHA256`: SHA-256 checksum for the model (.onnx) file
+- `ML_VECTORIZER_SHA256`: SHA-256 checksum for the vectorizer (.pkl) file
+
+**Example:**
+```bash
+export ML_MODEL_SHA256="af53814d71a48518c2d8c47eab8db9adf2ba40249d6f634b4f059268be750b8e"
+export ML_VECTORIZER_SHA256="33052586943574c34884371d9f987e440e7a5d3cb5e85bb8a19fd334f1f610c5"
+```
+
+Environment variables take precedence over configuration file values, making them ideal for deployment environments where checksums may need to be updated without code changes.
+
+**Example using Python:**
+```python
+from src.python_src.util.app_utilities import calculate_file_sha256
+new_checksum = calculate_file_sha256('path/to/new/model.onnx')
+print(f"New model checksum: {new_checksum}")
+```
+
+**Example using command line:**
+```bash
+sha256sum model.onnx
+# Output: af53814d71a48518c2d8c47eab8db9adf2ba40249d6f634b4f059268be750b8e  model.onnx
+```
+
+### Troubleshooting
+
+- **Checksum Mismatch**: If verification fails, check DataDog logs for detailed error information
+- **Configuration**: Ensure `enable_sha_check` is set to `true` in the configuration
+- **File Corruption**: Failed verification may indicate file corruption during upload or transfer
+- **Outdated Checksums**: Verify that the expected checksums in configuration match the actual files in S3
+
 ## Testing locally
 With the application running using either Docker or Python, tests requests can be sent using the following curl commands.
 

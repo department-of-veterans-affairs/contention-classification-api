@@ -29,6 +29,7 @@ from yaml import safe_load
 
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_dropdown_selections import build_logging_table
+from .logging_utilities import log_as_json
 from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .lookup_tables_utilities import InitValues
 from .ml_classifier import MLClassifier
@@ -153,9 +154,33 @@ def verify_file_sha256(file_path: str, expected_sha256: str, chunk_size: int = 4
             logging.error(f"Expected: {expected_sha256}")
             logging.error(f"Actual:   {actual_sha256}")
 
+            # Log to DataDog for monitoring and alerting
+            log_as_json(
+                {
+                    "event": "sha256_verification_failed",
+                    "file_name": os.path.basename(file_path),
+                    "file_path": file_path,
+                    "expected_sha256": expected_sha256,
+                    "actual_sha256": actual_sha256,
+                    "error_type": "checksum_mismatch",
+                }
+            )
+
         return is_valid
     except Exception as e:
         logging.error(f"Error during SHA-256 verification for {file_path}: {e}")
+
+        # Log to DataDog for monitoring and alerting
+        log_as_json(
+            {
+                "event": "sha256_verification_error",
+                "file_name": os.path.basename(file_path),
+                "file_path": file_path,
+                "error_message": str(e),
+                "error_type": "verification_exception",
+            }
+        )
+
         return False
 
 
@@ -204,6 +229,11 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
     if sha_check_enabled:
         expected_model_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["model"]
         expected_vectorizer_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["vectorizer"]
+
+        # Allow environment variables to override config values
+        expected_model_sha = os.environ.get("ML_MODEL_SHA256", expected_model_sha)
+        expected_vectorizer_sha = os.environ.get("ML_VECTORIZER_SHA256", expected_vectorizer_sha)
+
         logging.info("SHA-256 verification is enabled for ML model downloads")
 
     try:
@@ -276,6 +306,10 @@ elif import_time_download_enabled and sha_check_enabled:
     chunk_size = app_config["ml_classifier"]["verification"]["chunk_size"]
     expected_model_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["model"]
     expected_vectorizer_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["vectorizer"]
+
+    # Allow environment variables to override config values
+    expected_model_sha = os.environ.get("ML_MODEL_SHA256", expected_model_sha)
+    expected_vectorizer_sha = os.environ.get("ML_VECTORIZER_SHA256", expected_vectorizer_sha)
 
     logging.info("Verifying SHA-256 of existing model files")
 
