@@ -23,20 +23,12 @@ condition_dropdown_table:
   classification_code: Classification Code
   classification_name: Classification Text
   active_classification: Active classification mapping
-  release_notes: |
-    Adds synonyms for conditions and includes 5 new terms and mappings. The added terms are
-    skin carcinoma, eye cancer, vision cancer, vascular soft tissue sarcoma, and angiosarcoma.
-  release_date: 2025-04-14
 diagnostic_code_table:
   version_number: v0.6
   filename: "[Release notes] Diagnostic Code to Classification mapping release notes - DC Lookup"
   input_key: DIAGNOSTIC_CODE
   classification_code: CLASSIFICATION_CODE
   classification_name: CLASSIFICATION_TEXT
-  release_notes: >
-    Added mappings 11 DCs added: 9411 for PTSD, 5012, 5015, and new DCs because of updates to Digestive section of rating schedule.
-    3 DCs removed: 5003 for degenerative arthritis, 5017 for gout, and 5010 for post-traumatic arthritis"""
-  release_date: 2024-09-12
 autosuggestion_table:
   version_number: v0.2
   filename: "CC Taxonomy master"
@@ -48,9 +40,6 @@ autosuggestion_table:
     - Autosuggestion term 4
     - Autosuggestion term 5
     - Autosuggestion term 6
-  release_notes: >
-    No updates to the autosuggestion for this v0.2 release.
-  release_date: 2025-04-14
 musculoskeletal_lut:
   ankle:
     classification_code: 8991
@@ -184,10 +173,6 @@ aws:
       prod: "dsva-vagov-prod-contention-classification-api"
       sandbox: "dsva-vagov-sandbox-contention-classification-api"
 
-ai_classification_endpoint:
-  url: 'http://localhost:8120/'
-  endpoint: 'ml-contention-classification'
-
 # Machine Learning Classifier Configuration
 # This section configures the ML model used for contention classification
 ml_classifier:
@@ -200,7 +185,7 @@ ml_classifier:
   # Local storage configuration
   storage:
     # Relative path from util directory to model storage location
-    local_directory: "../../contention_classification/util/models/"
+    local_directory: "models/"
 
   # S3 object keys (paths within buckets) - uses AWS config from top-level 'aws' section
   s3_objects:
