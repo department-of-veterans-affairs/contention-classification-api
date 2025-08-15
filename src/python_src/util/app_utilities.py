@@ -307,6 +307,8 @@ import_time_download_enabled = os.getenv("DISABLE_ML_DOWNLOAD_AT_IMPORT") != "tr
 
 # Check if SHA verification is enabled
 sha_check_enabled = app_config["ml_classifier"]["integrity_verification"]["enabled"]
+# Allow disabling SHA verification via environment variable for development
+sha_check_enabled = sha_check_enabled and os.getenv("DISABLE_SHA_VERIFICATION") != "true"
 
 # Determine if we need to download files
 need_download = False
@@ -350,9 +352,14 @@ if need_download:
     os.makedirs(model_directory, exist_ok=True)
     try:
         download_ml_models_from_s3(model_file, vectorizer_file)
+        logging.info("Successfully downloaded ML models from S3")
     except Exception as e:
         logging.warning(f"Failed to download ML models from S3: {e}")
-        logging.warning("ML classifier will not be available")
+        # Check if files exist locally as fallback
+        if os.path.exists(model_file) and os.path.exists(vectorizer_file):
+            logging.info("Using existing local ML model files as fallback")
+        else:
+            logging.warning("ML classifier will not be available - no local files found")
 
 ml_classifier = None
 if import_time_download_enabled and os.path.exists(model_file) and os.path.exists(vectorizer_file):

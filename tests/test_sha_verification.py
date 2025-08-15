@@ -21,10 +21,10 @@ from src.python_src.util.app_utilities import (
 def test_sha_verification_with_expected_config(mock_exists: Any, mock_open: Any) -> None:
     """Test SHA verification configuration and basic functionality."""
     # Verify configuration
-    sha_enabled = app_config["ml_classifier"]["verification"]["enable_sha_check"]
-    expected_model_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["model"]
-    expected_vectorizer_sha = app_config["ml_classifier"]["verification"]["expected_sha256"]["vectorizer"]
-    chunk_size = app_config["ml_classifier"]["verification"]["chunk_size"]
+    sha_enabled = app_config["ml_classifier"]["integrity_verification"]["enabled"]
+    expected_model_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["model"]
+    expected_vectorizer_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["vectorizer"]
+    chunk_size = app_config["ml_classifier"]["integrity_verification"]["hash_config"]["chunk_size_bytes"]
 
     assert sha_enabled is True, "SHA verification should be enabled in configuration"
     assert expected_model_sha is not None, "Expected model SHA should be configured"
@@ -44,7 +44,7 @@ def test_sha_verification_with_expected_config(mock_exists: Any, mock_open: Any)
 @patch("src.python_src.util.app_utilities.os.path.exists", return_value=True)
 def test_sha_verification_with_wrong_hash(mock_exists: Any, mock_open: Any) -> None:
     """Test that SHA verification properly fails with incorrect hash."""
-    chunk_size = app_config["ml_classifier"]["verification"]["chunk_size"]
+    chunk_size = app_config["ml_classifier"]["integrity_verification"]["hash_config"]["chunk_size_bytes"]
     wrong_hash = "0000000000000000000000000000000000000000000000000000000000000000"
 
     # Mock file content
@@ -58,7 +58,7 @@ def test_sha_verification_with_wrong_hash(mock_exists: Any, mock_open: Any) -> N
 
 def test_calculate_file_sha256_with_known_content() -> None:
     """Test SHA-256 calculation with known content."""
-    chunk_size = app_config["ml_classifier"]["verification"]["chunk_size"]
+    chunk_size = app_config["ml_classifier"]["integrity_verification"]["hash_config"]["chunk_size_bytes"]
     test_content = b"test content for SHA calculation"
     expected_sha = hashlib.sha256(test_content).hexdigest()
 

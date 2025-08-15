@@ -48,9 +48,9 @@ def test_download_models_when_files_missing(
 
         # Verify S3 download calls
         app_config = app_utilities.app_config
-        expected_bucket = app_config["ml_classifier"]["aws"]["bucket"]["staging"]
-        expected_vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
-        expected_model_key = app_config["ml_classifier"]["aws"]["model"]
+        expected_bucket = app_config["aws"]["s3"]["buckets"]["staging"]
+        expected_vectorizer_key = app_config["ml_classifier"]["s3_objects"]["vectorizer"]
+        expected_model_key = app_config["ml_classifier"]["s3_objects"]["model"]
 
         mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, temp_vectorizer_path)
         mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, temp_model_path)
@@ -106,8 +106,8 @@ def test_skip_download_when_files_exist(
 def test_model_key_config() -> None:
     """Test that the model key configuration meets requirements."""
     app_config = app_utilities.app_config
-    model_key = app_config["ml_classifier"]["aws"]["model"]
-    vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
+    model_key = app_config["ml_classifier"]["s3_objects"]["model"]
+    vectorizer_key = app_config["ml_classifier"]["s3_objects"]["vectorizer"]
 
     assert isinstance(model_key, str), "Model key should be a string"
     assert len(model_key) > 0, "Model key should not be empty"
@@ -119,8 +119,8 @@ def test_model_key_config() -> None:
 def test_vectorizer_key_config() -> None:
     """Test that the vectorizer key configuration meets requirements."""
     app_config = app_utilities.app_config
-    vectorizer_key = app_config["ml_classifier"]["aws"]["vectorizer"]
-    model_key = app_config["ml_classifier"]["aws"]["model"]
+    vectorizer_key = app_config["ml_classifier"]["s3_objects"]["vectorizer"]
+    model_key = app_config["ml_classifier"]["s3_objects"]["model"]
 
     assert isinstance(vectorizer_key, str), "Vectorizer key should be a string"
     assert len(vectorizer_key) > 0, "Vectorizer key should not be empty"
