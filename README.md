@@ -171,7 +171,7 @@ SHA-256 verification is controlled by the following configuration in `app_config
 ```yaml
 ml_classifier:
   verification:
-    enable_sha_check: true
+    enabled: true
     expected_sha256:
       model: '<model_sha256_checksum>'
       vectorizer: '<vectorizer_sha256_checksum>'
