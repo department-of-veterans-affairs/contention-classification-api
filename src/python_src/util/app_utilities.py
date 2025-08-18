@@ -263,7 +263,7 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
                 # Remove the invalid file
                 if os.path.exists(model_file):
                     os.remove(model_file)
-                raise ChecksumVerificationError("Model file SHA-256 verification failed - file removed for security")
+                raise ValueError("Model file SHA-256 verification failed - file removed for security")
 
     except Exception as e:
         logging.error("Failed to download model file from S3: %s", e)
@@ -285,7 +285,7 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
                 # Remove the invalid file
                 if os.path.exists(vectorizer_file):
                     os.remove(vectorizer_file)
-                raise ChecksumVerificationError("Vectorizer file SHA-256 verification failed - file removed for security")
+                raise ValueError("Vectorizer file SHA-256 verification failed - file removed for security")
 
     except Exception as e:
         logging.error("Failed to download vectorizer file from S3: %s", e)
