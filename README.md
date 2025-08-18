@@ -172,7 +172,7 @@ SHA-256 verification is controlled by the following configuration in `app_config
 ml_classifier:
   verification:
     enabled: true
-    expected_sha256:
+    expected_checksums:
       model: '<model_sha256_checksum>'
       vectorizer: '<vectorizer_sha256_checksum>'
     chunk_size: 4096
