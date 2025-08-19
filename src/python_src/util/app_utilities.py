@@ -168,7 +168,7 @@ def verify_file_sha256(file_path: str, expected_sha256: str, chunk_size: int = 4
                     }
                 )
             except ImportError:
-                logging.warning("Could not import log_as_json for DataDog logging")
+                logging.warning("Could not import log_as_json")
 
         return is_valid
     except Exception as e:

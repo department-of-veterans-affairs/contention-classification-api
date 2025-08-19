@@ -114,6 +114,7 @@ poetry run pre-commit run --all-files
 Using Poetry, run the FastAPI server:
 
 ```bash
+# for Linux and Git-Bash, does not work for Windows native
 nohup poetry run uvicorn python_src.api:app --port 8120 --reload &
 ```
 
@@ -170,12 +171,13 @@ SHA-256 verification is controlled by the following configuration in `app_config
 
 ```yaml
 ml_classifier:
-  verification:
+  integrity_verification:
     enabled: true
     expected_checksums:
       model: '<model_sha256_checksum>'
       vectorizer: '<vectorizer_sha256_checksum>'
-    chunk_size: 4096
+    hash_config:
+      chunk_size_bytes: 4096
 ```
 
 ### Updating Checksums
@@ -212,6 +214,21 @@ print(f"New model checksum: {new_checksum}")
 sha256sum model.onnx
 # Output: <model_sha256_checksum>  model.onnx
 ```
+
+### Disabling SHA Verification
+
+For development and testing purposes, SHA-256 verification can be disabled using an environment variable:
+
+```bash
+export DISABLE_SHA_VERIFICATION=true
+```
+
+When this environment variable is set to `"true"`, the application will skip SHA-256 verification of downloaded ML model files. This can be useful in development environments where:
+- You need to quickly test with different model versions
+- Network issues prevent reliable checksum verification
+- You're working with experimental or temporary model files
+
+**⚠️ Warning**: Only disable SHA verification in development environments. Always keep it enabled in production for security.
 
 ### Troubleshooting
 
