@@ -28,12 +28,12 @@ pyenv install 3.12.3 #Installs latest version of python 3.12.3
 pyenv global 3.12.3 # or don't do this if you want a different version available globally for your system
 ```
 
-Mac Users: If python path hasn't been setup, you can put the following in your ~/.zshrc
+Mac Users: If python path hasn't been setup, you can put the following in your `~/.zshrc`:
 
 ```bash
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/shims:$PATH"
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi" #Initalize pyenv in current shell session
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi" #Initialize pyenv in current shell session
 ```
 
 #### Install Poetry
@@ -133,8 +133,10 @@ poetry run pytest --cov=src --cov-report=term-missing
 ```
 
 ## Running with Docker
-This application can also be run with Docker using the following commands.
-```
+
+This application can also be run with Docker using the following commands:
+
+```bash
 docker compose down
 docker compose build --no-cache
 docker compose up -d
@@ -142,12 +144,11 @@ docker compose up -d
 
 ## Running the ML Classifier locally
 
-For the purposes of local development environment, a .pkl ("pickle") version of the classifier can be downloaded from the VA Sharepoint: [Data Discovery/CAIO Collaboration Documentation](
-https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention%20Classification/4%20-%20Data%20Discovery/CAIO%20Collaboration%20Documentation/model_6_2_25?csf=1&web=1&e=nb72My)
+For local development, a .pkl ("pickle") version of the classifier can be downloaded from the VA SharePoint: [Data Discovery/CAIO Collaboration Documentation](https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention%20Classification/4%20-%20Data%20Discovery/CAIO%20Collaboration%20Documentation/model_6_2_25?csf=1&web=1&e=nb72My)
 
-Update the app_config to point to where you have saved the file locally. https://github.com/department-of-veterans-affairs/contention-classification-api/blob/994d2bfc170b9e8074529e3ea172a2d70faaf3b3/src/python_src/util/app_config.yaml#L178-L179
+Update the app_config to point to where you have saved the file locally: [app_config.yaml#L178-L179](https://github.com/department-of-veterans-affairs/contention-classification-api/blob/994d2bfc170b9e8074529e3ea172a2d70faaf3b3/src/python_src/util/app_config.yaml#L178-L179)
 
-The .pkl file is not appropriate for use beyond the local dev environment due to known security weaknesses. As noted in official [python documentation](https://docs.python.org/3/library/pickle.html):
+The .pkl file is not appropriate for use beyond the local dev environment due to known security weaknesses. As noted in official [Python documentation](https://docs.python.org/3/library/pickle.html):
 > **Warning:** The pickle module **is not secure**. Only unpickle data you trust.
 
 For non-local dev, an [ONNX](https://onnx.ai/) format is intended.
@@ -202,18 +203,129 @@ export ML_VECTORIZER_SHA256="<vectorizer_sha256_checksum>"
 
 Environment variables take precedence over configuration file values, making them ideal for deployment environments where checksums may need to be updated without code changes.
 
-**Example using Python:**
+Example using Python:
 ```python
 from src.python_src.util.app_utilities import calculate_file_sha256
-new_checksum = calculate_file_sha256('path/to/new/model.onnx')
+
+new_checksum: str = calculate_file_sha256('path/to/new/model.onnx')
 print(f"New model checksum: {new_checksum}")
 ```
 
-**Example using command line:**
+Example using command line:
 ```bash
 sha256sum model.onnx
 # Output: <model_sha256_checksum>  model.onnx
 ```
+
+### Kubernetes Deployment with Helm Charts
+
+The contention classification API is deployed to the VA Platform using Helm charts managed in the [`vsp-infra-application-manifests`](https://github.com/department-of-veterans-affairs/vsp-infra-application-manifests) repository. Environment variables for production deployments should be configured through this Helm chart infrastructure.
+
+#### Environment Variable Configuration Pattern
+
+Environment variables are injected into the application pods through Helm chart `values.yaml` files. Each environment (dev, staging, sandbox, prod) has its own `values.yaml` file in the manifests repository at:
+
+```bash
+vsp-infra-application-manifests/apps/contention-classification-api/
+├── dev/values.yaml
+├── staging/values.yaml
+├── sandbox/values.yaml
+└── prod/values.yaml
+```
+
+#### Adding New Environment Variables
+
+To add new environment variables for the contention classification API:
+
+1. Update the Helm Values: Add environment variables to the appropriate `values.yaml` files in the manifests repository:
+
+```yaml
+# Example values.yaml structure
+env:
+  - name: ML_MODEL_SHA256
+    value: "<ML_MODEL_SHA256.env.value>"
+  - name: ML_VECTORIZER_SHA256
+    value: "<ML_VECTORIZER_SHA256.env.value>"
+  - name: DISABLE_SHA_VERIFICATION
+    value: "false"
+  - name: ENV
+    value: "staging"  # or dev, production, sandbox
+```
+
+2. Environment-Specific Configuration: Different environments can have different values for the same variables:
+
+```yaml
+# dev/values.yaml
+env:
+  - name: ML_MODEL_SHA256
+    value: "<ML_MODEL_SHA256.dev.value>"
+  - name: DISABLE_SHA_VERIFICATION
+    value: "true"  # Allow disabling in dev for testing
+
+# prod/values.yaml
+env:
+  - name: ML_MODEL_SHA256
+    value: "<ML_MODEL_SHA256.production.value>"
+  - name: DISABLE_SHA_VERIFICATION
+    value: "false"  # Always enforce in production
+```
+
+3. Sensitive Values with Kubernetes Secrets: For sensitive environment variables, use Kubernetes secrets instead of plain values:
+
+```yaml
+# Reference secrets in values.yaml
+envFrom:
+  - secretRef:
+      name: contention-classification-secrets
+
+# Create secrets separately via kubectl or ArgoCD
+# kubectl create secret generic contention-classification-secrets \
+#   --from-literal=AWS_ACCESS_KEY_ID=your_key \
+#   --from-literal=AWS_SECRET_ACCESS_KEY=your_secret
+```
+
+#### Deployment Process
+
+Environment variable changes are deployed through the standard release process:
+
+1. Update Manifests: Modify the appropriate `values.yaml` file(s) in the manifests repository
+2. Commit Changes: Create a PR to merge changes into the manifests repository
+3. Automatic Deployment: ArgoCD will automatically detect and deploy the changes to the target environment
+4. Manual Deployment: For sandbox/prod, use the [release workflow](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/release.yml) to manually trigger deployment
+
+#### Environment Variable Best Practices
+
+- Configuration Hierarchy: Environment variables override `app_config.yaml` values, allowing environment-specific behavior without code changes
+- Sensitive Data: Never commit sensitive values to the manifests repository; use Kubernetes secrets or external secret management
+- Environment Consistency: Maintain consistent variable names across all environments while allowing different values
+- Documentation: Document all environment variables in this README and their expected values for each environment
+
+#### Currently Supported Environment Variables
+
+| Variable Name | Purpose | Default | Required |
+|---------------|---------|---------|----------|
+| `ML_MODEL_SHA256` | SHA-256 checksum for model file integrity verification | Value from app_config.yaml | No |
+| `ML_VECTORIZER_SHA256` | SHA-256 checksum for vectorizer file integrity verification | Value from app_config.yaml | No |
+| `DISABLE_SHA_VERIFICATION` | Disable SHA-256 verification for development/testing | `false` | No |
+| `DISABLE_ML_DOWNLOAD_AT_IMPORT` | Disable automatic ML model download at import | `false` | No |
+| `ENV` | Application environment identifier | `staging` | No |
+
+#### Adding Support for New Environment Variables
+
+When adding support for new environment variables in the application code:
+
+1. Update Application Code: Use `os.environ.get()` with appropriate defaults:
+```python
+import os
+
+new_setting: str = os.environ.get("NEW_ENVIRONMENT_VARIABLE", "default_value")
+```
+
+2. Update Documentation: Add the new variable to the table above and describe its purpose
+
+3. Update Helm Charts: Add the variable to the appropriate `values.yaml` files in the manifests repository
+
+4. Test Across Environments: Verify the new variable works correctly in dev/staging before deploying to production
 
 ### Disabling SHA Verification
 
@@ -241,12 +353,12 @@ When this environment variable is set to `"true"`, the application will skip SHA
 With the application running using either Docker or Python, tests requests can be sent using the following curl commands.
 
 To test the health of the application or to check if the application is running at the `contention-classification/health` endpoint:
-```
+```bash
 curl -X 'GET' 'http://localhost:8120/health'
 ```
 
 To test the classification provided by the endpoint at `contention-classification/expanded-contention-classification`:
-```
+```bash
 curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
   "claim_id": 44,
   "form526_submission_id": 55,
@@ -270,7 +382,7 @@ curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H
 
 To test the classification provided by the endpoint at `contention-classification/ml-contention-classification`:
 (note: absence of `claim_id` and `form526_submission_id` in the data posted in the request)
-```
+```bash
 curl -X 'POST'   'http://localhost:8120/ml-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
   "contentions": [
         {
@@ -360,14 +472,14 @@ docker volume prune
 ## Deploying to VA Platform
 ### Building the image and publishing to ECR
 Images are built and pushed to ECR using the [build_and_push_to_ecr.yml](.github/workflows/build_and_push_to_ecr.yml) workflow which is triggered in one of two ways:
-* Automatically: when pushed when changes are pushed to the `main` branch, which should only be done when a Pull Request is merged into the `main` branch
-* Manually: by triggering the action in [Github](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml)
+* Automatically: when changes are pushed to the `main` branch, which should only be done when a Pull Request is merged into the `main` branch
+* Manually: by triggering the action in [GitHub](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml)
 
 This workflow is not triggered when changes are pushed to any branch other than the `main` branch.
 
 ### Deploying the image
 The image is released to the VA Platform using the [release.yml](.github/workflows/release.yml) workflow which is triggered when a new image is pushed to ECR.
 This workflow will deploy the latest image to the VA Platform automatically for the `dev` and `staging` environments.
-The `sandbox` and `prod` environments must be deployed manually by triggering the action in [Github](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/release.yml) and selecting the desired environment(s).
+The `sandbox` and `prod` environments must be deployed manually by triggering the action in [GitHub](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/release.yml) and selecting the desired environment(s).
 
 Note that manually triggering the deployment will deploy the most recent commit hash to the selected environment(s).
