@@ -551,5 +551,15 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
         "endpoint": "ML Classification Endpoint",
         "classification_method": "ML Classification",
     }
-    mock_log.assert_called_with(expected_logs)
+
+    # Check that the function was called with logs containing the expected keys
     assert mock_log.call_count == 2
+    actual_call_args = mock_log.call_args[0][0]
+
+    # Verify all expected keys and values are present
+    for key, expected_value in expected_logs.items():
+        assert key in actual_call_args, f"Expected key '{key}' not found in actual logs"
+        assert actual_call_args[key] == expected_value, f"Expected {key}={expected_value}, got {actual_call_args[key]}"
+
+    # Verify that ml_classifier_version key exists (but don't check its value)
+    assert "ml_classifier_version" in actual_call_args, "Expected 'ml_classifier_version' key not found in actual logs"

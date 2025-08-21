@@ -23,7 +23,9 @@ from numpy import float32, ndarray
 from onnx.helper import make_node
 from scipy.sparse import csr_matrix
 
+from src.python_src.pydantic_models import AiResponse, ClassifiedContention, ClassifierResponse
 from src.python_src.util import app_utilities
+from src.python_src.util.logging_utilities import log_ml_contention_stats
 from src.python_src.util.ml_classifier import MLClassifier
 
 
@@ -264,3 +266,188 @@ def test_make_predictions_handles_exceptions(
 
     # Should log the error
     mock_logging.error.assert_called_once()
+
+
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
+@patch("src.python_src.util.ml_classifier.joblib.load")
+def test_version_extraction_from_model_filename(
+    mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
+) -> None:
+    """Test that version is correctly extracted from model filename based on file type."""
+    mock_model_filepath = "LR_tfidf_fit_model_20250623_151434.onnx"
+    mock_vectorizer_filepath = "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
+    mock_os_path.return_value = True
+
+    classifier = MLClassifier(mock_model_filepath, mock_vectorizer_filepath)
+
+    expected_version = (
+        "LR_tfidf_fit_model_20250623_151434.onnx",
+        "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl",
+    )
+    assert classifier.get_version() == expected_version
+
+
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
+@patch("src.python_src.util.ml_classifier.joblib.load")
+def test_version_extraction_from_vectorizer_filename(
+    mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
+) -> None:
+    """Test that version is correctly extracted from vectorizer filename when model has no clear pattern."""
+    mock_model_filepath = "some_model.onnx"
+    mock_vectorizer_filepath = "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
+    mock_os_path.return_value = True
+
+    classifier = MLClassifier(mock_model_filepath, mock_vectorizer_filepath)
+
+    expected_version = ("some_model.onnx", "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl")
+    assert classifier.get_version() == expected_version
+
+
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
+@patch("src.python_src.util.ml_classifier.joblib.load")
+def test_version_extraction_unknown_format(
+    mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
+) -> None:
+    """Test that version extraction returns filenames for any filename patterns."""
+    mock_model_filepath = "some_model.onnx_wrong"
+    mock_vectorizer_filepath = "some_vectorizer.pkl_wrong"
+    mock_os_path.return_value = True
+
+    classifier = MLClassifier(mock_model_filepath, mock_vectorizer_filepath)
+
+    expected_version = ("some_model.onnx_wrong", "some_vectorizer.pkl_wrong")
+    assert classifier.get_version() == expected_version
+
+
+def test_extract_version_from_filenames_direct() -> None:
+    """Test the _extract_version_from_filenames method directly."""
+    classifier = MLClassifier.__new__(MLClassifier)
+
+    # Test with model and vectorizer filenames
+    version = classifier._extract_version_from_filenames("LR_tfidf_fit_model_20250623_151434.onnx", "some_vectorizer.pkl")
+    assert version == ("LR_tfidf_fit_model_20250623_151434.onnx", "some_vectorizer.pkl")
+
+    # Test with different filenames
+    version = classifier._extract_version_from_filenames(
+        "some_model.onnx", "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
+    )
+    expected = ("some_model.onnx", "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl")
+    assert version == expected
+
+    # Test with basic filenames
+    version = classifier._extract_version_from_filenames("some_model.onnx", "some_vectorizer.pkl")
+    assert version == ("some_model.onnx", "some_vectorizer.pkl")
+
+    # Test with full paths
+    version = classifier._extract_version_from_filenames(
+        "/path/to/LR_tfidf_fit_model_20250623_151434.onnx", "/path/to/vectorizer.pkl"
+    )
+    assert version == ("LR_tfidf_fit_model_20250623_151434.onnx", "vectorizer.pkl")
+
+    # Test real config scenario - should return both filenames
+    version = classifier._extract_version_from_filenames(
+        "LR_tfidf_fit_model_20250623_151434.onnx", "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
+    )
+    expected = (
+        "LR_tfidf_fit_model_20250623_151434.onnx",
+        "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl",
+    )
+    assert version == expected
+
+    # Test with RF model
+    version = classifier._extract_version_from_filenames("RF_model.onnx", "something_vectorizer.pkl")
+    assert version == ("RF_model.onnx", "something_vectorizer.pkl")
+
+
+def test_version_extraction_integration() -> None:
+    """Test version extraction integration."""
+    # Test with config values
+    classifier = MLClassifier.__new__(MLClassifier)
+    version = classifier._extract_version_from_filenames(
+        "LR_tfidf_fit_model_20250623_151434.onnx", "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
+    )
+
+    expected = (
+        "LR_tfidf_fit_model_20250623_151434.onnx",
+        "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl",
+    )
+    assert version == expected, f"Expected {expected}, got {version}"
+
+
+@patch("src.python_src.util.ml_classifier.os.path.exists")
+@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
+@patch("src.python_src.util.ml_classifier.joblib.load")
+def test_ml_classifier_initialization_with_version(
+    mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
+) -> None:
+    """Test ML classifier init with version tracking."""
+    mock_os_path.return_value = True
+
+    classifier = MLClassifier(
+        "LR_tfidf_fit_model_20250623_151434.onnx", "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
+    )
+
+    version = classifier.get_version()
+    expected = (
+        "LR_tfidf_fit_model_20250623_151434.onnx",
+        "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl",
+    )
+    assert version == expected, f"Expected {expected}, got {version}"
+
+
+@patch("src.python_src.util.logging_utilities.ml_classifier")
+@patch("src.python_src.util.logging_utilities.log_as_json")
+def test_ml_classifier_logging_integration(mock_log: MagicMock, mock_ml_classifier: MagicMock) -> None:
+    """Test logging integration with version info."""
+    # Mock the ML classifier to avoid loading models
+    mock_version = (
+        "LR_tfidf_fit_model_20250623_151434.onnx",
+        "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl",
+    )
+    mock_ml_classifier.get_version.return_value = mock_version
+
+    # Create test data
+    response = ClassifierResponse(
+        contentions=[
+            ClassifiedContention(
+                classification_code=8997,
+                classification_name="Test Classification",
+                contention_type="NEW",
+            )
+        ],
+        claim_id=100,
+        form526_submission_id=500,
+        is_fully_classified=False,
+        num_processed_contentions=1,
+        num_classified_contentions=1,
+    )
+
+    ai_response = AiResponse(
+        classified_contentions=[
+            ClassifiedContention(
+                classification_code=9999,
+                classification_name="ML Classified",
+                diagnostic_code=None,
+                contention_type="NEW",
+            ),
+        ]
+    )
+
+    log_ml_contention_stats(response, ai_response)
+
+    # Verify the function was called
+    assert mock_log.called, "log_as_json should have been called"
+    call_args = mock_log.call_args[0][0]  # Get first arg of first call
+
+    # Check that version is included
+    assert "ml_classifier_version" in call_args, "ml_classifier_version should be in logged data"
+    expected_version = (
+        "model:LR_tfidf_fit_model_20250623_151434.onnx,"
+        "vectorizer:LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
+    )
+    assert call_args["ml_classifier_version"] == expected_version, (
+        f"Expected version {expected_version}, got {call_args['ml_classifier_version']}"
+    )

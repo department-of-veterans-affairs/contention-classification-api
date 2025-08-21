@@ -21,7 +21,7 @@ import logging
 import os
 import re
 import string
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import joblib
 import onnxruntime as ort
@@ -71,6 +71,9 @@ class MLClassifier:
             raise Exception(f"File not found: {vectorizer_file}")
         self.session = ort.InferenceSession(model_file)
         self.vectorizer = joblib.load(vectorizer_file)
+        self.model_file = model_file
+        self.vectorizer_file = vectorizer_file
+        self.version = self._extract_version_from_filenames(model_file, vectorizer_file)
 
     def make_predictions(self, conditions: list[str]) -> List[tuple[str, float]]:
         """
@@ -157,3 +160,40 @@ class MLClassifier:
         text = re.sub(r"\s+", " ", text)
         text = text.strip()
         return text
+
+    def _extract_version_from_filenames(self, model_file: str, vectorizer_file: str) -> tuple[str, str]:
+        """
+        Extract version information from model and vectorizer filenames.
+
+        Returns both the model filename and vectorizer filename together for version tracking.
+
+        Args:
+            model_file (str): Path to the ONNX model file.
+            vectorizer_file (str): Path to the vectorizer file.
+
+        Returns:
+            tuple[str, str]: Tuple containing (model_filename, vectorizer_filename).
+
+        Example:
+            >>> classifier._extract_version_from_filenames(
+            ...     "/path/to/model.onnx",
+            ...     "/path/to/vectorizer.pkl"
+            ... )
+            ('model.onnx', 'vectorizer.pkl')
+        """
+        import os
+
+        # Extract just the filename from the full path
+        model_filename = os.path.basename(model_file)
+        vectorizer_filename = os.path.basename(vectorizer_file)
+
+        return (model_filename, vectorizer_filename)
+
+    def get_version(self) -> Any:
+        """
+        Get the version of the ML classifier.
+
+        Returns:
+            str: Version string extracted from model filenames.
+        """
+        return self.version
