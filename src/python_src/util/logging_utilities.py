@@ -14,7 +14,7 @@ from ..pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from .app_utilities import dropdown_lookup_table, dropdown_values, expanded_lookup_table
+from .app_utilities import dropdown_lookup_table, dropdown_values, expanded_lookup_table, ml_classifier
 from .sanitizer import sanitize_log
 
 logging.basicConfig(
@@ -29,10 +29,8 @@ def log_as_json(log: Dict[str, Any]) -> None:
     """
     Logs the dictionary as a JSON to enable easier parsing in DataDog
     """
-    if "date" not in log.keys():
-        log.update({"date": datetime.now(tz=timezone.utc).isoformat()})
-    if "level" not in log.keys():
-        log.update({"level": "info"})
+    log.setdefault("date", datetime.now(tz=timezone.utc).isoformat())
+    log.setdefault("level", "info")
     logging.info(json.dumps(log))
 
 
@@ -71,35 +69,31 @@ def log_contention_stats(
     Logs stats about each contention process by the classifier. This will maintain
     compatability with the existing datadog widgets.
     """
-    classification_code = classified_contention.classification_code or None
-    classification_name = classified_contention.classification_name or None
-
     contention_text = contention.contention_text or ""
     is_in_dropdown = contention_text.strip().lower() in dropdown_values
-    is_mapped_text = dropdown_lookup_table.get(contention_text, None)["classification_code"] is not None
+    is_mapped_text = dropdown_lookup_table.get(contention_text, {}).get("classification_code") is not None
     log_contention_text = contention_text if is_mapped_text else "unmapped contention text"
-    if contention.contention_type == "INCREASE":
-        log_contention_type = "claim_for_increase"
-    else:
-        log_contention_type = contention.contention_type.lower()
+    log_contention_type = (
+        "claim_for_increase" if contention.contention_type == "INCREASE" else contention.contention_type.lower()
+    )
 
     is_multi_contention = len(claim.contentions) > 1
 
     logging_dict = {
         "vagov_claim_id": sanitize_log(claim.claim_id),
         "claim_type": sanitize_log(log_contention_type),
-        "classification_code": classification_code,
-        "classification_name": classification_name,
+        "classification_code": classified_contention.classification_code,
+        "classification_name": classified_contention.classification_name,
         "contention_text": log_contention_text,
         "diagnostic_code": sanitize_log(contention.diagnostic_code),
         "is_in_dropdown": is_in_dropdown,
-        "is_lookup_table_match": classification_code is not None,
+        "is_lookup_table_match": classified_contention.classification_code is not None,
         "is_multi_contention": is_multi_contention,
         "endpoint": request.url.path,
         "classification_method": classified_by,
     }
 
-    if request.url.path == "/expanded-contention-classification" or request.url.path == "/hybrid-contention-classification":
+    if request.url.path in ["/expanded-contention-classification", "/hybrid-contention-classification"]:
         logging_dict = log_expanded_contention_text(logging_dict, contention.contention_text, log_contention_text)
 
     log_as_json(logging_dict)
@@ -124,7 +118,6 @@ def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request:
 
 
 F = TypeVar("F", bound=Callable[..., Any])
-R = TypeVar("R")
 
 
 def log_claim_stats_decorator(func: F) -> F:
@@ -132,9 +125,7 @@ def log_claim_stats_decorator(func: F) -> F:
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         result = func(*args, **kwargs)
 
-        if kwargs.get("claim"):
-            claim = kwargs["claim"]
-            request = kwargs["request"]
+        if (claim := kwargs.get("claim")) and (request := kwargs.get("request")):
             log_claim_stats_v2(claim, result, request)
 
         return result
@@ -148,11 +139,8 @@ def log_contention_stats_decorator(
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> ClassifiedContention:
         result, classified_by = func(*args, **kwargs)
-        if isinstance(args[0], Contention) and isinstance(args[1], VaGovClaim):
-            contention = args[0]
-            claim = args[1]
-            request = args[2]
-            log_contention_stats(contention, result, claim, request, classified_by)
+        if len(args) >= 3 and isinstance(args[0], Contention) and isinstance(args[1], VaGovClaim):
+            log_contention_stats(args[0], result, args[1], args[2], classified_by)
 
         return result
 
@@ -163,6 +151,17 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
     """
     Logs stats about each contention processed by the ML classifier.
     """
+    # Get ML classifier version if available
+    if ml_classifier is not None:
+        version_tuple = ml_classifier.get_version()
+        # Convert tuple to a formatted string for logging
+        if isinstance(version_tuple, tuple) and len(version_tuple) == 2:
+            ml_version = f"model:{version_tuple[0]},vectorizer:{version_tuple[1]}"
+        else:
+            ml_version = str(version_tuple)
+    else:
+        ml_version = "unknown"
+
     for classified_contention in ai_response.classified_contentions:
         log_contention_type = (
             "claim_for_increase"
@@ -182,6 +181,7 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
             "is_multi_contention": is_multi_contention,
             "endpoint": "ML Classification Endpoint",
             "classification_method": "ML Classification",
+            "ml_classifier_version": ml_version,
         }
 
         log_as_json(logging_dict)
