@@ -71,8 +71,6 @@ class MLClassifier:
             raise Exception(f"File not found: {vectorizer_file}")
         self.session = ort.InferenceSession(model_file)
         self.vectorizer = joblib.load(vectorizer_file)
-        self.model_file = model_file
-        self.vectorizer_file = vectorizer_file
         self.version = self._extract_version_from_filenames(model_file, vectorizer_file)
 
     def make_predictions(self, conditions: list[str]) -> List[tuple[str, float]]:
