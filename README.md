@@ -10,6 +10,211 @@
 
 `/contention-classification/expanded-contention-classification` maps contention text and diagnostic codes from 526 submission to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
 
+## Table of Contents
+1. [Project Overview](#project-overview)
+2. [Badges](#badges)
+3. [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Setup (Python/Poetry)](#setup-python-using-poetry)
+  - [AWS Credentials](#configure-aws-credentials)
+  - [Pre-commit Hooks](#install-pre-commit-hooks)
+4. [Running the Service](#run-the-server)
+  - [Poetry](#run-the-server)
+  - [Docker](#running-with-docker)
+  - [Troubleshooting](#troubleshooting-poetry-and-service-startup)
+5. [Running the ML Classifier Locally](#running-the-ml-classifier-locally)
+6. [S3 File Integrity Verification](#s3-file-integrity-verification)
+
+---
+
+## Project Overview
+`/contention-classification/expanded-contention-classification` maps contention text and diagnostic codes from 526 submission to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
+
+## Badges
+[![Build and Push to ECR](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml/badge.svg?event=push)](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml)
+[![Continuous Integration](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml)
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+![Python Version from PEP 621 TOML](https://img.shields.io/badge/Python-3.12-blue)
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+---
+
+## Getting Started
+
+### Prerequisites
+* Python 3.12.3
+* Poetry
+* AWS credentials
+
+---
+
+### Setup (Python using Poetry)
+#### Install Python 3.12.3
+
+Mac Users: you can use pyenv to handle multiple python versions
+
+```bash
+brew install pyenv
+pyenv install 3.12.3 #Installs latest version of python 3.12.3
+pyenv global 3.12.3 # or don't do this if you want a different version available globally for your system
+```
+
+Mac Users: If python path hasn't been setup, you can put the following in your `~/.zshrc`:
+
+```bash
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/shims:$PATH"
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi #Initialize pyenv in current shell session
+```
+
+#### Install Poetry
+
+This project uses [Poetry](https://python-poetry.org/docs/) to manage dependencies.
+
+Follow the directions on the [Poetry website](https://python-poetry.org/docs/#installation) for installation:
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+#### Install dependencies
+
+Use Poetry to install all dependencies:
+
+```bash
+poetry install
+```
+
+---
+
+### Configure AWS Credentials
+This application requires AWS credentials to be configured locally for accessing AWS services. You can set up your AWS credentials using one of the following methods:
+
+**Option 1: AWS CLI Configuration**
+Install the AWS CLI and configure your credentials:
+
+```bash
+pip install awscli
+aws configure
+```
+
+When prompted, enter your:
+- AWS Access Key ID
+- AWS Secret Access Key
+- Default region (e.g., `us-gov-west-1`)
+- Default output format (e.g., `json`)
+
+**Option 2: Environment Variables**
+Set the following environment variables in your shell:
+
+```bash
+export AWS_ACCESS_KEY_ID=your_access_key_id
+export AWS_SECRET_ACCESS_KEY=your_secret_access_key
+export AWS_DEFAULT_REGION=us-gov-west-1
+```
+
+**Option 3: AWS Credentials File**
+Create or update `~/.aws/credentials`:
+
+```ini
+[default]
+aws_access_key_id = your_access_key_id
+aws_secret_access_key = your_secret_access_key
+```
+
+And `~/.aws/config`:
+
+```ini
+[default]
+region = us-gov-west-1
+```
+
+---
+
+### Install pre-commit hooks
+Install pre-commit hooks to ensure code quality:
+
+```bash
+poetry run pre-commit install
+```
+
+To run the pre-commit hooks manually:
+
+```bash
+poetry run pre-commit run --all-files
+```
+
+---
+
+## Running the Service
+
+### Poetry
+Using Poetry, run the FastAPI server:
+
+```bash
+# for Linux and Git-Bash, does not work for Windows native
+nohup poetry run uvicorn python_src.api:app --port 8120 --reload &
+```
+
+### Docker
+This application can also be run with Docker using the following commands:
+
+```bash
+docker compose down
+docker compose build --no-cache
+docker compose up -d
+```
+
+---
+
+### Troubleshooting: Poetry and Service Startup
+If you see an error like:
+
+```
+Poetry could not find a pyproject.toml file in /Users/zachmurray/git or its parents
+```
+
+This means Poetry cannot find your project configuration. Make sure you run all Poetry commands from the directory containing your `pyproject.toml` file (usually the root of your project, e.g., `contention-classification-api`).
+
+To start the FastAPI service, first `cd` into the correct directory:
+
+```bash
+cd /Users/zachmurray/git/contention-classification-api
+nohup poetry run uvicorn python_src.api:app --port 8120 --reload &
+```
+
+If you need to stop the service, use:
+
+```bash
+pkill -f uvicorn
+```
+
+To check for errors, view the last lines of the log:
+
+```bash
+tail -40 nohup.out
+```
+
+---
+
+## Running the ML Classifier Locally
+For local development, a .pkl ("pickle") version of the classifier can be downloaded from the VA SharePoint: [Data Discovery/CAIO Collaboration Documentation](https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention%20Classification/4%20-%20Data%20Discovery/CAIO%20Collaboration%20Documentation/model_6_2_25?csf=1&web=1&e=nb72My)
+
+Update the app_config to point to where you have saved the file locally: [app_config.yaml#L178-L179](https://github.com/department-of-veterans-affairs/contention-classification-api/blob/994d2bfc170b9e8074529e3ea172a2d70faaf3b3/src/python_src/util/app_config.yaml#L178-L179)
+
+The .pkl file is not appropriate for use beyond the local dev environment due to known security weaknesses. As noted in official [Python documentation](https://docs.python.org/3/library/pickle.html):
+> **Warning:** The pickle module **is not secure**. Only unpickle data you trust.
+
+For non-local dev, an [ONNX](https://onnx.ai/) format is intended.
+
+Neither the .pkl nor .onnx files should be committed to the GitHub repository, as we cannot guarantee that they are free of PII/PHI. As a precaution, both file extensions are flagged in `.gitignore`.
+
+---
+
+## S3 File Integrity Verification
+This application implements SHA-256 checksum verification to ensure the integrity of ML model files downloaded from S3. This security feature helps protect against corrupted downloads or potential tampering.
 ## Getting started
 
 This service can be run standalone using Poetry for dependency management or using Docker.
@@ -154,6 +359,36 @@ The .pkl file is not appropriate for use beyond the local dev environment due to
 For non-local dev, an [ONNX](https://onnx.ai/) format is intended.
 
 Neither the .pkl nor .onnx files should be committed to the GitHub repository, as we cannot guarantee that they are free of PII/PHI. As a precaution, both file extensions are flagged in `.gitignore`.
+[//]: # (Troubleshooting)
+
+## Troubleshooting: Poetry and Service Startup
+
+If you see an error like:
+
+```
+Poetry could not find a pyproject.toml file in /Users/zachmurray/git or its parents
+```
+
+This means Poetry cannot find your project configuration. Make sure you run all Poetry commands from the directory containing your `pyproject.toml` file (usually the root of your project, e.g., `contention-classification-api`).
+
+To start the FastAPI service, first `cd` into the correct directory:
+
+```bash
+cd /Users/zachmurray/git/contention-classification-api
+nohup poetry run uvicorn python_src.api:app --port 8120 --reload &
+```
+
+If you need to stop the service, use:
+
+```bash
+pkill -f uvicorn
+```
+
+To check for errors, view the last lines of the log:
+
+```bash
+tail -40 nohup.out
+```
 
 ## S3 File Integrity Verification
 
