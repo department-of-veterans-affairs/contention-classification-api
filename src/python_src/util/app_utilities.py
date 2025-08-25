@@ -19,6 +19,7 @@ dropdown_values
     List of autosuggestions
 """
 
+import hashlib
 import logging
 import os
 from typing import Any, Dict, cast
@@ -122,6 +123,76 @@ dropdown_values = build_logging_table(
 )
 
 
+def calculate_file_sha256(file_path: str, chunk_size: int = 4096) -> str:
+    """Calculate SHA-256 hash of a file."""
+    sha256_hash = hashlib.sha256()
+    try:
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(chunk_size), b""):
+                sha256_hash.update(chunk)
+        return sha256_hash.hexdigest()
+    except Exception as e:
+        logging.error(f"Error calculating SHA-256 for {file_path}: {e}")
+        raise
+
+
+def verify_file_sha256(file_path: str, expected_sha256: str, chunk_size: int = 4096) -> bool:
+    """Verify that a file's SHA-256 matches the expected value."""
+    if not os.path.exists(file_path):
+        logging.error(f"File not found for SHA verification: {file_path}")
+        return False
+
+    try:
+        actual_sha256 = calculate_file_sha256(file_path, chunk_size)
+        is_valid = actual_sha256 == expected_sha256
+
+        if is_valid:
+            logging.info(f"SHA-256 verification successful for {os.path.basename(file_path)}")
+        else:
+            logging.error(f"SHA-256 verification failed for {os.path.basename(file_path)}")
+            logging.error(f"Expected: {expected_sha256}")
+            logging.error(f"Actual:   {actual_sha256}")
+
+            # Log to DataDog for monitoring and alerting
+            try:
+                from .logging_utilities import log_as_json
+
+                log_as_json(
+                    {
+                        "event": "sha256_verification_failed",
+                        "file_name": os.path.basename(file_path),
+                        "file_path": file_path,
+                        "expected_sha256": expected_sha256,
+                        "actual_sha256": actual_sha256,
+                        "error_type": "checksum_mismatch",
+                    }
+                )
+            except ImportError:
+                logging.warning("Could not import log_as_json")
+
+        return is_valid
+    except Exception as e:
+        logging.error(f"Error during SHA-256 verification for {file_path}: {e}")
+
+        # Log to DataDog for monitoring and alerting
+        try:
+            from .logging_utilities import log_as_json
+
+            log_as_json(
+                {
+                    "event": "sha256_verification_error",
+                    "file_name": os.path.basename(file_path),
+                    "file_path": file_path,
+                    "error_message": str(e),
+                    "error_type": "verification_exception",
+                }
+            )
+        except ImportError:
+            logging.warning("Could not import log_as_json for DataDog logging")
+
+        return False
+
+
 def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[str, str]:
     """
     Download machine learning model files from AWS S3.
@@ -153,44 +224,152 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[s
     """
     # Get ENV with a default value if not set
     env = os.environ.get("ENV", "staging")  # defaults to 'staging'
-    if env not in app_config["ml_classifier"]["aws"]["bucket"]:
+    if env not in app_config["aws"]["s3"]["buckets"]:
         logging.warning(f"Environment '{env}' not found in S3 bucket configuration")
         env = "staging"
 
     s3_client = boto3.client("s3")
-    bucket = app_config["ml_classifier"]["aws"]["bucket"][env]
+    bucket = app_config["aws"]["s3"]["buckets"][env]
+
+    # Check if SHA verification is enabled
+    sha_check_enabled = app_config["ml_classifier"]["integrity_verification"]["enabled"]
+    chunk_size = app_config["ml_classifier"]["integrity_verification"]["hash_config"]["chunk_size_bytes"]
+
+    if sha_check_enabled:
+        expected_model_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["model"]
+        expected_vectorizer_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["vectorizer"]
+
+        # Allow environment variables to override config values
+        expected_model_sha = os.environ.get("ML_MODEL_SHA256", expected_model_sha)
+        expected_vectorizer_sha = os.environ.get("ML_VECTORIZER_SHA256", expected_vectorizer_sha)
+
+        logging.info("SHA-256 verification is enabled for ML model downloads")
+        logging.info(f"Expected model SHA-256: {expected_model_sha}")
+        logging.info(f"Expected vectorizer SHA-256: {expected_vectorizer_sha}")
 
     try:
         logging.info(f"Downloading model file from S3: {model_file}")
         s3_client.download_file(
             bucket,
-            app_config["ml_classifier"]["aws"]["model"],
+            app_config["ml_classifier"]["s3_objects"]["model"],
             model_file,
         )
+
+        # Verify SHA-256 if enabled
+        if sha_check_enabled:
+            logging.info(f"Verifying SHA-256 of downloaded model file: {os.path.basename(model_file)}")
+            if not verify_file_sha256(model_file, expected_model_sha, chunk_size):
+                logging.error("Model file SHA-256 verification failed!")
+                # Remove the invalid file
+                if os.path.exists(model_file):
+                    os.remove(model_file)
+                raise ValueError("Model file SHA-256 verification failed - file removed for security")
+
     except Exception as e:
         logging.error("Failed to download model file from S3: %s", e)
+        raise
 
     try:
         logging.info(f"Downloading vectorizer file from S3: {vectorizer_file}")
         s3_client.download_file(
             bucket,
-            app_config["ml_classifier"]["aws"]["vectorizer"],
+            app_config["ml_classifier"]["s3_objects"]["vectorizer"],
             vectorizer_file,
         )
+
+        # Verify SHA-256 if enabled
+        if sha_check_enabled:
+            logging.info(f"Verifying SHA-256 of downloaded vectorizer file: {os.path.basename(vectorizer_file)}")
+            if not verify_file_sha256(vectorizer_file, expected_vectorizer_sha, chunk_size):
+                logging.error("Vectorizer file SHA-256 verification failed!")
+                # Remove the invalid file
+                if os.path.exists(vectorizer_file):
+                    os.remove(vectorizer_file)
+                raise ValueError("Vectorizer file SHA-256 verification failed - file removed for security")
+
     except Exception as e:
         logging.error("Failed to download vectorizer file from S3: %s", e)
+        raise
+
     return model_file, vectorizer_file
 
 
-model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["data"]["directory"])
-model_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["model_file"])
-vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["vectorizer_file"])
+model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["storage"]["local_directory"])
 
-# download all files from S3 if a full set is not already present locally
-if not os.path.exists(model_file) or not os.path.exists(vectorizer_file):
+# Ensure the model directory exists
+os.makedirs(model_directory, exist_ok=True)
+
+model_file = os.path.join(model_directory, app_config["ml_classifier"]["files"]["model_filename"])
+vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["files"]["vectorizer_filename"])
+
+# Check if we're in a testing environment or CI/CD where AWS credentials might not be available
+import_time_download_enabled = os.getenv("DISABLE_ML_DOWNLOAD_AT_IMPORT") != "true"
+
+# Check if SHA verification is enabled
+sha_check_enabled = app_config["ml_classifier"]["integrity_verification"]["enabled"]
+# Allow disabling SHA verification via environment variable for development
+sha_check_enabled = sha_check_enabled and os.getenv("DISABLE_SHA_VERIFICATION") != "true"
+
+# Determine if we need to download files
+need_download = False
+
+if import_time_download_enabled and (not os.path.exists(model_file) or not os.path.exists(vectorizer_file)):
+    need_download = True
+    logging.info("Missing model files - will download from S3")
+elif import_time_download_enabled and sha_check_enabled:
+    # Verify existing files if SHA checking is enabled
+    chunk_size = app_config["ml_classifier"]["integrity_verification"]["hash_config"]["chunk_size_bytes"]
+    expected_model_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["model"]
+    expected_vectorizer_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["vectorizer"]
+
+    # Allow environment variables to override config values
+    expected_model_sha = os.environ.get("ML_MODEL_SHA256", expected_model_sha)
+    expected_vectorizer_sha = os.environ.get("ML_VECTORIZER_SHA256", expected_vectorizer_sha)
+
+    logging.info("Verifying SHA-256 of existing model files")
+    logging.info(f"Expected model SHA-256: {expected_model_sha}")
+    logging.info(f"Expected vectorizer SHA-256: {expected_vectorizer_sha}")
+
+    model_valid = verify_file_sha256(model_file, expected_model_sha, chunk_size)
+    vectorizer_valid = verify_file_sha256(vectorizer_file, expected_vectorizer_sha, chunk_size)
+
+    if not model_valid or not vectorizer_valid:
+        logging.warning("Existing model files failed SHA-256 verification - will re-download from S3")
+        # Remove invalid files
+        if not model_valid and os.path.exists(model_file):
+            os.remove(model_file)
+        if not vectorizer_valid and os.path.exists(vectorizer_file):
+            os.remove(vectorizer_file)
+        need_download = True
+    else:
+        logging.info("All existing model files passed SHA-256 verification - skipping download")
+elif import_time_download_enabled:
+    # Files exist but SHA checking is disabled
+    logging.info("Model files exist and SHA-256 verification is disabled - skipping download")
+
+# download all files from S3 if needed
+if need_download:
     os.makedirs(model_directory, exist_ok=True)
-    download_ml_models_from_s3(model_file, vectorizer_file)
+    try:
+        download_ml_models_from_s3(model_file, vectorizer_file)
+        logging.info("Successfully downloaded ML models from S3")
+    except Exception as e:
+        logging.warning(f"Failed to download ML models from S3: {e}")
+        # Check if files exist locally as fallback
+        if os.path.exists(model_file) and os.path.exists(vectorizer_file):
+            logging.info("Using existing local ML model files as fallback")
+        else:
+            logging.warning("ML classifier will not be available - no local files found")
 
 ml_classifier = None
-if os.path.exists(model_file) and os.path.exists(vectorizer_file):
-    ml_classifier = MLClassifier(model_file, vectorizer_file)
+if import_time_download_enabled and os.path.exists(model_file) and os.path.exists(vectorizer_file):
+    try:
+        ml_classifier = MLClassifier(model_file, vectorizer_file)
+        logging.info("ML classifier initialized successfully")
+    except Exception as e:
+        logging.error(f"Failed to initialize ML classifier: {e}")
+        ml_classifier = None
+elif not import_time_download_enabled:
+    logging.info("ML classifier initialization disabled at import time")
+else:
+    logging.warning("ML classifier could not be initialized - model files not available")
