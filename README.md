@@ -1,93 +1,919 @@
-# Contention Classification API
+# Contention Classification
 
 [![Build and Push to ECR](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml/badge.svg?event=push)](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml)
 [![Continuous Integration](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml)
 [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
-![Python Version](https://img.shields.io/badge/Python-3.12-blue)
+![Python Version from PEP 621 TOML](https://img.shields.io/badge/Python-3.12-blue)
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-Maps contention text and diagnostic codes from 526 submissions to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
+`/contention-classification/expanded-contention-classification` maps contention text and diagnostic codes from 526 submission to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
 
-## Quick Start
+## Table of Contents
+1. [Project Overview](#project-overview)
+2. [Badges](#badges)
+3. [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Setup (Python/Poetry)](#setup-python-using-poetry)
+  - [AWS Credentials](#configure-aws-credentials)
+  - [Pre-commit Hooks](#install-pre-commit-hooks)
+4. [Running the Service](#running-the-service)
+  - [Poetry (Unix/Linux/macOS)](#unixlinuxmacos)
+  - [Poetry (Windows)](#windows)
+  - [Docker](#docker)
+  - [Troubleshooting](#troubleshooting-poetry-and-service-startup)
+  - [Linux/Unix Scripts](#linuxunix-scripts)
+  - [Windows Scripts](#windows-scripts)
+5. [Running the ML Classifier Locally](#running-the-ml-classifier-locally)
+6. [S3 File Integrity Verification](#s3-file-integrity-verification)
 
-**Prerequisites:** Python 3.12.3, Poetry, AWS credentials
+---
 
-### Setup & Run
+## Project Overview
+`/contention-classification/expanded-contention-classification` maps contention text and diagnostic codes from 526 submission to contention classification codes as defined in the [Benefits Reference Data API](https://developer.va.gov/explore/benefits/docs/benefits_reference_data).
+
+## Badges
+[![Build and Push to ECR](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml/badge.svg?event=push)](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml)
+[![Continuous Integration](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/continuous-integration.yml)
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+![Python Version from PEP 621 TOML](https://img.shields.io/badge/Python-3.12-blue)
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![Linting: Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+---
+
+## Getting Started
+
+### Prerequisites
+* Python 3.12.3
+* Poetry
+* AWS credentials
+
+---
+
+### Setup (Python using Poetry)
+#### Install Python 3.12.3
+
+Mac Users: you can use pyenv to handle multiple python versions
+
 ```bash
-# Install dependencies
+brew install pyenv
+pyenv install 3.12.3 #Installs latest version of python 3.12.3
+pyenv global 3.12.3 # or don't do this if you want a different version available globally for your system
+```
+
+Mac Users: If python path hasn't been setup, you can put the following in your `~/.zshrc`:
+
+```bash
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/shims:$PATH"
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi #Initialize pyenv in current shell session
+```
+
+#### Install Poetry
+
+This project uses [Poetry](https://python-poetry.org/docs/) to manage dependencies.
+
+Follow the directions on the [Poetry website](https://python-poetry.org/docs/#installation) for installation:
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+#### Install dependencies
+
+Use Poetry to install all dependencies:
+
+```bash
 poetry install
+```
 
-# Configure AWS (choose one)
+---
+
+### Configure AWS Credentials
+This application requires AWS credentials to be configured locally for accessing AWS services. You can set up your AWS credentials using one of the following methods:
+
+**Option 1: AWS CLI Configuration**
+Install the AWS CLI and configure your credentials:
+
+```bash
+pip install awscli
 aws configure
-# OR set environment variables:
-# export AWS_ACCESS_KEY_ID=your_key AWS_SECRET_ACCESS_KEY=your_secret AWS_DEFAULT_REGION=us-gov-west-1
+```
 
-# Install pre-commit hooks
+When prompted, enter your:
+- AWS Access Key ID
+- AWS Secret Access Key
+- Default region (e.g., `us-gov-west-1`)
+- Default output format (e.g., `json`)
+
+**Option 2: Environment Variables**
+Set the following environment variables in your shell:
+
+```bash
+export AWS_ACCESS_KEY_ID=your_access_key_id
+export AWS_SECRET_ACCESS_KEY=your_secret_access_key
+export AWS_DEFAULT_REGION=us-gov-west-1
+```
+
+**Option 3: AWS Credentials File**
+Create or update `~/.aws/credentials`:
+
+```ini
+[default]
+aws_access_key_id = your_access_key_id
+aws_secret_access_key = your_secret_access_key
+```
+
+And `~/.aws/config`:
+
+```ini
+[default]
+region = us-gov-west-1
+```
+
+---
+
+### Install pre-commit hooks
+Install pre-commit hooks to ensure code quality:
+
+```bash
 poetry run pre-commit install
-
-# Start the service
-poetry run uvicorn python_src.api:app --port 8120 --reload
-# OR with Docker: docker compose up --build
-
-# Test it works
-curl http://localhost:8120/health
 ```
 
-## API Usage
+To run the pre-commit hooks manually:
 
-**Documentation:** `http://localhost:8120/docs`
-
-### Endpoints
-- `/health` - Health check
-- `/expanded-contention-classification` - Full classification with claim tracking
-- `/ml-contention-classification` - ML-only classification
-- `/hybrid-contention-classification` - Hybrid ML + rule-based classification
-
-### Example Request
 ```bash
-curl -X POST 'http://localhost:8120/expanded-contention-classification' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "claim_id": 44,
-    "contentions": [{
-      "contention_text": "PTSD (post-traumatic stress disorder)",
-      "contention_type": "NEW"
-    }]
-  }'
+poetry run pre-commit run --all-files
 ```
 
-## Testing & Development
+---
+
+## Running the Service
+
+### Poetry
+
+#### Unix/Linux/macOS
+
+**Option 1: Using provided scripts (Recommended)**
+```bash
+# Start the server
+./scripts/start_server_linux.sh
+
+# Stop the server
+./scripts/stop_server_linux.sh
+```
+
+**Option 2: Direct command**
+```bash
+# For Unix/Linux/macOS and Git-Bash
+nohup poetry run uvicorn python_src.api:app --port 8120 --reload > server.log 2>&1 &
+
+# Stop Server
+pkill -f uvicorn
+```
+
+#### Windows
+For Windows users, use the provided scripts:
+
+**Option 1: PowerShell (Recommended)**
+```powershell
+# Start the server
+.\scripts\start_server_windows.ps1
+
+# Stop the server
+.\scripts\stop_server_windows.ps1
+```
+
+**Option 2: Command Prompt (Batch)**
+```cmd
+# Start the server
+scripts\start_server_windows.bat
+
+# Stop the server (manual)
+taskkill /F /IM python.exe
+```
+
+**Option 3: Direct PowerShell command**
+```powershell
+Start-Process -FilePath "poetry" -ArgumentList "run", "uvicorn", "python_src.api:app", "--port", "8120", "--reload" -NoNewWindow -PassThru -RedirectStandardOutput "server.log" -RedirectStandardError "server_error.log"
+```
+
+### Docker
+This application can also be run with Docker using the following commands:
 
 ```bash
-# Run tests
+docker compose down
+docker compose build --no-cache
+docker compose up -d
+```
+
+---
+
+### Troubleshooting: Poetry and Service Startup
+If you see an error like:
+
+```
+Poetry could not find a pyproject.toml file in /Users/zachmurray/git or its parents
+```
+
+This means Poetry cannot find your project configuration. Make sure you run all Poetry commands from the directory containing your `pyproject.toml` file (usually the root of your project, e.g., `contention-classification-api`).
+
+#### Unix/Linux/macOS
+
+**Option 1: Using scripts (Recommended)**
+```bash
+cd /path/to/contention-classification-api
+./scripts/start_server_linux.sh
+```
+
+**Option 2: Direct command**
+```bash
+cd /path/to/contention-classification-api
+nohup poetry run uvicorn python_src.api:app --port 8120 --reload > server.log 2>&1 &
+```
+
+**Stop the service:**
+```bash
+# Using script
+./scripts/stop_server_linux.sh
+
+# Or manual methods
+pkill -f uvicorn
+# or if you have the PID
+kill $(cat server.pid)
+```
+
+**Check for errors:**
+```bash
+tail -40 server.log
+```
+
+**Check if server is running:**
+```bash
+pgrep -f uvicorn
+# or
+ps aux | grep uvicorn
+```
+
+#### Windows
+For Windows users:
+
+**Change to project directory:**
+```cmd
+cd C:\path\to\contention-classification-api
+```
+
+**Start the service:**
+```powershell
+.\scripts\start_server_windows.ps1
+```
+
+**Stop the service:**
+```powershell
+.\scripts\stop_server_windows.ps1
+```
+
+**Check for errors:**
+```cmd
+type server.log
+# or
+type server_error.log
+```
+
+**Alternative stop methods:**
+```cmd
+# Command Prompt
+taskkill /F /IM python.exe
+
+# PowerShell
+Get-Process | Where-Object {$_.ProcessName -like "*python*"} | Stop-Process -Force
+```
+
+---
+
+### Linux/Unix Scripts
+For Linux and Unix users, two convenience scripts are provided in the `scripts/` folder:
+
+#### `scripts/start_server_linux.sh` (Bash)
+This shell script provides robust server management:
+- Starts the FastAPI server in the background using `nohup`
+- Captures and saves the process ID for easy management
+- Redirects output to `server.log`
+- Provides helpful information about the running process
+
+#### `scripts/stop_server_linux.sh` (Bash)
+A companion script to cleanly stop the server:
+- Reads the saved process ID and stops the specific process
+- Falls back to stopping all uvicorn processes if needed
+- Cleans up the process ID file
+
+**Usage Examples:**
+```bash
+# Make scripts executable (one-time setup)
+chmod +x scripts/start_server_linux.sh scripts/stop_server_linux.sh
+
+# Start the server
+./scripts/start_server_linux.sh
+
+# Check if the server is running
+pgrep -f uvicorn
+
+# View server logs
+tail -f server.log
+
+# Stop the server
+./scripts/stop_server_linux.sh
+```
+
+### Windows Scripts
+For Windows users, three convenience scripts are provided in the `scripts/` folder:
+
+#### `scripts/start_server_windows.ps1` (PowerShell - Recommended)
+This PowerShell script provides the most robust solution for starting the server:
+- Starts the FastAPI server in the background
+- Captures and saves the process ID for easy management
+- Redirects output to separate log files (`server.log` and `server_error.log`)
+- Provides helpful information about the running process
+
+#### `scripts/start_server_windows.bat` (Batch)
+A simple batch file for Command Prompt users:
+- Starts the server in the background using `start /B`
+- Redirects output to `server.log`
+- Provides basic process management
+
+#### `scripts/stop_server_windows.ps1` (PowerShell)
+A companion script to cleanly stop the server:
+- Reads the saved process ID and stops the specific process
+- Falls back to stopping all uvicorn processes if needed
+- Cleans up the process ID file
+
+**Usage Examples:**
+```powershell
+# Start the server
+.\scripts\start_server_windows.ps1
+
+# Check if the server is running
+Get-Process | Where-Object {$_.ProcessName -like "*python*"}
+
+# View server logs
+Get-Content server.log -Tail 20
+
+# Stop the server
+.\scripts\stop_server_windows.ps1
+```
+
+---
+
+### Cross-Platform Command Reference
+
+| Task | Linux/Unix/macOS | Windows (PowerShell) | Windows (CMD) |
+|------|------------------|---------------------|---------------|
+| **Start Server (Script)** | `./scripts/start_server_linux.sh` | `.\scripts\start_server_windows.ps1` | `scripts\start_server_windows.bat` |
+| **Stop Server (Script)** | `./scripts/stop_server_linux.sh` | `.\scripts\stop_server_windows.ps1` | `taskkill /F /IM python.exe` |
+| **Start Server (Direct)** | `nohup poetry run uvicorn python_src.api:app --port 8120 --reload > server.log 2>&1 &` | `Start-Process -FilePath "poetry" -ArgumentList "run", "uvicorn", "python_src.api:app", "--port", "8120", "--reload" -NoNewWindow` | `start /B poetry run uvicorn python_src.api:app --port 8120 --reload` |
+| **Check Running** | `pgrep -f uvicorn` | `Get-Process \| Where-Object {$_.ProcessName -like "*python*"}` | `tasklist \| findstr python` |
+| **View Logs** | `tail -f server.log` | `Get-Content server.log -Tail 20 -Wait` | `type server.log` |
+| **Kill Process** | `pkill -f uvicorn` | `Stop-Process -Name python -Force` | `taskkill /F /IM python.exe` |
+
+---
+
+## Running the ML Classifier Locally
+For local development, a .pkl ("pickle") version of the classifier can be downloaded from the VA SharePoint: [Data Discovery/CAIO Collaboration Documentation](https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention%20Classification/4%20-%20Data%20Discovery/CAIO%20Collaboration%20Documentation/model_6_2_25?csf=1&web=1&e=nb72My)
+
+Update the app_config to point to where you have saved the file locally: [app_config.yaml#L187-L190](https://github.com/department-of-veterans-affairs/contention-classification-api/blob/main/src/python_src/util/app_config.yaml#L187-L190)
+
+The .pkl file is not appropriate for use beyond the local dev environment due to known security weaknesses. As noted in official [Python documentation](https://docs.python.org/3/library/pickle.html):
+> **Warning:** The pickle module **is not secure**. Only unpickle data you trust.
+
+For non-local dev, an [ONNX](https://onnx.ai/) format is intended.
+
+Neither the .pkl nor .onnx files should be committed to the GitHub repository, as we cannot guarantee that they are free of PII/PHI. As a precaution, both file extensions are flagged in `.gitignore`.
+
+---
+
+## S3 File Integrity Verification
+This application implements SHA-256 checksum verification to ensure the integrity of ML model files downloaded from S3. This security feature helps protect against corrupted downloads or potential tampering.
+## Getting started
+
+This service can be run standalone using Poetry for dependency management or using Docker.
+
+## Setup
+
+### Python using Poetry
+
+#### Install Python 3.12.3
+
+Mac Users: you can use pyenv to handle multiple python versions
+
+```bash
+brew install pyenv
+pyenv install 3.12.3 #Installs latest version of python 3.12.3
+pyenv global 3.12.3 # or don't do this if you want a different version available globally for your system
+```
+
+Mac Users: If python path hasn't been setup, you can put the following in your `~/.zshrc`:
+
+```bash
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/shims:$PATH"
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi" #Initialize pyenv in current shell session
+```
+
+#### Install Poetry
+
+This project uses [Poetry](https://python-poetry.org/docs/) to manage dependencies.
+
+Follow the directions on the [Poetry website](https://python-poetry.org/docs/#installation) for installation:
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+#### Install dependencies
+
+Use Poetry to install all dependencies:
+
+```bash
+poetry install
+```
+
+#### Configure AWS Credentials
+
+This application requires AWS credentials to be configured locally for accessing AWS services. You can set up your AWS credentials using one of the following methods:
+
+**Option 1: AWS CLI Configuration**
+Install the AWS CLI and configure your credentials:
+
+```bash
+pip install awscli
+aws configure
+```
+
+When prompted, enter your:
+- AWS Access Key ID
+- AWS Secret Access Key
+- Default region (e.g., `us-gov-west-1`)
+- Default output format (e.g., `json`)
+
+**Option 2: Environment Variables**
+Set the following environment variables in your shell:
+
+```bash
+export AWS_ACCESS_KEY_ID=your_access_key_id
+export AWS_SECRET_ACCESS_KEY=your_secret_access_key
+export AWS_DEFAULT_REGION=us-gov-west-1
+```
+
+**Option 3: AWS Credentials File**
+Create or update `~/.aws/credentials`:
+
+```ini
+[default]
+aws_access_key_id = your_access_key_id
+aws_secret_access_key = your_secret_access_key
+```
+
+And `~/.aws/config`:
+
+```ini
+[default]
+region = us-gov-west-1
+```
+
+#### Install pre-commit hooks
+
+```bash
+poetry run pre-commit install
+```
+
+To run the pre-commit hooks manually:
+
+```bash
+poetry run pre-commit run --all-files
+```
+
+### Run the server
+
+#### Unix/Linux/macOS
+
+**Option 1: Using scripts (Recommended)**
+```bash
+# Start the server
+./scripts/start_server_linux.sh
+```
+
+**Option 2: Direct command**
+```bash
+# For Unix/Linux/macOS and Git-Bash
+nohup poetry run uvicorn python_src.api:app --port 8120 --reload > server.log 2>&1 &
+```
+
+#### Windows
+For Windows users, use the provided scripts:
+
+```powershell
+# PowerShell (Recommended)
+.\scripts\start_server_windows.ps1
+
+# Or use batch file
+scripts\start_server_windows.bat
+```
+
+### Run tests
+
+Using Poetry, run the test suite:
+
+```bash
 poetry run pytest
-
-# For local ML development
-# 1. Download model from VA SharePoint (see link in Configuration)
-# 2. Update app_config.yaml with local file path
-# Note: .pkl files are dev-only, production uses ONNX
 ```
 
-## Configuration
+For test coverage report:
 
-### Environment Variables
-- `ML_MODEL_SHA256` - Model file checksum
-- `ML_VECTORIZER_SHA256` - Vectorizer file checksum
-- `DISABLE_SHA_VERIFICATION=true` - Disable checksum verification (dev only)
+```bash
+poetry run pytest --cov=src --cov-report=term-missing
+```
 
-### ML Model Setup
-- **Local Dev:** Download from [VA SharePoint](https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention%20Classification/4%20-%20Data%20Discovery/CAIO%20Collaboration%20Documentation/model_6_2_25)
-- **Production:** Uses ONNX format with S3 + SHA-256 verification
+## Running with Docker
 
-## Deployment
+This application can also be run with Docker using the following commands:
 
-- **dev/staging:** Auto-deploy on `main` branch
-- **sandbox/prod:** Manual via [release workflow](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/release.yml)
-- **Config:** Managed via [`vsp-infra-application-manifests`](https://github.com/department-of-veterans-affairs/vsp-infra-application-manifests)
+```bash
+docker compose down
+docker compose build --no-cache
+docker compose up -d
+```
 
-## Troubleshooting
+## Running the ML Classifier locally
 
-**Common fixes:**
-- Poetry errors → Run from project root with `pyproject.toml`
-- Service issues → `pkill -f uvicorn && tail -40 nohup.out`
-- AWS issues → Verify credentials and `AWS_DEFAULT_REGION=us-gov-west-1`
-- Model errors → Check S3 permissions and SHA-256 checksums
+For local development, a .pkl ("pickle") version of the classifier can be downloaded from the VA SharePoint: [Data Discovery/CAIO Collaboration Documentation](https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention%20Classification/4%20-%20Data%20Discovery/CAIO%20Collaboration%20Documentation/model_6_2_25?csf=1&web=1&e=nb72My)
+
+Update the app_config to point to where you have saved the file locally: [app_config.yaml#L178-L179](https://github.com/department-of-veterans-affairs/contention-classification-api/blob/994d2bfc170b9e8074529e3ea172a2d70faaf3b3/src/python_src/util/app_config.yaml#L178-L179)
+
+The .pkl file is not appropriate for use beyond the local dev environment due to known security weaknesses. As noted in official [Python documentation](https://docs.python.org/3/library/pickle.html):
+> **Warning:** The pickle module **is not secure**. Only unpickle data you trust.
+
+For non-local dev, an [ONNX](https://onnx.ai/) format is intended.
+
+Neither the .pkl nor .onnx files should be committed to the GitHub repository, as we cannot guarantee that they are free of PII/PHI. As a precaution, both file extensions are flagged in `.gitignore`.
+[//]: # (Troubleshooting)
+
+## Troubleshooting: Poetry and Service Startup
+
+If you see an error like:
+
+```
+Poetry could not find a pyproject.toml file in /Users/zachmurray/git or its parents
+```
+
+This means Poetry cannot find your project configuration. Make sure you run all Poetry commands from the directory containing your `pyproject.toml` file (usually the root of your project, e.g., `contention-classification-api`).
+
+To start the FastAPI service, first `cd` into the correct directory:
+
+```bash
+cd /Users/zachmurray/git/contention-classification-api
+nohup poetry run uvicorn python_src.api:app --port 8120 --reload &
+```
+
+If you need to stop the service, use:
+
+```bash
+pkill -f uvicorn
+```
+
+To check for errors, view the last lines of the log:
+
+```bash
+tail -40 nohup.out
+```
+
+## S3 File Integrity Verification
+
+This application implements SHA-256 checksum verification to ensure the integrity of ML model files downloaded from S3. This security feature helps protect against corrupted downloads or potential tampering.
+
+### How It Works
+
+1. **Checksum Storage**: Expected SHA-256 checksums for both the model (.onnx) and vectorizer (.pkl) files are stored in the application configuration
+2. **Automatic Verification**: When files are downloaded from S3, their checksums are automatically calculated and compared against expected values
+3. **File Rejection**: Files that fail checksum verification are immediately deleted and the application raises an exception
+4. **Monitoring**: Checksum failures are logged to DataDog for alerting and monitoring
+
+### Configuration
+
+SHA-256 verification is controlled by the following configuration in `app_config.yaml`:
+
+```yaml
+ml_classifier:
+  integrity_verification:
+    enabled: true
+    expected_checksums:
+      model: '<model_sha256_checksum>'
+      vectorizer: '<vectorizer_sha256_checksum>'
+    hash_config:
+      chunk_size_bytes: 4096
+```
+
+### Updating Checksums
+
+When new model files are uploaded to S3, the checksums must be updated. You can use either configuration files or environment variables:
+
+#### Option 1: Configuration File (app_config.yaml)
+1. **Calculate SHA-256**: Use the `calculate_file_sha256()` function or any SHA-256 tool to compute the hash of the new file
+2. **Update Configuration**: Replace the corresponding SHA-256 value in `app_config.yaml`
+3. **Deploy**: Ensure the updated configuration is deployed with the application
+
+#### Option 2: Environment Variables (Recommended for Production)
+Set the following environment variables to override the configuration values:
+- `ML_MODEL_SHA256`: SHA-256 checksum for the model (.onnx) file
+- `ML_VECTORIZER_SHA256`: SHA-256 checksum for the vectorizer (.pkl) file
+
+**Example:**
+```bash
+export ML_MODEL_SHA256="<model_sha256_checksum>"
+export ML_VECTORIZER_SHA256="<vectorizer_sha256_checksum>"
+```
+
+Environment variables take precedence over configuration file values, making them ideal for deployment environments where checksums may need to be updated without code changes.
+
+Example using Python:
+```python
+from src.python_src.util.app_utilities import calculate_file_sha256
+
+new_checksum: str = calculate_file_sha256('path/to/new/model.onnx')
+print(f"New model checksum: {new_checksum}")
+```
+
+Example using command line:
+```bash
+sha256sum model.onnx
+# Output: <model_sha256_checksum>  model.onnx
+```
+
+### Kubernetes Deployment with Helm Charts
+
+The contention classification API is deployed to the VA Platform using Helm charts managed in the [`vsp-infra-application-manifests`](https://github.com/department-of-veterans-affairs/vsp-infra-application-manifests) repository. Environment variables for production deployments should be configured through this Helm chart infrastructure.
+
+#### Environment Variable Configuration Pattern
+
+Environment variables are injected into the application pods through Helm chart `values.yaml` files. Each environment (dev, staging, sandbox, prod) has its own `values.yaml` file in the manifests repository at:
+
+```bash
+vsp-infra-application-manifests/apps/contention-classification-api/
+├── dev/values.yaml
+├── staging/values.yaml
+├── sandbox/values.yaml
+└── prod/values.yaml
+```
+
+#### Adding New Environment Variables
+
+To add new environment variables for the contention classification API:
+
+1. Update the Helm Values: Add environment variables to the appropriate `values.yaml` files in the manifests repository:
+
+```yaml
+# Example values.yaml structure
+env:
+  - name: ML_MODEL_SHA256
+    value: "<ML_MODEL_SHA256.env.value>"
+  - name: ML_VECTORIZER_SHA256
+    value: "<ML_VECTORIZER_SHA256.env.value>"
+  - name: DISABLE_SHA_VERIFICATION
+    value: "false"
+  - name: ENV
+    value: "staging"  # or dev, production, sandbox
+```
+
+2. Environment-Specific Configuration: Different environments can have different values for the same variables:
+
+```yaml
+# dev/values.yaml
+env:
+  - name: ML_MODEL_SHA256
+    value: "<ML_MODEL_SHA256.dev.value>"
+  - name: DISABLE_SHA_VERIFICATION
+    value: "true"  # Allow disabling in dev for testing
+
+# prod/values.yaml
+env:
+  - name: ML_MODEL_SHA256
+    value: "<ML_MODEL_SHA256.production.value>"
+  - name: DISABLE_SHA_VERIFICATION
+    value: "false"  # Always enforce in production
+```
+
+3. Sensitive Values with Kubernetes Secrets: For sensitive environment variables, use Kubernetes secrets instead of plain values:
+
+```yaml
+# Reference secrets in values.yaml
+envFrom:
+  - secretRef:
+      name: contention-classification-secrets
+
+# Create secrets separately via kubectl or ArgoCD
+# kubectl create secret generic contention-classification-secrets \
+#   --from-literal=AWS_ACCESS_KEY_ID=your_key \
+#   --from-literal=AWS_SECRET_ACCESS_KEY=your_secret
+```
+
+#### Deployment Process
+
+Environment variable changes are deployed through the standard release process:
+
+1. Update Manifests: Modify the appropriate `values.yaml` file(s) in the manifests repository
+2. Commit Changes: Create a PR to merge changes into the manifests repository
+3. Automatic Deployment: ArgoCD will automatically detect and deploy the changes to the target environment
+4. Manual Deployment: For sandbox/prod, use the [release workflow](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/release.yml) to manually trigger deployment
+
+#### Environment Variable Best Practices
+
+- Configuration Hierarchy: Environment variables override `app_config.yaml` values, allowing environment-specific behavior without code changes
+- Sensitive Data: Never commit sensitive values to the manifests repository; use Kubernetes secrets or external secret management
+- Environment Consistency: Maintain consistent variable names across all environments while allowing different values
+- Documentation: Document all environment variables in this README and their expected values for each environment
+
+#### Currently Supported Environment Variables
+
+| Variable Name | Purpose | Default | Required |
+|---------------|---------|---------|----------|
+| `ML_MODEL_SHA256` | SHA-256 checksum for model file integrity verification | Value from app_config.yaml | No |
+| `ML_VECTORIZER_SHA256` | SHA-256 checksum for vectorizer file integrity verification | Value from app_config.yaml | No |
+| `DISABLE_SHA_VERIFICATION` | Disable SHA-256 verification for development/testing | `false` | No |
+| `DISABLE_ML_DOWNLOAD_AT_IMPORT` | Disable automatic ML model download at import | `false` | No |
+| `ENV` | Application environment identifier | `staging` | No |
+
+#### Adding Support for New Environment Variables
+
+When adding support for new environment variables in the application code:
+
+1. Update Application Code: Use `os.environ.get()` with appropriate defaults:
+```python
+import os
+
+new_setting: str = os.environ.get("NEW_ENVIRONMENT_VARIABLE", "default_value")
+```
+
+2. Update Documentation: Add the new variable to the table above and describe its purpose
+
+3. Update Helm Charts: Add the variable to the appropriate `values.yaml` files in the manifests repository
+
+4. Test Across Environments: Verify the new variable works correctly in dev/staging before deploying to production
+
+### Disabling SHA Verification
+
+For development and testing purposes, SHA-256 verification can be disabled using an environment variable:
+
+```bash
+export DISABLE_SHA_VERIFICATION=true
+```
+
+When this environment variable is set to `"true"`, the application will skip SHA-256 verification of downloaded ML model files. This can be useful in development environments where:
+- You need to quickly test with different model versions
+- Network issues prevent reliable checksum verification
+- You're working with experimental or temporary model files
+
+**⚠️ Warning**: Only disable SHA verification in development environments. Always keep it enabled in production for security.
+
+### Troubleshooting
+
+- **Checksum Mismatch**: If verification fails, check DataDog logs for detailed error information
+- **Configuration**: Ensure `enable_sha_check` is set to `true` in the configuration
+- **File Corruption**: Failed verification may indicate file corruption during upload or transfer
+- **Outdated Checksums**: Verify that the expected checksums in configuration match the actual files in S3
+
+## Testing locally
+With the application running using either Docker or Python, tests requests can be sent using the following curl commands.
+
+To test the health of the application or to check if the application is running at the `contention-classification/health` endpoint:
+```bash
+curl -X 'GET' 'http://localhost:8120/health'
+```
+
+To test the classification provided by the endpoint at `contention-classification/expanded-contention-classification`:
+```bash
+curl -X 'POST'   'http://localhost:8120/expanded-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "claim_id": 44,
+  "form526_submission_id": 55,
+  "contentions": [
+        {
+            "contention_text": "PTSD (post-traumatic stress disorder)",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "acl tear, right",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 5012
+        }
+    ]
+}'
+```
+
+To test the classification provided by the endpoint at `contention-classification/ml-contention-classification`:
+(note: absence of `claim_id` and `form526_submission_id` in the data posted in the request)
+```bash
+curl -X 'POST'   'http://localhost:8120/ml-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "contentions": [
+        {
+            "contention_text": "PTSD (post-traumatic stress disorder)",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "acl tear, right",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 5012
+        }
+    ]
+}'
+```
+
+
+To test the classification provided by the endpoint at `contention-classification/hybrid-contention-classification`:
+```
+curl -X 'POST'   'http://localhost:8120/hybrid-contention-classification'   -H 'accept: application/json'   -H 'Content-Type: application/json'   -d '{
+  "claim_id": 44,
+  "form526_submission_id": 55,
+  "contentions": [
+        {
+            "contention_text": "lorem ipsum unclassifiable",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "acl tear, right",
+            "contention_type": "NEW"
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 5012
+        },
+        {
+            "contention_text": "",
+            "contention_type": "INCREASE",
+            "diagnostic_code": 7777777777777
+        }
+    ]
+}'
+```
+
+
+An alternative to the above `curl` commands is to use a local testing application like [Bruno](https://www.usebruno.com/) or [Postman](https://www.postman.com/).  Different JSON request bodies can be set up for testing each of the above endpoints and tests can be saved using Collections within these tools.
+
+
+## Building docs
+
+API Documentation is automatically created by FastAPI. This can be viewed by visiting `localhost:8120/docs` while the application is running.
+
+For exporting the open API spec:
+
+```bash
+poetry run python src/python_src/util/pull_api_documentation.py
+```
+
+<!--
+# TODO: add docker config https://github.com/department-of-veterans-affairs/abd-vro/issues/3895
+## Docker
+
+### Build and run with Docker Compose
+
+```bash
+docker compose up --build
+```
+
+### Run tests in Docker
+
+```bash
+docker compose run --rm api poetry run pytest
+```
+
+### Clean up Docker resources
+
+```bash
+docker compose down
+docker system prune
+docker volume prune
+``` -->
+
+## Deploying to VA Platform
+### Building the image and publishing to ECR
+Images are built and pushed to ECR using the [build_and_push_to_ecr.yml](.github/workflows/build_and_push_to_ecr.yml) workflow which is triggered in one of two ways:
+* Automatically: when changes are pushed to the `main` branch, which should only be done when a Pull Request is merged into the `main` branch
+* Manually: by triggering the action in [GitHub](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/build_and_push_to_ecr.yml)
+
+This workflow is not triggered when changes are pushed to any branch other than the `main` branch.
+
+### Deploying the image
+The image is released to the VA Platform using the [release.yml](.github/workflows/release.yml) workflow which is triggered when a new image is pushed to ECR.
+This workflow will deploy the latest image to the VA Platform automatically for the `dev` and `staging` environments.
+The `sandbox` and `prod` environments must be deployed manually by triggering the action in [GitHub](https://github.com/department-of-veterans-affairs/contention-classification-api/actions/workflows/release.yml) and selecting the desired environment(s).
+
+Note that manually triggering the deployment will deploy the most recent commit hash to the selected environment(s).
