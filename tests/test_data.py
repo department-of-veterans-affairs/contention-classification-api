@@ -1,13 +1,13 @@
 """Tests for the data module."""
 
-from src.python_src.util.app_utilities import diagnostic_code_inits, dropdown_expanded_table_inits, load_config
-from src.python_src.util.expanded_lookup_table import ExpandedLookupTable
-from src.python_src.util.lookup_table import (
+from src.util.app_utilities import diagnostic_code_inits, dropdown_expanded_table_inits, load_config
+from src.util.expanded_lookup_table import ExpandedLookupTable
+from src.util.lookup_table import (
     ContentionTextLookupTable,
     DiagnosticCodeLookupTable,
 )
 
-app_config = load_config("src/python_src/util/app_config.yaml")
+app_config = load_config("src/util/app_config.yaml")
 default_lut_table = app_config["lut_default_value"]
 
 

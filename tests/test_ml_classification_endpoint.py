@@ -2,11 +2,11 @@ from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
 
-from src.python_src.pydantic_models import ClassifiedContention, ClassifierResponse, Contention, VaGovClaim
+from src.pydantic_models import ClassifiedContention, ClassifierResponse, Contention, VaGovClaim
 
 
-@patch("src.python_src.api.classify_claim")
-@patch("src.python_src.api.supplement_with_ml_classification")
+@patch("src.api.classify_claim")
+@patch("src.api.supplement_with_ml_classification")
 def test_hybrid_classifier_fully_classified(
     mock_supplement_with_ml_classifier: MagicMock, mock_classify_claim: MagicMock, test_client: TestClient
 ) -> None:
@@ -47,8 +47,8 @@ def test_hybrid_classifier_fully_classified(
     mock_supplement_with_ml_classifier.assert_not_called()
 
 
-@patch("src.python_src.api.classify_claim")
-@patch("src.python_src.api.supplement_with_ml_classification")
+@patch("src.api.classify_claim")
+@patch("src.api.supplement_with_ml_classification")
 def test_hybrid_classifier_partially_classified(
     mock_supplement_with_ml_classifier: MagicMock, mock_classify_claim: MagicMock, test_client: TestClient
 ) -> None:

@@ -23,15 +23,15 @@ from numpy import float32, ndarray
 from onnx.helper import make_node
 from scipy.sparse import csr_matrix
 
-from src.python_src.pydantic_models import AiResponse, ClassifiedContention, ClassifierResponse
-from src.python_src.util import app_utilities
-from src.python_src.util.logging_utilities import log_ml_contention_stats
-from src.python_src.util.ml_classifier import MLClassifier
+from src.pydantic_models import AiResponse, ClassifiedContention, ClassifierResponse
+from src.util import app_utilities
+from src.util.logging_utilities import log_ml_contention_stats
+from src.util.ml_classifier import MLClassifier
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
 def test_instantiation(mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock) -> None:
     """Test successful instantiation of MLClassifier with valid file paths."""
     mock_model_filepath = "/path/to/model-file.onnx"
@@ -44,8 +44,8 @@ def test_instantiation(mock_joblib: MagicMock, mock_onnx_session: MagicMock, moc
     mock_joblib.assert_called_once_with(mock_vectorizer_filepath)
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.joblib.load")
 def test_instantiation_raises_exception_if_file_not_found(mock_joblib: MagicMock, mock_os_path: MagicMock) -> None:
     """Test that MLClassifier raises exception when model file is not found."""
     mock_model_filepath = "/path/to/model-file.onnx"
@@ -59,9 +59,9 @@ def test_instantiation_raises_exception_if_file_not_found(mock_joblib: MagicMock
     ) or "[Errno 2] No such file or directory: ''" in str(exception_info.value)
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
 def test_instantiation_raises_exception_if_vectorizer_file_not_found(
     mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
 ) -> None:
@@ -80,12 +80,12 @@ def test_instantiation_raises_exception_if_vectorizer_file_not_found(
     assert "File not found: /path/to/vectorizer-file.pkl" in str(exception_info.value)
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
-@patch("src.python_src.util.ml_classifier.MLClassifier.get_inputs_for_session")
-@patch("src.python_src.util.ml_classifier.MLClassifier.get_outputs_for_session")
-@patch("src.python_src.util.ml_classifier.MLClassifier.clean_text")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.MLClassifier.get_inputs_for_session")
+@patch("src.util.ml_classifier.MLClassifier.get_outputs_for_session")
+@patch("src.util.ml_classifier.MLClassifier.clean_text")
 def test_classify_conditions(
     mock_clean_text: MagicMock,
     mock_outputs_for_session: MagicMock,
@@ -125,9 +125,9 @@ def test_classify_conditions(
     assert predictions == [("lorem", 0.74), ("ipsum", 0.92), ("dolor", 0.95)]
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
 def test_inputs_is_dictionary_of_transformed_values_as_ndarray(
     mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
 ) -> None:
@@ -155,9 +155,9 @@ def test_inputs_is_dictionary_of_transformed_values_as_ndarray(
     assert inputs == {"node_name": csr_matrix(1).toarray().astype(float32)}
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
 def test_clean_text(mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock) -> None:
     """
     Test text cleaning functionality for various input scenarios.
@@ -186,7 +186,7 @@ def test_app_config_values_exist() -> None:
     ensuring all required paths, file extensions, and directory structures
     are correctly defined.
     """
-    app_config = app_utilities.load_config(os.path.join("src/python_src/util", "app_config.yaml"))
+    app_config = app_utilities.load_config(os.path.join("src/util", "app_config.yaml"))
 
     directory = app_config["ml_classifier"]["data"]["directory"]
     assert directory
@@ -209,8 +209,8 @@ def test_app_config_values_exist() -> None:
     assert vectorizer_file_path.lower().endswith(".pkl")
 
 
-@patch("src.python_src.util.ml_classifier.MLClassifier.__init__")
-@patch("src.python_src.util.app_utilities.download_ml_models_from_s3")
+@patch("src.util.ml_classifier.MLClassifier.__init__")
+@patch("src.util.app_utilities.download_ml_models_from_s3")
 def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> None:
     """
     Test that MLClassifier can be successfully instantiated and invoked.
@@ -232,10 +232,10 @@ def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> 
     assert expected_return == app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
-@patch("src.python_src.util.ml_classifier.logging")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.logging")
 def test_make_predictions_handles_exceptions(
     mock_logging: MagicMock, mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
 ) -> None:
@@ -268,9 +268,9 @@ def test_make_predictions_handles_exceptions(
     mock_logging.error.assert_called_once()
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
 def test_version_extraction_from_model_filename(
     mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
 ) -> None:
@@ -288,9 +288,9 @@ def test_version_extraction_from_model_filename(
     assert classifier.get_version() == expected_version
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
 def test_version_extraction_from_vectorizer_filename(
     mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
 ) -> None:
@@ -305,9 +305,9 @@ def test_version_extraction_from_vectorizer_filename(
     assert classifier.get_version() == expected_version
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
 def test_version_extraction_unknown_format(
     mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
 ) -> None:
@@ -377,9 +377,9 @@ def test_version_extraction_integration() -> None:
     assert version == expected, f"Expected {expected}, got {version}"
 
 
-@patch("src.python_src.util.ml_classifier.os.path.exists")
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
+@patch("src.util.ml_classifier.os.path.exists")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
 def test_ml_classifier_initialization_with_version(
     mock_joblib: MagicMock, mock_onnx_session: MagicMock, mock_os_path: MagicMock
 ) -> None:
@@ -398,8 +398,8 @@ def test_ml_classifier_initialization_with_version(
     assert version == expected, f"Expected {expected}, got {version}"
 
 
-@patch("src.python_src.util.logging_utilities.ml_classifier")
-@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.util.logging_utilities.ml_classifier")
+@patch("src.util.logging_utilities.log_as_json")
 def test_ml_classifier_logging_integration(mock_log: MagicMock, mock_ml_classifier: MagicMock) -> None:
     """Test logging integration with version info."""
     # Mock the ML classifier to avoid loading models

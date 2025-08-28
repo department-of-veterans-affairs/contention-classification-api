@@ -5,8 +5,8 @@ from unittest.mock import mock_open, patch
 
 import pytest
 
-from src.python_src.util.app_utilities import app_config, diagnostic_code_inits, dropdown_expanded_table_inits
-from src.python_src.util.lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
+from src.util.app_utilities import app_config, diagnostic_code_inits, dropdown_expanded_table_inits
+from src.util.lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 
 term_columns = app_config["condition_dropdown_table"]["input_key"]
 classification_columns = [

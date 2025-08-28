@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock, call, patch
 
-from src.python_src.pydantic_models import (
+from src.pydantic_models import (
     AiRequest,
     AiResponse,
     ClassifiedContention,
@@ -8,7 +8,7 @@ from src.python_src.pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from src.python_src.util.classifier_utilities import build_ai_request, ml_classify_claim, update_classifications
+from src.util.classifier_utilities import build_ai_request, ml_classify_claim, update_classifications
 
 TEST_CLAIM = VaGovClaim(
     claim_id=100,
@@ -125,7 +125,7 @@ def test_update_classifications() -> None:
     assert expected.contentions[0].classification_code == 8998
 
 
-@patch("src.python_src.util.classifier_utilities.log_as_json")
+@patch("src.util.classifier_utilities.log_as_json")
 def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
     """
     Tests that a log message is generated if there is a mismatch
@@ -153,8 +153,8 @@ def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
     mocked_func.assert_called_once_with({"message": "Mismatched contentions between AiResponse and original classifications"})
 
 
-@patch("src.python_src.util.classifier_utilities.get_classification_code")
-@patch("src.python_src.util.classifier_utilities.ml_classifier")
+@patch("src.util.classifier_utilities.get_classification_code")
+@patch("src.util.classifier_utilities.ml_classifier")
 def test_ml_classify_claim(mock_ml_classifier: MagicMock, mock_get_classification_code: MagicMock) -> None:
     mock_ml_classifier.make_predictions.return_value = [
         ("musculoskeletal", {"musculoskeletal": 0.92, "Eye (Vision)": 0.98}),
@@ -182,7 +182,7 @@ def test_ml_classify_claim(mock_ml_classifier: MagicMock, mock_get_classificatio
     ]
 
 
-@patch("src.python_src.util.classifier_utilities.ml_classifier", None)
+@patch("src.util.classifier_utilities.ml_classifier", None)
 def test_ml_classify_claim_returns_list_of_no_classification_codes_if_no_ml_model() -> None:
     ai_response = ml_classify_claim(TEST_AI_REQUEST)
     assert len(ai_response.classified_contentions) == len(TEST_AI_REQUEST.contentions)

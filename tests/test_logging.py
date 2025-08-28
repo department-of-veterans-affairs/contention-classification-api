@@ -9,16 +9,16 @@ from unittest.mock import Mock, patch
 from fastapi import Request
 from starlette.datastructures import Headers
 
-from src.python_src.pydantic_models import (
+from src.pydantic_models import (
     AiResponse,
     ClassifiedContention,
     ClassifierResponse,
     Contention,
     VaGovClaim,
 )
-from src.python_src.util.app_utilities import expanded_lookup_table
-from src.python_src.util.classifier_utilities import get_classification_code_name
-from src.python_src.util.logging_utilities import log_claim_stats_v2, log_contention_stats, log_ml_contention_stats
+from src.util.app_utilities import expanded_lookup_table
+from src.util.classifier_utilities import get_classification_code_name
+from src.util.logging_utilities import log_claim_stats_v2, log_contention_stats, log_ml_contention_stats
 
 test_expanded_request = Request(
     scope={
@@ -75,7 +75,7 @@ def test_create_classification_method_not_classed() -> None:
     assert classification_method == "not classified"
 
 
-@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.util.logging_utilities.log_as_json")
 def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
     """
     Tests the logging of a contention that is classified but considered free text
@@ -118,8 +118,8 @@ def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
     mocked_func.assert_called_once_with(expected_logging_dict)
 
 
-@patch("src.python_src.util.logging_utilities.log_as_json")
-@patch("src.python_src.util.logging_utilities.log_expanded_contention_text")
+@patch("src.util.logging_utilities.log_as_json")
+@patch("src.util.logging_utilities.log_expanded_contention_text")
 def test_requests_for_hybrid_endpoint_calls_expanded_logging(
     log_expanded_contention_text: Mock, mock_log_as_json: Mock
 ) -> None:
@@ -153,7 +153,7 @@ def test_requests_for_hybrid_endpoint_calls_expanded_logging(
     log_expanded_contention_text.assert_called_once()
 
 
-@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.util.logging_utilities.log_as_json")
 def test_non_classified_contentions(mocked_func: Mock) -> None:
     """
     Tests the logging of a contention that is not classified
@@ -195,7 +195,7 @@ def test_non_classified_contentions(mocked_func: Mock) -> None:
     mocked_func.assert_called_once_with(expected_log)
 
 
-@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.util.logging_utilities.log_as_json")
 def test_multiple_contentions(mocked_func: Mock) -> None:
     """
     Tests multiple contentions one from autosuggestion and one that would be considered free text
@@ -271,7 +271,7 @@ def test_multiple_contentions(mocked_func: Mock) -> None:
     assert mocked_func.call_count == 2
 
 
-@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.util.logging_utilities.log_as_json")
 def test_contentions_with_pii(mocked_func: Mock) -> None:
     """
     Tests that the logging will not log unless completely classified and no PII slips through
@@ -346,7 +346,7 @@ def test_contentions_with_pii(mocked_func: Mock) -> None:
     assert mocked_func.call_count == 2
 
 
-@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.util.logging_utilities.log_as_json")
 def test_log_claim_stats(mocked_func: Mock) -> None:
     test_claim = VaGovClaim(
         claim_id=100,
@@ -397,7 +397,7 @@ def test_log_claim_stats(mocked_func: Mock) -> None:
     mocked_func.assert_called_once_with(expected_log)
 
 
-@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.util.logging_utilities.log_as_json")
 def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
     """
     Tests full logging including individual contentions and one claim
@@ -492,7 +492,7 @@ def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
     assert mocked_func.call_count == 3
 
 
-@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.util.logging_utilities.log_as_json")
 def test_ml_classification_logging(mock_log: Mock) -> None:
     test_AI_response = AiResponse(
         classified_contentions=[

@@ -3,7 +3,7 @@ This standalone script pulls the OpenAPI specification of the FastAPI app and ex
 This can be used to move the Swagger documentation to other tools, like a java project.
 
 Usage:
-    poetry run python src/python_src/util/pull_api_documentation.py
+    poetry run python src/util/pull_api_documentation.py
 
 The script will generate a fastapi.json file containing the OpenAPI specification.
 """
@@ -23,7 +23,7 @@ def export_openapi(app: FastAPI, filename: str) -> None:
 
 
 if __name__ == "__main__":
-    from python_src.api import app
+    from api import app
 
     export_openapi(app, "fastapi.json")
     print("Done!")

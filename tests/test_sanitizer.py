@@ -1,6 +1,6 @@
 """Tests for the sanitizer module."""
 
-from src.python_src.util.sanitizer import sanitize_log
+from src.util.sanitizer import sanitize_log
 
 
 def test_sanitize_log_string() -> None:
