@@ -8,7 +8,7 @@ from unittest.mock import mock_open, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from src.python_src.api import app
+from src.api import app
 
 # Export commonly used imports
 __all__ = ["pytest", "json", "csv", "mock_open", "patch", "TestClient"]

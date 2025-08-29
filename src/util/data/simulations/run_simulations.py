@@ -5,7 +5,7 @@ and outputs their results to file.
 The intent is to gather outputs for comparing and tracking behavior of the classifiers.
 
 Usage: (from the codebase root directory)
-    poetry run python src/python_src/util/data/simulations/run_simulations.py
+    poetry run python src/util/data/simulations/run_simulations.py
 
 """
 
@@ -17,14 +17,14 @@ from typing import List, Tuple
 
 from sklearn.metrics import classification_report
 
-from python_src.util.brd_classification_codes import get_classification_name
-from python_src.util.data.simulations.classifiers import (
+from ...brd_classification_codes import get_classification_name
+from .classifiers import (
     BaseClassifierForSimulation,
     MLClassifier,
     ProductionClassifier,
 )
 
-SIMULATIONS_DIR = "src/python_src/util/data/simulations/"
+SIMULATIONS_DIR = "src/util/data/simulations/"
 INPUT_FILE = "inputs_mini.csv"
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
@@ -119,7 +119,7 @@ def _write_aggregate_predictions_to_file(
                 row_tokens += [
                     c.predictions[i],
                     get_classification_name_from_str_code(c.predictions[i]),
-                    c.predictions[i] == expected_classifications[i],
+                    str(c.predictions[i] == expected_classifications[i]),
                 ]
 
             csv_writer.writerow(row_tokens)
@@ -153,7 +153,8 @@ def get_classification_name_from_str_code(classification_code: str) -> str:
         return classification_name
 
     try:
-        classification_name = get_classification_name(int(classification_code))
+        result = get_classification_name(int(classification_code))
+        classification_name = result if result is not None else ""
     except ValueError:
         logging.warning(f"ValueError getting classification name from [{classification_code}]")
 

@@ -1,7 +1,7 @@
 from typing import List
 
-from python_src.util.app_utilities import expanded_lookup_table, ml_classifier
-from python_src.util.brd_classification_codes import get_classification_code
+from ...app_utilities import expanded_lookup_table, ml_classifier
+from ...brd_classification_codes import get_classification_code
 
 
 class BaseClassifierForSimulation:
@@ -37,6 +37,8 @@ class MLClassifier(BaseClassifierForSimulation):
     name = "ml_classifier"
 
     def make_predictions(self, conditions: List[str]) -> bool:
+        if ml_classifier is None:
+            return False
         classifier_output = ml_classifier.make_predictions(conditions)
         predicted_labels = [i[0] for i in classifier_output]
         self.predictions = [str(get_classification_code(label)) for label in predicted_labels]

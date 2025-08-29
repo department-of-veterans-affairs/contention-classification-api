@@ -2,8 +2,8 @@ import os
 import tempfile
 from unittest.mock import patch
 
-from src.python_src.util.data.simulations.classifiers import BaseClassifierForSimulation
-from src.python_src.util.data.simulations.run_simulations import (
+from src.util.data.simulations.classifiers import BaseClassifierForSimulation
+from src.util.data.simulations.run_simulations import (
     _get_input_from_file,
     _write_aggregate_predictions_to_file,
     _write_metrics_to_file,
@@ -51,8 +51,8 @@ psoriasis,9016
 """
 
 
-@patch("src.python_src.util.data.simulations.run_simulations.SIMULATIONS_DIR", tempfile.tempdir)
-@patch("src.python_src.util.data.simulations.run_simulations.INPUT_FILE", "inputs_mini.csv")
+@patch("src.util.data.simulations.run_simulations.SIMULATIONS_DIR", tempfile.tempdir)
+@patch("src.util.data.simulations.run_simulations.INPUT_FILE", "inputs_mini.csv")
 def test_get_conditions_to_test_from_input_file() -> None:
     os.makedirs(str(tempfile.tempdir), exist_ok=True)
     with open(os.path.join(str(tempfile.tempdir), "inputs_mini.csv"), "w") as f:
@@ -63,8 +63,8 @@ def test_get_conditions_to_test_from_input_file() -> None:
     assert expected_classifications == ["9016", "9016", "9016", "8968", "9016"]
 
 
-@patch("src.python_src.util.data.simulations.run_simulations.SIMULATIONS_DIR", tempfile.tempdir)
-@patch("src.python_src.util.data.simulations.run_simulations.TIMESTAMP", "2025-06-16_12-23-34")
+@patch("src.util.data.simulations.run_simulations.SIMULATIONS_DIR", tempfile.tempdir)
+@patch("src.util.data.simulations.run_simulations.TIMESTAMP", "2025-06-16_12-23-34")
 def test_write_metrics_to_file() -> None:
     os.makedirs(os.path.join(str(tempfile.tempdir), "outputs"), exist_ok=True)
 
@@ -77,8 +77,8 @@ def test_write_metrics_to_file() -> None:
         assert METRICS_REPORT_CONTENT == file_content
 
 
-@patch("src.python_src.util.data.simulations.run_simulations.SIMULATIONS_DIR", tempfile.tempdir)
-@patch("src.python_src.util.data.simulations.run_simulations.TIMESTAMP", "2025-06-16_12-23-34")
+@patch("src.util.data.simulations.run_simulations.SIMULATIONS_DIR", tempfile.tempdir)
+@patch("src.util.data.simulations.run_simulations.TIMESTAMP", "2025-06-16_12-23-34")
 def test_write_predictions_to_file() -> None:
     os.makedirs(os.path.join(str(tempfile.tempdir), "outputs"), exist_ok=True)
 
@@ -99,8 +99,8 @@ def test_write_predictions_to_file() -> None:
         assert expected_normalized == actual_normalized
 
 
-@patch("src.python_src.util.data.simulations.run_simulations.SIMULATIONS_DIR", tempfile.tempdir)
-@patch("src.python_src.util.data.simulations.run_simulations.TIMESTAMP", "2025-06-16_12-23-34")
+@patch("src.util.data.simulations.run_simulations.SIMULATIONS_DIR", tempfile.tempdir)
+@patch("src.util.data.simulations.run_simulations.TIMESTAMP", "2025-06-16_12-23-34")
 def test_write_aggregate_predictions_to_file() -> None:
     os.makedirs(os.path.join(str(tempfile.tempdir), "outputs"), exist_ok=True)
 
