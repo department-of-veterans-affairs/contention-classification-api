@@ -2,72 +2,22 @@
 name = "contention-classification-api"
 version = "0.1.0"
 description = "API for classifying contentions from 526 submissions"
-dynamic = ["dependencies"]
-authors = [
-	{name = "Department of Veterans Affairs"}
-]
+authors = [{name = "Department of Veterans Affairs"}]
 readme = "README.md"
 license = "CC0-1.0"
 keywords = ["veterans", "contention", "classification", "api", "fastapi"]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-]
 requires-python = ">= 3.12"
+dynamic = ["dependencies"]
 
 [project.urls]
 homepage = "https://github.com/department-of-veterans-affairs/contention-classification-api"
 repository = "https://github.com/department-of-veterans-affairs/contention-classification-api"
 
-[tool.pytest.ini_options]
-addopts = "-ra --cov=./src --cov-fail-under=80 --no-cov-on-fail --cov-report=term:skip-covered --cov-report=html:build/reports/coverage --cov-branch"
-testpaths = [
-    "tests"
-]
-
-[tool.coverage.run]
-omit = [
-    "src/python_src/util/pull_api_documentation.py",
-]
-
-[tool.ruff]
-line-length = 127
-target-version = "py312"
-exclude = [".git", "__pycache__", "build", "dist"]
-
-[tool.ruff.lint.mccabe]
-max-complexity = 10
-
-[tool.ruff.lint]
-select = [
-    "E",   # pycodestyle errors
-    "F",   # pyflakes
-    "I",   # isort
-    "B",   # flake8-bugbear
-]
-ignore = []
-
-[tool.ruff.format]
-quote-style = "double"
-line-ending = "lf"
-indent-style = "space"
-skip-magic-trailing-comma = false
-
-[tool.mypy]
-python_version = "3.12"
-plugins = ['pydantic.mypy']
-strict = true
-ignore_missing_imports = true
-exclude = [
-    "scripts"
-]
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-# TODO: Remove name, version, description, and authors when dependabot uses poetry 2.x.x. See https://github.com/dependabot/dependabot-core/issues/11237
 name = "contention-classification-api"
 version = "0.1.0"
 description = "API for classifying contentions from 526 submissions"
@@ -88,7 +38,6 @@ scikit-learn = "^1.7.1"
 uvicorn = {extras = ["standard"], version = "0.35.0"}
 boto3 = "^1.40.20"
 
-
 [tool.poetry.group.dev.dependencies]
 mypy = "1.17.1"
 pre-commit = "4.3.0"
@@ -99,10 +48,38 @@ bandit = {version = "1.8.6", extras = ["toml"]}
 types-pyyaml = "6.0.12.20250822"
 scikit-learn = "^1.7.1"
 
+[tool.pytest.ini_options]
+addopts = "-ra --cov=./src --cov-fail-under=80 --no-cov-on-fail --cov-report=term:skip-covered --cov-report=html:build/reports/coverage --cov-branch"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+omit = ["src/python_src/util/pull_api_documentation.py"]
+
+[tool.ruff]
+line-length = 127
+target-version = "py312"
+exclude = [".git", "__pycache__", "build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = []
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "lf"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["pydantic.mypy"]
+strict = true
+ignore_missing_imports = true
+exclude = ["scripts"]
+
 [tool.bandit]
 exclude_dirs = ["tests"]
-skips = ["B101"]  # Skip assert warnings in tests
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+skips = ["B101"]
