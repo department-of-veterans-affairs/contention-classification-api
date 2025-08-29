@@ -23,20 +23,12 @@ condition_dropdown_table:
   classification_code: Classification Code
   classification_name: Classification Text
   active_classification: Active classification mapping
-  release_notes: |
-    Adds synonyms for conditions and includes 5 new terms and mappings. The added terms are
-    skin carcinoma, eye cancer, vision cancer, vascular soft tissue sarcoma, and angiosarcoma.
-  release_date: 2025-04-14
 diagnostic_code_table:
   version_number: v0.6
   filename: "[Release notes] Diagnostic Code to Classification mapping release notes - DC Lookup"
   input_key: DIAGNOSTIC_CODE
   classification_code: CLASSIFICATION_CODE
   classification_name: CLASSIFICATION_TEXT
-  release_notes: >
-    Added mappings 11 DCs added: 9411 for PTSD, 5012, 5015, and new DCs because of updates to Digestive section of rating schedule.
-    3 DCs removed: 5003 for degenerative arthritis, 5017 for gout, and 5010 for post-traumatic arthritis"""
-  release_date: 2024-09-12
 autosuggestion_table:
   version_number: v0.2
   filename: "CC Taxonomy master"
@@ -48,9 +40,6 @@ autosuggestion_table:
     - Autosuggestion term 4
     - Autosuggestion term 5
     - Autosuggestion term 6
-  release_notes: >
-    No updates to the autosuggestion for this v0.2 release.
-  release_date: 2025-04-14
 musculoskeletal_lut:
   ankle:
     classification_code: 8991
@@ -172,19 +161,53 @@ common_words:
 lut_default_value:
   classification_code: null
   classification_name: null
-ai_classification_endpoint:
-  url: 'http://localhost:8120/'
-  endpoint: 'ml-contention-classification'
+
+# AWS Configuration
+# Centralized AWS settings used across the application
+aws:
+  # Environment-specific S3 buckets for the contention classification API
+  s3:
+    buckets:
+      dev: "dsva-vagov-dev-contention-classification-api"
+      staging: "dsva-vagov-staging-contention-classification-api"
+      sandbox: "dsva-vagov-sandbox-contention-classification-api"
+      prod: "dsva-vagov-prod-contention-classification-api"
+
+# Machine Learning Classifier Configuration
+# This section configures the ML model used for contention classification
 ml_classifier:
-  aws:
-    bucket:
-      dev: dsva-vagov-dev-contention-classification-api
-      prod: dsva-vagov-prod-contention-classification-api
-      sandbox: dsva-vagov-sandbox-contention-classification-api
-      staging: dsva-vagov-staging-contention-classification-api
-    model: LR_tfidf_fit_model_20250623_151434.onnx
-    vectorizer: LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl
-  data:
-    directory: 'models/'
-    model_file: 'LR_tfidf_fit_model_20250623_151434.onnx'
-    vectorizer_file: 'LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl'
+  # File naming configuration
+  files:
+    # Base filenames without paths - paths are constructed dynamically
+    model_filename: "LR_tfidf_fit_model_20250623_151434.onnx"
+    vectorizer_filename: "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
+
+  # Local storage configuration
+  storage:
+    # Relative path from util directory to model storage location
+    local_directory: "models/"
+
+  # S3 object keys (paths within buckets) - uses AWS config from top-level 'aws' section
+  s3_objects:
+    model: "LR_tfidf_fit_model_20250623_151434.onnx"
+    vectorizer: "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
+
+  # File integrity verification configuration
+  integrity_verification:
+    # Master switch for SHA-256 verification
+    enabled: true
+
+    # Expected SHA-256 checksums for file integrity verification
+    # These can be overridden by environment variables: ML_MODEL_SHA256, ML_VECTORIZER_SHA256
+    expected_checksums:
+      model: "af53814d71a48518c2d8c47eab8db9adf2ba40249d6f634b4f059268be750b8e"
+      vectorizer: "33052586943574c34884371d9f987e440e7a5d3cb5e85bb8a19fd334f1f610c5"
+
+    # Configuration for SHA-256 calculation
+    hash_config:
+      chunk_size_bytes: 4096  # Size of chunks when reading files for hashing
+
+# S3 and Download Configuration
+s3_utilities:
+  # Default environment to use when ENV is not set or invalid
+  default_environment: "staging"
