@@ -81,6 +81,16 @@ export AWS_SECRET_ACCESS_KEY=your_secret_access_key
 export AWS_DEFAULT_REGION=us-gov-west-1
 ```
 
+**ML Model Integrity Verification (Optional)**
+For production environments, you can override the expected SHA-256 checksums for ML model files:
+
+```bash
+export ML_MODEL_SHA256=your_model_file_sha256_hash
+export ML_VECTORIZER_SHA256=your_vectorizer_file_sha256_hash
+```
+
+These environment variables take precedence over the default checksums configured in `app_config.yaml`.
+
 **Option 3: AWS Credentials File**
 Create or update `~/.aws/credentials`:
 

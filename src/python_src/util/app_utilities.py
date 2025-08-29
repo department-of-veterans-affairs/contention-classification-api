@@ -1,11 +1,10 @@
 """
 This file is used to create shared resources for the application.
+
 Methods
 -------
 load_config
     Load the configuration file.
-read_csv_to_list
-    Read a CSV file and return a list of dictionaries.
 
 Shared Resources
 ----------------
@@ -17,13 +16,17 @@ expanded_lookup_table
     Class to use in the expanded lookup method
 dropdown_values
     List of autosuggestions
+ml_classifier
+    Machine learning classifier instance for model predictions
+
+Note:
+    S3-related functions have been moved to s3_utilities.py module.
 """
 
 import logging
 import os
 from typing import Any, Dict, cast
 
-import boto3
 from yaml import safe_load
 
 from .expanded_lookup_table import ExpandedLookupTable
@@ -31,6 +34,7 @@ from .logging_dropdown_selections import build_logging_table
 from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .lookup_tables_utilities import InitValues
 from .ml_classifier import MLClassifier
+from .s3_utilities import download_ml_models_from_s3, verify_file_sha256
 
 
 def load_config(config_file: str) -> Dict[str, Any]:
@@ -121,76 +125,79 @@ dropdown_values = build_logging_table(
     app_config["autosuggestion_table"]["active_autocomplete"],
 )
 
+# Load ML classifier configuration
 
-def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[str, str]:
-    """
-    Download machine learning model files from AWS S3.
+model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["storage"]["local_directory"])
 
-    Downloads both the ONNX model file and vectorizer pickle file from S3
-    based on the current environment configuration. The function determines
-    the appropriate S3 bucket based on the ENV environment variable.
+# Ensure the model directory exists
+os.makedirs(model_directory, exist_ok=True)
 
-    Args:
-        model_file (str): Local path where the model file should be saved.
-        vectorizer_file (str): Local path where the vectorizer file should be saved.
+model_file = os.path.join(model_directory, app_config["ml_classifier"]["files"]["model_filename"])
+vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["files"]["vectorizer_filename"])
 
-    Returns:
-        tuple[str, str]: Tuple of (model_file, vectorizer_file) paths.
+# Check if SHA verification is enabled
+sha_check_enabled = app_config["ml_classifier"]["integrity_verification"]["enabled"]
+# Allow disabling SHA verification via environment variable for development
+sha_check_enabled = sha_check_enabled and os.getenv("DISABLE_SHA_VERIFICATION") != "true"
 
-    Environment Variables:
-        ENV: Determines which S3 bucket to use ('dev', 'staging', 'prod', 'sandbox').
-             Defaults to 'staging' if not set or invalid.
+# Determine if we need to download files
+need_download = False
 
-    Note:
-        - Logs info messages during download process
-        - Logs errors if downloads fail but continues execution
-        - Falls back to 'staging' environment for unknown ENV values
-
-    Example:
-        >>> model_path, vectorizer_path = download_ml_models_from_s3(
-        ...     "/tmp/model.onnx", "/tmp/vectorizer.pkl"
-        ... )
-    """
-    # Get ENV with a default value if not set
-    env = os.environ.get("ENV", "staging")  # defaults to 'staging'
-    if env not in app_config["ml_classifier"]["aws"]["bucket"]:
-        logging.warning(f"Environment '{env}' not found in S3 bucket configuration")
-        env = "staging"
-
-    s3_client = boto3.client("s3")
-    bucket = app_config["ml_classifier"]["aws"]["bucket"][env]
-
-    try:
-        logging.info(f"Downloading model file from S3: {model_file}")
-        s3_client.download_file(
-            bucket,
-            app_config["ml_classifier"]["aws"]["model"],
-            model_file,
-        )
-    except Exception as e:
-        logging.error("Failed to download model file from S3: %s", e)
-
-    try:
-        logging.info(f"Downloading vectorizer file from S3: {vectorizer_file}")
-        s3_client.download_file(
-            bucket,
-            app_config["ml_classifier"]["aws"]["vectorizer"],
-            vectorizer_file,
-        )
-    except Exception as e:
-        logging.error("Failed to download vectorizer file from S3: %s", e)
-    return model_file, vectorizer_file
-
-
-model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["data"]["directory"])
-model_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["model_file"])
-vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["vectorizer_file"])
-
-# download all files from S3 if a full set is not already present locally
 if not os.path.exists(model_file) or not os.path.exists(vectorizer_file):
+    need_download = True
+    logging.info("Missing model files - will download from S3")
+elif sha_check_enabled:
+    # Verify existing files if SHA checking is enabled
+    chunk_size = app_config["ml_classifier"]["integrity_verification"]["hash_config"]["chunk_size_bytes"]
+    expected_model_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["model"]
+    expected_vectorizer_sha = app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["vectorizer"]
+
+    # Allow environment variables to override config values
+    expected_model_sha = os.environ.get("ML_MODEL_SHA256", expected_model_sha)
+    expected_vectorizer_sha = os.environ.get("ML_VECTORIZER_SHA256", expected_vectorizer_sha)
+
+    logging.info("Verifying SHA-256 of existing model files")
+    logging.info(f"Expected model SHA-256: {expected_model_sha}")
+    logging.info(f"Expected vectorizer SHA-256: {expected_vectorizer_sha}")
+
+    model_valid = verify_file_sha256(model_file, expected_model_sha, chunk_size)
+    vectorizer_valid = verify_file_sha256(vectorizer_file, expected_vectorizer_sha, chunk_size)
+
+    if not model_valid or not vectorizer_valid:
+        logging.warning("Existing model files failed SHA-256 verification - will re-download from S3")
+        # Remove invalid files
+        if not model_valid and os.path.exists(model_file):
+            os.remove(model_file)
+        if not vectorizer_valid and os.path.exists(vectorizer_file):
+            os.remove(vectorizer_file)
+        need_download = True
+    else:
+        logging.info("All existing model files passed SHA-256 verification - skipping download")
+else:
+    # Files exist and SHA checking is disabled
+    logging.info("Model files exist and SHA-256 verification is disabled - skipping download")
+
+# download all files from S3 if needed
+if need_download:
     os.makedirs(model_directory, exist_ok=True)
-    download_ml_models_from_s3(model_file, vectorizer_file)
+    try:
+        download_ml_models_from_s3(model_file, vectorizer_file, app_config)
+        logging.info("Successfully downloaded ML models from S3")
+    except ValueError as e:
+        # ValueError indicates SHA verification failure - don't use fallback for security
+        logging.error(f"ML model download failed due to verification error: {e}")
+        logging.error("ML classifier will not be available - security verification failed")
+    except Exception as e:
+        logging.error(f"Failed to download ML models from S3: {e}")
+        logging.error("ML classifier will not be available - download failed")
 
 ml_classifier = None
 if os.path.exists(model_file) and os.path.exists(vectorizer_file):
-    ml_classifier = MLClassifier(model_file, vectorizer_file)
+    try:
+        ml_classifier = MLClassifier(model_file, vectorizer_file)
+        logging.info("ML classifier initialized successfully")
+    except Exception as e:
+        logging.error(f"Failed to initialize ML classifier: {e}")
+        ml_classifier = None
+else:
+    logging.warning("ML classifier could not be initialized - model files not available")
