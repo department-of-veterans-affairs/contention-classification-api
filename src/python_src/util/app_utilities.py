@@ -25,7 +25,7 @@ Note:
 
 import logging
 import os
-from typing import Any, Dict, cast
+from typing import Any, Dict, Optional, cast
 
 from yaml import safe_load
 
@@ -201,3 +201,121 @@ if os.path.exists(model_file) and os.path.exists(vectorizer_file):
         ml_classifier = None
 else:
     logging.warning("ML classifier could not be initialized - model files not available")
+
+
+def reinitialize_ml_classifier(
+    new_model_filename: Optional[str] = None,
+    new_vectorizer_filename: Optional[str] = None,
+    new_s3_model_key: Optional[str] = None,
+    new_s3_vectorizer_key: Optional[str] = None,
+    force_download: bool = False,
+    new_model_sha256: Optional[str] = None,
+    new_vectorizer_sha256: Optional[str] = None,
+) -> tuple[bool, str, Dict[str, str], Dict[str, str]]:
+    """
+    Reinitialize the ML classifier with new configuration.
+
+    Args:
+        new_model_filename: New model filename (optional)
+        new_vectorizer_filename: New vectorizer filename (optional)
+        new_s3_model_key: New S3 model key (optional)
+        new_s3_vectorizer_key: New S3 vectorizer key (optional)
+        force_download: Force re-download even if files exist
+        new_model_sha256: Expected SHA256 for model file (optional)
+        new_vectorizer_sha256: Expected SHA256 for vectorizer file (optional)
+
+    Returns:
+        tuple: (success: bool, message: str, previous_version: dict, new_version: dict)
+    """
+    global ml_classifier, app_config
+
+    try:
+        # Store previous version
+        previous_version = {}
+        if ml_classifier:
+            previous_version = {
+                "model": ml_classifier.version[0] if ml_classifier.version else "unknown",
+                "vectorizer": ml_classifier.version[1] if ml_classifier.version else "unknown",
+            }
+
+        # Update app_config if new values provided
+        config_updated = False
+        if new_model_filename:
+            app_config["ml_classifier"]["files"]["model_filename"] = new_model_filename
+            app_config["ml_classifier"]["s3_objects"]["model"] = new_s3_model_key or new_model_filename
+            config_updated = True
+
+        if new_vectorizer_filename:
+            app_config["ml_classifier"]["files"]["vectorizer_filename"] = new_vectorizer_filename
+            app_config["ml_classifier"]["s3_objects"]["vectorizer"] = new_s3_vectorizer_key or new_vectorizer_filename
+            config_updated = True
+
+        if new_s3_model_key and not new_model_filename:
+            app_config["ml_classifier"]["s3_objects"]["model"] = new_s3_model_key
+            config_updated = True
+
+        if new_s3_vectorizer_key and not new_vectorizer_filename:
+            app_config["ml_classifier"]["s3_objects"]["vectorizer"] = new_s3_vectorizer_key
+            config_updated = True
+
+        # Update SHA checksums if provided
+        if new_model_sha256:
+            app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["model"] = new_model_sha256
+            config_updated = True
+
+        if new_vectorizer_sha256:
+            app_config["ml_classifier"]["integrity_verification"]["expected_checksums"]["vectorizer"] = new_vectorizer_sha256
+            config_updated = True
+
+        # Rebuild file paths
+        model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["storage"]["local_directory"])
+        os.makedirs(model_directory, exist_ok=True)
+
+        model_file = os.path.join(model_directory, app_config["ml_classifier"]["files"]["model_filename"])
+        vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["files"]["vectorizer_filename"])
+
+        # Remove existing files if force download or config changed
+        if force_download or config_updated:
+            if os.path.exists(model_file):
+                os.remove(model_file)
+                logging.info(f"Removed existing model file: {model_file}")
+            if os.path.exists(vectorizer_file):
+                os.remove(vectorizer_file)
+                logging.info(f"Removed existing vectorizer file: {vectorizer_file}")
+
+        # Download files
+        try:
+            from .s3_utilities import download_ml_models_from_s3
+
+            download_ml_models_from_s3(model_file, vectorizer_file, app_config)
+            logging.info("Successfully downloaded ML models from S3")
+        except Exception as e:
+            return False, f"Failed to download ML models: {str(e)}", previous_version, {}
+
+        # Reinitialize classifier
+        if os.path.exists(model_file) and os.path.exists(vectorizer_file):
+            try:
+                old_classifier = ml_classifier
+                ml_classifier = MLClassifier(model_file, vectorizer_file)
+
+                # Clean up old classifier if it exists
+                if old_classifier:
+                    del old_classifier
+
+                new_version = {
+                    "model": ml_classifier.version[0] if ml_classifier.version else "unknown",
+                    "vectorizer": ml_classifier.version[1] if ml_classifier.version else "unknown",
+                }
+
+                logging.info("ML classifier reinitialized successfully")
+                return True, "ML classifier updated successfully", previous_version, new_version
+
+            except Exception as e:
+                logging.error(f"Failed to reinitialize ML classifier: {e}")
+                return False, f"Failed to reinitialize ML classifier: {str(e)}", previous_version, {}
+        else:
+            return False, "Model files not found after download", previous_version, {}
+
+    except Exception as e:
+        logging.error(f"Error during ML classifier reinitialization: {e}")
+        return False, f"Unexpected error: {str(e)}", previous_version, {}

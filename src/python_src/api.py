@@ -9,9 +9,17 @@ from .pydantic_models import (
     AiRequest,
     AiResponse,
     ClassifierResponse,
+    MLClassifierConfigRequest,
+    MLClassifierConfigResponse,
     VaGovClaim,
 )
-from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table, ml_classifier
+from .util.app_utilities import (
+    dc_lookup_table,
+    dropdown_lookup_table,
+    expanded_lookup_table,
+    ml_classifier,
+    reinitialize_ml_classifier,
+)
 from .util.classifier_utilities import classify_claim, ml_classify_claim, supplement_with_ml_classification
 from .util.logging_utilities import log_as_json, log_claim_stats_decorator
 
@@ -118,3 +126,98 @@ def get_aws_status() -> Dict[str, str]:
         bucket_info = "Error accessing bucket"
 
     return {"identity": caller_identity, "bucket": bucket_info}
+
+
+@app.post("/ml-classifier-config")
+def update_ml_classifier_config(config_request: MLClassifierConfigRequest) -> MLClassifierConfigResponse:
+    """
+    Update ML classifier configuration and reinitialize with new models.
+
+    This endpoint allows updating the ML classifier with new model files from S3.
+    It can update filenames, S3 keys, SHA checksums, and force re-download of files.
+    After updating configuration, it reinitializes the classifier with the latest data.
+
+    Args:
+        config_request: Configuration update request containing optional fields:
+            - model_filename: New model filename
+            - vectorizer_filename: New vectorizer filename
+            - s3_model_key: New S3 key for model file
+            - s3_vectorizer_key: New S3 key for vectorizer file
+            - force_download: Force re-download even if files exist
+            - expected_model_sha256: Expected SHA256 for model verification
+            - expected_vectorizer_sha256: Expected SHA256 for vectorizer verification
+
+    Returns:
+        MLClassifierConfigResponse: Response containing:
+            - success: Whether the update was successful
+            - message: Description of the result
+            - previous_version: Previous model/vectorizer versions (if available)
+            - new_version: New model/vectorizer versions (if successful)
+            - files_updated: List of files that were updated
+
+    Raises:
+        HTTPException: If the update fails or required parameters are missing
+    """
+    try:
+        # Validate that at least one parameter is provided
+        if not any(
+            [
+                config_request.model_filename,
+                config_request.vectorizer_filename,
+                config_request.s3_model_key,
+                config_request.s3_vectorizer_key,
+                config_request.force_download,
+                config_request.expected_model_sha256,
+                config_request.expected_vectorizer_sha256,
+            ]
+        ):
+            raise HTTPException(status_code=400, detail="At least one configuration parameter must be provided")
+
+        # Track which files will be updated
+        files_updated = []
+        if config_request.model_filename or config_request.s3_model_key:
+            files_updated.append("model")
+        if config_request.vectorizer_filename or config_request.s3_vectorizer_key:
+            files_updated.append("vectorizer")
+        if config_request.force_download:
+            files_updated.extend(["model", "vectorizer"])
+            files_updated = list(set(files_updated))  # Remove duplicates
+
+        # Call the reinitialize function
+        success, message, previous_version, new_version = reinitialize_ml_classifier(
+            new_model_filename=config_request.model_filename,
+            new_vectorizer_filename=config_request.vectorizer_filename,
+            new_s3_model_key=config_request.s3_model_key,
+            new_s3_vectorizer_key=config_request.s3_vectorizer_key,
+            force_download=config_request.force_download,
+            new_model_sha256=config_request.expected_model_sha256,
+            new_vectorizer_sha256=config_request.expected_vectorizer_sha256,
+        )
+
+        if not success:
+            raise HTTPException(status_code=500, detail=message)
+
+        log_as_json(
+            {
+                "action": "ml_classifier_config_update",
+                "success": success,
+                "files_updated": files_updated,
+                "previous_version": previous_version,
+                "new_version": new_version,
+            }
+        )
+
+        return MLClassifierConfigResponse(
+            success=success,
+            message=message,
+            previous_version=previous_version,
+            new_version=new_version,
+            files_updated=files_updated,
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        error_message = f"Unexpected error updating ML classifier configuration: {str(e)}"
+        log_as_json({"error": error_message, "exception": str(e)})
+        raise HTTPException(status_code=500, detail=error_message) from e

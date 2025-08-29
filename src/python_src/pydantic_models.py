@@ -59,3 +59,25 @@ class AiRequest(BaseModel):
 
 class AiResponse(BaseModel):
     classified_contentions: List[ClassifiedContention]
+
+
+class MLClassifierConfigRequest(BaseModel):
+    """Request model for updating ML classifier configuration"""
+
+    model_filename: Optional[str] = None
+    vectorizer_filename: Optional[str] = None
+    s3_model_key: Optional[str] = None
+    s3_vectorizer_key: Optional[str] = None
+    force_download: bool = False
+    expected_model_sha256: Optional[str] = None
+    expected_vectorizer_sha256: Optional[str] = None
+
+
+class MLClassifierConfigResponse(BaseModel):
+    """Response model for ML classifier configuration updates"""
+
+    success: bool
+    message: str
+    previous_version: Optional[Dict[str, str]] = None
+    new_version: Optional[Dict[str, str]] = None
+    files_updated: List[str] = []
