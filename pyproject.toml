@@ -46,7 +46,6 @@ pytest = "8.4.1"
 pytest-cov = "6.2.1"
 bandit = {version = "1.8.6", extras = ["toml"]}
 types-pyyaml = "6.0.12.20250822"
-scikit-learn = "^1.7.1"
 
 [tool.pytest.ini_options]
 addopts = "-ra --cov=./src --cov-fail-under=80 --no-cov-on-fail --cov-report=term:skip-covered --cov-report=html:build/reports/coverage --cov-branch"
