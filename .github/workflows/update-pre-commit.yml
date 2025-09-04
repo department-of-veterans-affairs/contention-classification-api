@@ -22,7 +22,7 @@ jobs:
           token: ${{ secrets.ABD_VRO_MACHINE_READ_WRITE_REPO }}
 
       - name: "Install Python"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12.3"
           cache: "pip"
