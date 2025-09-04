@@ -43,7 +43,7 @@ jobs:
 
       - name: Install Python
         if: env.lock_needs_update == 'true'
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12.3"
           cache: "poetry"
