@@ -5,8 +5,8 @@ from unittest.mock import mock_open, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from src.python_src.util.app_utilities import app_config
-from src.python_src.util.logging_dropdown_selections import build_logging_table
+from src.util.app_utilities import app_config
+from src.util.logging_dropdown_selections import build_logging_table
 
 
 @pytest.fixture

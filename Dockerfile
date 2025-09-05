@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir poetry==2.0.0
 
 # Copy files
 COPY pyproject.toml poetry.lock README.md LICENSE.md ./
-COPY ./src/python_src ./src/python_src
+COPY ./src ./src
 
 # Configure Poetry (no virtualenvs and silence export warnings)
 RUN poetry config virtualenvs.create false && \
@@ -48,4 +48,4 @@ USER appuser
 EXPOSE 8120
 
 # Run the application using Poetry
-CMD ["poetry", "run", "uvicorn", "src.python_src.api:app", "--host", "0.0.0.0", "--port", "8120"]
+CMD ["poetry", "run", "uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8120"]

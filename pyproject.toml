@@ -31,7 +31,7 @@ testpaths = [
 
 [tool.coverage.run]
 omit = [
-    "src/python_src/util/pull_api_documentation.py",
+    "src/util/pull_api_documentation.py",
 ]
 
 [tool.ruff]
@@ -72,7 +72,7 @@ name = "contention-classification-api"
 version = "0.1.0"
 description = "API for classifying contentions from 526 submissions"
 authors = ["Department of Veterans Affairs"]
-packages = [{include = "python_src", from = "src"}]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"

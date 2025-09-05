@@ -21,7 +21,7 @@ import pytest
 from botocore.exceptions import ClientError, NoCredentialsError
 from yaml import YAMLError
 
-from src.python_src.util import app_utilities
+from src.util import app_utilities
 
 
 def test_load_config() -> None:
@@ -71,8 +71,8 @@ def test_load_config_yaml_parse_error() -> None:
             app_utilities.load_config("invalid_config.yaml")
 
 
-@patch("src.python_src.util.app_utilities.os.environ.get")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.os.environ.get")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_with_environment_staging(mock_boto_client: MagicMock, mock_env_get: MagicMock) -> None:
     """
     Test download functionality with staging environment configuration.
@@ -99,8 +99,8 @@ def test_download_ml_models_from_s3_with_environment_staging(mock_boto_client: M
     assert result == (model_file, vectorizer_file)
 
 
-@patch("src.python_src.util.app_utilities.os.environ.get")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.os.environ.get")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_with_environment_prod(mock_boto_client: MagicMock, mock_env_get: MagicMock) -> None:
     """
     Test download functionality with production environment configuration.
@@ -127,9 +127,9 @@ def test_download_ml_models_from_s3_with_environment_prod(mock_boto_client: Magi
     assert result == (model_file, vectorizer_file)
 
 
-@patch("src.python_src.util.app_utilities.os.environ.get")
-@patch("src.python_src.util.app_utilities.logging")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.os.environ.get")
+@patch("src.util.app_utilities.logging")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_invalid_environment_fallback(
     mock_boto_client: MagicMock, mock_logging: MagicMock, mock_env_get: MagicMock
 ) -> None:
@@ -162,8 +162,8 @@ def test_download_ml_models_from_s3_invalid_environment_fallback(
     assert result == (model_file, vectorizer_file)
 
 
-@patch("src.python_src.util.app_utilities.os.path.exists")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.os.path.exists")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_models_from_s3_when_files_missing(mock_boto_client: MagicMock, mock_os_path: MagicMock) -> None:
     """
     Test that S3 download works correctly when model files are missing locally.
@@ -193,7 +193,7 @@ def test_download_models_from_s3_when_files_missing(mock_boto_client: MagicMock,
     mock_s3_client.download_file.assert_any_call(expected_bucket, expected_model_key, app_utilities.model_file)
 
 
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_success(mock_boto_client: MagicMock) -> None:
     """
     Test successful download of ML models from S3.
@@ -230,8 +230,8 @@ def test_download_ml_models_from_s3_success(mock_boto_client: MagicMock) -> None
     mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, vectorizer_file)
 
 
-@patch("src.python_src.util.app_utilities.logging")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.logging")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_model_download_error(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
     """
     Test handling of model download error from S3.
@@ -266,8 +266,8 @@ def test_download_ml_models_from_s3_model_download_error(mock_boto_client: Magic
     assert "Failed to download model file from S3" in error_call[0]
 
 
-@patch("src.python_src.util.app_utilities.logging")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.logging")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_vectorizer_download_error(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
     """
     Test handling of vectorizer download error from S3.
@@ -300,8 +300,8 @@ def test_download_ml_models_from_s3_vectorizer_download_error(mock_boto_client: 
     assert "Failed to download vectorizer file from S3" in error_call[0]
 
 
-@patch("src.python_src.util.app_utilities.logging")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.logging")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_both_downloads_fail(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
     """
     Test handling when both model and vectorizer downloads fail.
@@ -335,8 +335,8 @@ def test_download_ml_models_from_s3_both_downloads_fail(mock_boto_client: MagicM
     assert any("Failed to download vectorizer file from S3" in call for call in error_calls)
 
 
-@patch("src.python_src.util.app_utilities.logging")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.logging")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_no_credentials(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
     """
     Test handling of AWS credentials error.
@@ -356,8 +356,8 @@ def test_download_ml_models_from_s3_no_credentials(mock_boto_client: MagicMock, 
         app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
 
 
-@patch("src.python_src.util.app_utilities.logging")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.logging")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_logs_info_messages(mock_boto_client: MagicMock, mock_logging: MagicMock) -> None:
     """Test that info messages are logged during download process."""
     mock_s3_client = MagicMock()
@@ -376,7 +376,7 @@ def test_download_ml_models_from_s3_logs_info_messages(mock_boto_client: MagicMo
     assert any("Downloading vectorizer file from S3" in call for call in info_calls)
 
 
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.app_utilities.boto3.client")
 def test_download_ml_models_from_s3_with_custom_paths(mock_boto_client: MagicMock) -> None:
     """Test download with custom file paths."""
     mock_s3_client = MagicMock()
@@ -401,10 +401,10 @@ def test_download_ml_models_from_s3_with_custom_paths(mock_boto_client: MagicMoc
     mock_s3_client.download_file.assert_any_call(expected_bucket, expected_vectorizer_key, custom_vectorizer_file)
 
 
-@patch("src.python_src.util.ml_classifier.ort.InferenceSession")
-@patch("src.python_src.util.ml_classifier.joblib.load")
-@patch("src.python_src.util.app_utilities.os.path.exists")
-@patch("src.python_src.util.app_utilities.boto3.client")
+@patch("src.util.ml_classifier.ort.InferenceSession")
+@patch("src.util.ml_classifier.joblib.load")
+@patch("src.util.app_utilities.os.path.exists")
+@patch("src.util.app_utilities.boto3.client")
 def test_does_not_download_models_from_s3_when_files_exist(
     mock_boto_client: MagicMock, mock_os_path: MagicMock, mock_joblib: MagicMock, mock_onnx_session: MagicMock
 ) -> None:
