@@ -149,7 +149,7 @@ def download_ml_models_from_s3(model_file: str, vectorizer_file: str, app_config
     sha_check_enabled = verification_config.get("enabled", False)
 
     # Get chunk size from ML classifier config
-    chunk_size = verification_config.get("hash_config", {}).get("chunk_size_bytes", 4096)
+    chunk_size = verification_config.get("hash_config", {}).get("chunk_size_bytes")
 
     if sha_check_enabled:
         _log_verification_info(verification_config)
