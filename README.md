@@ -81,6 +81,21 @@ export AWS_SECRET_ACCESS_KEY=your_secret_access_key
 export AWS_DEFAULT_REGION=us-gov-west-1
 ```
 
+**ML Model Integrity Verification (Optional)**
+The application includes SHA-256 checksum verification for ML model files to ensure file integrity. This feature can be configured through:
+
+**Development/Local Environment:**
+```bash
+export ML_MODEL_SHA256=your_model_file_sha256_hash
+export ML_VECTORIZER_SHA256=your_vectorizer_file_sha256_hash
+export DISABLE_SHA_VERIFICATION=true  # To disable verification during development
+```
+
+**Production Environment:**
+In production, these environment variables should be configured through Helm charts rather than manual exports. The values are set in the deployment configuration (where: the `env` block in an environment's [deployment.yaml](https://github.com/department-of-veterans-affairs/vsp-infra-application-manifests/blob/29a48c65cdd0f5770766d8eef213867e0a9d52fa/apps/contention-classification-api/dev/templates/deployment.yaml#L40)) and applied through the Kubernetes deployment process.
+
+These environment variables take precedence over the default checksums configured in `app_config.yaml`. The `DISABLE_SHA_VERIFICATION` flag allows bypassing verification when needed for development or testing purposes.
+
 **Option 3: AWS Credentials File**
 Create or update `~/.aws/credentials`:
 
