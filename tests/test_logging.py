@@ -38,6 +38,7 @@ test_hybrid_request = Request(
     }
 )
 
+
 def test_create_classification_method_new() -> None:
     """
     Tests the logic of creating the classification_method field for logging
@@ -500,8 +501,9 @@ def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
     assert mocked_func.call_count == 3
 
 
+@patch("src.python_src.util.logging_utilities.ml_classifier")
 @patch("src.python_src.util.logging_utilities.log_as_json")
-def test_ml_classification_logging(mock_log: Mock) -> None:
+def test_ml_classification_logging(mock_log: Mock, mock_ml_classifier: Mock) -> None:
     test_AI_response = AiResponse(
         classified_contentions=[
             ClassifiedContention(
@@ -544,6 +546,9 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
         num_processed_contentions=3,
         num_classified_contentions=1,
     )
+
+    mock_ml_classifier.get_version.return_value = "v001"
+
     # call function
     log_ml_contention_stats(response, test_AI_response, test_hybrid_request)
     expected_logs = {
@@ -558,6 +563,7 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
         "is_multi_contention": True,
         "endpoint": "/hybrid-contention-classification",
         "classification_method": "ml_classifier",
+        "ml_classifier_version": "v001",
     }
 
     # Check that the function was called with logs containing the expected keys
@@ -568,61 +574,3 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
     for key, expected_value in expected_logs.items():
         assert key in actual_call_args, f"Expected key '{key}' not found in actual logs"
         assert actual_call_args[key] == expected_value, f"Expected {key}={expected_value}, got {actual_call_args[key]}"
-
-    # Verify that ml_classifier_version key exists (but don't check its value)
-    assert "ml_classifier_version" in actual_call_args, "Expected 'ml_classifier_version' key not found in actual logs"
-
-
-@patch("src.python_src.util.logging_utilities.ml_classifier")
-@patch("src.python_src.util.logging_utilities.log_as_json")
-def test_ml_classifier_logging_integration(mock_log: Mock, mock_ml_classifier: Mock) -> None:
-    """Test logging integration with version info."""
-    # Mock the ML classifier to avoid loading models
-    mock_version = (
-        "LR_tfidf_fit_model_20250623_151434.onnx",
-        "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl",
-    )
-    mock_ml_classifier.get_version.return_value = mock_version
-
-    # Create test data
-    response = ClassifierResponse(
-        contentions=[
-            ClassifiedContention(
-                classification_code=8997,
-                classification_name="Test Classification",
-                contention_type="NEW",
-            )
-        ],
-        claim_id=100,
-        form526_submission_id=500,
-        is_fully_classified=False,
-        num_processed_contentions=1,
-        num_classified_contentions=1,
-    )
-
-    ai_response = AiResponse(
-        classified_contentions=[
-            ClassifiedContention(
-                classification_code=9999,
-                classification_name="ML Classified",
-                diagnostic_code=None,
-                contention_type="NEW",
-            ),
-        ]
-    )
-
-    log_ml_contention_stats(response, ai_response, test_hybrid_request)
-
-    # Verify the function was called
-    assert mock_log.called, "log_as_json should have been called"
-    call_args = mock_log.call_args[0][0]  # Get first arg of first call
-
-    # Check that version is included
-    assert "ml_classifier_version" in call_args, "ml_classifier_version should be in logged data"
-    expected_version = (
-        "model:LR_tfidf_fit_model_20250623_151434.onnx,"
-        "vectorizer:LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
-    )
-    assert call_args["ml_classifier_version"] == expected_version, (
-        f"Expected version {expected_version}, got {call_args['ml_classifier_version']}"
-    )
