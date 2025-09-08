@@ -113,7 +113,8 @@ def build_ai_request(response: ClassifierResponse, claim: VaGovClaim) -> tuple[l
 
 
 @log_ml_contention_stats_decorator
-def update_classifications(response: ClassifierResponse, indices: list[int], ai_classified: AiResponse, request: Request) -> ClassifierResponse:
+def update_classifications(response: ClassifierResponse, indices: list[int],
+    ai_classified: AiResponse, request: Request) -> ClassifierResponse:
     """
     Updates the originally classified claim with classifications from the ml classifier
     """
