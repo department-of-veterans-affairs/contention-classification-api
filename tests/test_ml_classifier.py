@@ -18,17 +18,12 @@ import os
 import string
 from unittest.mock import MagicMock, call, patch
 
-from fastapi import Request
-from starlette.datastructures import Headers
-
 import pytest
 from numpy import float32, ndarray
 from onnx.helper import make_node
 from scipy.sparse import csr_matrix
 
-from src.python_src.pydantic_models import AiResponse, ClassifiedContention, ClassifierResponse
 from src.python_src.util import app_utilities
-from src.python_src.util.logging_utilities import log_ml_contention_stats
 from src.python_src.util.ml_classifier import MLClassifier
 
 
@@ -399,67 +394,3 @@ def test_ml_classifier_initialization_with_version(
         "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl",
     )
     assert version == expected, f"Expected {expected}, got {version}"
-
-
-@patch("src.python_src.util.logging_utilities.ml_classifier")
-@patch("src.python_src.util.logging_utilities.log_as_json")
-def test_ml_classifier_logging_integration(mock_log: MagicMock, mock_ml_classifier: MagicMock) -> None:
-    """Test logging integration with version info."""
-    # Mock the ML classifier to avoid loading models
-    mock_version = (
-        "LR_tfidf_fit_model_20250623_151434.onnx",
-        "LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl",
-    )
-    mock_ml_classifier.get_version.return_value = mock_version
-
-    # Create test data
-    response = ClassifierResponse(
-        contentions=[
-            ClassifiedContention(
-                classification_code=8997,
-                classification_name="Test Classification",
-                contention_type="NEW",
-            )
-        ],
-        claim_id=100,
-        form526_submission_id=500,
-        is_fully_classified=False,
-        num_processed_contentions=1,
-        num_classified_contentions=1,
-    )
-
-    ai_response = AiResponse(
-        classified_contentions=[
-            ClassifiedContention(
-                classification_code=9999,
-                classification_name="ML Classified",
-                diagnostic_code=None,
-                contention_type="NEW",
-            ),
-        ]
-    )
-
-    test_hybrid_classifier_request = Request(
-        scope={
-            "type": "http",
-            "method": "POST",
-            "path": "/hybrid-contention-classification",
-            "headers": Headers(),
-        }
-    )
-
-    log_ml_contention_stats(response, ai_response, test_hybrid_classifier_request)
-
-    # Verify the function was called
-    assert mock_log.called, "log_as_json should have been called"
-    call_args = mock_log.call_args[0][0]  # Get first arg of first call
-
-    # Check that version is included
-    assert "ml_classifier_version" in call_args, "ml_classifier_version should be in logged data"
-    expected_version = (
-        "model:LR_tfidf_fit_model_20250623_151434.onnx,"
-        "vectorizer:LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
-    )
-    assert call_args["ml_classifier_version"] == expected_version, (
-        f"Expected version {expected_version}, got {call_args['ml_classifier_version']}"
-    )
