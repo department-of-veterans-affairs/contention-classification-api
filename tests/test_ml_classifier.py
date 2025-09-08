@@ -18,6 +18,9 @@ import os
 import string
 from unittest.mock import MagicMock, call, patch
 
+from fastapi import Request
+from starlette.datastructures import Headers
+
 import pytest
 from numpy import float32, ndarray
 from onnx.helper import make_node
@@ -436,7 +439,16 @@ def test_ml_classifier_logging_integration(mock_log: MagicMock, mock_ml_classifi
         ]
     )
 
-    log_ml_contention_stats(response, ai_response)
+    test_hybrid_classifier_request = Request(
+        scope={
+            "type": "http",
+            "method": "POST",
+            "path": "/hybrid-contention-classification",
+            "headers": Headers(),
+        }
+    )
+
+    log_ml_contention_stats(response, ai_response, test_hybrid_classifier_request)
 
     # Verify the function was called
     assert mock_log.called, "log_as_json should have been called"

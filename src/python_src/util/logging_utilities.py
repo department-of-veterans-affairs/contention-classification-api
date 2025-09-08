@@ -147,7 +147,7 @@ def log_contention_stats_decorator(
     return wrapper
 
 
-def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiResponse) -> None:
+def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiResponse, request: Request) -> None:
     """
     Logs stats about each contention processed by the ML classifier.
     """
@@ -179,7 +179,7 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
             "is_in_dropdown": False,
             "is_lookup_table_match": False,
             "is_multi_contention": is_multi_contention,
-            "endpoint": "ML Classification Endpoint",
+            "endpoint": request.url.path,
             "classification_method": "ML Classification",
             "ml_classifier_version": ml_version,
         }
@@ -193,7 +193,8 @@ def log_ml_contention_stats_decorator(func: Callable[..., ClassifierResponse]) -
         result = func(*args, **kwargs)
         response = args[0]
         ai_response = args[2]
-        log_ml_contention_stats(response, ai_response)
+        request = args[3]
+        log_ml_contention_stats(response, ai_response, request)
         return result
 
     return wrapper

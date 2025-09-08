@@ -29,6 +29,14 @@ test_expanded_request = Request(
     }
 )
 
+test_hybrid_request = Request(
+    scope={
+        "type": "http",
+        "method": "POST",
+        "path": "/hybrid-contention-classification",
+        "headers": Headers(),
+    }
+)
 
 def test_create_classification_method_new() -> None:
     """
@@ -537,7 +545,7 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
         num_classified_contentions=1,
     )
     # call function
-    log_ml_contention_stats(response, test_AI_response)
+    log_ml_contention_stats(response, test_AI_response, test_hybrid_request)
     expected_logs = {
         "vagov_claim_id": 100,
         "claim_type": "new",
@@ -548,7 +556,7 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
         "is_in_dropdown": False,
         "is_lookup_table_match": False,
         "is_multi_contention": True,
-        "endpoint": "ML Classification Endpoint",
+        "endpoint": "/hybrid-contention-classification",
         "classification_method": "ML Classification",
     }
 
