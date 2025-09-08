@@ -174,13 +174,13 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
             "claim_type": sanitize_log(log_contention_type),
             "classification_code": classified_contention.classification_code,
             "classification_name": classified_contention.classification_name,
-            "contention_text": "FILTERED [ML Classification]",
+            "contention_text": "unmapped contention text",
             "diagnostic_code": classified_contention.diagnostic_code,
             "is_in_dropdown": False,
             "is_lookup_table_match": False,
             "is_multi_contention": is_multi_contention,
             "endpoint": request.url.path,
-            "classification_method": "ML Classification",
+            "classification_method": "ml_classifier",
             "ml_classifier_version": ml_version,
         }
 

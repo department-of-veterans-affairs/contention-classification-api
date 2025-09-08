@@ -551,13 +551,13 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
         "claim_type": "new",
         "classification_code": 9999,
         "classification_name": "ML Classified",
-        "contention_text": "FILTERED [ML Classification]",
+        "contention_text": "unmapped contention text",
         "diagnostic_code": None,
         "is_in_dropdown": False,
         "is_lookup_table_match": False,
         "is_multi_contention": True,
         "endpoint": "/hybrid-contention-classification",
-        "classification_method": "ML Classification",
+        "classification_method": "ml_classifier",
     }
 
     # Check that the function was called with logs containing the expected keys
