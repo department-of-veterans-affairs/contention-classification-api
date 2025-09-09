@@ -504,6 +504,11 @@ def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
 @patch("src.python_src.util.logging_utilities.ml_classifier")
 @patch("src.python_src.util.logging_utilities.log_as_json")
 def test_ml_classification_logging(mock_log: Mock, mock_ml_classifier: Mock) -> None:
+    """
+    Tests logging for ML-classified contentions
+    """
+    mock_ml_classifier.get_version.return_value = "v001"
+
     test_AI_response = AiResponse(
         classified_contentions=[
             ClassifiedContention(
@@ -547,11 +552,8 @@ def test_ml_classification_logging(mock_log: Mock, mock_ml_classifier: Mock) -> 
         num_classified_contentions=1,
     )
 
-    mock_ml_classifier.get_version.return_value = "v001"
-
-    # call function
     log_ml_contention_stats(response, test_AI_response, test_hybrid_request)
-    expected_logs = {
+    expected_log = {
         "vagov_claim_id": 100,
         "claim_type": "new",
         "classification_code": 9999,
@@ -571,6 +573,6 @@ def test_ml_classification_logging(mock_log: Mock, mock_ml_classifier: Mock) -> 
     actual_call_args = mock_log.call_args[0][0]
 
     # Verify all expected keys and values are present
-    for key, expected_value in expected_logs.items():
+    for key, expected_value in expected_log.items():
         assert key in actual_call_args, f"Expected key '{key}' not found in actual logs"
         assert actual_call_args[key] == expected_value, f"Expected {key}={expected_value}, got {actual_call_args[key]}"
