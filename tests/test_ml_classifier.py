@@ -401,7 +401,7 @@ def test_ml_classifier_initialization_with_version(
 
 
 @patch("src.python_src.util.logging_utilities.ml_classifier")
-@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("logging.info")
 def test_ml_classifier_logging_integration(mock_log: MagicMock, mock_ml_classifier: MagicMock) -> None:
     """Test logging integration with version info."""
     # Mock the ML classifier to avoid loading models
@@ -441,15 +441,19 @@ def test_ml_classifier_logging_integration(mock_log: MagicMock, mock_ml_classifi
     log_ml_contention_stats(response, ai_response)
 
     # Verify the function was called
-    assert mock_log.called, "log_as_json should have been called"
-    call_args = mock_log.call_args[0][0]  # Get first arg of first call
+    assert mock_log.called, "logging.info should have been called"
+
+    # Parse the JSON string that was logged
+    import json
+
+    logged_data = json.loads(mock_log.call_args[0][0])
 
     # Check that version is included
-    assert "ml_classifier_version" in call_args, "ml_classifier_version should be in logged data"
+    assert "ml_classifier_version" in logged_data, "ml_classifier_version should be in logged data"
     expected_version = (
         "model:LR_tfidf_fit_model_20250623_151434.onnx,"
         "vectorizer:LR_tfidf_fit_False_features_20250521_20250623_151434_vectorizer.pkl"
     )
-    assert call_args["ml_classifier_version"] == expected_version, (
-        f"Expected version {expected_version}, got {call_args['ml_classifier_version']}"
+    assert logged_data["ml_classifier_version"] == expected_version, (
+        f"Expected version {expected_version}, got {logged_data['ml_classifier_version']}"
     )

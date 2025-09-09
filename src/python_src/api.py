@@ -1,3 +1,4 @@
+import logging
 import time
 from typing import Awaitable, Callable, Dict
 
@@ -13,7 +14,7 @@ from .pydantic_models import (
 )
 from .util.app_utilities import dc_lookup_table, dropdown_lookup_table, expanded_lookup_table, ml_classifier
 from .util.classifier_utilities import classify_claim, ml_classify_claim, supplement_with_ml_classification
-from .util.logging_utilities import log_as_json, log_claim_stats_decorator
+from .util.logging_utilities import log_claim_stats_decorator
 
 app = FastAPI(
     title="Contention Classification",
@@ -43,7 +44,7 @@ async def save_process_time_as_metric(request: Request, call_next: Callable[[Req
     response = await call_next(request)
     process_time = time.time() - start_time
     response.headers["X-Process-Time"] = str(process_time)
-    log_as_json({"process_time": process_time, "url": request.url.path})
+    logging.info({"process_time": process_time, "url": request.url.path})
     return response
 
 
@@ -107,14 +108,14 @@ def get_aws_status() -> Dict[str, str]:
     try:
         caller_identity = sts_client.get_caller_identity().get("Arn")
     except Exception as e:
-        log_as_json({"error": "Error retrieving AWS identity", "exception": str(e)})
+        logging.info({"error": "Error retrieving AWS identity", "exception": str(e)})
         caller_identity = "Error retrieving identity"
 
     try:
         head_bucket = s3_resource.meta.client.head_bucket(Bucket="dsva-vagov-staging-contention-classification-api")
         bucket_info = head_bucket.get("BucketArn")
     except Exception as e:
-        log_as_json({"error": "Error accessing S3 bucket", "exception": str(e)})
+        logging.info({"error": "Error accessing S3 bucket", "exception": str(e)})
         bucket_info = "Error accessing bucket"
 
     return {"identity": caller_identity, "bucket": bucket_info}

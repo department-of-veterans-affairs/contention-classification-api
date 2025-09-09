@@ -125,7 +125,7 @@ def test_update_classifications() -> None:
     assert expected.contentions[0].classification_code == 8998
 
 
-@patch("src.python_src.util.classifier_utilities.log_as_json")
+@patch("logging.info")
 def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
     """
     Tests that a log message is generated if there is a mismatch
@@ -150,7 +150,11 @@ def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
         ],
         test_ai_response,
     )
-    mocked_func.assert_called_once_with({"message": "Mismatched contentions between AiResponse and original classifications"})
+    # Check that the mismatch message was logged (should be the first call)
+    import json
+
+    logged_data = json.loads(mocked_func.call_args_list[0][0][0])
+    assert logged_data == {"message": "Mismatched contentions between AiResponse and original classifications"}
 
 
 @patch("src.python_src.util.classifier_utilities.get_classification_code")
