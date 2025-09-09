@@ -191,10 +191,12 @@ def log_ml_contention_stats_decorator(func: Callable[..., ClassifierResponse]) -
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> ClassifierResponse:
         result = func(*args, **kwargs)
-        response = args[0]
-        ai_response = args[2]
-        request = args[3]
-        log_ml_contention_stats(response, ai_response, request)
+        if (
+            (classifier_response := kwargs.get("response"))
+            and (ai_response := kwargs.get("ai_classified"))
+            and (request := kwargs.get("request"))
+        ):
+            log_ml_contention_stats(classifier_response, ai_response, request)
         return result
 
     return wrapper
