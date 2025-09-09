@@ -88,7 +88,7 @@ def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResp
     if response.is_fully_classified:
         return response
 
-    response = supplement_with_ml_classification(response, claim)
+    response = supplement_with_ml_classification(response, claim, request)
 
     num_classified = len([c for c in response.contentions if c.classification_code])
     response.num_classified_contentions = num_classified

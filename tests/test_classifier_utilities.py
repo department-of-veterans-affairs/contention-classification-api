@@ -1,5 +1,8 @@
 from unittest.mock import MagicMock, call, patch
 
+from fastapi import Request
+from starlette.datastructures import Headers
+
 from src.python_src.pydantic_models import (
     AiRequest,
     AiResponse,
@@ -59,6 +62,14 @@ TEST_AI_REQUEST = AiRequest(
     ],
 )
 
+TEST_HYBRID_CLASSIFIER_REQUEST = Request(
+    scope={
+        "type": "http",
+        "method": "POST",
+        "path": "/hybrid-contention-classification",
+        "headers": Headers(),
+    }
+)
 
 def update_contentions_test(contentions: list[ClassifiedContention]) -> list[ClassifiedContention]:
     updated_contentions = []
@@ -117,7 +128,8 @@ def test_update_classifications() -> None:
         ]
     )
     test_indices = [1, 2]
-    expected = update_classifications(TEST_RESPONSE, test_indices, test_ai_response)
+
+    expected = update_classifications(TEST_RESPONSE, test_indices, test_ai_response, TEST_HYBRID_CLASSIFIER_REQUEST)
     for idx in test_indices:
         assert expected.contentions[idx].classification_code == 9999
         assert expected.contentions[idx].classification_name == "ml classification"
@@ -149,6 +161,7 @@ def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
             2,
         ],
         test_ai_response,
+        TEST_HYBRID_CLASSIFIER_REQUEST
     )
     mocked_func.assert_called_once_with({"message": "Mismatched contentions between AiResponse and original classifications"})
 
