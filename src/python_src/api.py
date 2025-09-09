@@ -97,22 +97,19 @@ def hybrid_classification(claim: VaGovClaim, request: Request) -> ClassifierResp
     return response
 
 
-@app.get("/health-aws")
+@app.get("/health-ml-classifier")
 def get_aws_status() -> Dict[str, str]:
-    sts_client = boto3.client("sts")
-    s3_resource = boto3.resource("s3")
-
+    
+    errors = []
+    if ml_classifier is None:
+        errors.append("ML Classifier is not initialized")
     try:
-        caller_identity = sts_client.get_caller_identity().get("Arn")
-    except Exception as e:
-        log_as_json({"error": "Error retrieving AWS identity", "exception": str(e)})
-        caller_identity = "Error retrieving identity"
+        sts_client = boto3.client("sts")
+        sts_client.get_caller_identity()["Arn"]
+    except Exception:
+        errors.append("Undefined AWS STS caller identity")
 
-    try:
-        head_bucket = s3_resource.meta.client.head_bucket(Bucket="dsva-vagov-staging-contention-classification-api")
-        bucket_info = head_bucket.get("BucketArn")
-    except Exception as e:
-        log_as_json({"error": "Error accessing S3 bucket", "exception": str(e)})
-        bucket_info = "Error accessing bucket"
+    if errors:
+        raise HTTPException(status_code=500, detail=", ".join(errors))
 
-    return {"identity": caller_identity, "bucket": bucket_info}
+    return {"status": "ok"}
