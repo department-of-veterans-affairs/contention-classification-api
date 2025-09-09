@@ -147,7 +147,7 @@ def log_contention_stats_decorator(
     return wrapper
 
 
-def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiResponse) -> None:
+def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiResponse, request: Request) -> None:
     """
     Logs stats about each contention processed by the ML classifier.
     """
@@ -174,13 +174,13 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
             "claim_type": sanitize_log(log_contention_type),
             "classification_code": classified_contention.classification_code,
             "classification_name": classified_contention.classification_name,
-            "contention_text": "FILTERED [ML Classification]",
+            "contention_text": "unmapped contention text",
             "diagnostic_code": classified_contention.diagnostic_code,
             "is_in_dropdown": False,
             "is_lookup_table_match": False,
             "is_multi_contention": is_multi_contention,
-            "endpoint": "ML Classification Endpoint",
-            "classification_method": "ML Classification",
+            "endpoint": request.url.path,
+            "classification_method": "ml_classifier",
             "ml_classifier_version": ml_version,
         }
 
@@ -191,9 +191,12 @@ def log_ml_contention_stats_decorator(func: Callable[..., ClassifierResponse]) -
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> ClassifierResponse:
         result = func(*args, **kwargs)
-        response = args[0]
-        ai_response = args[2]
-        log_ml_contention_stats(response, ai_response)
+        if (
+            (classifier_response := kwargs.get("response"))
+            and (ai_response := kwargs.get("ai_classified"))
+            and (request := kwargs.get("request"))
+        ):
+            log_ml_contention_stats(classifier_response, ai_response, request)
         return result
 
     return wrapper
