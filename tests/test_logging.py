@@ -1,5 +1,5 @@
 """
-Tests for the logging functions in the API. This mocks the log_as_json function and tests that the logging is called
+Tests for the logging functions in the API. This mocks the function and tests that the logging is called
 with the correct dict for different situations.  The primary purpose is to test logging contention text to ensure that
 there is no PII in the logs.
 """
