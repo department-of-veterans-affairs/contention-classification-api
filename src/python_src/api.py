@@ -56,14 +56,12 @@ def get_health_status() -> Dict[str, str]:
         empty_tables.append("Expanded Lookup")
     if not len(dropdown_lookup_table):
         empty_tables.append("Contention Text Lookup")
-    if empty_tables or ml_classifier is None:
+    if empty_tables:
         errors = []
         if len(empty_tables) == 1:
             errors.append(f"{empty_tables[0]} table is empty")
-        elif empty_tables:
+        else:
             errors.append(f"{', '.join(empty_tables)} tables are empty")
-        if ml_classifier is None:
-            errors.append("ML Classifier is not initialized")
         raise HTTPException(status_code=500, detail=", ".join(errors))
     return {"status": "ok"}
 
