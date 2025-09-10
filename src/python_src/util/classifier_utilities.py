@@ -113,7 +113,8 @@ def build_ai_request(response: ClassifierResponse, claim: VaGovClaim) -> tuple[l
 
 
 @log_ml_contention_stats_decorator
-def update_classifications(response: ClassifierResponse, indices: list[int], ai_classified: AiResponse) -> ClassifierResponse:
+def update_classifications(response: ClassifierResponse, indices: list[int],
+    ai_classified: AiResponse, request: Request) -> ClassifierResponse:
     """
     Updates the originally classified claim with classifications from the ml classifier
     """
@@ -151,9 +152,9 @@ def ml_classify_claim(contentions: AiRequest) -> AiResponse:
     )
 
 
-def supplement_with_ml_classification(response: ClassifierResponse, claim: VaGovClaim) -> ClassifierResponse:
+def supplement_with_ml_classification(response: ClassifierResponse, claim: VaGovClaim, request: Request) -> ClassifierResponse:
     non_classified_indices, ai_request = build_ai_request(response, claim)
     ai_response = ml_classify_claim(ai_request)
-    response = update_classifications(response, non_classified_indices, ai_response)
+    response = update_classifications(response, non_classified_indices, ai_response, request)
 
     return response

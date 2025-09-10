@@ -29,6 +29,15 @@ test_expanded_request = Request(
     }
 )
 
+test_hybrid_request = Request(
+    scope={
+        "type": "http",
+        "method": "POST",
+        "path": "/hybrid-contention-classification",
+        "headers": Headers(),
+    }
+)
+
 
 def test_create_classification_method_new() -> None:
     """
@@ -492,19 +501,25 @@ def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
     assert mocked_func.call_count == 3
 
 
+@patch("src.python_src.util.logging_utilities.ml_classifier")
 @patch("src.python_src.util.logging_utilities.log_as_json")
-def test_ml_classification_logging(mock_log: Mock) -> None:
+def test_multi_contention_claim_logging_ml_classifier(mock_log: Mock, mock_ml_classifier: Mock) -> None:
+    """
+    Tests logging for multi-contention claims processed by the ML classifier
+    """
+    mock_ml_classifier.get_version.return_value = "v001"
+
     test_AI_response = AiResponse(
         classified_contentions=[
             ClassifiedContention(
-                classification_code=9999,
-                classification_name="ML Classified",
+                classification_code=1234,
+                classification_name="lorem",
                 diagnostic_code=None,
                 contention_type="NEW",
             ),
             ClassifiedContention(
-                classification_code=9999,
-                classification_name="ML Classified",
+                classification_code=5678,
+                classification_name="ipsum dolor",
                 diagnostic_code=None,
                 contention_type="NEW",
             ),
@@ -536,30 +551,98 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
         num_processed_contentions=3,
         num_classified_contentions=1,
     )
-    # call function
-    log_ml_contention_stats(response, test_AI_response)
-    expected_logs = {
-        "vagov_claim_id": 100,
-        "claim_type": "new",
-        "classification_code": 9999,
-        "classification_name": "ML Classified",
-        "contention_text": "FILTERED [ML Classification]",
-        "diagnostic_code": None,
-        "is_in_dropdown": False,
-        "is_lookup_table_match": False,
-        "is_multi_contention": True,
-        "endpoint": "ML Classification Endpoint",
-        "classification_method": "ML Classification",
-    }
 
-    # Check that the function was called with logs containing the expected keys
+    log_ml_contention_stats(response, test_AI_response, test_hybrid_request)
+    
+    expected_logs = [
+        {
+            "vagov_claim_id": 100,
+            "claim_type": "new",
+            "classification_code": 1234,
+            "classification_name": "lorem",
+            "contention_text": "unmapped contention text",
+            "diagnostic_code": None,
+            "is_in_dropdown": False,
+            "is_lookup_table_match": False,
+            "is_multi_contention": True, 
+            "endpoint": "/hybrid-contention-classification",
+            "classification_method": "ml_classifier",
+            "ml_classifier_version": "v001",
+        },
+        {
+            "vagov_claim_id": 100,
+            "claim_type": "new",
+            "classification_code": 5678,
+            "classification_name": "ipsum dolor",
+            "contention_text": "unmapped contention text",
+            "diagnostic_code": None,
+            "is_in_dropdown": False,
+            "is_lookup_table_match": False,
+            "is_multi_contention": True, 
+            "endpoint": "/hybrid-contention-classification",
+            "classification_method": "ml_classifier",
+            "ml_classifier_version": "v001",
+        }
+    ]
+    # Check that the expected payloads were received by the mocked log_as_json
     assert mock_log.call_count == 2
-    actual_call_args = mock_log.call_args[0][0]
+    all_log_calls = mock_log.call_args_list
+    for i in range(len(all_log_calls)):
+        args, kwargs = all_log_calls[i]
+        assert expected_logs[i] == args[0]
 
-    # Verify all expected keys and values are present
-    for key, expected_value in expected_logs.items():
-        assert key in actual_call_args, f"Expected key '{key}' not found in actual logs"
-        assert actual_call_args[key] == expected_value, f"Expected {key}={expected_value}, got {actual_call_args[key]}"
+@patch("src.python_src.util.logging_utilities.ml_classifier")
+@patch("src.python_src.util.logging_utilities.log_as_json")
+def test_single_contention_claim_logging_ml_classifier(mock_log: Mock, mock_ml_classifier: Mock) -> None:
+    """
+    Tests logging for single-contention claims processed by the ML classifier
+    """
+    mock_ml_classifier.get_version.return_value = "v001"
 
-    # Verify that ml_classifier_version key exists (but don't check its value)
-    assert "ml_classifier_version" in actual_call_args, "Expected 'ml_classifier_version' key not found in actual logs"
+    test_AI_response = AiResponse(
+        classified_contentions=[
+            ClassifiedContention(
+                classification_code=1357,
+                classification_name="lorem ipsum dolor",
+                diagnostic_code=None,
+                contention_type="NEW",
+            )
+        ]
+    )
+
+    response = ClassifierResponse(
+        contentions=[
+            ClassifiedContention(
+                classification_code=None,
+                classification_name=None,
+                diagnostic_code=None,
+                contention_type="NEW",
+            )
+        ],
+        claim_id=200,
+        form526_submission_id=700,
+        is_fully_classified=False,
+        num_processed_contentions=1,
+        num_classified_contentions=0,
+    )
+
+    log_ml_contention_stats(response, test_AI_response, test_hybrid_request)
+    
+    expected_log = {
+            "vagov_claim_id": 200,
+            "claim_type": "new",
+            "classification_code": 1357,
+            "classification_name": "lorem ipsum dolor",
+            "contention_text": "unmapped contention text",
+            "diagnostic_code": None,
+            "is_in_dropdown": False,
+            "is_lookup_table_match": False,
+            "is_multi_contention": False, 
+            "endpoint": "/hybrid-contention-classification",
+            "classification_method": "ml_classifier",
+            "ml_classifier_version": "v001",
+        }
+
+    # Check that the expected payload was received by the mocked log_as_json
+    assert mock_log.call_count == 1
+    assert mock_log.call_args[0][0] == expected_log
