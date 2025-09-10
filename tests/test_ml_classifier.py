@@ -186,29 +186,29 @@ def test_app_config_values_exist() -> None:
     """
     app_config = app_utilities.load_config(os.path.join("src/python_src/util", "app_config.yaml"))
 
-    directory = app_config["ml_classifier"]["data"]["directory"]
+    directory = app_config["ml_classifier"]["storage"]["local_directory"]
     assert directory
     assert "models" in directory
 
-    aws_model = app_config["ml_classifier"]["aws"]["model"]
+    aws_model = app_config["ml_classifier"]["s3_objects"]["model"]
     assert aws_model
     assert aws_model.lower().endswith(".onnx")
 
-    aws_vectorizer = app_config["ml_classifier"]["aws"]["vectorizer"]
+    aws_vectorizer = app_config["ml_classifier"]["s3_objects"]["vectorizer"]
     assert aws_vectorizer
     assert aws_vectorizer.lower().endswith(".pkl")
 
-    model_file_path = app_config["ml_classifier"]["data"]["model_file"]
+    model_file_path = app_config["ml_classifier"]["files"]["model_filename"]
     assert model_file_path
     assert model_file_path.lower().endswith(".onnx")
 
-    vectorizer_file_path = app_config["ml_classifier"]["data"]["vectorizer_file"]
+    vectorizer_file_path = app_config["ml_classifier"]["files"]["vectorizer_filename"]
     assert vectorizer_file_path
     assert vectorizer_file_path.lower().endswith(".pkl")
 
 
 @patch("src.python_src.util.ml_classifier.MLClassifier.__init__")
-@patch("src.python_src.util.app_utilities.download_ml_models_from_s3")
+@patch("src.python_src.util.s3_utilities.download_ml_models_from_s3")
 def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> None:
     """
     Test that MLClassifier can be successfully instantiated and invoked.
@@ -222,12 +222,14 @@ def test_invoke_mlClassifier(mock_download: MagicMock, mock_init: MagicMock) -> 
     """
     mock_init.return_value = None
 
-    model_file = app_utilities.app_config["ml_classifier"]["data"]["model_file"]
-    vectorizer_file = app_utilities.app_config["ml_classifier"]["data"]["vectorizer_file"]
+    model_file = app_utilities.app_config["ml_classifier"]["files"]["model_filename"]
+    vectorizer_file = app_utilities.app_config["ml_classifier"]["files"]["vectorizer_filename"]
     expected_return = (model_file, vectorizer_file)
     mock_download.return_value = expected_return
 
-    assert expected_return == app_utilities.download_ml_models_from_s3(model_file, vectorizer_file)
+    from src.python_src.util.s3_utilities import download_ml_models_from_s3
+
+    assert expected_return == download_ml_models_from_s3(model_file, vectorizer_file, app_utilities.app_config)
 
 
 @patch("src.python_src.util.ml_classifier.os.path.exists")

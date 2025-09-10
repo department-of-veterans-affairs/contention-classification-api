@@ -1,11 +1,10 @@
 """
 This file is used to create shared resources for the application.
+
 Methods
 -------
 load_config
     Load the configuration file.
-read_csv_to_list
-    Read a CSV file and return a list of dictionaries.
 
 Shared Resources
 ----------------
@@ -17,20 +16,23 @@ expanded_lookup_table
     Class to use in the expanded lookup method
 dropdown_values
     List of autosuggestions
+ml_classifier
+    Machine learning classifier instance for model predictions
+
+Note:
+    S3-related functions have been moved to s3_utilities.py module.
 """
 
-import logging
 import os
 from typing import Any, Dict, cast
 
-import boto3
 from yaml import safe_load
 
 from .expanded_lookup_table import ExpandedLookupTable
 from .logging_dropdown_selections import build_logging_table
 from .lookup_table import ContentionTextLookupTable, DiagnosticCodeLookupTable
 from .lookup_tables_utilities import InitValues
-from .ml_classifier import MLClassifier
+from .ml_utilities import load_ml_classifier
 
 
 def load_config(config_file: str) -> Dict[str, Any]:
@@ -121,76 +123,5 @@ dropdown_values = build_logging_table(
     app_config["autosuggestion_table"]["active_autocomplete"],
 )
 
-
-def download_ml_models_from_s3(model_file: str, vectorizer_file: str) -> tuple[str, str]:
-    """
-    Download machine learning model files from AWS S3.
-
-    Downloads both the ONNX model file and vectorizer pickle file from S3
-    based on the current environment configuration. The function determines
-    the appropriate S3 bucket based on the ENV environment variable.
-
-    Args:
-        model_file (str): Local path where the model file should be saved.
-        vectorizer_file (str): Local path where the vectorizer file should be saved.
-
-    Returns:
-        tuple[str, str]: Tuple of (model_file, vectorizer_file) paths.
-
-    Environment Variables:
-        ENV: Determines which S3 bucket to use ('dev', 'staging', 'prod', 'sandbox').
-             Defaults to 'staging' if not set or invalid.
-
-    Note:
-        - Logs info messages during download process
-        - Logs errors if downloads fail but continues execution
-        - Falls back to 'staging' environment for unknown ENV values
-
-    Example:
-        >>> model_path, vectorizer_path = download_ml_models_from_s3(
-        ...     "/tmp/model.onnx", "/tmp/vectorizer.pkl"
-        ... )
-    """
-    # Get ENV with a default value if not set
-    env = os.environ.get("ENV", "staging")  # defaults to 'staging'
-    if env not in app_config["ml_classifier"]["aws"]["bucket"]:
-        logging.warning(f"Environment '{env}' not found in S3 bucket configuration")
-        env = "staging"
-
-    s3_client = boto3.client("s3")
-    bucket = app_config["ml_classifier"]["aws"]["bucket"][env]
-
-    try:
-        logging.info(f"Downloading model file from S3: {model_file}")
-        s3_client.download_file(
-            bucket,
-            app_config["ml_classifier"]["aws"]["model"],
-            model_file,
-        )
-    except Exception as e:
-        logging.error("Failed to download model file from S3: %s", e)
-
-    try:
-        logging.info(f"Downloading vectorizer file from S3: {vectorizer_file}")
-        s3_client.download_file(
-            bucket,
-            app_config["ml_classifier"]["aws"]["vectorizer"],
-            vectorizer_file,
-        )
-    except Exception as e:
-        logging.error("Failed to download vectorizer file from S3: %s", e)
-    return model_file, vectorizer_file
-
-
-model_directory = os.path.join(os.path.dirname(__file__), app_config["ml_classifier"]["data"]["directory"])
-model_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["model_file"])
-vectorizer_file = os.path.join(model_directory, app_config["ml_classifier"]["data"]["vectorizer_file"])
-
-# download all files from S3 if a full set is not already present locally
-if not os.path.exists(model_file) or not os.path.exists(vectorizer_file):
-    os.makedirs(model_directory, exist_ok=True)
-    download_ml_models_from_s3(model_file, vectorizer_file)
-
-ml_classifier = None
-if os.path.exists(model_file) and os.path.exists(vectorizer_file):
-    ml_classifier = MLClassifier(model_file, vectorizer_file)
+# Initialize ML classifier using the ml_utilities module
+ml_classifier = load_ml_classifier(app_config)
