@@ -1,6 +1,7 @@
 import json
 import logging
 import sys
+from datetime import datetime, timezone
 from functools import wraps
 from typing import Any, Callable, Dict, Tuple, TypeVar, cast
 
@@ -22,6 +23,15 @@ logging.basicConfig(
     datefmt="%Y-%m-%dT%H:%M:%S%z",
     stream=sys.stdout,
 )
+
+
+def log_as_json(log: Dict[str, Any]) -> None:
+    """
+    Logs the dictionary as a JSON to enable easier parsing in DataDog
+    """
+    log.setdefault("date", datetime.now(tz=timezone.utc).isoformat())
+    log.setdefault("level", "info")
+    logging.info(json.dumps(log))
 
 
 def log_expanded_contention_text(
@@ -86,7 +96,7 @@ def log_contention_stats(
     if request.url.path in ["/expanded-contention-classification", "/hybrid-contention-classification"]:
         logging_dict = log_expanded_contention_text(logging_dict, contention.contention_text, log_contention_text)
 
-    logging.info(json.dumps(logging_dict))
+    log_as_json(logging_dict)
 
 
 def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request: Request) -> None:
@@ -94,18 +104,16 @@ def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request:
     Logs stats about each claim processed by the classifier.  This will provide
     the capability to build widgets to track metrics about claims.
     """
-    logging.info(
-        json.dumps(
-            {
-                "claim_id": sanitize_log(claim.claim_id),
-                "form526_submission_id": sanitize_log(claim.form526_submission_id),
-                "is_fully_classified": response.is_fully_classified,
-                "percent_clasified": (response.num_classified_contentions / response.num_processed_contentions) * 100,
-                "num_processed_contentions": response.num_processed_contentions,
-                "num_classified_contentions": response.num_classified_contentions,
-                "endpoint": request.url.path,
-            }
-        )
+    log_as_json(
+        {
+            "claim_id": sanitize_log(claim.claim_id),
+            "form526_submission_id": sanitize_log(claim.form526_submission_id),
+            "is_fully_classified": response.is_fully_classified,
+            "percent_clasified": (response.num_classified_contentions / response.num_processed_contentions) * 100,
+            "num_processed_contentions": response.num_processed_contentions,
+            "num_classified_contentions": response.num_classified_contentions,
+            "endpoint": request.url.path,
+        }
     )
 
 
@@ -176,7 +184,7 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
             "ml_classifier_version": ml_version,
         }
 
-        logging.info(json.dumps(logging_dict))
+        log_as_json(logging_dict)
 
 
 def log_ml_contention_stats_decorator(func: Callable[..., ClassifierResponse]) -> Callable[..., ClassifierResponse]:

@@ -1,5 +1,3 @@
-import json
-import logging
 from typing import Any, Dict, Optional, Protocol, Tuple, Union, runtime_checkable
 
 from fastapi import Request
@@ -15,7 +13,7 @@ from ..pydantic_models import (
 from .app_utilities import dc_lookup_table, expanded_lookup_table, ml_classifier
 from .brd_classification_codes import get_classification_code
 from .expanded_lookup_table import ExpandedLookupTable
-from .logging_utilities import log_contention_stats_decorator, log_ml_contention_stats_decorator
+from .logging_utilities import log_as_json, log_contention_stats_decorator, log_ml_contention_stats_decorator
 from .lookup_table import ContentionTextLookupTable
 
 
@@ -124,7 +122,7 @@ def update_classifications(response: ClassifierResponse, indices: list[int], ai_
             response.contentions[idx].classification_code = c.classification_code
             response.contentions[idx].classification_name = c.classification_name
     except ValueError:
-        logging.info(json.dumps({"message": "Mismatched contentions between AiResponse and original classifications"}))
+        log_as_json({"message": "Mismatched contentions between AiResponse and original classifications"})
     return response
 
 

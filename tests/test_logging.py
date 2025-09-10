@@ -75,7 +75,7 @@ def test_create_classification_method_not_classed() -> None:
     assert classification_method == "not classified"
 
 
-@patch("logging.info")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
     """
     Tests the logging of a contention that is classified but considered free text
@@ -115,24 +115,14 @@ def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
         "classification_method": "contention text",
     }
 
-    import json
-
-    # Parse the actual logged JSON and compare as dict to avoid key ordering issues
-    logged_data = json.loads(mocked_func.call_args[0][0])
-    assert logged_data == expected_logging_dict
+    mocked_func.assert_called_once_with(expected_logging_dict)
 
 
+@patch("src.python_src.util.logging_utilities.log_as_json")
 @patch("src.python_src.util.logging_utilities.log_expanded_contention_text")
-@patch("logging.info")
 def test_requests_for_hybrid_endpoint_calls_expanded_logging(
-    mock_logging_info: Mock, log_expanded_contention_text: Mock
+    log_expanded_contention_text: Mock, mock_log_as_json: Mock
 ) -> None:
-    # Make the mocked function return a proper dict instead of a mock object
-    log_expanded_contention_text.return_value = {
-        "test": "mocked_return",
-        "processed_contention_text": "knee",
-        "contention_text": "unmapped contention text ['knee']",
-    }
     hybrid_request = Request(
         scope={
             "type": "http",
@@ -163,7 +153,7 @@ def test_requests_for_hybrid_endpoint_calls_expanded_logging(
     log_expanded_contention_text.assert_called_once()
 
 
-@patch("logging.info")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_non_classified_contentions(mocked_func: Mock) -> None:
     """
     Tests the logging of a contention that is not classified
@@ -202,14 +192,10 @@ def test_non_classified_contentions(mocked_func: Mock) -> None:
         "processed_contention_text": None,
         "classification_method": classified_by,
     }
-    import json
-
-    # Parse the actual logged JSON and compare as dict to avoid key ordering issues
-    logged_data = json.loads(mocked_func.call_args[0][0])
-    assert logged_data == expected_log
+    mocked_func.assert_called_once_with(expected_log)
 
 
-@patch("logging.info")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_multiple_contentions(mocked_func: Mock) -> None:
     """
     Tests multiple contentions one from autosuggestion and one that would be considered free text
@@ -280,16 +266,12 @@ def test_multiple_contentions(mocked_func: Mock) -> None:
             test_expanded_request,
             classified_by,
         )
-        import json
-
-        # Parse the actual logged JSON and compare as dict to avoid key ordering issues
-        logged_data = json.loads(mocked_func.call_args[0][0])
-        assert logged_data == expected_logs[i]
+        mocked_func.assert_called_with(expected_logs[i])
 
     assert mocked_func.call_count == 2
 
 
-@patch("logging.info")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_contentions_with_pii(mocked_func: Mock) -> None:
     """
     Tests that the logging will not log unless completely classified and no PII slips through
@@ -359,16 +341,12 @@ def test_contentions_with_pii(mocked_func: Mock) -> None:
             test_expanded_request,
             classified_by,
         )
-        import json
-
-        # Parse the actual logged JSON and compare as dict to avoid key ordering issues
-        logged_data = json.loads(mocked_func.call_args[0][0])
-        assert logged_data == expected_logs[i]
+        mocked_func.assert_called_with(expected_logs[i])
 
     assert mocked_func.call_count == 2
 
 
-@patch("logging.info")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_log_claim_stats(mocked_func: Mock) -> None:
     test_claim = VaGovClaim(
         claim_id=100,
@@ -416,14 +394,10 @@ def test_log_claim_stats(mocked_func: Mock) -> None:
         "endpoint": "/expanded-contention-classification",
     }
     log_claim_stats_v2(test_claim, classifier_response, test_expanded_request)
-    import json
-
-    # Parse the actual logged JSON and compare as dict to avoid key ordering issues
-    logged_data = json.loads(mocked_func.call_args[0][0])
-    assert logged_data == expected_log
+    mocked_func.assert_called_once_with(expected_log)
 
 
-@patch("logging.info")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
     """
     Tests full logging including individual contentions and one claim
@@ -511,22 +485,14 @@ def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
             test_expanded_request,
             classified_by,
         )
-        import json
-
-        # Parse the actual logged JSON and compare as dict to avoid key ordering issues
-        logged_data = json.loads(mocked_func.call_args[0][0])
-        assert logged_data == expected_contention_logs[i]
+        mocked_func.assert_called_with(expected_contention_logs[i])
 
     log_claim_stats_v2(test_claim, classifier_response, test_expanded_request)
-    import json
-
-    # Parse the actual logged JSON and compare as dict to avoid key ordering issues
-    logged_data = json.loads(mocked_func.call_args[0][0])
-    assert logged_data == expected_claim_log
+    mocked_func.assert_called_with(expected_claim_log)
     assert mocked_func.call_count == 3
 
 
-@patch("logging.info")
+@patch("src.python_src.util.logging_utilities.log_as_json")
 def test_ml_classification_logging(mock_log: Mock) -> None:
     test_AI_response = AiResponse(
         classified_contentions=[
@@ -586,18 +552,14 @@ def test_ml_classification_logging(mock_log: Mock) -> None:
         "classification_method": "ML Classification",
     }
 
-    # Check that the function was called twice (once for each contention)
+    # Check that the function was called with logs containing the expected keys
     assert mock_log.call_count == 2
-
-    # Parse the logged JSON and verify structure
-    import json
-
-    logged_data = json.loads(mock_log.call_args[0][0])
+    actual_call_args = mock_log.call_args[0][0]
 
     # Verify all expected keys and values are present
     for key, expected_value in expected_logs.items():
-        assert key in logged_data, f"Expected key '{key}' not found in actual logs"
-        assert logged_data[key] == expected_value, f"Expected {key}={expected_value}, got {logged_data[key]}"
+        assert key in actual_call_args, f"Expected key '{key}' not found in actual logs"
+        assert actual_call_args[key] == expected_value, f"Expected {key}={expected_value}, got {actual_call_args[key]}"
 
     # Verify that ml_classifier_version key exists (but don't check its value)
-    assert "ml_classifier_version" in logged_data, "Expected 'ml_classifier_version' key not found in actual logs"
+    assert "ml_classifier_version" in actual_call_args, "Expected 'ml_classifier_version' key not found in actual logs"
