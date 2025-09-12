@@ -67,7 +67,7 @@ def log_contention_stats(
 ) -> None:
     """
     Logs stats about each contention process by the classifier. This will maintain
-    compatability with the existing datadog widgets.
+    compatibility with the existing datadog widgets.
     """
     contention_text = contention.contention_text or ""
     is_in_dropdown = contention_text.strip().lower() in dropdown_values
@@ -192,11 +192,12 @@ def log_ml_contention_stats_decorator(func: Callable[..., ClassifierResponse]) -
     def wrapper(*args: Any, **kwargs: Any) -> ClassifierResponse:
         result = func(*args, **kwargs)
         if (
-            (classifier_response := kwargs.get("response"))
-            and (ai_response := kwargs.get("ai_classified"))
-            and (request := kwargs.get("request"))
+            len(args) == 4
+            and isinstance(args[0], ClassifierResponse)
+            and isinstance(args[2], AiResponse)
+            and isinstance(args[3], Request)
         ):
-            log_ml_contention_stats(classifier_response, ai_response, request)
+            log_ml_contention_stats(args[0], args[2], args[3])
         return result
 
     return wrapper
