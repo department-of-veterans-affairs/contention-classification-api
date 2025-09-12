@@ -11,13 +11,18 @@ from src.python_src.pydantic_models import (
     Contention,
     VaGovClaim,
 )
-from src.python_src.util.classifier_utilities import build_ai_request, ml_classify_claim, update_classifications
+from src.python_src.util.classifier_utilities import (
+    build_ai_request,
+    classify_contention,
+    ml_classify_claim,
+    update_classifications,
+)
 
 TEST_CLAIM = VaGovClaim(
     claim_id=100,
     form526_submission_id=500,
     contentions=[
-        Contention(contention_text="lower back", contention_type="NEW", diagnostic_code="1234"),
+        Contention(contention_text="lower back", contention_type="NEW"),
         Contention(
             contention_text="Free Text Entry",
             contention_type="NEW",
@@ -26,10 +31,12 @@ TEST_CLAIM = VaGovClaim(
     ],
 )
 
-TEST_CONTENTIONS = [
+TEST_CONTENTION = Contention(contention_text="PTSD", contention_type="NEW", diagnostic_code=None)
+
+TEST_CLASSIFIED_CONTENTIONS = [
     ClassifiedContention(
-        classification_code=8998,
-        classification_name="Classification Name",
+        classification_code=1215,
+        classification_name="shoulder pain",
         contention_type="New",
     ),
     ClassifiedContention(
@@ -47,7 +54,7 @@ TEST_CONTENTIONS = [
 ]
 
 TEST_RESPONSE = ClassifierResponse(
-    contentions=TEST_CONTENTIONS,
+    contentions=TEST_CLASSIFIED_CONTENTIONS,
     claim_id=1,
     form526_submission_id=1,
     is_fully_classified=False,
@@ -62,6 +69,15 @@ TEST_AI_REQUEST = AiRequest(
     ],
 )
 
+TEST_EXPANDED_CLASSIFIER_REQUEST = Request(
+    scope={
+        "type": "http",
+        "method": "POST",
+        "path": "/expanded-contention-classification",
+        "headers": Headers(),
+    }
+)
+
 TEST_HYBRID_CLASSIFIER_REQUEST = Request(
     scope={
         "type": "http",
@@ -70,6 +86,29 @@ TEST_HYBRID_CLASSIFIER_REQUEST = Request(
         "headers": Headers(),
     }
 )
+
+
+@patch("src.python_src.util.logging_utilities.log_as_json")
+def test_classify_contention_logs_stats(mock_log: MagicMock) -> None:
+    classify_contention(TEST_CONTENTION, TEST_CLAIM, TEST_EXPANDED_CLASSIFIER_REQUEST)
+
+    expected_log = {
+        "vagov_claim_id": TEST_CLAIM.claim_id,
+        "claim_type": "new",
+        "classification_code": 8989,
+        "classification_name": "Mental Disorders",
+        "contention_text": "PTSD",
+        "diagnostic_code": "None",
+        "is_in_dropdown": False,
+        "is_lookup_table_match": True,
+        "is_multi_contention": True,
+        "endpoint": TEST_EXPANDED_CLASSIFIER_REQUEST.url.path,
+        "classification_method": "contention_text",
+        "processed_contention_text": "ptsd",
+    }
+
+    mock_log.assert_called_once_with(expected_log)
+
 
 def update_contentions_test(contentions: list[ClassifiedContention]) -> list[ClassifiedContention]:
     updated_contentions = []
@@ -95,7 +134,7 @@ def test_build_request_unclassified() -> None:
 
 
 def test_build_fully_classified() -> None:
-    updated = update_contentions_test(TEST_CONTENTIONS)
+    updated = update_contentions_test(TEST_CLASSIFIED_CONTENTIONS)
     test_response = ClassifierResponse(
         contentions=updated,
         claim_id=1,
@@ -134,7 +173,50 @@ def test_update_classifications() -> None:
         assert expected.contentions[idx].classification_code == 9999
         assert expected.contentions[idx].classification_name == "ml classification"
 
-    assert expected.contentions[0].classification_code == 8998
+    assert expected.contentions[0].classification_code == 1215
+
+
+@patch("src.python_src.util.logging_utilities.ml_classifier")
+@patch("src.python_src.util.logging_utilities.log_as_json")
+def test_update_classifications_logs_stats(mock_log: MagicMock, mock_ml_classifier: MagicMock) -> None:
+    mock_ml_classifier.get_version.return_value = "v001"
+
+    test_ai_response = AiResponse(
+        classified_contentions=[
+            ClassifiedContention(
+                classification_code=2462,
+                classification_name="lorem ipsum",
+                diagnostic_code=5678,
+                contention_type="claim_for_increase",
+            )
+        ]
+    )
+
+    update_classifications(
+        TEST_RESPONSE,
+        [
+            1,
+        ],
+        test_ai_response,
+        TEST_HYBRID_CLASSIFIER_REQUEST,
+    )
+
+    expected_log = {
+        "vagov_claim_id": TEST_RESPONSE.claim_id,
+        "claim_type": "claim_for_increase",
+        "classification_code": 2462,
+        "classification_name": "lorem ipsum",
+        "contention_text": "unmapped contention text",
+        "diagnostic_code": 5678,
+        "is_in_dropdown": False,
+        "is_lookup_table_match": False,
+        "is_multi_contention": True,
+        "endpoint": TEST_HYBRID_CLASSIFIER_REQUEST.url.path,
+        "classification_method": "ml_classifier",
+        "ml_classifier_version": "v001",
+    }
+
+    mock_log.assert_called_once_with(expected_log)
 
 
 @patch("src.python_src.util.classifier_utilities.log_as_json")
@@ -161,7 +243,7 @@ def test_update_classifications_logs_mismatch(mocked_func: MagicMock) -> None:
             2,
         ],
         test_ai_response,
-        TEST_HYBRID_CLASSIFIER_REQUEST
+        TEST_HYBRID_CLASSIFIER_REQUEST,
     )
     mocked_func.assert_called_once_with({"message": "Mismatched contentions between AiResponse and original classifications"})
 
