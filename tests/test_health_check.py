@@ -49,7 +49,8 @@ def test_ml_health_check(mock_boto3_client: Mock, test_client: TestClient, monke
     assert response.json() == {"status": "ok"}
 
 @patch("boto3.client")
-def test_ml_health_check_ml_classifier_not_defined(mock_boto3_client: Mock, test_client: TestClient, monkeypatch: MonkeyPatch) -> None:
+def test_ml_health_check_ml_classifier_not_defined(mock_boto3_client: Mock, test_client: TestClient, \
+        monkeypatch: MonkeyPatch) -> None:
     mock_boto3_client.get_caller_identity.return_value = {"Arn": "arn-value"}
     monkeypatch.setattr("src.python_src.api.ml_classifier", None)
     response = test_client.get("/health-ml-classifier")

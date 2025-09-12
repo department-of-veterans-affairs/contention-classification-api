@@ -123,7 +123,7 @@ def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
         "processed_contention_text": "knee",
         "classification_method": "contention text",
     }
-
+    
     mocked_func.assert_called_once_with(expected_logging_dict)
 
 
