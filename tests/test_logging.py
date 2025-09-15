@@ -4,6 +4,9 @@ with the correct dict for different situations.  The primary purpose is to test 
 there is no PII in the logs.
 """
 
+import logging
+import sys
+from importlib import reload
 from unittest.mock import Mock, patch
 
 from fastapi import Request
@@ -20,7 +23,7 @@ from src.python_src.util.app_utilities import expanded_lookup_table
 from src.python_src.util.classifier_utilities import get_classification_code_name
 from src.python_src.util.logging_utilities import log_claim_stats_v2, log_contention_stats, log_ml_contention_stats
 
-test_expanded_request = Request(
+SAMPLE_REQUEST_EXPANDED_LOOKUP = Request(
     scope={
         "type": "http",
         "method": "POST",
@@ -29,7 +32,7 @@ test_expanded_request = Request(
     }
 )
 
-test_hybrid_request = Request(
+SAMPLE_REQUEST_HYBRID_CLASSIFIER = Request(
     scope={
         "type": "http",
         "method": "POST",
@@ -37,6 +40,16 @@ test_hybrid_request = Request(
         "headers": Headers(),
     }
 )
+
+
+@patch("logging.basicConfig")
+def test_logging_calls_basicConfig(mock_basicConfig: Mock) -> None:
+    from src.python_src.util import logging_utilities
+
+    reload(logging_utilities)
+    mock_basicConfig.assert_called_once_with(
+        format="%(message)s", level=logging.INFO, datefmt="%Y-%m-%dT%H:%M:%S%z", stream=sys.stdout, force=True
+    )
 
 
 def test_create_classification_method_new() -> None:
@@ -105,7 +118,7 @@ def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
         test_contention,
         classified_contention,
         test_claim,
-        test_expanded_request,
+        SAMPLE_REQUEST_EXPANDED_LOOKUP,
         classified_by,
     )
 
@@ -123,7 +136,7 @@ def test_log_contention_stats_expanded(mocked_func: Mock) -> None:
         "processed_contention_text": "knee",
         "classification_method": "contention text",
     }
-    
+
     mocked_func.assert_called_once_with(expected_logging_dict)
 
 
@@ -183,7 +196,7 @@ def test_non_classified_contentions(mocked_func: Mock) -> None:
         test_contention,
         classified_contention,
         test_claim,
-        test_expanded_request,
+        SAMPLE_REQUEST_EXPANDED_LOOKUP,
         classified_by,
     )
 
@@ -272,7 +285,7 @@ def test_multiple_contentions(mocked_func: Mock) -> None:
             test_contentions[i],
             classified_contentions[i],
             test_claim,
-            test_expanded_request,
+            SAMPLE_REQUEST_EXPANDED_LOOKUP,
             classified_by,
         )
         mocked_func.assert_called_with(expected_logs[i])
@@ -347,7 +360,7 @@ def test_contentions_with_pii(mocked_func: Mock) -> None:
             test_contentions[i],
             classified_contentions[i],
             test_claim,
-            test_expanded_request,
+            SAMPLE_REQUEST_EXPANDED_LOOKUP,
             classified_by,
         )
         mocked_func.assert_called_with(expected_logs[i])
@@ -402,7 +415,7 @@ def test_log_claim_stats(mocked_func: Mock) -> None:
         "num_classified_contentions": 1,
         "endpoint": "/expanded-contention-classification",
     }
-    log_claim_stats_v2(test_claim, classifier_response, test_expanded_request)
+    log_claim_stats_v2(test_claim, classifier_response, SAMPLE_REQUEST_EXPANDED_LOOKUP)
     mocked_func.assert_called_once_with(expected_log)
 
 
@@ -491,12 +504,12 @@ def test_full_logging_expanded_endpoint(mocked_func: Mock) -> None:
             test_contentions[i],
             classified_contentions[i],
             test_claim,
-            test_expanded_request,
+            SAMPLE_REQUEST_EXPANDED_LOOKUP,
             classified_by,
         )
         mocked_func.assert_called_with(expected_contention_logs[i])
 
-    log_claim_stats_v2(test_claim, classifier_response, test_expanded_request)
+    log_claim_stats_v2(test_claim, classifier_response, SAMPLE_REQUEST_EXPANDED_LOOKUP)
     mocked_func.assert_called_with(expected_claim_log)
     assert mocked_func.call_count == 3
 
@@ -552,8 +565,8 @@ def test_multi_contention_claim_logging_ml_classifier(mock_log: Mock, mock_ml_cl
         num_classified_contentions=1,
     )
 
-    log_ml_contention_stats(response, test_AI_response, test_hybrid_request)
-    
+    log_ml_contention_stats(response, test_AI_response, SAMPLE_REQUEST_HYBRID_CLASSIFIER)
+
     expected_logs = [
         {
             "vagov_claim_id": 100,
@@ -564,7 +577,7 @@ def test_multi_contention_claim_logging_ml_classifier(mock_log: Mock, mock_ml_cl
             "diagnostic_code": None,
             "is_in_dropdown": False,
             "is_lookup_table_match": False,
-            "is_multi_contention": True, 
+            "is_multi_contention": True,
             "endpoint": "/hybrid-contention-classification",
             "classification_method": "ml_classifier",
             "ml_classifier_version": "v001",
@@ -578,11 +591,11 @@ def test_multi_contention_claim_logging_ml_classifier(mock_log: Mock, mock_ml_cl
             "diagnostic_code": None,
             "is_in_dropdown": False,
             "is_lookup_table_match": False,
-            "is_multi_contention": True, 
+            "is_multi_contention": True,
             "endpoint": "/hybrid-contention-classification",
             "classification_method": "ml_classifier",
             "ml_classifier_version": "v001",
-        }
+        },
     ]
     # Check that the expected payloads were received by the mocked log_as_json
     assert mock_log.call_count == 2
@@ -590,6 +603,7 @@ def test_multi_contention_claim_logging_ml_classifier(mock_log: Mock, mock_ml_cl
     for i in range(len(all_log_calls)):
         args, kwargs = all_log_calls[i]
         assert expected_logs[i] == args[0]
+
 
 @patch("src.python_src.util.logging_utilities.ml_classifier")
 @patch("src.python_src.util.logging_utilities.log_as_json")
@@ -626,22 +640,22 @@ def test_single_contention_claim_logging_ml_classifier(mock_log: Mock, mock_ml_c
         num_classified_contentions=0,
     )
 
-    log_ml_contention_stats(response, test_AI_response, test_hybrid_request)
-    
+    log_ml_contention_stats(response, test_AI_response, SAMPLE_REQUEST_HYBRID_CLASSIFIER)
+
     expected_log = {
-            "vagov_claim_id": 200,
-            "claim_type": "new",
-            "classification_code": 1357,
-            "classification_name": "lorem ipsum dolor",
-            "contention_text": "unmapped contention text",
-            "diagnostic_code": None,
-            "is_in_dropdown": False,
-            "is_lookup_table_match": False,
-            "is_multi_contention": False, 
-            "endpoint": "/hybrid-contention-classification",
-            "classification_method": "ml_classifier",
-            "ml_classifier_version": "v001",
-        }
+        "vagov_claim_id": 200,
+        "claim_type": "new",
+        "classification_code": 1357,
+        "classification_name": "lorem ipsum dolor",
+        "contention_text": "unmapped contention text",
+        "diagnostic_code": None,
+        "is_in_dropdown": False,
+        "is_lookup_table_match": False,
+        "is_multi_contention": False,
+        "endpoint": "/hybrid-contention-classification",
+        "classification_method": "ml_classifier",
+        "ml_classifier_version": "v001",
+    }
 
     # Check that the expected payload was received by the mocked log_as_json
     assert mock_log.call_count == 1
