@@ -22,6 +22,7 @@ logging.basicConfig(
     level=logging.INFO,
     datefmt="%Y-%m-%dT%H:%M:%S%z",
     stream=sys.stdout,
+    force=True
 )
 
 
