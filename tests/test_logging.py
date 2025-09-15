@@ -4,6 +4,9 @@ with the correct dict for different situations.  The primary purpose is to test 
 there is no PII in the logs.
 """
 
+import logging
+import sys
+from importlib import reload
 from unittest.mock import Mock, patch
 
 from fastapi import Request
@@ -37,6 +40,16 @@ test_hybrid_request = Request(
         "headers": Headers(),
     }
 )
+
+
+@patch("logging.basicConfig")
+def test_logging_calls_basicConfig(mock_basicConfig: Mock) -> None:
+    from src.python_src.util import logging_utilities
+
+    reload(logging_utilities)
+    mock_basicConfig.assert_called_once_with(
+        format="%(message)s", level=logging.INFO, datefmt="%Y-%m-%dT%H:%M:%S%z", stream=sys.stdout, force=True
+    )
 
 
 def test_create_classification_method_new() -> None:
