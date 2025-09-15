@@ -96,7 +96,7 @@ ruff = "0.13.0"
 pytest = "8.4.2"
 pytest-cov = "7.0.0"
 bandit = {version = "1.8.6", extras = ["toml"]}
-types-pyyaml = "6.0.12.20250822"
+types-pyyaml = "6.0.12.20250915"
 scikit-learn = "^1.7.2"
 
 [tool.bandit]
