@@ -9,7 +9,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
-RUN pip install --no-cache-dir poetry==2.0.0
+RUN pip install --no-cache-dir poetry==2.2.0
 
 # Copy files
 COPY pyproject.toml poetry.lock README.md LICENSE.md ./
