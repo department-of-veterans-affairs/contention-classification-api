@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
 
-from src.python_src.pydantic_models import ClassifiedContention, ClassifierResponse, Contention, VaGovClaim
+from src.python_src.pydantic_models import AiResponse, ClassifiedContention, ClassifierResponse, Contention, VaGovClaim
 
 
 @patch("src.python_src.api.classify_claim")
@@ -112,8 +112,25 @@ def test_hybrid_classifier_partially_classified(
     assert test_response.json()["is_fully_classified"]
 
 
-@patch("src.python_src.util.app_utilities.ml_classifier")
-def test_api_endpoint(mock_ml_classifier: MagicMock, test_client: TestClient) -> None:
+@patch("src.python_src.api.ml_classify_claim")
+def test_api_endpoint(mock_ml_classify_claim: MagicMock, test_client: TestClient) -> None:
+    mock_ml_classify_claim.return_value = AiResponse(
+        classified_contentions=[
+            ClassifiedContention(
+                classification_code=1234,
+                classification_name="lorem ipsum",
+                diagnostic_code=None,
+                contention_type="NEW",
+            ),
+            ClassifiedContention(
+                classification_code=5678,
+                classification_name="ipsum",
+                diagnostic_code=1000,
+                contention_type="claim_for_increase",
+            ),
+        ]
+    )
+
     json_post_data = {
         "contentions": [
             {
@@ -128,26 +145,23 @@ def test_api_endpoint(mock_ml_classifier: MagicMock, test_client: TestClient) ->
         ],
     }
 
-    mock_ml_classifier.make_predictions.return_value = [
-        ("Mental Disorders", {"Mental Disorders": 0.92, "Musculoskeletal - Ankle": 0.03}),
-        ("Musculoskeletal - Ankle", {"Mental Disorders": 0.02, "Musculoskeletal - Ankle": 0.98}),
-    ]
-
     response = test_client.post("/ml-contention-classification", json=json_post_data)
     assert response.status_code == 200
+    mock_ml_classify_claim.assert_called_once()
+
     assert response.json() == {
         "classified_contentions": [
             {
-                "classification_code": 9010,
-                "classification_name": "Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders",
+                "classification_code": 1234,
+                "classification_name": "lorem ipsum",
                 "diagnostic_code": None,
                 "contention_type": "NEW",
             },
             {
-                "classification_code": 8991,
-                "classification_name": "Musculoskeletal - Ankle",
+                "classification_code": 5678,
+                "classification_name": "ipsum",
                 "diagnostic_code": 1000,
-                "contention_type": "increase",
+                "contention_type": "claim_for_increase",
             },
         ]
     }
