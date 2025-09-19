@@ -32,6 +32,7 @@ testpaths = [
 [tool.coverage.run]
 omit = [
     "src/python_src/util/pull_api_documentation.py",
+    "src/python_src/util/data/simulations/*",
 ]
 
 [tool.ruff]
