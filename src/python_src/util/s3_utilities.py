@@ -84,12 +84,10 @@ def _log_verification_failure(file_path: str, expected_sha256: str, actual_sha25
     """Log SHA-256 verification failure to monitoring system."""
     log_data = {
         "event": "sha256_verification_failed",
-        "file_name": os.path.basename(file_path),
         "file_path": file_path,
         "expected_sha256": expected_sha256,
         "actual_sha256": actual_sha256,
         "error_type": "checksum_mismatch",
-        "component": "ml_classifier",
         "severity": "error",
     }
     logger.error("SHA-256 verification failed", extra={"json_data": log_data})
@@ -99,11 +97,9 @@ def _log_verification_error(file_path: str, error_message: str) -> None:
     """Log SHA-256 verification error to monitoring system."""
     log_data = {
         "event": "sha256_verification_error",
-        "file_name": os.path.basename(file_path),
         "file_path": file_path,
         "error_message": error_message,
         "error_type": "verification_exception",
-        "component": "ml_classifier",
         "severity": "error",
     }
     logger.error("SHA-256 verification error", extra={"json_data": log_data})
