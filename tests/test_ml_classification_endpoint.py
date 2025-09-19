@@ -110,3 +110,44 @@ def test_hybrid_classifier_partially_classified(
     mock_supplement_with_ml_classifier.assert_called_once()
     assert test_response.json()["num_classified_contentions"] == 2
     assert test_response.json()["is_fully_classified"]
+
+
+@patch("src.python_src.util.logging_utilities.ml_classifier")
+def test_api_endpoint(mock_ml_classifier: MagicMock, test_client: TestClient) -> None:
+    json_post_data = {
+        "contentions": [
+            {
+                "contention_text": "PTSD (post-traumatic stress disorder)",
+                "contention_type": "NEW",
+            },
+            {
+                "contention_text": "left ankle condition",
+                "contention_type": "increase",
+                "diagnostic_code": 1000,
+            },
+        ],
+    }
+
+    mock_ml_classifier.make_predictions.return_value = [
+        ("Mental Disorders", {"Mental Disorders": 0.92, "Musculoskeletal - Ankle": 0.03}),
+        ("Musculoskeletal - Ankle", {"Mental Disorders": 0.02, "Musculoskeletal - Ankle": 0.98}),
+    ]
+
+    response = test_client.post("/ml-contention-classification", json=json_post_data)
+    assert response.status_code == 200
+    assert response.json() == {
+        "classified_contentions": [
+            {
+                "classification_code": 9010,
+                "classification_name": "Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders",
+                "diagnostic_code": None,
+                "contention_type": "NEW",
+            },
+            {
+                "classification_code": 8991,
+                "classification_name": "Musculoskeletal - Ankle",
+                "diagnostic_code": 1000,
+                "contention_type": "increase",
+            },
+        ]
+    }
