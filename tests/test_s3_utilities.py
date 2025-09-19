@@ -214,12 +214,53 @@ def test_verify_file_sha256_success(mock_exists: MagicMock, mock_calc_sha: Magic
     assert result is True
 
 
+@patch("logging.Logger.error")
 @patch("src.python_src.util.s3_utilities.calculate_file_sha256")
 @patch("src.python_src.util.s3_utilities.os.path.exists", return_value=True)
-def test_verify_file_sha256_failure(mock_exists: MagicMock, mock_calc_sha: MagicMock) -> None:
+def test_verify_file_sha256_error(mock_exists: MagicMock, mock_calc_sha: MagicMock, mock_logger: MagicMock) -> None:
+    """Test error in SHA verification."""
+    mock_calc_sha.side_effect = OSError()
+
+    result = verify_file_sha256("test_file.txt", "expected_hash", 123)
+    mock_logger.assert_called_with(
+        "SHA-256 verification error",
+        extra={
+            "json_data": {
+                "event": "sha256_verification_error",
+                "file_name": "test_file.txt",
+                "file_path": "test_file.txt",
+                "error_message": "",
+                "error_type": "verification_exception",
+                "component": "ml_classifier",
+                "severity": "error",
+            }
+        },
+    )
+    assert result is False
+
+
+@patch("logging.Logger.error")
+@patch("src.python_src.util.s3_utilities.calculate_file_sha256")
+@patch("src.python_src.util.s3_utilities.os.path.exists", return_value=True)
+def test_verify_file_sha256_failure(mock_exists: MagicMock, mock_calc_sha: MagicMock, mock_logger: MagicMock) -> None:
     """Test failed SHA verification."""
     mock_calc_sha.return_value = "actual_hash"
     chunk_size = get_chunk_size()
 
     result = verify_file_sha256("test_file.txt", "expected_hash", chunk_size)
+    mock_logger.assert_called_with(
+        "SHA-256 verification failed",
+        extra={
+            "json_data": {
+                "event": "sha256_verification_failed",
+                "file_name": "test_file.txt",
+                "file_path": "test_file.txt",
+                "expected_sha256": "expected_hash",
+                "actual_sha256": "actual_hash",
+                "error_type": "checksum_mismatch",
+                "component": "ml_classifier",
+                "severity": "error",
+            }
+        },
+    )
     assert result is False
