@@ -112,7 +112,7 @@ def test_hybrid_classifier_partially_classified(
     assert test_response.json()["is_fully_classified"]
 
 
-@patch("src.python_src.util.logging_utilities.ml_classifier")
+@patch("src.python_src.util.app_utilities.ml_classifier")
 def test_api_endpoint(mock_ml_classifier: MagicMock, test_client: TestClient) -> None:
     json_post_data = {
         "contentions": [
