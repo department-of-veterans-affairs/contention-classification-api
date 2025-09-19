@@ -227,11 +227,9 @@ def test_verify_file_sha256_error(mock_exists: MagicMock, mock_calc_sha: MagicMo
         extra={
             "json_data": {
                 "event": "sha256_verification_error",
-                "file_name": "test_file.txt",
                 "file_path": "test_file.txt",
                 "error_message": "",
                 "error_type": "verification_exception",
-                "component": "ml_classifier",
                 "severity": "error",
             }
         },
@@ -253,12 +251,10 @@ def test_verify_file_sha256_failure(mock_exists: MagicMock, mock_calc_sha: Magic
         extra={
             "json_data": {
                 "event": "sha256_verification_failed",
-                "file_name": "test_file.txt",
                 "file_path": "test_file.txt",
                 "expected_sha256": "expected_hash",
                 "actual_sha256": "actual_hash",
                 "error_type": "checksum_mismatch",
-                "component": "ml_classifier",
                 "severity": "error",
             }
         },
