@@ -15,6 +15,7 @@ from src.python_src.util.classifier_utilities import (
     build_ai_request,
     classify_contention,
     ml_classify_claim,
+    supplement_with_ml_classification,
     update_classifications,
 )
 
@@ -282,3 +283,20 @@ def test_ml_classify_claim_returns_list_of_no_classification_codes_if_no_ml_mode
     ai_response = ml_classify_claim(TEST_AI_REQUEST)
     assert len(ai_response.classified_contentions) == len(TEST_AI_REQUEST.contentions)
     assert [c.classification_code for c in ai_response.classified_contentions] == [None] * len(TEST_AI_REQUEST.contentions)
+
+
+@patch("src.python_src.util.classifier_utilities.build_ai_request")
+@patch("src.python_src.util.classifier_utilities.ml_classify_claim")
+@patch("src.python_src.util.classifier_utilities.update_classifications")
+def test_supplement_with_ml_classifier(
+    mock_update_classifications: MagicMock, mock_ml_classify_claim: MagicMock, mock_build_ai_request: MagicMock
+) -> None:
+    mock_build_ai_request.return_value = [1, 2], TEST_AI_REQUEST
+    mock_update_classifications.return_value = TEST_RESPONSE
+
+    supplement_response = supplement_with_ml_classification(TEST_RESPONSE, TEST_CLAIM, TEST_HYBRID_CLASSIFIER_REQUEST)
+    assert TEST_RESPONSE == supplement_response
+
+    mock_build_ai_request.assert_called_once()
+    mock_ml_classify_claim.assert_called_once()
+    mock_update_classifications.assert_called_once()
