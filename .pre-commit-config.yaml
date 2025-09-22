@@ -35,7 +35,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v1.18.1'
+    rev: 'v1.18.2'
     hooks:
       - id: mypy
         pass_filenames: false  # Pass all files in the repository except those excluded in pyproject.toml
