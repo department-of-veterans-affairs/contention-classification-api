@@ -2,7 +2,6 @@
 name = "contention-classification-api"
 version = "0.1.0"
 description = "API for classifying contentions from 526 submissions"
-dynamic = ["dependencies"]
 authors = [
 	{name = "Department of Veterans Affairs"}
 ]
@@ -18,6 +17,30 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
 ]
 requires-python = ">= 3.12"
+
+dependencies = [
+    "fastapi==0.118.0",
+    "httpx==0.28.1",
+    "onnx==1.19.0",
+    "onnxruntime==1.23.0",
+    "pandas>=2.3.3",
+    "pydantic==2.11.10",
+    "pyyaml==6.0.3",
+    "scikit-learn>=1.7.2",
+    "uvicorn[standard]==0.37.0",
+    "boto3>=1.40.45",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy==1.18.2",
+    "pre-commit==4.3.0",
+    "ruff==0.13.3",
+    "pytest==8.4.2",
+    "pytest-cov==7.0.0",
+    "bandit[toml]==1.8.6",
+    "types-pyyaml==6.0.12.20250915",
+]
 
 [project.urls]
 homepage = "https://github.com/department-of-veterans-affairs/contention-classification-api"
@@ -68,16 +91,10 @@ exclude = [
 ]
 
 [tool.poetry]
-# TODO: Remove name, version, description, and authors when dependabot uses poetry 2.x.x. See https://github.com/dependabot/dependabot-core/issues/11237
-name = "contention-classification-api"
-version = "0.1.0"
-description = "API for classifying contentions from 526 submissions"
-authors = ["Department of Veterans Affairs"]
 packages = [{include = "python_src", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-poetry = "^2.2"
 fastapi = "0.118.0"
 httpx = "0.28.1"
 onnx = "1.19.0"
@@ -89,7 +106,6 @@ scikit-learn = "^1.7.2"
 uvicorn = {extras = ["standard"], version = "0.37.0"}
 boto3 = "^1.40.45"
 
-
 [tool.poetry.group.dev.dependencies]
 mypy = "1.18.2"
 pre-commit = "4.3.0"
@@ -98,12 +114,15 @@ pytest = "8.4.2"
 pytest-cov = "7.0.0"
 bandit = {version = "1.8.6", extras = ["toml"]}
 types-pyyaml = "6.0.12.20250915"
-scikit-learn = "^1.7.2"
 
 [tool.bandit]
 exclude_dirs = ["tests"]
 skips = ["B101"]  # Skip assert warnings in tests
 
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["python_src*"]
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
