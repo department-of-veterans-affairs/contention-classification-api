@@ -78,16 +78,16 @@ packages = [{include = "python_src", from = "src"}]
 [tool.poetry.dependencies]
 python = "^3.12"
 poetry = "^2.2"
-fastapi = "0.118.0"
+fastapi = "0.118.2"
 httpx = "0.28.1"
-onnx = "1.19.0"
+onnx = "1.19.1"
 onnxruntime = "1.23.1"
 pandas = "^2.3.3"
 pydantic = "2.12.0"
 pyyaml = "6.0.3"
 scikit-learn = "^1.7.2"
 uvicorn = {extras = ["standard"], version = "0.37.0"}
-boto3 = "^1.40.47"
+boto3 = "^1.40.49"
 
 
 [tool.poetry.group.dev.dependencies]
