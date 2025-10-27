@@ -87,7 +87,7 @@ pydantic = "2.12.3"
 pyyaml = "6.0.3"
 scikit-learn = "^1.7.2"
 uvicorn = {extras = ["standard"], version = "0.38.0"}
-boto3 = "^1.40.58"
+boto3 = "^1.40.59"
 
 
 [tool.poetry.group.dev.dependencies]
