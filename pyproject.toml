@@ -78,22 +78,22 @@ packages = [{include = "python_src", from = "src"}]
 [tool.poetry.dependencies]
 python = "^3.12"
 poetry = "^2.2"
-fastapi = "0.120.2"
+fastapi = "0.121.0"
 httpx = "0.28.1"
 onnx = "1.19.1"
 onnxruntime = "1.23.2"
 pandas = "^2.3.3"
-pydantic = "2.12.3"
+pydantic = "2.12.4"
 pyyaml = "6.0.3"
 scikit-learn = "^1.7.2"
 uvicorn = {extras = ["standard"], version = "0.38.0"}
-boto3 = "^1.40.62"
+boto3 = "^1.40.67"
 
 
 [tool.poetry.group.dev.dependencies]
 mypy = "1.18.2"
 pre-commit = "4.3.0"
-ruff = "0.14.2"
+ruff = "0.14.3"
 pytest = "8.4.2"
 pytest-cov = "7.0.0"
 bandit = {version = "1.8.6", extras = ["toml"]}
