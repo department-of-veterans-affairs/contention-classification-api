@@ -164,6 +164,42 @@ def test_requests_for_hybrid_endpoint_calls_expanded_logging(
         diagnostic_code=None,
         contention_type="NEW",
     )
+    classified_by = "contention_text"
+    log_contention_stats(
+        test_contention,
+        classified_contention,
+        test_claim,
+        hybrid_request,
+        classified_by,
+    )
+    mock_log_as_json.assert_called_once()
+    log_expanded_contention_text.assert_called_once()
+
+
+@patch("src.python_src.util.logging_utilities.log_as_json")
+@patch("src.python_src.util.logging_utilities.log_expanded_contention_text")
+def test_requests_for_hybrid_endpoint_does_not_log_failed_expanded_lookup(
+    log_expanded_contention_text: Mock, mock_log_as_json: Mock
+) -> None:
+    hybrid_request = Request(
+        scope={
+            "type": "http",
+            "method": "POST",
+            "path": "/hybrid-contention-classification",
+            "headers": Headers(),
+        }
+    )
+    test_contention = Contention(
+        contention_text="lorem ipsum unmatchable in expanded lookup table",
+        contention_type="NEW",
+    )
+    test_claim = VaGovClaim(claim_id=100, form526_submission_id=500, contentions=[test_contention])
+    classified_contention = ClassifiedContention(
+        classification_code=None,
+        classification_name=None,
+        diagnostic_code=None,
+        contention_type="NEW",
+    )
     classified_by = "not classified"
     log_contention_stats(
         test_contention,
@@ -172,7 +208,8 @@ def test_requests_for_hybrid_endpoint_calls_expanded_logging(
         hybrid_request,
         classified_by,
     )
-    log_expanded_contention_text.assert_called_once()
+    mock_log_as_json.assert_not_called()
+    log_expanded_contention_text.assert_not_called()
 
 
 @patch("src.python_src.util.logging_utilities.log_as_json")
