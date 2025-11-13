@@ -67,9 +67,14 @@ def log_contention_stats(
     classified_by: str,
 ) -> None:
     """
-    Logs stats about each contention process by the classifier. This will maintain
-    compatibility with the existing datadog widgets.
+    Logs stats about each contention that was classified.
+    If a classification was not made AND the hybrid classifier was requested, does not log the contention
+    why: in this case, the ML classifier will be consulted, and the ML classifier will log contention stats;
+    and due to assumptions in our dashboards, we need to log only one contention message per processed contention
     """
+    if request.url.path == "/hybrid-contention-classification" and classified_by == "not classified":
+        return
+
     contention_text = contention.contention_text or ""
     is_in_dropdown = contention_text.strip().lower() in dropdown_values
     is_mapped_text = dropdown_lookup_table.get(contention_text, {}).get("classification_code") is not None
