@@ -35,4 +35,6 @@ def get_classification_name(classification_code: int) -> Optional[str]:
 
 
 def get_classification_code(classification_name: str) -> Optional[int]:
-    return CLASSIFICATION_CODES_BY_NAME.get(classification_name.strip())
+    if classification_name:
+        return CLASSIFICATION_CODES_BY_NAME.get(classification_name.strip())
+    return None
