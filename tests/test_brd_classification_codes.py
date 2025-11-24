@@ -81,6 +81,23 @@ def test_get_classification_code(test_client: TestClient) -> None:
         assert get_classification_code("lorem ipsum") is None
 
 
+def test_get_classification_code_when_name_has_leading_or_trailing_space(test_client: TestClient) -> None:
+    """Test get_classification_name with mock data."""
+    mock_data: Dict[str, List[Dict[str, Any]]] = {
+        "items": [
+            {"id": 8989, "name": "Mental Disorders"},
+            {"id": 8997, "name": "Musculoskeletal - Knee"},
+            {"id": 3140, "name": "Hearing Loss"},
+        ]
+    }
+    with patch("builtins.open", mock_open(read_data=json.dumps(mock_data))):
+        assert get_classification_code("    Mental Disorders    ") == 8989
+        assert get_classification_code("  Musculoskeletal - Knee") == 8997
+        assert get_classification_code("Hearing Loss ") == 3140
+        assert get_classification_code("  lorem ipsum ") is None
+
+
+
 def test_get_classification_names_by_code_file_error(test_client: TestClient) -> None:
     """Test error handling when file cannot be opened."""
     with patch("builtins.open", side_effect=FileNotFoundError()):
