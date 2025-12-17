@@ -54,7 +54,7 @@ jobs:
           pre-commit autoupdate ${{ steps.extract_repos.outputs.repos }}
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           title: 'chore: update pre-commit hooks'
           commit-message: 'chore: update pre-commit hooks'
