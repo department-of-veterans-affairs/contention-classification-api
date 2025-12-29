@@ -3,7 +3,7 @@ import logging
 import sys
 from datetime import datetime, timezone
 from functools import wraps
-from typing import Any, Callable, Dict, Tuple, TypeVar, cast
+from typing import Any, Callable, Dict, Tuple, TypeVar, Union, cast
 
 from fastapi import Request
 
@@ -15,7 +15,6 @@ from ..pydantic_models import (
     VaGovClaim,
 )
 from .app_utilities import dropdown_lookup_table, dropdown_values, expanded_lookup_table, ml_classifier
-from .sanitizer import sanitize_log
 
 logging.basicConfig(
     format="%(message)s",
@@ -86,12 +85,12 @@ def log_contention_stats(
     is_multi_contention = len(claim.contentions) > 1
 
     logging_dict = {
-        "vagov_claim_id": sanitize_log(claim.claim_id),
-        "claim_type": sanitize_log(log_contention_type),
+        "vagov_claim_id": normalize_log(claim.claim_id),
+        "claim_type": normalize_log(log_contention_type),
         "classification_code": classified_contention.classification_code,
         "classification_name": classified_contention.classification_name,
         "contention_text": log_contention_text,
-        "diagnostic_code": sanitize_log(contention.diagnostic_code),
+        "diagnostic_code": normalize_log(contention.diagnostic_code),
         "is_in_dropdown": is_in_dropdown,
         "is_lookup_table_match": classified_contention.classification_code is not None,
         "is_multi_contention": is_multi_contention,
@@ -112,8 +111,8 @@ def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request:
     """
     log_as_json(
         {
-            "claim_id": sanitize_log(claim.claim_id),
-            "form526_submission_id": sanitize_log(claim.form526_submission_id),
+            "claim_id": normalize_log(claim.claim_id),
+            "form526_submission_id": normalize_log(claim.form526_submission_id),
             "is_fully_classified": response.is_fully_classified,
             "percent_clasified": (response.num_classified_contentions / response.num_processed_contentions) * 100,
             "num_processed_contentions": response.num_processed_contentions,
@@ -176,8 +175,8 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
         )
         is_multi_contention = len(response.contentions) > 1
         logging_dict = {
-            "vagov_claim_id": sanitize_log(response.claim_id),
-            "claim_type": sanitize_log(log_contention_type),
+            "vagov_claim_id": normalize_log(response.claim_id),
+            "claim_type": normalize_log(log_contention_type),
             "classification_code": classified_contention.classification_code,
             "classification_name": classified_contention.classification_name,
             "contention_text": "unmapped contention text",
@@ -207,3 +206,17 @@ def log_ml_contention_stats_decorator(func: Callable[..., ClassifierResponse]) -
         return result
 
     return wrapper
+
+
+def normalize_log(obj: Union[str, bool, int, None]) -> Union[str, bool, int]:
+    """
+    Removes all newlines and carriage returns from the input log statement. This
+    prevents the CodeQL warning stemming from Log entries created from user input
+    https://codeql.github.com/codeql-query-help/go/go-log-injection/
+    """
+    if isinstance(obj, bool):
+        sanitized_str = str(obj).replace("\r\n", "").replace("\n", "")
+        return sanitized_str == "True"
+    if isinstance(obj, int):
+        return int(str(obj).replace("\r\n", "").replace("\n", ""))
+    return str(obj).replace("\r\n", "").replace("\n", "")
