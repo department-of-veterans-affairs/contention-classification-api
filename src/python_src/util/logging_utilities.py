@@ -3,7 +3,7 @@ import logging
 import sys
 from datetime import datetime, timezone
 from functools import wraps
-from typing import Any, Callable, Dict, Tuple, TypeVar, cast
+from typing import Any, Callable, Dict, Tuple, TypeVar, Union, cast
 
 from fastapi import Request
 
@@ -15,15 +15,8 @@ from ..pydantic_models import (
     VaGovClaim,
 )
 from .app_utilities import dropdown_lookup_table, dropdown_values, expanded_lookup_table, ml_classifier
-from .sanitizer import sanitize_log
 
-logging.basicConfig(
-    format="%(message)s",
-    level=logging.INFO,
-    datefmt="%Y-%m-%dT%H:%M:%S%z",
-    stream=sys.stdout,
-    force=True
-)
+logging.basicConfig(format="%(message)s", level=logging.INFO, datefmt="%Y-%m-%dT%H:%M:%S%z", stream=sys.stdout, force=True)
 
 
 def log_as_json(log: Dict[str, Any]) -> None:
@@ -39,11 +32,13 @@ def log_expanded_contention_text(
     logging_dict: Dict[str, Any], contention_text: str, log_contention_text: str
 ) -> Dict[str, Any]:
     """
-    Updates the  logging dictionary with the contention text updates from the expanded classification method
+    Updates the logging payload to include the original contention text ONLY IF
+    the expanded lookup is able to determine a classification code. The expanded
+    lookup has a controlled set of accepted values, and if it is able to determine
+    a classification code, we can be confident that the input does not contain PII
     """
-    processed_text = expanded_lookup_table.prep_incoming_text(contention_text)
-    # only log these items if the expanded lookup returns a classification code
     if expanded_lookup_table.get(contention_text)["classification_code"]:
+        processed_text = expanded_lookup_table.prep_incoming_text(contention_text)
         if log_contention_text == "unmapped contention text":
             log_contention_text = f"unmapped contention text {[processed_text]}"
         logging_dict.update(
@@ -52,7 +47,7 @@ def log_expanded_contention_text(
                 "contention_text": log_contention_text,
             }
         )
-    # log none as the processed text if it is not in the LUT and leave unmapped contention text as is
+    # log none as the processed text if it is not in the LUT, and leave unmapped contention text as-is
     else:
         logging_dict.update({"processed_contention_text": None})
 
@@ -78,20 +73,24 @@ def log_contention_stats(
     contention_text = contention.contention_text or ""
     is_in_dropdown = contention_text.strip().lower() in dropdown_values
     is_mapped_text = dropdown_lookup_table.get(contention_text, {}).get("classification_code") is not None
-    log_contention_text = contention_text if is_mapped_text else "unmapped contention text"
     log_contention_type = (
         "claim_for_increase" if contention.contention_type == "INCREASE" else contention.contention_type.lower()
     )
+    log_contention_text = "unmapped contention text"
+    if is_mapped_text:
+        # if the text was mapped, we can be confident it does not contain PII,
+        # thus we allow it to be included in the log payload
+        log_contention_text = contention_text
 
     is_multi_contention = len(claim.contentions) > 1
 
     logging_dict = {
-        "vagov_claim_id": sanitize_log(claim.claim_id),
-        "claim_type": sanitize_log(log_contention_type),
+        "vagov_claim_id": normalize_log(claim.claim_id),
+        "claim_type": normalize_log(log_contention_type),
         "classification_code": classified_contention.classification_code,
         "classification_name": classified_contention.classification_name,
         "contention_text": log_contention_text,
-        "diagnostic_code": sanitize_log(contention.diagnostic_code),
+        "diagnostic_code": normalize_log(contention.diagnostic_code),
         "is_in_dropdown": is_in_dropdown,
         "is_lookup_table_match": classified_contention.classification_code is not None,
         "is_multi_contention": is_multi_contention,
@@ -112,8 +111,8 @@ def log_claim_stats_v2(claim: VaGovClaim, response: ClassifierResponse, request:
     """
     log_as_json(
         {
-            "claim_id": sanitize_log(claim.claim_id),
-            "form526_submission_id": sanitize_log(claim.form526_submission_id),
+            "claim_id": normalize_log(claim.claim_id),
+            "form526_submission_id": normalize_log(claim.form526_submission_id),
             "is_fully_classified": response.is_fully_classified,
             "percent_clasified": (response.num_classified_contentions / response.num_processed_contentions) * 100,
             "num_processed_contentions": response.num_processed_contentions,
@@ -176,8 +175,8 @@ def log_ml_contention_stats(response: ClassifierResponse, ai_response: AiRespons
         )
         is_multi_contention = len(response.contentions) > 1
         logging_dict = {
-            "vagov_claim_id": sanitize_log(response.claim_id),
-            "claim_type": sanitize_log(log_contention_type),
+            "vagov_claim_id": normalize_log(response.claim_id),
+            "claim_type": normalize_log(log_contention_type),
             "classification_code": classified_contention.classification_code,
             "classification_name": classified_contention.classification_name,
             "contention_text": "unmapped contention text",
@@ -207,3 +206,17 @@ def log_ml_contention_stats_decorator(func: Callable[..., ClassifierResponse]) -
         return result
 
     return wrapper
+
+
+def normalize_log(obj: Union[str, bool, int, None]) -> Union[str, bool, int]:
+    """
+    Removes all newlines and carriage returns from the input log statement. This
+    prevents the CodeQL warning stemming from Log entries created from user input
+    https://codeql.github.com/codeql-query-help/go/go-log-injection/
+    """
+    if isinstance(obj, bool):
+        sanitized_str = str(obj).replace("\r\n", "").replace("\n", "")
+        return sanitized_str == "True"
+    if isinstance(obj, int):
+        return int(str(obj).replace("\r\n", "").replace("\n", ""))
+    return str(obj).replace("\r\n", "").replace("\n", "")

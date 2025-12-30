@@ -21,7 +21,12 @@ from src.python_src.pydantic_models import (
 )
 from src.python_src.util.app_utilities import expanded_lookup_table
 from src.python_src.util.classifier_utilities import get_classification_code_name
-from src.python_src.util.logging_utilities import log_claim_stats_v2, log_contention_stats, log_ml_contention_stats
+from src.python_src.util.logging_utilities import (
+    log_claim_stats_v2,
+    log_contention_stats,
+    log_ml_contention_stats,
+    normalize_log,
+)
 
 SAMPLE_REQUEST_EXPANDED_LOOKUP = Request(
     scope={
@@ -697,3 +702,39 @@ def test_single_contention_claim_logging_ml_classifier(mock_log: Mock, mock_ml_c
     # Check that the expected payload was received by the mocked log_as_json
     assert mock_log.call_count == 1
     assert mock_log.call_args[0][0] == expected_log
+
+
+def test_normalize_log_string() -> None:
+    """Test normalize_log with string inputs."""
+    assert normalize_log("test") == "test"
+    assert normalize_log("test\n") == "test"
+    assert normalize_log("test\r\n") == "test"
+    assert normalize_log("test\ntest") == "testtest"
+    assert normalize_log("test\r\ntest") == "testtest"
+
+
+def test_normalize_log_boolean() -> None:
+    """Test normalize_log with boolean inputs."""
+    assert normalize_log(True) is True
+    assert normalize_log(False) is False
+    assert normalize_log("True\n") == "True"
+    assert normalize_log("False\r\n") == "False"
+
+
+def test_normalize_log_integer() -> None:
+    """Test normalize_log with integer inputs."""
+    assert normalize_log(123) == 123
+    assert normalize_log("123\n") == "123"
+    assert normalize_log("123\r\n") == "123"
+
+
+def test_normalize_log_none() -> None:
+    """Test normalize_log with None input."""
+    assert normalize_log(None) == "None"
+
+
+def test_normalize_log_special_chars() -> None:
+    """Test normalize_log with special characters."""
+    assert normalize_log("test\ttest") == "test\ttest"
+    assert normalize_log("test\vtest") == "test\vtest"
+    assert normalize_log("test\ftest") == "test\ftest"
