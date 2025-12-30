@@ -38,14 +38,13 @@ def log_expanded_contention_text(
     logging_dict: Dict[str, Any], contention_text: str, log_contention_text: str
 ) -> Dict[str, Any]:
     """
-    Updates the logging payload to include the original contention text,
-    only if the expanded lookup is able to determine a classification code
+    Updates the logging payload to include the original contention text ONLY IF
+    the expanded lookup is able to determine a classification code. The expanded
+    lookup has a controlled set of accepted values, and if it is able to determine
+    a classification code, we can be confident that the input does not contain PII
     """
-    processed_text = expanded_lookup_table.prep_incoming_text(contention_text)
-    # only log these items if the expanded lookup returns a classification code
-    # in this case, we can be confident that the contention_text does not contain PII,
-    # as the expanded lookup has a controlled set of accepted values
     if expanded_lookup_table.get(contention_text)["classification_code"]:
+        processed_text = expanded_lookup_table.prep_incoming_text(contention_text)
         if log_contention_text == "unmapped contention text":
             log_contention_text = f"unmapped contention text {[processed_text]}"
         logging_dict.update(
