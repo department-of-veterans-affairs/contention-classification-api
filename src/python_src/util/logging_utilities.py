@@ -16,13 +16,7 @@ from ..pydantic_models import (
 )
 from .app_utilities import dropdown_lookup_table, dropdown_values, expanded_lookup_table, ml_classifier
 
-logging.basicConfig(
-    format="%(message)s",
-    level=logging.INFO,
-    datefmt="%Y-%m-%dT%H:%M:%S%z",
-    stream=sys.stdout,
-    force=True
-)
+logging.basicConfig(format="%(message)s", level=logging.INFO, datefmt="%Y-%m-%dT%H:%M:%S%z", stream=sys.stdout, force=True)
 
 
 def log_as_json(log: Dict[str, Any]) -> None:
@@ -87,7 +81,6 @@ def log_contention_stats(
         # if the text was mapped, we can be confident it does not contain PII,
         # thus we allow it to be included in the log payload
         log_contention_text = contention_text
-
 
     is_multi_contention = len(claim.contentions) > 1
 
