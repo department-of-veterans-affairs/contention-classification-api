@@ -79,10 +79,15 @@ def log_contention_stats(
     contention_text = contention.contention_text or ""
     is_in_dropdown = contention_text.strip().lower() in dropdown_values
     is_mapped_text = dropdown_lookup_table.get(contention_text, {}).get("classification_code") is not None
-    log_contention_text = contention_text if is_mapped_text else "unmapped contention text"
     log_contention_type = (
         "claim_for_increase" if contention.contention_type == "INCREASE" else contention.contention_type.lower()
     )
+    log_contention_text = "unmapped contention text"
+    if is_mapped_text:
+        # if the text was mapped, we can be confident it does not contain PII,
+        # thus we allow it to be included in the log payload
+        log_contention_text = contention_text
+
 
     is_multi_contention = len(claim.contentions) > 1
 
