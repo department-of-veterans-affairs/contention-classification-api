@@ -54,64 +54,6 @@ Use Poetry to install all dependencies:
 poetry install
 ```
 
-#### Configure AWS Credentials
-
-This application requires AWS credentials to be configured locally for accessing AWS services. You can set up your AWS credentials using one of the following methods:
-
-**Option 1: AWS CLI Configuration**
-Install the AWS CLI and configure your credentials:
-
-```bash
-pip install awscli
-aws configure
-```
-
-When prompted, enter your:
-- AWS Access Key ID
-- AWS Secret Access Key
-- Default region (e.g., `us-gov-west-1`)
-- Default output format (e.g., `json`)
-
-**Option 2: Environment Variables**
-Set the following environment variables in your shell:
-
-```bash
-export AWS_ACCESS_KEY_ID=your_access_key_id
-export AWS_SECRET_ACCESS_KEY=your_secret_access_key
-export AWS_DEFAULT_REGION=us-gov-west-1
-```
-
-**ML Model Integrity Verification (Optional)**
-The application includes SHA-256 checksum verification for ML model files to ensure file integrity. This feature can be configured through:
-
-**Development/Local Environment:**
-```bash
-export ML_MODEL_SHA256=your_model_file_sha256_hash
-export ML_VECTORIZER_SHA256=your_vectorizer_file_sha256_hash
-export DISABLE_SHA_VERIFICATION=true  # To disable verification during development
-```
-
-**Production Environment:**
-In production, these environment variables should be configured through Helm charts rather than manual exports. The values are set in the deployment configuration (where: the `env` block in an environment's [deployment.yaml](https://github.com/department-of-veterans-affairs/vsp-infra-application-manifests/blob/29a48c65cdd0f5770766d8eef213867e0a9d52fa/apps/contention-classification-api/dev/templates/deployment.yaml#L40)) and applied through the Kubernetes deployment process.
-
-These environment variables take precedence over the default checksums configured in `app_config.yaml`. The `DISABLE_SHA_VERIFICATION` flag allows bypassing verification when needed for development or testing purposes.
-
-**Option 3: AWS Credentials File**
-Create or update `~/.aws/credentials`:
-
-```ini
-[default]
-aws_access_key_id = your_access_key_id
-aws_secret_access_key = your_secret_access_key
-```
-
-And `~/.aws/config`:
-
-```ini
-[default]
-region = us-gov-west-1
-```
-
 #### Install pre-commit hooks
 
 ```bash
@@ -156,10 +98,15 @@ docker compose up -d
 
 ## Running the ML Classifier locally
 
-For the purposes of local development environment, a .pkl ("pickle") version of the classifier can be downloaded from the VA Sharepoint: [Data Discovery/CAIO Collaboration Documentation](
-https://dvagov.sharepoint.com/:f:/r/sites/vaabdvro/Shared%20Documents/Contention%20Classification/4%20-%20Data%20Discovery/CAIO%20Collaboration%20Documentation/model_6_2_25?csf=1&web=1&e=nb72My)
+> This is required for full functionality of endpoints `hybrid-contention-classification` and `ml-contention-classification`; if the ML classifier files are not present, the endpoints will return `"classification_code": null` and `"classification_name": "no-model"`.`
 
-Update the app_config to point to where you have saved the file locally. https://github.com/department-of-veterans-affairs/contention-classification-api/blob/994d2bfc170b9e8074529e3ea172a2d70faaf3b3/src/python_src/util/app_config.yaml#L178-L179
+
+The ML classifier runs in an ONNX environment that is loaded with two static files: a model (.onnx) and a vectorizer (.pkl). In the deployed k8s environments, these files are downloaded from AWS S3 using a system account, as described in a [Deployment Configuration](https://github.com/department-of-veterans-affairs/vagov-claim-classification/wiki/ML-classifier:-deployment-configuration) (internal wiki).
+
+
+For the purposes of local development, these static files can be downloaded from the VA Sharepoint or the AWS S3. The locations for those files are described in the [internal wiki](
+https://github.com/department-of-veterans-affairs/vagov-claim-classification/wiki/ML-classifier:-uploading-files-to-AWS-S3). The `app_config` expects these files to be saved to a `models/` directory, although this can be customized in `ml_classifier` section of the [app_config](https://github.com/department-of-veterans-affairs/contention-classification-api/blob/994d2bfc170b9e8074529e3ea172a2d70faaf3b3/src/python_src/util/app_config.yaml#L178-L179)
+
 
 The .pkl file is not appropriate for use beyond the local dev environment due to known security weaknesses. As noted in official [python documentation](https://docs.python.org/3/library/pickle.html):
 > **Warning:** The pickle module **is not secure**. Only unpickle data you trust.
@@ -167,6 +114,26 @@ The .pkl file is not appropriate for use beyond the local dev environment due to
 For non-local dev, an [ONNX](https://onnx.ai/) format is intended.
 
 Neither the .pkl nor .onnx files should be committed to the GitHub repository, as we cannot guarantee that they are free of PII/PHI. As a precaution, both file extensions are flagged in `.gitignore`.
+
+
+
+### ML Model Integrity Verification (Optional)
+
+The application includes SHA-256 checksum verification for ML model files to ensure file integrity. This feature can be configured through:
+
+**Development/Local Environment:**
+```bash
+export ML_MODEL_SHA256=your_model_file_sha256_hash
+export ML_VECTORIZER_SHA256=your_vectorizer_file_sha256_hash
+export DISABLE_SHA_VERIFICATION=true  # To disable verification during development
+```
+
+**Production Environment:**
+In production, these environment variables should be configured through Helm charts rather than manual exports. The values are set in the deployment configuration (where: the `env` block in an environment's [deployment.yaml](https://github.com/department-of-veterans-affairs/vsp-infra-application-manifests/blob/29a48c65cdd0f5770766d8eef213867e0a9d52fa/apps/contention-classification-api/dev/templates/deployment.yaml#L40)) and applied through the Kubernetes deployment process.
+
+These environment variables take precedence over the default checksums configured in `app_config.yaml`. The `DISABLE_SHA_VERIFICATION` flag allows bypassing verification when needed for development or testing purposes.
+
+
 
 ## Testing locally
 With the application running using either Docker or Python, tests requests can be sent using the following curl commands.
