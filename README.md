@@ -14,7 +14,6 @@
 
 This service can be run standalone using Poetry for dependency management or using Docker.
 
-## Setup
 
 ### Python using Poetry
 
@@ -66,7 +65,7 @@ To run the pre-commit hooks manually:
 poetry run pre-commit run --all-files
 ```
 
-### Run the server
+#### Run the server
 
 Using Poetry, run the FastAPI server:
 
@@ -74,7 +73,7 @@ Using Poetry, run the FastAPI server:
 poetry run uvicorn python_src.api:app --port 8120 --reload
 ```
 
-### Run tests
+#### Run tests
 
 Using Poetry, run the test suite:
 
@@ -88,7 +87,7 @@ For test coverage report:
 poetry run pytest --cov=src --cov-report=term-missing
 ```
 
-## Running with Docker
+### Running with Docker
 This application can also be run with Docker using the following commands.
 ```
 docker compose down
