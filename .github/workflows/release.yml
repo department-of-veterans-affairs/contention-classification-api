@@ -146,7 +146,7 @@ jobs:
           git diff --unified=0
 
       - name: Add and Commit file
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v10
         with:
           author_email: 70344339+va-vsp-bot@users.noreply.github.com
           author_name: va-vsp-bot
