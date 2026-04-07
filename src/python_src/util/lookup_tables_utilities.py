@@ -14,6 +14,7 @@ class InitValues:
     classification_name: str
     active_selection: Optional[str]
     lut_default_value: Dict[str, Any]
+    aggregate_synonyms: Optional[str] = None
 
 
 def read_csv_to_list(filepath: str) -> List[Dict[str, str]]:

@@ -100,6 +100,7 @@ dropdown_expanded_table_inits = InitValues(
     classification_name=app_config["condition_dropdown_table"]["classification_name"],
     active_selection=app_config["condition_dropdown_table"]["active_classification"],
     lut_default_value=default_lut_table,
+    aggregate_synonyms=app_config["condition_dropdown_table"]["aggregate_synonyms"],
 )
 dropdown_lookup_table = ContentionTextLookupTable(dropdown_expanded_table_inits)
 

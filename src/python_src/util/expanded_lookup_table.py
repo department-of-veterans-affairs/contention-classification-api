@@ -145,11 +145,17 @@ class ExpandedLookupTable:
         classification_code_mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
         csv_rows = read_csv_to_list(self.init_values.csv_filepath)
         for row in csv_rows:
-            if self.init_values.active_selection is not None and row[self.init_values.active_selection] == "Active":
-                for key_text in self.init_values.input_key:
-                    if row[key_text]:
-                        if not self._is_in_table(row[key_text], row, classification_code_mappings):
-                            self._add_to_lut(row[key_text], row, classification_code_mappings)
+            if self.init_values.active_selection is None or row[self.init_values.active_selection] != "Active":
+                continue
+
+            for key_text in self.init_values.input_key:
+                if row[key_text]:
+                    self._add_to_lut(row[key_text], row, classification_code_mappings)
+
+            if self.init_values.aggregate_synonyms and row.get(self.init_values.aggregate_synonyms):
+                tokens = [t.strip() for t in row[self.init_values.aggregate_synonyms].split("|") if t.strip()]
+                for token in tokens:
+                    self._add_to_lut(token, row, classification_code_mappings)
 
         # adds the joint lookup to the table
         classification_code_mappings.update(self._musculoskeletal_lookup())

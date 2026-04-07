@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Dict, Optional
 
 from .lookup_tables_utilities import InitValues, read_csv_to_list
@@ -58,14 +59,26 @@ class ContentionTextLookupTable:
         self.classification_code_mappings = {}
         csv_rows = read_csv_to_list(self.init_values.csv_filepath)
         for row in csv_rows:
+            if self.init_values.active_selection is None or row[self.init_values.active_selection] != "Active":
+                continue
+
+            mapping = {
+                "classification_code": int(row[self.init_values.classification_code]),
+                "classification_name": row[self.init_values.classification_name],
+            }
+
             for k in self.init_values.input_key:
-                if self.init_values.active_selection is not None and row[self.init_values.active_selection] == "Active":
-                    table_key = row[k].strip().lower()
-                    if table_key != "":
-                        self.classification_code_mappings[table_key] = {
-                            "classification_code": int(row[self.init_values.classification_code]),
-                            "classification_name": row[self.init_values.classification_name],
-                        }
+                table_key = row[k].strip().lower()
+                if table_key:
+                    self.classification_code_mappings[table_key] = mapping
+
+            if self.init_values.aggregate_synonyms and row.get(self.init_values.aggregate_synonyms):
+                tokens = [t.strip() for t in row[self.init_values.aggregate_synonyms].split("|") if t.strip()]
+                for token in tokens:
+                    table_key = token.lower()
+                    if table_key not in self.classification_code_mappings:
+                        logging.info(f"adding [{table_key}] as a synonym for [{row[self.init_values.classification_name]}]")
+                        self.classification_code_mappings[table_key] = mapping
 
     def get(self, input_str: str, default_value: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         default_value = self.init_values.lut_default_value
