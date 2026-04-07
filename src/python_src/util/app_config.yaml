@@ -1,5 +1,5 @@
 condition_dropdown_table:
-  version_number: v0.2
+  version_number: v0.3
   filename: "CC Taxonomy master"
   input_key:
     - Main condition/term

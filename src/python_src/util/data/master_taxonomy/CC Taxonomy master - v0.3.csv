@@ -1,0 +1,917 @@
+Main condition/term,Location options,All synonyms,Synonym term 1,Synonym term 2,Synonym term 3,Synonym term 4,Additional synonyms,Legacy term 1,Legacy term 2,Legacy term 3,Legacy term 4,Legacy term 5,Legacy term 6,Legacy term 7,Autosuggestion term 1,Autosuggestion term 2,Autosuggestion term 3,Autosuggestion term 4,Autosuggestion term 5,Autosuggestion term 6,Classification Code,Classification Text,Diagnostic Code(s),Diagnostic Description or DC Group,DBQ (reference only),PACT Presumptive (reference only),Active autosuggestion terms,Active classification mapping,Term 1st appeared,Term removed,Term updated,Synonyms updated,Autosuggestion updated,Classification updated,Current Notes
+abnormal heart,,,,,,,,,,,,,,,,,,,,,8979,Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+"abscess, brain",,,,,,,,,,,,,,,,,,,,,9007,Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+"abscess, kidney",,,,,,,,,,,,,,,,,,,,,8975,Genitourinary,,,,,Inactive,Active,v0.1,v1.0,,,,,
+"abscess, liver",,,,,,,,,,,,,,,,,,,,,8968,Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+ACL tear (anterior cruciate ligament tear),"left, right, bilateral","ACL |
+ACL tear |
+anterior cruciate ligament tear",ACL,ACL tear,anterior cruciate ligament tear,,,ACL,ACL tear,anterior cruciate ligament tear,,,,,"ACL tear (anterior cruciate ligament tear), right","ACL tear (anterior cruciate ligament tear), left","ACL tear (anterior cruciate ligament tear), bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+acne,,,,,,,,,,,,,,,acne,,,,,,9016,Skin,7828,acne,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+acromegaly,,,,,,,,,,,,,,,,,,,,,8973,Endocrine,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Addison's disease,,,,,,,,,,,,,,,,,,,,,8973,Endocrine,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Adhesions - Digestive,,,,,,,,,,,,,,,,,,,,,8920,Adhesions - Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Adhesions - Gynecological,,,,,,,,,,,,,,,,,,,,,8921,Adhesions - Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Adhesions - Heart/Veins/Arteries,,,,,,,,,,,,,,,,,,,,,8922,Adhesions - Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Adhesions - Neurological other System,,,,,,,,,,,,,,,,,,,,,8923,Adhesions - Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Adhesions - Respiratory,,,,,,,,,,,,,,,,,,,,,8924,Adhesions - Respiratory,,,,,Inactive,Active,v0.1,v1.0,,,,,
+adjustment disorder,,,,,,,,,,,,,,,adjustment disorder,,,,,,8989,Mental Disorders,9440,chronic adjustment disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,,,,
+Administrative Issue,,,,,,,,,,,,,,,,,,,,,8925,Administrative Issue,,,,,Inactive,Active,v0.1,v1.0,,,,,
+AL amyloidosis (primary amyloidosis),,"AL amyloidosis |
+primary amyloidosis",AL amyloidosis,primary amyloidosis,,,,,,,,,,,AL amyloidosis (primary amyloidosis),,,,,,8939,Cancer - Hemic and Lymphatic,7717,AL amyloidosis (primary amyloidosis),"DBQ HEM Hematologic and Lymphatic Conditions, Including Leukemia",no,Active,Active,v1.3,,,,,,
+alcohol abuse,,,,,,,,,,,,,,,,,,,,,8989,Mental Disorders,,,,,Inactive,Active,v0.1,v1.0,,,,,
+alopecia,,,,,,,,,,,,,,,alopecia,,,,,,9016,Skin,Multiple,Alopecia group,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+ALS (amyotrophic lateral sclerosis),,"ALS |
+amyotrophic lateral sclerosis",ALS,amyotrophic lateral sclerosis,,,,amyotrophic lateral sclerosis,Lou Gehrig's disease,,,,,,ALS (amyotrophic lateral sclerosis),,,,,,9007,Neurological other System,8017,amyotrophic lateral sclerosis,DBQ NEURO ALS (Lou Gehrig's Disease),no,Active,Active,v1.0,,,,,,
+alveolar abscesses,,,,,,,,,,,,,,,,,,,,,8967,Dental and Oral,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Alzheimer's disease,,"Alzheimer's |
+Alzheimers |
+Senile dementia",Alzheimer's,Senile dementia,,,,,,,,,,,Alzheimer's disease,,,,,,8989,Mental Disorders,9312,"dementia, alzheimer's type",DBQ PSYCH Mental Disorders,,Active,Active,v1.3,,,,,,
+amebiasis,,,,,,,,,,,,,,,,,,,,,8968,Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+amputation - above knee,,,,,,,,,,,,,,,,,,,,,8990,Musculoskeletal - Amputations,,,,,Inactive,Active,v0.1,v1.0,,,,,
+"amputation - arm, forearm, hand",,,,,,,,,,,,,,,,,,,,,8990,Musculoskeletal - Amputations,,,,,Inactive,Active,v0.1,v1.0,,,,,
+amputation - below knee,,,,,,,,,,,,,,,,,,,,,8990,Musculoskeletal - Amputations,,,,,Inactive,Active,v0.1,v1.0,,,,,
+amputation - foot (feet),,"amputation foot |
+amputation feet",amputation foot,amputation feet,,,,,,,,,,,,,,,,,8990,Musculoskeletal - Amputations,,,,,Inactive,Active,v0.1,v1.0,,,,,
+amputation - leg(s),,"amputation leg |
+amputation legs",amputation leg,amputation legs,,,,,,,,,,,,,,,,,8990,Musculoskeletal - Amputations,,,,,Inactive,Active,v0.1,v1.0,,,,,
+amputation - multiple fingers,,,,,,,,,,,,,,,,,,,,,8990,Musculoskeletal - Amputations,,,,,Inactive,Active,v0.1,v1.0,,,,,
+amputation - single finger,,,,,,,,,,,,,,,,,,,,,8990,Musculoskeletal - Amputations,,,,,Inactive,Active,v0.1,v1.0,,,,,
+anal cancer,,cancer - anus,cancer - anus,,,,,,,,,,,,anal cancer,,,,,,8932,Cancer - Digestive,7343,malignant growths of digestive system,DBQ GI Rectum & Anus,yes,Active,Active,v1.0,,,v1.2,,,
+anal or perianal fistula (fistula-in-ano),,"anal or perianal fistula |
+anal fistula |
+perianal fistula |
+fistula-in-ano",anal or perianal fistula,anal fistula,perianal fistula,fistula-in-ano,,,,,,,,,anal or perianal fistula (fistula-in-ano),,,,,,8968,Digestive,7335,"ano, fistula",DBQ GI Rectum & Anus,no,Active,Active,v1.0,,,,,,
+anemia,,,,,,,,"anemia, primary",primary anemia,,,,,,anemia,,,,,,8981,Hemic and Lymphatic,7700,anemia [Removed],"DBQ HEM Hematologic and Lymphatic Conditions, Including Leukemia",no,Inactive,Active,v1.0,v1.1,,,,,this was included in error before; we have more specific terms for iron deficiency anemia and sickle cell anemia
+Aneurysm - Heart/Veins/Arteries,,,,,,,,,,,,,,,,,,,,,8926,Aneurysm - Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Aneurysm - Neurological other System,,,,,,,,,,,,,,,,,,,,,8927,Aneurysm - Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+angina,,,,,,,,,,,,,,,,,,,,,8979,Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+ankle replacement (ankle arthroplasty),"left, right, bilateral","ankle arthroplasty |
+ankle replacement |
+ankle replacement (prosthesis) |
+ankle prosthesis",ankle arthroplasty,ankle replacement,ankle replacement (prosthesis),ankle prosthesis,,,,,,,,,"ankle replacement (ankle arthroplasty), right","ankle replacement (ankle arthroplasty), left","ankle replacement (ankle arthroplasty), bilateral",,,,8991,Musculoskeletal - Ankle,5056,ankle replacement,DBQ MUSC Ankle,no,Active,Active,v1.0,,,v1.2,,,
+ankle sprain,"left, right, bilateral",,,,,,,ankle sprain,,,,,,,"ankle sprain, right","ankle sprain, left","ankle sprain, bilateral",,,,8991,Musculoskeletal - Ankle,Multiple,Ankle DC Group,DBQ MUSC Ankle,no,Active,Active,v1.0,,,,,,
+ankle strain,,,,,,,,,,,,,,,,,,,,,8991,Musculoskeletal - Ankle,,,,,Inactive,Active,v0.1,v1.0,,,,,
+ankylosis in ankle,"left, right, bilateral","subastragalar or tarsal joint, ankylosis |
+ankle stiffness","subastragalar or tarsal joint, ankylosis",ankle stiffness,,,,,,,,,,,"ankylosis in ankle, right","ankylosis in ankle, left","ankylosis in ankle, bilateral",,,,8991,Musculoskeletal - Ankle,Multiple,Ankle DC Group,DBQ MUSC Ankle,no,Active,Active,v1.0,,,v1.2,,,
+ankylosis in elbow,"left, right, bilateral",,,,,,,,,,,,,,"ankylosis in elbow, right","ankylosis in elbow, left","ankylosis in elbow, bilateral",,,,8993,Musculoskeletal - Elbow,Multiple,Elbow and Forearm DC Group,DBQ MUSC Elbow and forearm,no,Active,Active,v1.0,,,,,,
+ankylosis in hand or fingers,"left, right, bilateral","ankylosis in hand |
+ankylosis in fingers",ankylosis in hand,ankylosis in fingers,,,,,,,,,,,"ankylosis in hand or fingers, right","ankylosis in hand or fingers, left","ankylosis in hand or fingers, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+ankylosis in hip,"left, right, bilateral",,,,,,,,,,,,,,"ankylosis in hip, right","ankylosis in hip, left","ankylosis in hip, bilateral",,,,8996,Musculoskeletal - Hip,Multiple,Hip and Thigh DC Group,DBQ MUSC Hip and thigh,no,Active,Active,v1.0,,,,,,
+ankylosis in knee,"left, right, bilateral",,,,,,,,,,,,,,"ankylosis in knee, right","ankylosis in knee, left","ankylosis in knee, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+ankylosis in shoulder,"left, right, bilateral",,,,,,,,,,,,,,"ankylosis in shoulder, right","ankylosis in shoulder, left","ankylosis in shoulder, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+ankylosis in wrist,"left, right, bilateral",,,,,,,,,,,,,,"ankylosis in wrist, right","ankylosis in wrist, left","ankylosis in wrist, bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+anorexia (type of eating disorder),,anorexia,anorexia,,,,,,,,,,,,anorexia (type of eating disorder),,,,,,8970,Eating Disorders,9520,anorexia nervosa,DBQ PSYCH Eating Disorders,no,Active,Active,v1.0,,,,,,
+anxiety (including generalized anxiety disorder),,"anxiety |
+generalized anxiety disorder |
+GAD |
+anxiety condition |
+unspecified anxiety disorder |
+other specified anxiety disorder",generalized anxiety disorder,GAD,unspecified anxiety disorder,other specified anxiety disorder,,anxiety condition,,,,,,,generalized anxiety disorder (GAD),,,,,,8989,Mental Disorders,9400,generalized anxiety disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,v1.3,,,"v1.3 Changed from ""generalized anxiety disorder (GAD)"" to ""anxiety (including generalized anxiety disorder)"""
+aortic insufficiency (aortic regurgitation),,"aortic insufficiency |
+aortic regurgitation",aortic insufficiency,aortic regurgitation,,,,,,,,,,,aortic insufficiency (aortic regurgitation),,,,,,8979,Heart/Veins/Arteries,7000,valvular heart disease,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+aortic valve disease,,,,,,,,,,,,,,,aortic valve disease,,,,,,8979,Heart/Veins/Arteries,7000,valvular heart disease,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+Arm Condition - Heart/Veins/Arteries,,,,,,,,,,,,,,,,,,,,,8928,Arm Condition - Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Arm Condition - Neurological other System,,,,,,,,,,,,,,,,,,,,,8929,Arm Condition - Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+arrhythmia (irregular heartbeat),,"arrhythmia |
+irregular heartbeat",arrhythmia,irregular heartbeat,,,,arrhythmia,,,,,,,arrhythmia (irregular heartbeat),,,,,,8979,Heart/Veins/Arteries,Multiple,Arrhythmia Group,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+"Asbestosis, silicosis, or other pneumoconiosis",,"asbestosis |
+pneumoconiosis (silicosis, anthracosis, etc.) |
+silicosis |
+anthracosis","asbestosis
+","pneumoconiosis (silicosis, anthracosis, etc.)",silicosis,anthracosis,,asbestosis (asbestos disease),,,,,,,"Asbestosis, silicosis, or other pneumoconiosis",,,,,,9012,Respiratory,Multiple,ILD Group,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.3,,,,,,
+asthma,,"Asthma, bronchial","Asthma, bronchial",,,,,,,,,,,,asthma,,,,,,9012,Respiratory,6602,bronchial asthma,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.0,,,v1.2,,,
+astragalectomy or talectomy (removal of talus bone in ankle),"left, right, bilateral","astragalectomy |
+talectomy |
+removal of talus bone in ankle",astragalectomy,talectomy,removal of talus bone in ankle,,,,,,,,,,"astragalectomy or talectomy (removal of talus bone in ankle), right","astragalectomy or talectomy (removal of talus bone in ankle), left","astragalectomy or talectomy (removal of talus bone in ankle), bilateral",,,,8991,Musculoskeletal - Ankle,5274,astragalectomy,DBQ MUSC Ankle,no,Active,Active,v1.0,,,,,,
+athlete's foot (tinea pedis),,"athlete's foot |
+tinea pedis |
+foot fungus",athlete's foot,tinea pedis,,,,athlete's foot,tinea pedis,,,,,,athlete's foot (tinea pedis),,,,,,9016,Skin,7813,dermatophytosis,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,v1.3,,Dropdown Lookup v0.3,"v1.3 added synonym ""foot fungus"""
+atrial fibrillation (A-fib),,"atrial fibrillation |
+A-fib",atrial fibrillation,A-fib,,,,,,,,,,,atrial fibrillation (A-fib),,,,,,8979,Heart/Veins/Arteries,7010,supraventricular tachycardia,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+"atrophy, progressive muscular",,,,,,,,progressive muscular atrophy,,,,,,,,,,,,,9007,Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+avitaminosis,,,,,,,,pellagra,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+"back pain or stiffness, diagnosis unknown",,"back pain |
+stiff back |
+back stiffness",,,,,,,,,,,,,"back pain or stiffness, diagnosis unknown",,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),Multiple,musculoskeletal: spine group,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.3,,,,,,
+basal cell carcinoma of the skin,"head or neck, extremities or trunk",skin carcinoma,skin carcinoma,,,,,,,,,,,,"basal cell carcinoma of the skin, head or neck","basal cell carcinoma of the skin, extremities or trunk",,,,,1250,Cancer - Skin,7818,malignant growths of the skin,DBQ DERM Skin Diseases,"yes, if head or neck",Inactive,Active,v1.1,v1.3,,,,,"v1.3 Removed and replaced by ""Skin cancer..."""
+beriberi (including beriberi heart disease),,"beriberi |
+beriberi heart disease",beriberi,beriberi heart disease,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+bipolar disorder,,,,,,,,,,,,,,,bipolar disorder,,,,,,8989,Mental Disorders,9432,bipolar disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,,,,
+Birth Defect in Child,,,,,,,,,,,,,,,,,,,,,680,Birth Defect in Child,,,,,Inactive,Active,v0.1,v1.0,,,,,
+bladder cancer,,,,,,,,,,,,,,,bladder cancer,,,,,,8935,Cancer - Genitourinary,7528,malignant growths of genitourinary system,DBQ GU Urinary Tract Conditions,yes,Active,Active,v1.0,,,,,,
+bladder condition,,,,,,,,,,,,,,,,,,,,,8975,Genitourinary,,,,,Inactive,Active,v0.1,v1.0,,,,,
+bladder stones,,,,,,,,bladder stone(s),calculus - bladder,,,,,,bladder stones,,,,,,8975,Genitourinary,7515,calculus in bladder,DBQ GU Urinary Tract Conditions,no,Active,Active,v1.0,,,,,,
+"bone cancer, including osteosarcoma","head or neck, extremities or trunk","bone cancer |
+osteosarcoma",bone cancer,osteosarcoma,,,,,,,,,,,"bone cancer, including osteosarcoma, head or neck","bone cancer, including osteosarcoma, extremities or trunk",,,,,8940,Cancer - Musculoskeletal - Other,5012,malignant growth of the bones,DBQ MUSC Bones and Other Skeletal Conditions,"yes, if head or neck",Active,Active,v1.1,,,,,Contention Text Lookup v0.5,Compensation Service SMEs confirmed that this is the relevant DBQ.
+Boutonniere deformity in fingers,"left, right, bilateral",,,,,,,,,,,,,,"Boutonniere deformity in fingers, right","Boutonniere deformity in fingers, left","Boutonniere deformity in fingers, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+"brain cancer, including glioblastoma",,"brain cancer |
+glioblastoma",brain cancer,glioblastoma,,,,cancer - brain,,,,,,,"brain cancer, including glioblastoma",,,,,,8942,Cancer - Neurological other System,8002,malignant growth of the brain,DBQ NEURO Central Nervous System and Neuromuscular Diseases,yes,Active,Active,v1.1,,,,,,
+brain hemorrhage,,,,,,,,,,,,,,,,,,,,,8972,Embolism/Infarction - Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+brain thrombosis,,,,,,,,"thrombosis, brain",,,,,,,,,,,,,8972,Embolism/Infarction - Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+breast cancer,"left, right, bilateral",,,,,,,cancer - breast,comedocarcinoma,,,,,,"breast cancer, right","breast cancer, left","breast cancer, bilateral",,,,8937,Cancer - Gynecological,7630,malignant neoplasms of the breast,DBQ GYN Breast,yes,Active,Active,v1.1,,,,,,
+breast condition,"left, right, bilateral",,,,,,,,,,,,,,"breast condition, right","breast condition, left","breast condition, bilateral",,,,8978,Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+bronchiectasis,,,,,,,,,,,,,,,bronchiectasis,,,,,,9012,Respiratory,6601,bronchiectasis (dilatation of the bronchi),DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.1,,,,,,
+bruxism (teeth grinding),,"tooth grinding |
+bruxism |
+teeth grinding",,,,,,,,,,,,,bruxism (teeth grinding),,,,,,249481,Dental and Oral - Musculoskeletal,9905,temporomandibular disorder (TMD),DBQ MUSC Temporomandibular Disorders,no,Active,Active,v1.3,,,,,,
+Buerger's disease,,,,,,,,,,,,,,,,,,,,,8979,Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+bulimia (type of eating disorder),,bulimia,bulimia,,,,,,,,,,,,bulimia (type of eating disorder),,,,,,8970,Eating Disorders,9521,bulimia nervosa,DBQ PSYCH Eating Disorders,no,Active,Active,v1.0,,,,,,
+bunions (hallux valgus),"left, right, bilateral","bunions |
+hallux valgus",bunions,hallux valgus,,,,,,,,,,,"bunions (hallux valgus), right","bunions (hallux valgus), left","bunions (hallux valgus), bilateral",,,,8994,Musculoskeletal - Foot,5280,hallux valgus - foot,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+bursitis in ankle,"left, right, bilateral",,,,,,,,,,,,,,"bursitis in ankle, right","bursitis in ankle, left","bursitis in ankle, bilateral",,,,8991,Musculoskeletal - Ankle,Multiple,Ankle DC Group,DBQ MUSC Ankle,no,Active,Active,v1.0,,,,,,
+bursitis in elbow,"left, right, bilateral",,,,,,,,,,,,,,"bursitis in elbow, right","bursitis in elbow, left","bursitis in elbow, bilateral",,,,8993,Musculoskeletal - Elbow,Multiple,Elbow and Forearm DC Group,DBQ MUSC Elbow and forearm,no,Active,Active,v1.0,,,,,,
+bursitis in foot,"left, right, bilateral",,,,,,,,,,,,,,"bursitis in foot, right","bursitis in foot, left","bursitis in foot, bilateral",,,,8994,Musculoskeletal - Foot,Multiple,Foot DC Group,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+bursitis in hand or fingers,"left, right, bilateral","bursitis in hand |
+bursitis in fingers",bursitis in hand,bursitis in fingers,,,,,,,,,,,"bursitis in hand or fingers, right","bursitis in hand or fingers, left","bursitis in hand or fingers, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+bursitis in hip,"left, right, bilateral",,,,,,,,,,,,,,"bursitis in hip, right","bursitis in hip, left","bursitis in hip, bilateral",,,,8996,Musculoskeletal - Hip,Multiple,Hip and Thigh DC Group,DBQ MUSC Hip and thigh,no,Active,Active,v1.0,,,,,,
+bursitis in knee,"left, right, bilateral",,,,,,,,,,,,,,"bursitis in knee, right","bursitis in knee, left","bursitis in knee, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+bursitis in shoulder,"left, right, bilateral",,,,,,,,,,,,,,"bursitis in shoulder, right","bursitis in shoulder, left","bursitis in shoulder, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+bursitis in wrist,"left, right, bilateral",,,,,,,,,,,,,,"bursitis in wrist, right","bursitis in wrist, left","bursitis in wrist, bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+cancer - bronchus,,,,,,,,,,,,,,,,,,,,,1230,Cancer - Respiratory,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Dental and Oral,,"Cancer Dental |
+Cancer oral",Cancer Dental,Cancer oral,,,,,,,,,,,,,,,,,8931,Cancer - Dental and Oral,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Digestive,,,,,,,,cancer - gastrointestinal tract,,,,,,,,,,,,,8932,Cancer - Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Endocrine,,,,,,,,,,,,,,,,,,,,,8933,Cancer - Endocrine,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Genitourinary,,,,,,,,cancer - urogenital system (except prostate),,,,,,,,,,,,,8935,Cancer - Genitourinary,,,,,Inactive,Active,v0.1,v1.0,,,,,
+cancer - gum,,,,,,,,,,,,,,,,,,,,,8931,Cancer - Dental and Oral,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Gynecological,,,,,,,,,,,,,,,,,,,,,8937,Cancer - Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Heart/Veins/Arteries,,,,,,,,,,,,,,,,,,,,,8938,Cancer - Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Hemic and Lymphatic,,"Cancer Hemic |
+Cancer Lymphatic",Cancer Hemic,Cancer Lymphatic,,,,lymphomas,cancer - lymph nodes,,,,,,,,,,,,8939,Cancer - Hemic and Lymphatic,,,,,Inactive,Active,v0.1,v1.0,,,,,
+cancer - lip,,,,,,,,,,,,,,,,,,,,,8931,Cancer - Dental and Oral,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Ankle,,,,,,,,,,,,,,,,,,,,,249469,Cancer - Musculoskeletal - Ankle,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Elbow,,,,,,,,,,,,,,,,,,,,,249470,Cancer - Musculoskeletal - Elbow,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Foot,,,,,,,,,,,,,,,,,,,,,249472,Cancer - Musculoskeletal - Foot,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Hand,,,,,,,,,,,,,,,,,,,,,249471,Cancer - Musculoskeletal - Hand,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Hip,,,,,,,,,,,,,,,,,,,,,249474,Cancer - Musculoskeletal - Hip,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Knee,,,,,,,,,,,,,,,,,,,,,249473,Cancer - Musculoskeletal - Knee,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),,,,,,,,,,,,,,,,,,,,,249475,Cancer - Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Neck/Upper Back (Cervical Spine),,,,,,,,,,,,,,,,,,,,,249476,Cancer - Musculoskeletal - Neck/Upper Back (Cervical Spine),,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Other,,,,,,,,,,,,,,,,,,,,,8940,Cancer - Musculoskeletal - Other,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Shoulder,,,,,,,,,,,,,,,,,,,,,249477,Cancer - Musculoskeletal - Shoulder,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal - Wrist,,,,,,,,,,,,,,,,,,,,,249478,Cancer - Musculoskeletal - Wrist,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Musculoskeletal and Muscle Injuries,,,,,,,,,,,,,,,,,,,,,8941,Cancer - Musculoskeletal and Muscle Injuries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Neurological other System,,,,,,,,,,,,,,,,,,,,,8942,Cancer - Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Respiratory,,,,,,,,,,,,,,,,,,,,,1230,Cancer - Respiratory,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cancer - Skin,,,,,,,,,,,,,,,,,,,,,1250,Cancer - Skin,,,,,Inactive,Active,v0.1,v1.0,,,,,
+"Cancer - Spinal cord, head/neck",,,,,,,,,,,,,,,,,,,,,8942,Cancer - Neurological other System,8021,Cancer of the Spinal Cord of the head/neck,DBQ NEURO Central Nervous System and Neuromuscular Diseases,yes,Inactive,Active,v1.3,,,,,,
+carpal tunnel syndrome,"left, right, bilateral",,,,,,,,,,,,,,"carpal tunnel syndrome, right","carpal tunnel syndrome, left","carpal tunnel syndrome, bilateral",,,,9006,Neurological - Cranial/Peripheral Nerves,8515,paralysis of the median nerve,DBQ NEURO Peripheral Nerves,no,Active,Active,v1.0,,,,,,
+cataract,,,,,,,,"cataracts, posterior subcapsular",posterior subcapsular cataracts,,,,,,,,,,,,8974,Eye (Vision),,,,,Inactive,Active,v0.1,v1.0,,,,,
+cervical cancer,,,,,,,,,,,,,,,cervical cancer,,,,,,8937,Cancer - Gynecological,7627,malignant growths of gynecological system,DBQ GYN Gynecological,yes,Active,Active,v1.1,,,,,,
+cervical spinal stenosis (narrowing of spinal canal in neck),,"cervical spinal stenosis |
+narrowing of spinal canal in neck",cervical spinal stenosis,narrowing of spinal canal in neck,,,,,,,,,,,cervical spinal stenosis (narrowing of spinal canal in neck),,,,,,8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),5238,spinal stenosis,DBQ MUSC Neck (cervical spine),no,Active,Active,v1.0,,,,,,
+cervicitis,,,,,,,,,,,,,,,,,,,,,8978,Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+chloracne,,,,,,,,,,,,,,,chloracne,,,,,,9016,Skin,7829,chloracne,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+cholera,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+choroiditis,,,,,,,,cyclitis,keratitis,iritis,scleritis,uveitis,,,,,,,,,8974,Eye (Vision),,,,,Inactive,Active,v0.1,v1.0,,,,,
+chronic bronchitis,,,,,,,,bronchitis,,,,,,,chronic bronchitis,,,,,,9012,Respiratory,6600,chronic bronchitis,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.0,,,,,,
+chronic conjunctivitis (pink eye),,"chronic conjunctivitis |
+pink eye",chronic conjunctivitis,pink eye,,,,conjunctivitis,,,,,,,chronic conjunctivitis (pink eye),,,,,,8974,Eye (Vision),6018,chronic conjunctivitis,DBQ OPHTH Eyes,no,Active,Active,v1.0,,,,,,
+chronic fatigue syndrome,,,,,,,,,,,,,,,chronic fatigue syndrome,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",6354,chronic fatigue syndrome,DBQ RHEUM Chronic fatigue syndrome,no,Active,Active,v1.0,,,,,,
+chronic kidney disease (CKD),,"chronic kidney disease |
+CKD",chronic kidney disease,CKD,,,,chronic renal disease,,,,,,,chronic kidney disease (CKD),,,,,,8975,Genitourinary,7530,chronic renal disease,DBQ GU Kidney,no,Active,Active,v1.0,,,,,,
+chronic laryngitis,,,,,,,,,,,,,,,chronic laryngitis,,,,,,9012,Respiratory,6516,chronic laryngitis,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",no,Active,Active,v1.0,,,,,,
+chronic myelogenous leukemia (CML),,"chronic myelogenous leukemia |
+CML |
+chronic myeloid leukemia |
+chronic granulocytic leukemia",chronic myelogenous leukemia,CML,chronic myeloid leukemia,chronic granulocytic leukemia,,,,,,,,,chronic myelogenous leukemia (CML),,,,,,8939,Cancer - Hemic and Lymphatic,7719,chronic myelogenous leukemia (cml) (chronic myeloid leukemia or chronic granulocytic leukemia),"DBQ HEM Hematologic and Lymphatic Conditions, Including Leukemia",yes,Active,Active,v1.3,,,,,,
+chronic nephritis (inflammation of kidneys),,"chronic nephritis |
+inflammation of kidneys",chronic nephritis,inflammation of kidneys,,,,glomerulonephritis,nephritis,,,,,,chronic nephritis (inflammation of kidneys),,,,,,8975,Genitourinary,7502,chronic nephritis,DBQ GU Kidney,no,Active,Active,v1.0,,,,,,
+chronic obstructive pulmonary disease (COPD),,"chronic obstructive pulmonary disease |
+COPD",chronic obstructive pulmonary disease,COPD,,,,chronic obstructive pulmonary disease,,,,,,,chronic obstructive pulmonary disease (COPD),,,,,,9012,Respiratory,6604,chronic obstructive pulmonary disease,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.0,,,,,,
+chronic organic brain syndrome,,,,,,,,,,,,,,,,,,,,,9007,Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+chronic otitis externa (swimmer's ear),"left, right, bilateral","chronic otitis externa |
+swimmer's ear",chronic otitis externa,swimmer's ear,,,,,,,,,,,"chronic otitis externa (swimmer's ear), right","chronic otitis externa (swimmer's ear), left","chronic otitis externa (swimmer's ear), bilateral",,,,8969,Ear Disease and Other Sense Organs,6210,chronic otitis externa,DBQ ENT Ear (Including Vestibular and Infectious),no,Active,Active,v1.0,,,,,,
+chronic otitis media (chronic middle ear infection),"left, right, bilateral","chronic otitis media |
+chronic middle ear infection",chronic otitis media,chronic middle ear infection,,,,otitis media (middle ear infection),otitis media,,,,,,"chronic otitis media (chronic middle ear infection), right","chronic otitis media (middle ear infection), left","chronic otitis media (middle ear infection), bilateral",,,,3140,Hearing Loss,6201,chronic nonsuppurative otitis media,DBQ ENT Ear (Including Vestibular and Infectious),no,Active,Active,v1.0,,v1.2,,Replaced with chronic otitis media (chronic middle ear infection),Update to 8969 (Ear Disease and Other Sense Organs).,
+chronic sinusitis,,,,,,,,sinusitis,,,,,,,chronic sinusitis,,,,,,9012,Respiratory,Multiple,Sinusitis DC Group,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",yes,Active,Active,v1.0,,,,,,
+chronic suppurative otitis media (CSOM) or mastoiditis,"left, right, bilateral","chronic suppurative otitis media |
+CSOM |
+mastoiditis",chronic suppurative otitis media,CSOM,mastoiditis,,,mastoiditis,,,,,,,"chronic suppurative otitis media (CSOM) or mastoiditis, right","chronic suppurative otitis media (CSOM) or mastoiditis, left","chronic suppurative otitis media (CSOM) or mastoiditis, bilateral",,,,8969,Ear Disease and Other Sense Organs,6200,chronic suppurative otitis media,DBQ ENT Ear (Including Vestibular and Infectious),no,Active,Active,v1.0,,,,,,
+chronic urticaria (chronic hives),,"chronic urticaria |
+chronic hives",chronic urticaria,chronic hives,,,,urticaria (hives),,,,,,,chronic urticaria (chronic hives),,,,,,9016,Skin,7825,urticaria,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,v1.1,,v1.1 updated to chronic,,
+cirrhosis (scarring of liver),,"cirrhosis |
+scarring of liver",cirrhosis,scarring of liver,,,,cirrhosis of liver,,,,,,,cirrhosis (scarring of liver),,,,,,8968,Digestive,7312,cirrhosis of the liver,DBQ GI Liver Conditions,no,Active,Active,v1.0,,,,,,
+claw foot (pes cavus),"left, right, bilateral","claw foot |
+pes cavus",claw foot,pes cavus,,,,,,,,,,,"claw foot (pes cavus), right","claw foot (pes cavus), left","claw foot (pes cavus), bilateral",,,,8994,Musculoskeletal - Foot,5278,"claw foot (pes cavus), acquired",DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+coccidiodomycosis,,,,,,,,,,,,,,,,,,,,,9012,Respiratory,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cold Injury Residuals,,,,,,,,,,,,,,,,,,,,,8943,Cold Injury Residuals,,,,,Inactive,Active,v0.1,v1.0,,,,,
+colorectal cancer or colon cancer,,"colon cancer |
+colorectal cancer",colon cancer,colorectal cancer,,,,cancer - colon,cancer - rectum,,,,,,colorectal cancer or colon cancer,,,,,,8932,Cancer - Digestive,7343,malignant growths of digestive system,DBQ GI Intestinal (other than surgical or infectious),yes,Active,Active,v1.0,,,,,,
+Competency,,,,,,,,,,,,,,,,,,,,,8944,Competency,,,,,Inactive,Active,v0.1,v1.0,,,,,
+complete loss of sense of smell (anosmia),,"complete loss of sense of smell |
+anosmia",complete loss of sense of smell,anosmia,,,,"smell, loss of sense of",,,,,,,complete loss of sense of smell (anosmia),,,,,,8969,Ear Disease and Other Sense Organs,6275,complete loss of sense of smell,DBQ ENT Loss of Sense of Smell and or Taste,no,Active,Active,v1.0,,,,,,
+complete loss of sense of taste (ageusia),,"complete loss of sense of taste |
+ageusia",complete loss of sense of taste,ageusia,,,,"taste, loss of sense of",,,,,,,complete loss of sense of taste (ageusia),,,,,,8969,Ear Disease and Other Sense Organs,6276,complete loss of sense of taste,DBQ ENT Loss of Sense of Smell and or Taste,no,Active,Active,v1.0,,,,,,
+congestive heart failure (CHF),,"congestive heart failure |
+CHF",congestive heart failure,CHF,,,,CHF,congestive heart failure,,,,,,congestive heart failure (CHF),,,,,,8979,Heart/Veins/Arteries,7005,arteriosclerotic heart disease,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+constrictive bronchiolitis (obliterative bronchiolitis),,"constrictive bronchiolitis |
+obliterative bronchiolitis",constrictive bronchiolitis,obliterative bronchiolitis,,,,,,,,,,,constrictive bronchiolitis (obliterative bronchiolitis),,,,,,9012,Respiratory,Multiple,Bronchiolitis Group,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.1,,,,,,
+conversion disorder (FNSD),,"functional neurological symptom disorder |
+FNSDl |
+conversion disorder",functional neurological symptom disorder,FNSDl,conversion disorder,,,,,,,,,,conversion disorder (FNSD),,,,,,8989,Mental Disorders,9424,Conversion disorder (functional neurological symptom disorder).,DBQ PSYCH Mental Disorders,no,Active,Active,v1.3,,,,,,
+cor pulmonale,,,,,,,,,,,,,,,,,,,,,8979,Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+corneal opacities,,,,,,,,,,,,,,,,,,,,,8974,Eye (Vision),,,,,Inactive,Active,v0.1,v1.0,,,,,
+coronary artery disease (CAD or arteriosclerotic heart disease),,"coronary artery disease |
+CAD |
+arteriosclerotic heart disease",coronary artery disease,CAD,arteriosclerotic heart disease,,,arteriosclerosis,arteriosclerosis obliterans,arteriosclerotic heart disease,atherosclerosis,coronary artery disease,CAD,ASHD,coronary artery disease (CAD or arteriosclerotic heart disease),,,,,,8979,Heart/Veins/Arteries,7005,arteriosclerotic heart disease,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+costochondritis,,,,,,,,,,,,,,,costochondritis,,,,,,249482,Musculoskeletal - Bones,5297,removal of rib(s),DBQ MUSC Bones and Other Skeletal Conditions,no,Active,Active,v1.0,,,,,Contention Text Lookup v0.5,
+Cranial nerve paralysis or cranial neuritis (inflammation of cranial nerves),,"Cranial nerve paralysis |
+cranial neuritis |
+Cranial nerve paralysis or cranial neuritis |
+inflammation of cranial nerves",Cranial nerve paralysis,cranial neuritis,Cranial nerve paralysis or cranial neuritis,inflammation of cranial nerves,,,,,,,,,Cranial nerve paralysis or cranial neuritis (inflammation of cranial nerves),,,,,,9006,Neurological - Cranial/Peripheral Nerves,Multiple,Cranial Nerves DC Group,DBQ NEURO Cranial Nerve Conditions,no,Active,Active,v1.0,,,,,,
+cranial neuralgia (cranial nerve pain),,"cranial neuralgia |
+cranial nerve pain",cranial neuralgia,cranial nerve pain,,,,,,,,,,,cranial neuralgia (cranial nerve pain),,,,,,9006,Neurological - Cranial/Peripheral Nerves,Multiple,Cranial Nerves DC Group,DBQ NEURO Cranial Nerve Conditions,no,Active,Active,v1.0,,,,,,
+Crohn's disease,,,,,,,,,,,,,,,Crohn's disease,,,,,,8968,Digestive,7326,Crohn's disease,DBQ GI Intestinal (other than surgical or infectious),no,Active,Active,v1.0,,,,,,
+Cushing's syndrome,,,,,,,,,,,,,,,,,,,,,8973,Endocrine,,,,,Inactive,Active,v0.1,v1.0,,,,,
+cyclothymic disorder (mild bipolar disorder),,"cyclothymic disorder |
+mild bipolar disorder",cyclothymic disorder,mild bipolar disorder,,,,,,,,,,,cyclothymic disorder (mild bipolar disorder),,,,,,8989,Mental Disorders,9431,cyclothymic disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,,,,
+Cyst/Benign Growth - Dental and Oral,,,,,,,,,,,,,,,,,,,,,8945,Cyst/Benign Growth - Dental and Oral,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Digestive,,,,,,,,,,,,,,,,,,,,,8946,Cyst/Benign Growth - Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Ear Disease and Other Sense Organs,,,,,,,,,,,,,,,,,,,,,8947,Cyst/Benign Growth - Ear Disease and Other Sense Organs,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Endocrine,,,,,,,,,,,,,,,,,,,,,8948,Cyst/Benign Growth - Endocrine,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Eye (Vision),,,,,,,,,,,,,,,,,,,,,8949,Cyst/Benign Growth - Eye (Vision),,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Genitourinary,,,,,,,,,,,,,,,,,,,,,8950,Cyst/Benign Growth - Genitourinary,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Gynecological,,,,,,,,,,,,,,,,,,,,,8951,Cyst/Benign Growth - Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Heart/Veins/Arteries,,,,,,,,,,,,,,,,,,,,,249479,Cyst/Benign Growth - Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Hemic and Lymphatic,,,,,,,,,,,,,,,,,,,,,249480,Cyst/Benign Growth - Hemic and Lymphatic,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Ankle,,,,,,,,,,,,,,,,,,,,,8952,Cyst/Benign Growth - Musculoskeletal - Ankle,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Elbow,,,,,,,,,,,,,,,,,,,,,8953,Cyst/Benign Growth - Musculoskeletal - Elbow,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Foot,,,,,,,,,,,,,,,,,,,,,8954,Cyst/Benign Growth - Musculoskeletal - Foot,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Hand,,,,,,,,,,,,,,,,,,,,,8955,Cyst/Benign Growth - Musculoskeletal - Hand,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Hip,,,,,,,,,,,,,,,,,,,,,8956,Cyst/Benign Growth - Musculoskeletal - Hip,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Knee,,,,,,,,,,,,,,,,,,,,,8957,Cyst/Benign Growth - Musculoskeletal - Knee,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),,,,,,,,,,,,,,,,,,,,,8958,Cyst/Benign Growth - Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Neck/Upper Back (Cervical Spine),,,,,,,,,,,,,,,,,,,,,8959,Cyst/Benign Growth - Musculoskeletal - Neck/Upper Back (Cervical Spine),,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Other,,,,,,,,,,,,,,,,,,,,,8960,Cyst/Benign Growth - Musculoskeletal - Other,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Shoulder,,,,,,,,,,,,,,,,,,,,,8961,Cyst/Benign Growth - Musculoskeletal - Shoulder,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal - Wrist,,,,,,,,,,,,,,,,,,,,,8962,Cyst/Benign Growth - Musculoskeletal - Wrist,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Musculoskeletal and Muscle Injuries,,,,,,,,,,,,,,,,,,,,,8963,Cyst/Benign Growth - Musculoskeletal and Muscle Injuries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Neurological other System,,,,,,,,,,,,,,,,,,,,,8964,Cyst/Benign Growth - Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Respiratory,,,,,,,,,,,,,,,,,,,,,8965,Cyst/Benign Growth - Respiratory,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Cyst/Benign Growth - Skin,,,,,,,,,,,,,,,,,,,,,8966,Cyst/Benign Growth - Skin,,,,,Inactive,Active,v0.1,v1.0,,,,,
+cystitis,,,,,,,,,,,,,,,,,,,,,8975,Genitourinary,,,,,Inactive,Active,v0.1,v1.0,,,,,
+De Quervain's tenosynovitis (De Quervain's syndrome),"left, right, bilateral","De Quervain's tenosynovitis |
+De Quervain's syndrome",De Quervain's tenosynovitis,De Quervain's syndrome,,,,,,,,,,,"De Quervain's tenosynovitis (De Quervain's syndrome), right","De Quervain's tenosynovitis (De Quervain's syndrome), left","De Quervain's tenosynovitis (De Quervain's syndrome), bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+decompression illness,,,,,,,,Caisson disease,Caisson,,,,,,decompression illness,,,,,,8930,Caisson,5011,decompression illness,DBQ RHEUM Arthritis,no,Active,Active,v1.0,,,,,,
+deep vein thrombosis (DVT) in leg,"left, right, bilateral","deep vein thrombosis in leg |
+DVT in leg",deep vein thrombosis in leg,DVT in leg,,,,,,,,,,,"deep vein thrombosis (DVT) in leg, right","deep vein thrombosis (DVT) in leg, left","deep vein thrombosis (DVT) in leg, bilateral",,,,8987,Leg Condition - Heart/Veins/Arteries,7121,post-phlebitic syndrome,DBQ CARDIO Artery & Veins,no,Active,Active,v1.0,,,,,,
+degenerative arthritis (osteoarthritis) in ankle,"left, right, bilateral","degenerative arthritis in ankle |
+osteoarthritis in ankle",degenerative arthritis in ankle,osteoarthritis in ankle,,,,,,,,,,,"degenerative arthritis (osteoarthritis) in ankle, right","degenerative arthritis (osteoarthritis) in ankle, left","degenerative arthritis (osteoarthritis) in ankle, bilateral",,,,8991,Musculoskeletal - Ankle,Multiple,Ankle DC Group,DBQ MUSC Ankle,no,Active,Active,v1.0,,,,,,
+degenerative arthritis (osteoarthritis) in elbow,"left, right, bilateral","degenerative arthritis in elbow |
+osteoarthritis in elbow",degenerative arthritis in elbow,osteoarthritis in elbow,,,,,,,,,,,"degenerative arthritis (osteoarthritis) in elbow, right","degenerative arthritis (osteoarthritis) in elbow, left","degenerative arthritis (osteoarthritis) in elbow, bilateral",,,,8993,Musculoskeletal - Elbow,Multiple,Elbow and Forearm DC Group,DBQ MUSC Elbow and forearm,no,Active,Active,v1.0,,,,,,
+degenerative arthritis (osteoarthritis) in foot,"left, right, bilateral","degenerative arthritis in foot |
+osteoarthritis in foot",degenerative arthritis in foot,osteoarthritis in foot,,,,,,,,,,,"degenerative arthritis (osteoarthritis) in foot, right","degenerative arthritis (osteoarthritis) in foot, left","degenerative arthritis (osteoarthritis) in foot, bilateral",,,,8994,Musculoskeletal - Foot,Multiple,Foot DC Group,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+degenerative arthritis (osteoarthritis) in hand or fingers,"left, right, bilateral","degenerative arthritis in hand |
+osteoarthritis in hand |
+degenerative arthritis in fingers |
+osteoarthritis in fingers",degenerative arthritis in hand,osteoarthritis in hand,degenerative arthritis in fingers,osteoarthritis in fingers,,,,,,,,,"degenerative arthritis (osteoarthritis) in hand or fingers, right","degenerative arthritis (osteoarthritis) in hand or fingers, left","degenerative arthritis (osteoarthritis) in hand or fingers, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+degenerative arthritis (osteoarthritis) in hip,"left, right, bilateral","degenerative arthritis in hip |
+osteoarthritis in hip",degenerative arthritis in hip,osteoarthritis in hip,,,,,,,,,,,"degenerative arthritis (osteoarthritis) in hip, right","degenerative arthritis (osteoarthritis) in hip, left","degenerative arthritis (osteoarthritis) in hip, bilateral",,,,8996,Musculoskeletal - Hip,Multiple,Hip and Thigh DC Group,DBQ MUSC Hip and thigh,no,Active,Active,v1.0,,,,,,
+degenerative arthritis (osteoarthritis) in knee,"left, right, bilateral","degenerative arthritis in knee |
+osteoarthritis in knee",degenerative arthritis in knee,osteoarthritis in knee,,,,degenerative arthritis in knee,osteoarthritis in knee,,,,,,"degenerative arthritis (osteoarthritis) in knee, right","degenerative arthritis (osteoarthritis) in knee, left","degenerative arthritis (osteoarthritis) in knee, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+degenerative arthritis (osteoarthritis) in shoulder,"left, right, bilateral","degenerative arthritis in shoulder |
+osteoarthritis in shoulder",degenerative arthritis in shoulder,osteoarthritis in shoulder,,,,,,,,,,,"degenerative arthritis (osteoarthritis) in shoulder, right","degenerative arthritis (osteoarthritis) in shoulder, left","degenerative arthritis (osteoarthritis) in shoulder, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+degenerative arthritis (osteoarthritis) in wrist,"left, right, bilateral","degenerative arthritis in wrist |
+osteoarthritis in wrist",degenerative arthritis in wrist,osteoarthritis in wrist,,,,,,,,,,,"degenerative arthritis (osteoarthritis) in wrist, right","degenerative arthritis (osteoarthritis) in wrist, left","degenerative arthritis (osteoarthritis) in wrist, bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+delirium,,,,,,,,,,,,,,,delirium,,,,,,8989,Mental Disorders,9300,Delirium,DBQ PSYCH Mental Disorders,no,Active,Active,v1.3,,,,,,
+delusional disorder,,,,,,,,,,,,,,,delusional disorder,,,,,,8989,Mental Disorders,9208,delusional disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.3,,,,,,
+dementia,,,,,,,,,,,,,,,,,,,,,8989,Mental Disorders,,,,,Inactive,Active,v0.1,v1.0,,,,,
+dental abscesses,,,,,,,,"gums, sore",,,,,,,,,,,,,8967,Dental and Oral,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Dental and Oral,,,,,,,,jaw condition,tooth condition,,,,,,,,,,,,8967,Dental and Oral,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Dental and Oral - Musculoskeletal,,,,,,,,,,,,,,,,,,,,,249481,Dental and Oral - Musculoskeletal,,,,,Inactive,Active,v0.1,v1.0,,,,,
+depersonalization-derealization disorder (DPDR),,"depersonalization-derealization disorder |
+DPDR",depersonalization-derealization disorder,DPDR,,,,,,,,,,,,,,,,,8989,Mental Disorders,9417,Depersonalization/derealization disorder.,DBQ PSYCH Mental Disorders,no,Active,Active,v1.3,,,,,,
+depression (major depressive disorder),,"depression |
+major depressive disorder |
+unspecified depressive disorder",depression,major depressive disorder,unspecified depressive disorder,,,depression,depressive neurosis,dysthymic disorder,major depression,,,,depression (major depressive disorder),,,,,,8989,Mental Disorders,9434,major depressive disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,v1.2,,,
+deviated septum,,,,,,,,,,,,,,,deviated septum,,,,,,9012,Respiratory,6502,deviated septum,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",no,Active,Active,v1.0,,,,,,
+diabetes insipidus,,,,,,,,,,,,,,,diabetes insipidus,,,,,,8973,Endocrine,7909,diabetes insipidus,"DBQ ENDO Endocrine (Other than Thyroid, Parathyroid or Diabetes Mellitus)",no,Active,Active,v1.0,,,,,,
+"diabetes, type 1 or type 2",,"diabetes |
+diabetes type 1 |
+diabetes type 2",diabetes,diabetes type 1,diabetes type 2,,,diabetes,diabetes mellitus,,,,,,"diabetes, type 1 or type 2",,,,,,8973,Endocrine,7913,diabetes mellitus,DBQ ENDO Diabetes mellitus,no,Active,Active,v1.0,,,,,,
+diabetic nephropathy (diabetic kidney disease),,"diabetic nephropathy |
+diabetic kidney disease",diabetic nephropathy,diabetic kidney disease,,,,,,,,,,,diabetic nephropathy (diabetic kidney disease),,,,,,8975,Genitourinary,7541,renal involvement with systemic disease process,DBQ GU Kidney,no,Active,Active,v1.0,,,,,,
+diabetic peripheral neuropathy,"right lower extremities, right upper extremities, left lower extremities, left upper extremities, bilateral lower extremities, bilateral upper extremities",,,,,,,,,,,,,,"diabetic peripheral neuropathy, right lower extremities","diabetic peripheral neuropathy, right upper extremities","diabetic peripheral neuropathy, left lower extremities","diabetic peripheral neuropathy, left upper extremities","diabetic peripheral neuropathy, bilateral lower extremities","diabetic peripheral neuropathy, bilateral upper extremities",9006,Neurological - Cranial/Peripheral Nerves,Multiple,Peripheral Nerves DC Group,DBQ NEURO Diabetic Peripheral Neuropathy,no,Active,Active,v1.0,,,,,,
+diabetic retinopathy,,,,,,,,,,,,,,,diabetic retinopathy,,,,,,8974,Eye (Vision),6040,diabetic retinopathy,DBQ OPHTH Eyes,no,Active,Active,v1.0,,,,,,
+Digestive,,,,,,,,esophageal condition,gastrointestinal problems,bowel condition,liver condition,non-specific digestive complaints,stomach condition,,,,,,,,8968,Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+dissociative amnesia,,,,,,,,,,,,,,,Dissociative amnesia,,,,,,8989,Mental Disorders,9416,Dissociative amnesia; dissociative identity disorder.,DBQ PSYCH Mental Disorders,no,Active,Active,v1.3,,,,,,
+dissociative identity disorder,,,,,,,,,,,,,,,dissociative identity disorder,,,,,,8989,Mental Disorders,9416,Dissociative amnesia; dissociative identity disorder.,DBQ PSYCH Mental Disorders,no,Active,Active,v1.3,,,,,,
+diverticulitis or diverticulosis,,"diverticulitis |
+diverticulosis |
+diverticular disease",,,,,,,,,,,,,diverticulitis or diverticulosis,,,,,,8968,Digestive,8968,Diverticulitis and diverticulosis,DBQ GI Intestinal (other than surgical or infectious),no,Active,Active,v0.1,v1.0,v1.3,,,,v1.3 Term edited and reactivated
+dracontiasis,,,,,,,,dracunculiasis,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+dry eye syndrome,,dry eyes,,,,,,,,,,,,,dry eye syndrome,,,,,,8974,Eye (Vision),6025,disorders of the lacrimal apparatus,DBQ OPHTH Eyes,no,Active,Active,v1.0,,,v1.3,,,"v1.3 added synonym ""dry eyes"""
+Dupuytren's contracture (abnormal thickening of tissues in palm of hand),"left, right, bilateral","Dupuytren's contracture |
+abnormal thickening of tissues in palm of hand",Dupuytren's contracture,abnormal thickening of tissues in palm of hand,,,,,,,,,,,"Dupuytren's contracture (abnormal thickening of tissues in palm of hand), right","Dupuytren's contracture (abnormal thickening of tissues in palm of hand), left","Dupuytren's contracture (abnormal thickening of tissues in palm of hand), bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+dysentery,,,,,,,,,,,,,,,,,,,,,8968,Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+"dysphagia (difficulty swallowing), associated with neurological disorder",,"dysphagia associated with neurological disorder |
+difficulty swallowing associated with neurological disorder",dysphagia associated with neurological disorder,difficulty swallowing associated with neurological disorder,,,,,,,,,,,"dysphagia (difficulty swallowing), associated with neurological disorder",,,,,,9007,Neurological other System,8210,paralysis of the 10th cranial nerve,DBQ NEURO Cranial Nerve Conditions,no,Active,Active,v1.0,,,,,,
+"dysphagia (difficulty swallowing), not associated with neurological disorder",,"dysphagia, not associated with neurological disorder |
+difficulty swallowing, not associated with neurological disorder","dysphagia, not associated with neurological disorder","difficulty swallowing, not associated with neurological disorder",,,,,,,,,,,"dysphagia (difficulty swallowing), not associated with neurological disorder",,,,,,8968,Digestive,7203,stricture of esophagus,DBQ GI Esophageal Disorders,no,Active,Active,v1.0,,,,,,
+ear cancer,,,,,,,,Cancer - Ear Disease and Other Sense Organs,,,,,,,ear cancer,,,,,,249468,Cancer - Ear Disease and Other Sense Organs,6208,malignant neoplasm of ear,DBQ ENT Ear (Including Vestibular and Infectious),yes,Active,Active,v1.1,,,,,,
+Ear Disease and Other Sense Organs,,,,,,,,ear infection,non-specific ear condition,,,,,,,,,,,,8969,Ear Disease and Other Sense Organs,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Eating Disorders,,,,,,,,eating disorder,,,,,,,,,,,,,8970,Eating Disorders,,,,,Inactive,Active,v0.1,v1.0,,,,,
+eczema (atopic dermatitis),,"eczema |
+atopic dermatitis",eczema,atopic dermatitis,,,,,,,,,,,eczema (atopic dermatitis),,,,,,9016,Skin,7806,eczema,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+elbow replacement (elbow arthroplasty),"left, right, bilateral","elbow replacement |
+elbow arthroplasty |
+elbow replacement (prosthesis)",elbow replacement,elbow arthroplasty,elbow replacement (prosthesis),,,,,,,,,,"elbow replacement (elbow arthroplasty), right","elbow replacement (elbow arthroplasty), left","elbow replacement (elbow arthroplasty), bilateral",,,,8993,Musculoskeletal - Elbow,5052,elbow replacement,DBQ MUSC Elbow and forearm,no,Active,Active,v1.0,,,v1.2,,,
+elbow sprain,,,,,,,,,,,,,,,,,,,,,8993,Musculoskeletal - Elbow,,,,,Inactive,Active,v0.1,v1.0,,,,,
+elbow strain,,,,,,,,,,,,,,,,,,,,,8993,Musculoskeletal - Elbow,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Embolism/Infarction - Heart/Veins/Arteries,,,,,,,,,,,,,,,,,,,,,8971,Embolism/Infarction - Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Embolism/Infarction - Neurological other System,,,,,,,,"embolism, brain",,,,,,,,,,,,,8972,Embolism/Infarction - Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+emphysema,,"emphysema, pulmonary","emphysema, pulmonary",,,,,,,,,,,,emphysema,,,,,,9012,Respiratory,6603,pulmonary emphysema,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.1,,,v1.3,,,
+"encephalitis, lethargica residuals",,,,,,,,,,,,,,,,,,,,,9007,Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Endocrine,,,,,,,,thyroid condition,,,,,,,,,,,,,8973,Endocrine,,,,,Inactive,Active,v0.1,v1.0,,,,,
+endometriosis,,,,,,,,,,,,,,,endometriosis,,,,,,8978,Gynecological,7629,endometriosis,DBQ GYN Gynecological,no,Active,Active,v1.0,,,,,,
+enlarged prostate (benign prostatic hyperplasia or BPH),,"enlarged prostate |
+benign prostatic hyperplasia |
+BPH",enlarged prostate,benign prostatic hyperplasia,BPH,,,,,,,,,,enlarged prostate (benign prostatic hyperplasia or BPH),,,,,,8975,Genitourinary,7527,"prostate gland injuries, infections, hypertrophy",DBQ GU Male Reproductive Organ,no,Active,Active,v1.0,,,,,,
+enucleation,,,,,,,,,,,,,,,,,,,,,8974,Eye (Vision),,,,,Inactive,Active,v0.1,v1.0,,,,,
+eosinophilic granuloma of lung,,"Pulmonary Langerhans cell histiocytosis (PLCH) |
+Pulmonary Langerhans cell histiocytosis |
+PLCH","Pulmonary Langerhans cell histiocytosis (PLCH)
+",Pulmonary Langerhans cell histiocytosis,PLCH,,,,,,,,,,eosinophilic granuloma of lung,,,,,,9012,Respiratory,6828,Eosinophilic granuloma,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.3,,,,,,
+epididymitis,,,,,,,,,,,,,,,epididymitis,,,,,,8975,Genitourinary,7525,"chronic prostatitis, urethritis, epididymitis, orchitis",DBQ GU Male Reproductive Organ,no,Active,Active,v1.0,,,,,,
+epilepsy,,,,,,,,grand mal epilepsy,petit mal epilepsy,psychomotor epilepsy,,,,,,,,,,,9007,Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+epiphora (watery eyes),,"epiphora |
+watery eyes",epiphora,watery eyes,,,,,,,,,,,epiphora (watery eyes),,,,,,8974,Eye (Vision),6025,disorders of the lacrimal apparatus,DBQ OPHTH Eyes,no,Active,Active,v1.0,,,,,,
+erectile dysfunction (ED),,"erectile dysfunction |
+ED",erectile dysfunction,ED,,,,,,,,,,,erectile dysfunction (ED),,,,,,8975,Genitourinary,7522,penile deformity (loss of erectile power),DBQ GU Male Reproductive Organ,no,Active,Active,v1.0,,,,,,
+esophageal cancer,,,,,,,,,,,,,,,esophageal cancer,,,,,,8932,Cancer - Digestive,7343,malignant growths of digestive system,DBQ GI Esophageal Disorders,yes,Active,Active,v1.0,,,,,,
+esophageal stricture (narrowing of esophagus),,"esophageal stricture |
+narrowing of esophagus",esophageal stricture,narrowing of esophagus,,,,,,,,,,,esophageal stricture (narrowing of esophagus),,,,,,8968,Digestive,7203,stricture of esophagus,DBQ GI Esophageal Disorders,no,Active,Active,v1.0,,,,,,
+Eye (Vision),"left, right, bilateral","eye |
+vision",eye,vision,,,,eye disease,vision,,,,,,"eye condition, bilateral","eye condition, left","eye condition, right",,,,8974,Eye (Vision),,,,,Inactive,Active,v0.1,v1.0,,,,,
+"eye cancer, including melanoma of the eye",,"cancer eye |
+cancer vision |
+melanoma of the eye",cancer eye,cancer vision,melanoma of the eye,,,Cancer - Eye (Vision),,,,,,,"eye cancer, including melanoma of the eye",,,,,,8934,Cancer - Eye (Vision),6014,"malignant neoplasms of the eye, orbit, and adnexa (excluding skin)",DBQ OPHTH Eyes,yes,Active,Active,v1.1,,,v1.3,,,
+fecal incontinence (loss of bowel control),,"fecal incontinence |
+loss of bowel control",fecal incontinence,loss of bowel control,,,,,,,,,,,fecal incontinence (loss of bowel control),,,,,,8968,Digestive,7332,impairment of sphincter control,DBQ GI Rectum & Anus,no,Active,Active,v1.0,,,,,,
+female sexual arousal disorder (FSAD),,"female sexual arousal disorder |
+FSAD",female sexual arousal disorder,FSAD,,,,,,,,,,,female sexual arousal disorder (FSAD),,,,,,8978,Gynecological,7632,female sexual arousal disorder (FSAD),DBQ GYN Gynecological,no,Active,Active,v1.0,,,,,,
+femoral hernia (hernia in thigh area),,"femoral hernia |
+hernia in thigh area |
+hernia in thigh",femoral hernia,hernia in thigh area,,,,"hernia, femoral",,,,,,,femoral hernia (hernia in thigh area),,,,,,8968,Digestive,7338,"hernia, including femoral, inguinal, umbilical, ventral","DBQ GI Hernias (Including Abdominal, Inguinal, and Femoral Hernias)",no,Active,Active,v1.0,,,v1.3,,,v1.3 added another synonym
+fibromyalgia,,,,,,,,,,,,,,,fibromyalgia,,,,,,9007,Neurological other System,5025,fibromyalgia,DBQ NEURO Fibromyalgia,no,Active,Active,v1.0,,,,,,
+flatfoot (pes planus),"left, right, bilateral","flatfoot |
+pes planus |
+flat foot |
+flat feet",flatfoot,pes planus,,,,"fallen arches, bilateral","flatfoot, bilateral","flatfoot, left","flatfoot, right",,,,"flatfoot (pes planus), right","flatfoot (pes planus), left","flatfoot (pes planus), bilateral",,,,8994,Musculoskeletal - Foot,5276,"flatfoot, acquired",DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,v1.3,,,v1.3 added more synonyms
+foot fracture (tarsal or metatarsal fracture),"left, right, bilateral","foot fracture |
+tarsal fracture |
+metatarsal fracture",foot fracture,tarsal fracture,metatarsal fracture,,,,,,,,,,"foot fracture (tarsal or metatarsal fracture), right","foot fracture (tarsal or metatarsal fracture), left","foot fracture (tarsal or metatarsal fracture), bilateral",,,,8994,Musculoskeletal - Foot,Multiple,Foot DC Group,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+"foot pain or strain, diagnosis unknown","left, right, bilateral","foot pain |
+foot strain |
+pain in feet",,,,,,,,,,,,,"foot pain or strain, diagnosis unknown, left","foot pain or strain, diagnosis unknown, right","foot pain or strain, diagnosis unknown, bilateral",,,,8994,Musculoskeletal - Foot,Multiple,Foot DC Group,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.3,,,,,,
+frostbite in foot,"left, right, bilateral",frostbite in feet,,,,,,,,,,,,,"frostbite in foot, right","frostbite in foot, left","frostbite in foot, bilateral",,,,8943,Cold Injury Residuals,7122,residuals of cold injury,DBQ Cold injury Residuals,no,Active,Active,v1.0,,,v1.3,,,"v1.3 added synonym with ""feet"""
+frostbite in hand or fingers,"left, right, bilateral","frostbite in hand |
+frostbite in fingers",frostbite in hand,frostbite in fingers,,,,,,,,,,,"frostbite in hand or fingers, right","frostbite in hand or fingers, left","frostbite in hand or fingers, bilateral",,,,8943,Cold Injury Residuals,7122,residuals of cold injury,DBQ Cold injury Residuals,no,Active,Active,v1.0,,,,,,
+frozen shoulder (adhesive capsulitis),"left, right, bilateral","frozen shoulder |
+adhesive capsulitis |
+scapulohumeral articulation, ankylosis |
+ankylosis in shoulder",frozen shoulder,adhesive capsulitis,"scapulohumeral articulation, ankylosis",ankylosis in shoulder,,,,,,,,,"frozen shoulder (adhesive capsulitis), left","frozen shoulder (adhesive capsulitis), right","frozen shoulder (adhesive capsulitis), bilateral",,,,9002,Musculoskeletal - Shoulder,5200,ankylosis of shoulder joint,DBQ MUSC Shoulder and arm,no,Active,Active,v1.3,,,,,,
+gallbladder cancer,,,,,,,,,,,,,,,gallbladder cancer,,,,,,8932,Cancer - Digestive,7343,malignant growths of digestive system,,,Active,Active,v0.1,v1.0,v1.2,,"Autosuggestion added (previous term was ""cancer - gallbladder"" without autosuggest.)",,
+gallstones (cholelithiasis),,"gallstones |
+cholelithiasis",gallstones,cholelithiasis,,,,gallstone(s),cholangitis,cholecystitis,,,,,gallstones (cholelithiasis),,,,,,8968,Digestive,7315,cholelithiasis (gallstones),DBQ GI Gallbladder & Pancreas,no,Active,Active,v1.0,,,,,,
+gamekeeper's thumb,"left, right, bilateral",gamekeepers thumb,,,,,,,,,,,,,"gamekeeper's thumb, right","gamekeeper's thumb, left","gamekeeper's thumb, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,v1.3,,,v1.3 added synonym
+ganglion cyst in hand or fingers,"left, right, bilateral","ganglion cyst in hand |
+ganglion cyst in fingers",ganglion cyst in hand,ganglion cyst in fingers,,,,,,,,,,,"ganglion cyst in hand or fingers, right","ganglion cyst in hand or fingers, left","ganglion cyst in hand or fingers, bilateral",,,,8955,Cyst/Benign Growth - Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+ganglion cyst in wrist,"left, right, bilateral",,,,,,,,,,,,,,"ganglion cyst in wrist, right","ganglion cyst in wrist, left","ganglion cyst in wrist, bilateral",,,,8962,Cyst/Benign Growth - Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+gastritis,,,,,,,,,,,,,,,,,,,,,8968,Digestive,7307,chronic gastritis,DBQ GI Intestinal (other than surgical or infectious),no,Active,Active,v0.1,v1.0,v1.3,,,,v1.3 Term reactivated
+gastroenteritis,,,,,,,,,,,,,,,,,,,,,8968,Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Genitourinary,,,,,,,,non-specific genitourinary complaints,,,,,,,,,,,,,8975,Genitourinary,,,,,Inactive,Active,v0.1,v1.0,,,,,
+GERD (gastroesophageal reflux disease),,"GERD |
+gastroesophageal reflux disease |
+acid reflux",GERD,gastroesophageal reflux disease,,,,GERD,,,,,,,GERD (gastroesophageal reflux disease),,,,,,8968,Digestive,7346,hiatal hernia,DBQ GI Esophageal Disorders,no,Active,Active,v1.0,,,v1.3,,,"v1.3 Added synonym ""acid reflux"""
+glaucoma,"left, right, bilateral",,,,,,,,,,,,,,"glaucoma, right","glaucoma, left","glaucoma, bilateral",,,,8974,Eye (Vision),6013,open-angle glaucoma,DBQ OPHTH Eyes,no,Active,Active,v1.0,,v1.2,,v1.2 added laterality,,
+golfer's elbow (medial epicondylitis),"left, right, bilateral","golfer's elbow |
+golfers elbow |
+medial epicondylitis",golfer's elbow,medial epicondylitis,,,,,,,,,,,"golfer's elbow (medial epicondylitis), right","golfer's elbow (medial epicondylitis), left","golfer's elbow (medial epicondylitis), bilateral",,,,8993,Musculoskeletal - Elbow,Multiple,Elbow and Forearm DC Group,DBQ MUSC Elbow and forearm,no,Active,Active,v1.0,,,v1.3,,,"v1.3 Added synonym ""golfers elbow"""
+gonococcal arthritis,,,,,,,,,,,,,,,gonococcal arthritis,,,,,,8992,Musculoskeletal - Arthritis,5004,gonococcal arthritis,DBQ RHEUM Arthritis,no,Active,Active,v1.0,,,,,,
+gout in foot,"left, right, bilateral",gout in feet,,,,,,gout,,,,,,,"gout in foot, right","gout in foot, left","gout in foot, bilateral",,,,8994,Musculoskeletal - Foot,Multiple,Foot DC Group,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,v1.3,,,"v1.3 Added synonym ""gout in feet"""
+gout in wrist,"left, right, bilateral",,,,,,,,,,,,,,"gout in wrist, right","gout in wrist, left","gout in wrist, bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+granulomatous disease,,,,,,,,,,,,,,,granulomatous disease,,,,,,9012,Respiratory,Multiple,Granuloma Group,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.1,,,,,,
+granulomatous rhinitis,,,,,,,,,,,,,,,granulomatous rhinitis,,,,,,9012,Respiratory,6524,Rhinitis DC Group,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",yes,Active,Active,v1.3,,,,,,
+greater trochanteric pain syndrome (lateral hip pain),"left, right, bilateral","greater trochanteric pain syndrome |
+lateral hip pain",greater trochanteric pain syndrome,lateral hip pain,,,,,,,,,,,"greater trochanteric pain syndrome (lateral hip pain), right","greater trochanteric pain syndrome (lateral hip pain), left","greater trochanteric pain syndrome (lateral hip pain), bilateral",,,,8996,Musculoskeletal - Hip,Multiple,Hip and Thigh DC Group,DBQ MUSC Hip and thigh,no,Active,Active,v1.0,,,,,,
+Gulf War Undiagnosed Illness,,,,,,,,undiagnosed illness as a Gulf War veteran,,,,,,,,,,,,,8977,Gulf War Undiagnosed Illness,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Gulf War Unexplained Chronic Multi-Symptom Illness,,,,,,,,,,,,,,,,,,,,,8976,Gulf War Unexplained Chronic Multi-Symptom Illness,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Gynecological,,,,,,,,"ovary (disease, injury, or adhesions of)","uterus (disease, injury, or adhesions of)",,,,,,,,,,,,8978,Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+hallux rigidus (big toe arthritis),"left, right, bilateral","hallux rigidus |
+big toe arthritis",hallux rigidus,big toe arthritis,,,,,,,,,,,"hallux rigidus (big toe arthritis), right","hallux rigidus (big toe arthritis), left","hallux rigidus (big toe arthritis), bilateral",,,,8994,Musculoskeletal - Foot,5281,hallux rigidus - foot,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+hammer toe,"left, right, bilateral",,,,,,,,,,,,,,"hammer toe, right","hammer toe, left","hammer toe, bilateral",,,,8994,Musculoskeletal - Foot,5282,hammer toe,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+Hansen's disease (leprosy),,"leprosy |
+Hansen's disease",leprosy,Hansen's disease,,,,Hansen's disease,leprosy,,,,,,Hansen's disease (leprosy),,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",6302,leprosy (Hansen's disease),"DBQ INFECT Infectious Disease (Other than HIV-related illness, Chronic Fatigue Syndrome, and Tuberculosis)",no,Active,Active,v1.0,,,,,,
+hearing loss,,,,,,,,"hearing loss, other than tinnitus","hearing loss, sensorineural",,,,,,hearing loss,,,,,,3140,Hearing Loss,6100,"hearing loss, other than tinnitus",DBQ AUDIO Hearing Loss and Tinnitus,no,Active,Active,v1.0,,v1.2,,"Replaced ""hearing loss, other than tinnitus"" with this term, based on VBA request to remove terms with ""other than""",,
+heart attack (myocardial infarction),,"myocardial infarction |
+heart attack",myocardial infarction,heart attack,,,,,,,,,,,heart attack (myocardial infarction),,,,,,8971,Embolism/Infarction - Heart/Veins/Arteries,7006,myocardial infarction (heart attack),DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+heart bypass surgery (coronary artery bypass graft),,"heart bypass surgery |
+coronary artery bypass graft",heart bypass surgery,coronary artery bypass graft,,,,coronary artery bypass,,,,,,,heart bypass surgery (coronary artery bypass graft),,,,,,8979,Heart/Veins/Arteries,7017,coronary bypass surgery,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+heart condition,,,,,,,,heart disease,heart failure,myocarditis,pericarditis,endocarditis,,,,,,,,,8979,Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Heart/Veins/Arteries,,,,,,,,coronary,coronary accident,valvular heart disease,,,,,,,,,,,8979,Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+helminthiasis,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+Helpless Child,,,,,,,,,,,,,,,,,,,,,8980,Helpless Child,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Hemic and Lymphatic,,,,,,,,,,,,,,,,,,,,,8981,Hemic and Lymphatic,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Hemorrhage - Eye (Vision),,"Hemorrhage Eye |
+Hemorrhage Vision",Hemorrhage Eye,Hemorrhage Vision,,,,,,,,,,,,,,,,,8982,Hemorrhage - Eye (Vision),8982,,,,Inactive,Active,v0.1,v1.0,,,,,
+Hemorrhage - Neurological other System,,,,,,,,,,,,,,,,,,,,,8983,Hemorrhage - Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+hemorrhoids,,,,,,,,,,,,,,,hemorrhoids,,,,,,8968,Digestive,7336,hemorrhoids,DBQ GI Rectum & Anus,no,Active,Active,v1.0,,,,,,
+hepatitis B,,,,,,,,,,,,,,,hepatitis B,,,,,,8968,Digestive,7345,"chronic liver disease, without cirrhosis",DBQ GI Liver Conditions,no,Active,Active,v1.0,,,,,,
+hepatitis C,,,,,,,,,,,,,,,hepatitis C,,,,,,8968,Digestive,7354,hepatitis C,DBQ GI Liver Conditions,no,Active,Active,v1.0,,,,,,
+Herpes - Eye (Vision),,"herpes eye |
+herpes vision",herpes eye,herpes vision,,,,,,,,,,,,,,,,,8974,Eye (Vision),,,,,Inactive,Active,v0.1,v1.0,,,,,
+herpes (herpes simplex virus or HSV),,"herpes |
+herpes simplex virus |
+herpes simplex virus HSV |
+HSV",herpes,herpes simplex virus,herpes simplex virus HSV,HSV,,,,,,,,,herpes (herpes simplex virus or HSV),,,,,,9016,Skin,7806,eczema,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+hiatal hernia,,,,,,,,"hernia, hiatal",,,,,,,hiatal hernia,,,,,,8968,Digestive,7346,hiatal hernia,DBQ GI Esophageal Disorders,no,Active,Active,v1.0,,,,,,
+hip impingement (femoroacetabular impingement or FAI),"left, right, bilateral","hip impingement |
+femoroacetabular impingement |
+FAI",hip impingement,femoroacetabular impingement,FAI,,,,,,,,,,"hip impingement (femoroacetabular impingement or FAI), right","hip impingement (femoroacetabular impingement or FAI), left","hip impingement (femoroacetabular impingement or FAI), bilateral",,,,8996,Musculoskeletal - Hip,Multiple,Hip and Thigh DC Group,DBQ MUSC Hip and thigh,no,Active,Active,v1.0,,,,,,
+"hip pain or limited motion, diagnosis unknown","left, right, bilateral","hip pain |
+hip strain |
+limited motion in hip",,,,,,,,,,,,,"hip pain or limited motion, diagnosis unknown, left","hip pain or limited motion, diagnosis unknown, right","hip pain or limited motion, diagnosis unknown, bilateral",,,,8996,Musculoskeletal - Hip,Multiple,Hip and Thigh DC Group,DBQ MUSC Hip and thigh,no,Active,Active,v1.3,,,,,,
+hip replacement (hip arthroplasty),"left, right, bilateral","hip replacement |
+hip arthroplasty |
+hip, resurfacing or replacement (prosthesis) |
+hip surgery",hip replacement,hip arthroplasty,"hip, resurfacing or replacement (prosthesis)",hip surgery,,hip replacement,,,,,,,"hip replacement (hip arthroplasty), right","hip replacement (hip arthroplasty), left","hip replacement (hip arthroplasty), bilateral",,,,8996,Musculoskeletal - Hip,5054,hip replacement,DBQ MUSC Hip and thigh,no,Active,Active,v1.0,,,v1.2,,,
+hip sprain,"left, right, bilateral",,,,,,,,,,,,,,"hip sprain, right","hip sprain, left","hip sprain, bilateral",,,,8996,Musculoskeletal - Hip,Multiple,Hip and Thigh DC Group,DBQ MUSC Hip and thigh,no,Active,Active,v1.0,,,,,,
+HIV-related illness,,,,,,,,HIV,AIDS,human immunodeficiency virus,,,,,HIV-related illness,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",6351,HIV-related illness,DBQ INFECT HIV-Related Illnesses,no,Active,Active,v1.0,,,,,,
+Hodgkin lymphoma,,"Hodgkin's lymphoma |
+Hodgkins lymphoma",Hodgkin's lymphoma,,,,,Hodgkin's disease,lymphogranulomatosis,,,,,,Hodgkin lymphoma,,,,,,8939,Cancer - Hemic and Lymphatic,7709,Hodgkin's disease,"DBQ HEM Hematologic and Lymphatic Conditions, Including Leukemia",no,Active,Active,v1.0,,,v1.2,,,
+hydrocele,,,,,,,,,,,,,,,"hydrocele, right",,,,,,8975,Genitourinary,7543,varicocele/Hydrocele,DBQ GU Male Reproductive Organ,no,Active,Active,v1.0,,,,,,
+hyperhidrosis (excessive sweating),,"hyperhidrosis |
+excessive sweating",hyperhidrosis,excessive sweating,,,,,,,,,,,hyperhidrosis (excessive sweating),,,,,,9016,Skin,7832,hyperhidrosis,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+hypertension (high blood pressure),,"hypertension |
+high blood pressure",hypertension,high blood pressure,,,,high blood pressure,hypertension,hypertensive vascular disease,,,,,hypertension (high blood pressure),,,,,,8979,Heart/Veins/Arteries,7101,hypertensive vascular disease,DBQ CARDIO Hypertension,no,Active,Active,v1.0,,,v1.2,,,
+hyperthyroidism (overactive thyroid),,"hyperthyroidism |
+overactive thyroid",hyperthyroidism,overactive thyroid,,,,hyperthyroidism,,,,,,,hyperthyroidism (overactive thyroid),,,,,,8973,Endocrine,7900,hyperthyroidism,DBQ ENDO Thyroid & Parathyroid,no,Active,Active,v1.0,,,,,,
+hypopharyngeal cancer,,,,,,,,,,,,,,,hypopharyngeal cancer,,,,,,8931,Cancer - Dental and Oral,9918,"neoplasm, hard and soft tissue, malignant (oral)",DBQ DENTAL Oral and Dental,yes,Active,Active,v1.1,,,,,,Only listed under oral cancer in DBQ index
+hypothyroidism (underactive thyroid),,"hypothyroidism |
+underactive thyroid",hypothyroidism,underactive thyroid,,,,hypothyroidism,,,,,,,hypothyroidism (underactive thyroid),,,,,,8973,Endocrine,7903,hypothyroidism,DBQ ENDO Thyroid & Parathyroid,no,Active,Active,v1.0,,,,,,
+hysterectomy (removal of uterus),,"hysterectomy |
+removal of uterus",hysterectomy,removal of uterus,,,,hysterectomy,uterus (removal of),,,,,,hysterectomy (removal of uterus),,,,,,8978,Gynecological,7618,removal of uterus,DBQ GYN Gynecological,no,Active,Active,v1.0,,,,,,
+hysterectomy and ovariectomy (removal of uterus and both ovaries),,"hysterectomy and ovariectomy |
+removal of uterus and both ovaries",hysterectomy and ovariectomy,removal of uterus and both ovaries,,,,,,,,,,,hysterectomy and ovariectomy (removal of uterus and both ovaries),,,,,,8978,Gynecological,7617,removal of uterus and both ovaries,DBQ GYN Gynecological,no,Active,Active,v1.0,,,,,,
+illness anxiety disorder (hypochondria),,"illness anxiety disorder |
+hypochondria",illness anxiety disorder,hypochondria,,,,,,,,,,,illness anxiety disorder (hypochondria),,,,,,8989,Mental Disorders,9425,hypochondriasis,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,,,,
+immersion foot,"left, right, bilateral",trench foot,,,,,,,,,,,,,"immersion foot, right","immersion foot, left","immersion foot, bilateral",,,,8943,Cold Injury Residuals,7122,residuals of cold injury,DBQ Cold injury Residuals,no,Active,Active,v1.0,,,v1.3,,,"v1.3 Added synonym ""trench foot"""
+"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+inguinal hernia (hernia in groin),,"inguinal hernia |
+hernia in groin",inguinal hernia,hernia in groin,,,,"hernia, inguinal",,,,,,,inguinal hernia (hernia in groin),,,,,,8968,Digestive,7338,"hernia, including femoral, inguinal, umbilical, ventral","DBQ GI Hernias (Including Abdominal, Inguinal, and Femoral Hernias)",no,Active,Active,v1.0,,,,,,
+insomnia,,"sleep disturbance |
+sleep disturbances |
+sleep disorder |
+insomnia disorder |
+chronic insomnia |
+sleep issues |
+trouble sleeping |
+sleep deprivation",,,,,,,,,,,,,insomnia,,,,,,8989,Mental Disorders,Multiple,Mental disorders group,DBQ PSYCH Mental Disorders,no,Active,Active,v1.3,,,,,,
+"interstitial lung disease (ILD), pneumonitis, or fibrosis",,"interstitial lung disease |
+interstitial lung disease (ILD) |
+ILD |
+diffuse interstitial fibrosis |
+desquamative interstitial pneumonitis |
+drug-induced pneumonitis & fibrosis |
+radiation-induced pneumonitis & fibrosis |
+hypersensitivity pneumonitis",interstitial lung disease,interstitial lung disease (ILD),ILD,diffuse interstitial fibrosis,"desquamative interstitial pneumonitis|
+drug-induced pneumonitis & fibrosis|
+radiation-induced pneumonitis & fibrosis|
+hypersensitivity pneumonitis",,,,,,,,"interstitial lung disease (ILD), pneumonitis, or fibrosis",,,,,,9012,Respiratory,Multiple,ILD Group,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.1,,v1.3,v1.3,v1.3,,"v1.3 Changed from ""interstitial lung disease (ILD), including asbestosis"" to ""interstitial lung disease (ILD), pneumonitis, or fibrosis"". Asbestosis separated into a different term."
+"intervertebral disc syndrome (IVDS), back",,"intervertebral disc syndrome back |
+IVDS back",intervertebral disc syndrome back,IVDS back,,,,,,,,,,,"intervertebral disc syndrome (IVDS), back",,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),5243,intervertebral disc syndrome,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.0,,,,,,
+"intervertebral disc syndrome (IVDS), neck",,"intervertebral disc syndrome neck |
+IVDS neck",intervertebral disc syndrome neck,IVDS neck,,,,,,,,,,,"intervertebral disc syndrome (IVDS), neck",,,,,,8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),5243,intervertebral disc syndrome,DBQ MUSC Neck (cervical spine),no,Active,Active,v1.0,,,,,,
+iron deficiency anemia,,,,,,,,,,,,,,,iron deficiency anemia,,,,,,8981,Hemic and Lymphatic,7720,iron deficiency anemia,"DBQ HEM Hematologic and Lymphatic Conditions, Including Leukemia",no,Active,Active,v1.0,,,,,,
+irritable bowel syndrome (IBS),,"irritable bowel syndrome |
+IBS",irritable bowel syndrome,IBS,,,,"colon syndrome, irritable",irritable bowel syndrome,irritable colon,,,,,irritable bowel syndrome (IBS),,,,,,8968,Digestive,7319,irritable bowel syndrome,DBQ GI Intestinal (other than surgical or infectious),no,Active,Active,v1.0,,,,,,
+jaw cancer,,,,,,,,,,,,,,,jaw cancer,,,,,,8931,Cancer - Dental and Oral,9918,"neoplasm, hard and soft tissue, malignant (oral)",DBQ DENTAL Oral and Dental,yes,Active,Active,v1.1,,,,,,
+kala-azar,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+keratinization skin disorders,,,,,,,,,,,,,,,keratinization skin disorders,,,,,,9016,Skin,7824,diseases of keratinization,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+kidney cancer (renal cancer),"left, right, bilateral","renal cancer |
+kidney cancer",renal cancer,kidney cancer ,,,,cancer - kidney,,,,,,,"kidney cancer (renal cancer), right","kidney cancer (renal cancer), left","kidney cancer (renal cancer), bilateral",,,,8935,Cancer - Genitourinary,7528,malignant growths of genitourinary system,DBQ GU Kidney,yes,Active,Active,v1.0,,v1.1,,Replaced with right/left/bilateral variations,Updated legacy classification,
+kidney disease,,,,,,,,kidney failure,renal failure,,,,,,,,,,,,8975,Genitourinary,,,,,Inactive,Active,v0.1,v1.0,,,,,
+kidney removal (nephrectomy),,"kidney removal |
+nephrectomy",kidney removal,nephrectomy,,,,"kidney, removal of",removal of kidneys,,,,,,kidney removal (nephrectomy),,,,,,8975,Genitourinary,7500,removal of kidney,DBQ GU Kidney,no,Active,Active,v1.0,,,,,,
+kidney stones (nephrolithiasis),,"kidney stones |
+nephrolithiasis",kidney stones,nephrolithiasis,,,,kidney stone(s),,,,,,,kidney stones (nephrolithiasis),,,,,,8975,Genitourinary,7508,nephrolithiasis (kidney stones),DBQ GU Kidney,no,Active,Active,v1.0,,,,,,
+kidney transplant,,,,,,,,,,,,,,,kidney transplant,,,,,,8975,Genitourinary,7531,kidney transplant,DBQ GU Kidney,no,Active,Active,v1.0,,,,,,
+knee hyperextension (genu recurvatum),"left, right, bilateral","knee hyperextension |
+genu recurvatum",knee hyperextension,genu recurvatum,,,,,,,,,,,"knee hyperextension (genu recurvatum), right","knee hyperextension (genu recurvatum), left","knee hyperextension (genu recurvatum), bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+knee instability,"left, right, bilateral",,,,,,,,,,,,,,"knee instability, right","knee instability, left","knee instability, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+knee or patellar dislocation,"left, right, bilateral","knee dislocation |
+patellar dislocation",knee dislocation,patellar dislocation,,,,,,,,,,,"knee or patellar dislocation, right","knee or patellar dislocation, left","knee or patellar dislocation, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+knee or patellar fracture,"left, right, bilateral","knee fracture |
+patellar fracture",knee fracture,patellar fracture,,,,,,,,,,,"knee or patellar fracture, right","knee or patellar fracture, left","knee or patellar fracture, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+"knee pain or stiffness, diagnosis unknown","left, right, bilateral","knee pain |
+knee stiffness",,,,,,,,,,,,,"knee pain or stiffness, diagnosis unknown, left","knee pain or stiffness, diagnosis unknown, right","knee pain or stiffness, diagnosis unknown, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.3,,,,,,
+knee replacement (knee arthroplasty),"left, right, bilateral","knee replacement |
+knee arthroplasty |
+Knee, resurfacing or replacement (prosthesis)",knee replacement,knee arthroplasty,"Knee, resurfacing or replacement (prosthesis)",,,knee replacement,,,,,,,"knee replacement (knee arthroplasty), right","knee replacement (knee arthroplasty), left","knee replacement (knee arthroplasty), bilateral",,,,8997,Musculoskeletal - Knee,5055,knee replacement,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,v1.2,,,
+knee strain or sprain,"left, right, bilateral","knee strain |
+knee sprain",knee strain,knee sprain,,,,knee sprain,knee strain,,,,,,"knee strain or sprain, right","knee strain or sprain, left","knee strain or sprain, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+labyrinthitis (inner ear inflammation),"left, right, bilateral","labyrinthitis |
+inner ear inflammation",labyrinthitis,inner ear inflammation,,,,labyrinthitis,labyrinthitis (type of inner ear infection),,,,,,"labyrinthitis (inner ear inflammation), right","labyrinthitis (inner ear inflammation), left","labyrinthitis (inner ear inflammation), bilateral",,,,8969,Ear Disease and Other Sense Organs,6204,labyrinthitis,DBQ ENT Ear (Including Vestibular and Infectious),no,Active,Active,v1.0,,v1.2,,v1.2 Replaced with labryinthitis (innear ear inflammation),,
+laryngeal cancer (cancer of larynx),,"laryngeal cancer |
+cancer of larynx",laryngeal cancer,cancer of larynx,,,,cancer - larynx,,,,,,,laryngeal cancer (cancer of larynx),,,,,,1230,Cancer - Respiratory,6819,malignant growths of the respiratory system,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",yes,Active,Active,v1.0,,,,,,
+laryngectomy,,,,,,,,,,,,,,,,,,,,,9012,Respiratory,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Leg Condition - Heart/Veins/Arteries,,,,,,,,,,,,,,,,,,,,,8987,Leg Condition - Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Leg Condition - Neurological other System,,,,,,,,,,,,,,,,,,,,,8988,Leg Condition - Heart/Veins/Arteries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+leukemia,,,,,,,,acute nonlymphocytic leukemia,chronic lymphocytic leukemia,leukosarcoma,,,,,leukemia,,,,,,8939,Cancer - Hemic and Lymphatic,7703,leukemia,"DBQ HEM Hematologic and Lymphatic Conditions, Including Leukemia",no,Active,Active,v1.0,,,,,,
+"liver cancer, including hepatocellular carcinoma (HCC)",,"liver cancer |
+hepatocellular carcinoma |
+HCC",liver cancer,hepatocellular carcinoma,HCC,,,cancer - liver,cancer - bile ducts,hepatocarcinoma,hepatoma,,,,"liver cancer, including hepatocellular carcinoma (HCC)",,,,,,8932,Cancer - Digestive,7343,malignant growths of digestive system,DBQ GI Liver Conditions,yes,Active,Active,v1.0,,,,,,
+loiasis,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+loose teeth,,,,,,,,,,,,,,,,,,,,,8967,Dental and Oral,,,,,Inactive,Active,v0.1,v1.0,,,,,
+loss of both eyes,,,,,,,,,,,,,,,loss of both eyes,,,,,,8974,Eye (Vision),6061,anatomical loss both eyes,DBQ OPHTH Eyes,no,Active,Active,v1.0,,,,,,
+loss of teeth due to bone loss,,,,,,,,,,,,,,,loss of teeth due to bone loss,,,,,,8967,Dental and Oral,9913,loss of teeth,DBQ DENTAL Oral and Dental,no,Active,Active,v1.0,,,,,,
+"lower back pain or stiffness, diagnosis unknown",,lower back pain,,,,,,,,,,,,,"lower back pain or stiffness, diagnosis unknown",,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),Multiple,musculoskeletal: spine group,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.3,,,,,,
+lower back sprain (lumbosacral sprain),,"lower back sprain |
+lumbosacral sprain",lower back sprain,lumbosacral sprain,,,,low back sprain,,,,,,,lower back sprain (lumbosacral sprain),,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),5237,lumbosacral or cervical strain,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.0,,,,,,
+lower back strain (lumbosacral strain),,"lower back strain |
+lumbosacral strain",lower back strain,lumbosacral strain,,,,low back strain,lumbar strain,,,,,,lower back strain (lumbosacral strain),,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),5237,lumbosacral or cervical strain,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.0,,,,,,
+lumbar spinal stenosis (narrowing of spinal canal in lower back),,"lumbar spinal stenosis |
+narrowing of spinal canal in lower back",lumbar spinal stenosis,narrowing of spinal canal in lower back,,,,,,,,,,,lumbar spinal stenosis (narrowing of spinal canal in lower back),,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),5238,spinal stenosis,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.0,,,,,,
+lung cancer,,,,,,,,cancer - lung,,,,,,,lung cancer,,,,,,1230,Cancer - Respiratory,6819,malignant growths of the respiratory system,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.0,,,,,,
+lupus,,,,,,,,discoid lupus,erythematosus lupus,"lupus, discoid","lupus, systemic",systemic lupus,,,lupus,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",6350,systemic lupus erythematosus,"DBQ INFECT Infectious Disease (Other than HIV-related illness, Chronic Fatigue Syndrome, and Tuberculosis)",no,Active,Active,v1.0,,,,,,
+Lyme disease,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+lymphatic filariasis,,,,,,,,filariasis,,,,,,,lymphatic filariasis,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",6305,lymphatic filariasis,"DBQ INFECT Infectious Disease (Other than HIV-related illness, Chronic Fatigue Syndrome, and Tuberculosis)",no,Active,Active,v1.0,,,,,,
+malaria,,,,,,,,blackwater fever,,,,,,,malaria,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",6304,malaria,"DBQ INFECT Infectious Disease (Other than HIV-related illness, Chronic Fatigue Syndrome, and Tuberculosis)",no,Active,Active,v1.0,,,,,,
+malignant tumor in spinal cord,,,,,,,,,,,,,,,malignant tumor in spinal cord,,,,,,8942,Cancer - Neurological other System,8021,malignant growth of the spinal cord,DBQ NEURO Central Nervous System and Neuromuscular Diseases,yes,Active,Active,v1.1,,,,,,
+mallet finger,"left, right, bilateral",,,,,,,,,,,,,,"mallet finger, right","mallet finger, left","mallet finger, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+manic-depressive reaction,,,,,,,,,,,,,,,,,,,,,8989,Mental Disorders,,,,,Inactive,Active,v0.1,v1.0,,,,,
+melanoma of the skin,,malignant melanoma,malignant melanoma,,,,,,,,,,,,melanoma of the skin,,,,,,1250,Cancer - Skin,7833,malignant melanoma,DBQ DERM Skin Diseases,yes,Active,Active,v1.1,,,,,,v1.3 Synonym added 2/2/2026
+Meniere's disease,,"Meniere's |
+Menieres disease |
+Menieres",,,,,,,,,,,,,Meniere's disease,,,,,,8969,Ear Disease and Other Sense Organs,6205,Meniere's syndrome,DBQ ENT Ear (Including Vestibular and Infectious),no,Active,Active,v1.0,,,v1.3,,,v1.3 Synonyms added 3/30/26
+meniscectomy (removal of meniscus),"left, right, bilateral","meniscectomy |
+removal of meniscus |
+cartilage, semilunar, removal",meniscectomy,removal of meniscus,"cartilage, semilunar, removal",,,,,,,,,,"meniscectomy (removal of meniscus), right","meniscectomy (removal of meniscus), left","meniscectomy (removal of meniscus), bilateral",,,,8997,Musculoskeletal - Knee,5259,removal of semilunar cartilage - knee,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,v1.2,,,
+meniscus tear,"left, right, bilateral","meniscus, dislocated |
+cartilage, semilunar, dislocated |
+meniscus rupture |
+meniscus injury","meniscus, dislocated","cartilage, semilunar, dislocated",meniscus rupture,meniscus injury,,,,,,,,,"meniscus tear, right","meniscus tear, left","meniscus tear, bilateral",,,,8997,Musculoskeletal - Knee,5258,dislocated semilunar cartilage - knee,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,v1.2,,,
+menstrual disorders,,,,,,,,,,,,,,,,,,,,,8978,Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Mental Disorders,,,,,,,,mental disorder,mental disease,,,,,,,,,,,,8989,Mental Disorders,,,,,Inactive,Active,v0.1,v1.0,,,,,
+mesotheliomas of peritoneum,,,,,,,,,,,,,,,,,,,,,8932,Cancer - Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+metatarsalgia (pain in ball of foot),"left, right, bilateral","metatarsalgia |
+pain in ball of foot",metatarsalgia,pain in ball of foot,,,,,,,,,,,"metatarsalgia (pain in ball of foot), right","metatarsalgia (pain in ball of foot), left","metatarsalgia (pain in ball of foot), bilateral",,,,8994,Musculoskeletal - Foot,5279,metatarsalgia (foot pain) or Morton's disease,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+middle back sprain (thoracic sprain),,"middle back sprain |
+thoracic sprain",middle back sprain,thoracic sprain,,,,,,,,,,,middle back sprain (thoracic sprain),,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),5237,lumbosacral or cervical strain,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.0,,,,,,
+middle back strain (thoracic strain),,"middle back strain |
+thoracic strain",middle back strain,thoracic strain,,,,,,,,,,,middle back strain (thoracic strain),,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),5237,lumbosacral or cervical strain,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.0,,,,,,
+migraines (headaches),,"migraines |
+migraine |
+headache |
+headaches",migraines,migraine,headache,headaches,,headaches,migraine,,,,,,migraines (headaches),,,,,,9007,Neurological other System,8100,migraine,DBQ NEURO Headaches (Including Migraines),no,Active,Active,v1.0,,,,,,
+mitral regurgitation,,,,,,,,,,,,,,,mitral regurgitation,,,,,,8979,Heart/Veins/Arteries,7000,valvular heart disease,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+mitral valve prolapse (Barlow syndrome),,"mitral valve prolapse |
+Barlow syndrome",mitral valve prolapse,Barlow syndrome,,,,abnormal mitral valve,,,,,,,mitral valve prolapse (Barlow syndrome),,,,,,8979,Heart/Veins/Arteries,7000,valvular heart disease,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+Morton's neuroma,"left, right, bilateral",,,,,,,Morton's disease,,,,,,,"Morton's neuroma, right","Morton's neuroma, left","Morton's neuroma, bilateral",,,,8994,Musculoskeletal - Foot,5279,metatarsalgia (foot pain) or Morton's disease,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+multiple myeloma,"head or neck, extremities or trunk",,,,,,,myeloma,"myeloma, multiple",,,,,,"multiple myeloma, head or neck","multiple myeloma, extremities or trunk",,,,,8939,Cancer - Hemic and Lymphatic,7712,multiple myeloma,"DBQ HEM Hematologic and Lymphatic Conditions, Including Leukemia","yes, if head or neck",Active,Active,v1.1,,,,,,
+multiple sclerosis (MS),,"multiple sclerosis |
+MS",multiple sclerosis,MS,,,,multiple sclerosis,,,,,,,multiple sclerosis (MS),,,,,,9007,Neurological other System,8018,multiple sclerosis,DBQ NEURO Multiple Sclerosis (MS),no,Active,Active,v1.0,,,,,,
+muscle hernia,,,,,,,,,,,,,,,muscle hernia,,,,,,9005,Musculoskeletal and Muscle Injuries,5326,muscle hernia,DBQ MUSC Muscle Injuries,no,Active,Active,v1.0,,,,,,
+Musculoskeletal - Amputations,,,,,,,,,,,,,,,,,,,,,8990,Musculoskeletal - Amputations,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Ankle,"left, right, bilateral",,,,,,,ankle condition,,,,,,,"ankle condition, right","ankle condition, left","ankle condition, bilateral",,,,8991,Musculoskeletal - Ankle,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Arthritis,,,,,,,,,,,,,,,,,,,,,8992,Musculoskeletal - Arthritis,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Bones,,,,,,,,,,,,,,,,,,,,,249482,Musculoskeletal - Bones,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Elbow,"left, right, bilateral",,,,,,,,,,,,,,"elbow condition, bilateral","elbow condition, left","elbow condition, right",,,,8993,Musculoskeletal - Elbow,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Foot,"left, right, bilateral",,,,,,,,,,,,,,"foot condition, bilateral","foot condition, left","foot condition, right",foot pain,,,8994,Musculoskeletal - Foot,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Hand,"left, right, bilateral",,,,,,,,,,,,,,"hand condition, bilateral","hand condition, left","hand condition, right",,,,8995,Musculoskeletal - Hand,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Hip,"left, right, bilateral",,,,,,,,,,,,,,"hip condition, bilateral","hip condition, left","hip condition, right",,,,8996,Musculoskeletal - Hip,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Knee,"left, right, bilateral",,,,,,,,,,,,,,"knee condition, bilateral","knee condition, left","knee condition, right",,,,8997,Musculoskeletal - Knee,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),,,,,,,,,,,,,,,,,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Neck/Upper Back (Cervical Spine),,,,,,,,,,,,,,,,,,,,,8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Other,,,,,,,,,,,,,,,,,,,,,9001,Musculoskeletal - Other,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Shoulder,"left, right, bilateral",,,,,,,clavicle,scapula,,,,,,"shoulder condition, bilateral","shoulder condition, left","shoulder condition, right",,,,9002,Musculoskeletal - Shoulder,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Toe Amputations,,,,,,,,amputation - toe (toes),,,,,,,,,,,,,9003,Musculoskeletal - Toe Amputations,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal - Wrist,"left, right, bilateral",,,,,,,,,,,,,,"wrist condition, bilateral","wrist condition, left","wrist condition, right",,,,9004,Musculoskeletal - Wrist,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Musculoskeletal and Muscle Injuries,,,,,,,,muscle injury,,,,,,,,,,,,,9005,Musculoskeletal and Muscle Injuries,,,,,Inactive,Active,v0.1,v1.0,,,,,
+myasthenia gravis,,,,,,,,,,,,,,,myasthenia gravis,,,,,,9007,Neurological other System,8025,myasthenia gravis,DBQ NEURO Central Nervous System and Neuromuscular Diseases,no,Active,Active,v1.0,,,,,,
+myelitis (a spinal cord condition),,myelitis,myelitis,,,,,,,,,,,,,,,,,,9007,Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+nasopharyngeal cancer,,,,,,,,,,,,,,,nasopharyngeal cancer,,,,,,1230,Cancer - Respiratory,Multiple,Oral and Respiratory Cancer DC Group,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",yes,Active,Active,v1.0,,,,,,
+"neck pain or stiffness, diagnosis unknown",,"neck pain |
+neck stiffness",,,,,,,,,,,,,"neck pain or stiffness, diagnosis unknown",,,,,,8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),Multiple,musculoskeletal: spine group,DBQ MUSC Neck (cervical spine) ,no,Active,Active,v1.3,,,,,,
+neck sprain (cervical sprain),,"neck sprain |
+cervical sprain",neck sprain,cervical sprain,,,,,,,,,,,neck sprain (cervical sprain),,,,,,8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),5237,lumbosacral or cervical strain,DBQ MUSC Neck (cervical spine),no,Active,Active,v1.0,,,,,,
+neck strain (cervical strain),,"neck strain |
+cervical strain",neck strain,cervical strain,,,,cervical strain,,,,,,,neck strain (cervical strain),,,,,,8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),5237,lumbosacral or cervical strain,DBQ MUSC Neck (cervical spine),no,Active,Active,v1.0,,,,,,
+nerve-related soft-tissue sarcoma,"head or neck, extremities or trunk",,,,,,,,,,,,,,"nerve-related soft-tissue sarcoma, head or neck","nerve-related soft-tissue sarcoma, extremities or trunk",,,,,8942,Cancer - Neurological other System,8540,soft tissue sarcoma (neurogenic origin),DBQ NEURO Central Nervous System and Neuromuscular Diseases,"yes, if head or neck",Active,Active,v1.1,,,,,,
+neurogenic bladder,,,,,,,,,,,,,,,neurogenic bladder,,,,,,8975,Genitourinary,7542,neurogenic bladder,DBQ GU Urinary Tract Conditions,no,Active,Active,v1.0,,,,,,
+Neurological - Cranial/Peripheral Nerves,,,,,,,,"neuropathy, peripheral",,,,,,,,,,,,,9006,Neurological - Cranial/Peripheral Nerves,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Neurological other System,,,,,,,,,,,,,,,,,,,,,9007,Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+non-diabetic peripheral neuropathy,"right lower extremities, right upper extremities, left lower extremities, left upper extremities, bilateral lower extremities, bilateral upper extremities",,,,,,,,,,,,,,"non-diabetic peripheral neuropathy, right lower extremities","non-diabetic peripheral neuropathy, right upper extremities","non-diabetic peripheral neuropathy, left lower extremities","non-diabetic peripheral neuropathy, left upper extremities","non-diabetic peripheral neuropathy, bilateral lower extremities","non-diabetic peripheral neuropathy, bilateral upper extremities",9006,Neurological - Cranial/Peripheral Nerves,Multiple,Peripheral Nerves DC Group,DBQ NEURO Peripheral Nerves,no,Active,Active,v1.0,,,,,,
+non-Hodgkin lymphoma,,"non-Hodgkin's lymphoma |
+non-Hodgkins lymphona |
+B-cell lymphoma |
+T-cell lymphoma",non-Hodgkin's lymphoma,B-cell lymphoma,T-cell lymphoma,,,Lymphoma - except Hodgkin's disease,Non-Hodgkin's lymphoma (NHL),lymphosarcoma,,,,,non-Hodgkin lymphoma,,,,,,8939,Cancer - Hemic and Lymphatic,7715,non-Hodgkin's lymphoma,"DBQ HEM Hematologic and Lymphatic Conditions, Including Leukemia",no,Active,Active,v1.0,,,v1.2,,,
+obsessive compulsive disorder (OCD),,"obsessive compulsive disorder |
+OCD",obsessive compulsive disorder,OCD,,,,,,,,,,,obsessive compulsive disorder (OCD),,,,,,8989,Mental Disorders,9404,obsessive compulsive disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,,,,
+onychomycosis (toenail fungus),,"onychomycosis |
+toe fungus |
+toe nail fungus |
+nail fungus",,,,,,,,,,,,,onychomycosis (toenail fungus),,,,,,9013,Scars (Extremities and Trunk),Multiple,No Match,DBQ DERM Scars Disfigurement,no,Active,Active,v1.3,,,,,,
+oral cavity squamous cell carcinoma,,,,,,,,,,,,,,,oral cavity squamous cell carcinoma,,,,,,8931,Cancer - Dental and Oral,9918,"neoplasm, hard and soft tissue, malignant (oral)",DBQ DENTAL Oral and Dental,yes,Active,Active,v1.1,,,,,,
+orchitis (inflammation of testicles),,"orchitis |
+inflammation of testicles",orchitis,inflammation of testicles,,,,,,,,,,,orchitis (inflammation of testicles),,,,,,8975,Genitourinary,7525,"chronic prostatitis, urethritis, epididymitis, orchitis",DBQ GU Male Reproductive Organ,no,Active,Active,v1.0,,,,,,
+oropharyngeal cancer,,,,,,,,,,,,,,,oropharyngeal cancer,,,,,,1230,Cancer - Respiratory,Multiple,Oral and Respiratory Cancer DC Group,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",yes,Active,Active,v1.0,,,,,,"per DBQ index, required DBQ could be DENTAL Oral and Dental Conditions. But DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx, more specifically calls out the pharynx"
+osteomyelitis,,,,,,,,Musculoskeletal - Osteomyelitis,,,,,,,osteomyelitis,,,,,,9000,Musculoskeletal - Osteomyelitis,5000,osteomyelitis,DBQ MUSC Osteomyelitis,no,Active,Active,v1.0,,,,,,
+otosclerosis,,,,,,,,,,,,,,,,,,,,,3140,Hearing Loss,,,,,Inactive,Active,v0.1,v1.0,,,,,
+ovarian adhesions,,,,,,,,,,,,,,,ovarian adhesions,,,,,,8921,Adhesions - Gynecological,7615,disease or injury of the ovary,DBQ GYN Gynecological,no,Active,Active,v1.0,,,,,,
+ovarian cancer,"left, right, bilateral",,,,,,,cancer - ovarian,,,,,,,"ovarian cancer, right","ovarian cancer, left","ovarian cancer, bilateral",,,,8937,Cancer - Gynecological,7627,malignant growths of gynecological system,DBQ GYN Gynecological,yes,Active,Active,v1.1,,,,,,
+ovarian cysts,,,,,,,,,,,,,,,ovarian cysts,,,,,,8951,Cyst/Benign Growth - Gynecological,7615,disease or injury of the ovary,DBQ GYN Gynecological,no,Active,Active,v1.0,,,,,,
+ovariectomy (removal of one or both ovaries),,"ovariectomy |
+removal of one ovary |
+removal of both ovaries |
+removal of ovaries",ovariectomy,removal of one ovary,removal of both ovaries,removal of ovaries,,ovary (removal of),,,,,,,ovariectomy (removal of one or both ovaries),,,,,,8978,Gynecological,7619,removal of ovary,DBQ GYN Gynecological,no,Active,Active,v1.0,,,,,,
+palsy,,,,,,,,Bell's palsy,bulbar palsy,"palsy, bulbar",,,,,,,,,,,9007,Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+pancreatic cancer,,,,,,,,cancer - pancreas,,,,,,,pancreatic cancer,,,,,,8932,Cancer - Digestive,7343,malignant growths of digestive system,DBQ GI Gallbladder & Pancreas,yes,Active,Active,v1.0,,,,,,
+pancreatitis,,,,,,,,,,,,,,,,,,,,,8968,Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+panic disorder,,"panic attack |
+panic attacks",,,,,,,,,,,,,panic disorder,,,,,,8989,Mental Disorders,9412,panic disorder and/or agoraphobia,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,v1.3,,,
+paranasal sinus or nasal cavity cancer,,"paranasal sinus cancer |
+nasal cavity cancer",paranasal sinus cancer,nasal cavity cancer,,,,paranasal sinus and nasal cavity cancer,,,,,,,paranasal sinus or nasal cavity cancer,,,,,,8931,Cancer - Dental and Oral,9918,"neoplasm, hard and soft tissue, malignant (oral)",Active,yes,Active,Active,v1.1,,v1.2,,"v1.2 Updated term to replace ""and"" with ""or""",,
+paranoid reaction,,,,,,,,,,,,,,,,,,,,,8989,Mental Disorders,,,,,Inactive,Active,v0.1,v1.0,,,,,
+parathyroid adenoma,,,,,,,,,,,,,,,,,,,,,8973,Endocrine,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Parkinson's disease,,Parkinsons disease,,,,,,,,,,,,,Parkinson's disease,,,,,,9007,Neurological other System,8004,Parkinson's disease,DBQ NEURO Parkinson's Disease,no,Active,Active,v1.0,,,v1.3,,,"v1.3 Added synonym ""Parkinsons"""
+patellar or quadriceps tendon rupture,"left, right, bilateral","patellar tendon rupture |
+quadriceps tendon rupture",patellar tendon rupture,quadriceps tendon rupture,,,,,,,,,,,"patellar or quadriceps tendon rupture, right","patellar or quadriceps tendon rupture, left","patellar or quadriceps tendon rupture, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+patellofemoral pain syndrome,"left, right, bilateral",,,,,,,,,,,,,,"patellofemoral pain syndrome, right","patellofemoral pain syndrome, left","patellofemoral pain syndrome, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+PCL tear (posterior cruciate ligament tear),"left, right, bilateral","PCL |
+PCL tear |
+posterior cruciate ligament tear",PCL,PCL tear,posterior cruciate ligament tear,,,,,,,,,,"PCL tear (posterior cruciate ligament tear), right","PCL tear (posterior cruciate ligament tear), left","PCL tear (posterior cruciate ligament tear), bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+penile cancer,,,,,,,,,,,,,,,penile cancer,,,,,,8935,Cancer - Genitourinary,7528,malignant growths of genitourinary system,DBQ GU Male Reproductive Organ,yes,Active,Active,v1.0,,,,,,
+Pension,,,,,,,,,,,,,,,,,,,,,9008,Pension,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Pension - Aid and Attendance/Housebound,,,,,,,,,,,,,,,,,,,,,9009,Pension - Aid and Attendance/Housebound,,,,,Inactive,Active,v0.1,v1.0,,,,,
+perforated eardrum (perforated tympanic membrane),"left, right, bilateral","perforated eardrum |
+perforated tympanic membrane",perforated eardrum,perforated tympanic membrane,,,,,,,,,,,"perforated eardrum (perforated tympanic membrane), right","perforated eardrum (perforated tympanic membrane), left","perforated eardrum (perforated tympanic membrane), bilateral",,,,8969,Ear Disease and Other Sense Organs,6211,perforated eardrum,DBQ ENT Ear (Including Vestibular and Infectious),no,Active,Active,v1.0,,,,,,
+persistent depressive disorder (dysthymic disorder),,"persistent depressive disorder |
+dysthymic disorder |
+dysthymia",persistent depressive disorder,dysthymic disorder,dysthymia,,,,,,,,,,persistent depressive disorder (dysthymic disorder),,,,,,8989,Mental Disorders,9433,dysthymic disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,v1.2,,,
+personality disorder,,,,,,,,,,,,,,,,,,,,,8989,Mental Disorders,,,,,Inactive,Active,v0.1,v1.0,,,,,
+pharyngeal cancer (throat cancer),,"pharyngeal cancer |
+throat cancer",pharyngeal cancer,throat cancer,,,,,,,,,,,pharyngeal cancer (throat cancer),,,,,,1230,Cancer - Respiratory,Multiple,Oral and Respiratory Cancer DC Group,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",yes,Active,Active,v1.0,,,,,,"per DBQ index, required DBQ could be DENTAL Oral and Dental Conditions. But DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx, more specifically calls out the pharynx"
+"phobia (agoraphobia, claustrophobia, or other phobia)",,"acrophobia |
+aerophobia |
+agoraphobia |
+claustrophobia |
+cleithrophobia |
+enochlophobia |
+phonophobia |
+somniphobia |
+taphophobia |
+thalassophobia |
+trypophobia |
+vehophobia",,,,,,,,,,,,,"phobia (agoraphobia, claustrophobia, or other phobia)",,,,,,8989,Mental Disorders,9412,panic disorder and/or agoraphobia,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,v1.3,v1.3,,,"v1.3 Term changed from ""agoraphobia"" to phobia (agoraphobia, claustrophobia, or other phobia)"
+phobias,,,,,,,,,,,,,,,,,,,,,8989,Mental Disorders,,,,,Inactive,Active,v0.1,v1.0,,,,,
+plague,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+plantar fasciitis,"left, right, bilateral",,,,,,,,,,,,,,"plantar fasciitis, right","plantar fasciitis, left","plantar fasciitis, bilateral",,,,8994,Musculoskeletal - Foot,5269,plantar fasciitis,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+plantar warts (foot warts),"left, right, bilateral","plantar warts |
+foot warts",plantar warts,foot warts,,,,,,,,,,,"plantar warts (foot warts), right","plantar warts (foot warts), left","plantar warts (foot warts), bilateral",,,,9016,Skin,7820,infections of the skin,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+pleurisy (pleuritis),,"pleurisy |
+pleuritis",pleurisy,pleuritis,,,,pleurisy,,,,,,,pleurisy (pleuritis) ,,,,,,9012,Respiratory,Multiple,Pleurisy Group,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.1,,,,,,
+pneumococcal arthritis,,,,,,,,,,,,,,,pneumococcal arthritis,,,,,,8992,Musculoskeletal - Arthritis,5005,pneumococcal arthritis,DBQ RHEUM Arthritis,no,Active,Active,v1.0,,,,,,
+pneumonia,,,,,,,,,,,,,,,,,,,,,9012,Respiratory,,,,,Inactive,Active,v0.1,v1.0,,,,,
+polycystic ovary syndrome (PCOS),,"polycystic ovary syndrome |
+PCOS",polycystic ovary syndrome,PCOS,,,,,,,,,,,polycystic ovary syndrome (PCOS),,,,,,8978,Gynecological,7615,disease or injury of the ovary,DBQ GYN Gynecological,no,Active,Active,v1.0,,,,,,
+post-traumatic arthritis in ankle,"left, right, bilateral",,,,,,,,,,,,,,"post-traumatic arthritis in ankle, right","post-traumatic arthritis in ankle, left","post-traumatic arthritis in ankle, bilateral",,,,8991,Musculoskeletal - Ankle,Multiple,Ankle DC Group,DBQ MUSC Ankle,no,Active,Active,v1.0,,,,,,
+post-traumatic arthritis in elbow,"left, right, bilateral",,,,,,,,,,,,,,"post-traumatic arthritis in elbow, right","post-traumatic arthritis in elbow, left","post-traumatic arthritis in elbow, bilateral",,,,8993,Musculoskeletal - Elbow,Multiple,Elbow and Forearm DC Group,DBQ MUSC Elbow and forearm,no,Active,Active,v1.0,,,,,,
+post-traumatic arthritis in foot,"left, right, bilateral",,,,,,,,,,,,,,"post-traumatic arthritis in foot, right","post-traumatic arthritis in foot, left","post-traumatic arthritis in foot, bilateral",,,,8994,Musculoskeletal - Foot,Multiple,Foot DC Group,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+post-traumatic arthritis in hand or fingers,"left, right, bilateral","post-traumatic arthritis in hand |
+post-traumatic arthritis in fingers",post-traumatic arthritis in hand,post-traumatic arthritis in fingers,,,,,,,,,,,"post-traumatic arthritis in hand or fingers, right","post-traumatic arthritis in hand or fingers, left","post-traumatic arthritis in hand or fingers, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+post-traumatic arthritis in hip,"left, right, bilateral",,,,,,,,,,,,,,"post-traumatic arthritis in hip, right","post-traumatic arthritis in hip, left","post-traumatic arthritis in hip, bilateral",,,,8996,Musculoskeletal - Hip,Multiple,Hip and Thigh DC Group,DBQ MUSC Hip and thigh,no,Active,Active,v1.0,,,,,,
+post-traumatic arthritis in knee,"left, right, bilateral",,,,,,,,,,,,,,"post-traumatic arthritis in knee, right","post-traumatic arthritis in knee, left","post-traumatic arthritis in knee, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+post-traumatic arthritis in shoulder,"left, right, bilateral",,,,,,,,,,,,,,"post-traumatic arthritis in shoulder, right","post-traumatic arthritis in shoulder, left","post-traumatic arthritis in shoulder, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+post-traumatic arthritis in wrist,"left, right, bilateral",,,,,,,,,,,,,,"post-traumatic arthritis in wrist, right","post-traumatic arthritis in wrist, left","post-traumatic arthritis in wrist, bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+poststreptococcal arthritis,,,,,,,,,,,,,,,poststreptococcal arthritis,,,,,,8992,Musculoskeletal - Arthritis,5008,poststreptococcal arthritis,DBQ RHEUM Arthritis,no,Active,Active,v1.0,,,,,,
+premature ventricular contractions,,,,,,,,,,,,,,,premature ventricular contractions,,,,,,8979,Heart/Veins/Arteries,Multiple,Arrhythmia Group,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+proctitis (inflammation of rectum),,"proctitis |
+inflammation of rectum",proctitis,inflammation of rectum,,,,,,,,,,,proctitis (inflammation of rectum),,,,,,8968,Digestive,7337,ani pruritus (anal itching),DBQ GI Rectum & Anus,no,Active,Active,v1.0,,,,,,
+prostate cancer,,,,,,,,cancer - prostate,,,,,,,prostate cancer,,,,,,8935,Cancer - Genitourinary,7528,malignant growths of genitourinary system,DBQ GU Male Reproductive Organ,yes,Active,Active,v1.0,,,,,,
+"prostate gland (injuries, infections, hypertrophy)",,,,,,,,,,,,,,,,,,,,,8975,Genitourinary,,,,,Inactive,Active,v0.1,v1.0,,,,,
+prostatitis (inflammation of prostate),,"prostatitis |
+inflammation of prostate",prostatitis,inflammation of prostate,,,,,,,,,,,prostatitis (inflammation of prostate),,,,,,8975,Genitourinary,7525,"chronic prostatitis, urethritis, epididymitis, orchitis",DBQ GU Male Reproductive Organ,no,Active,Active,v1.0,,,,,,
+"pseudofolliculitis barbae (razor bumps, shave bumps, or ingrown hairs)",,"pseudofolliculitis barbae |
+razor bumps |
+shave bumps |
+ingrown hairs",pseudofolliculitis barbae,razor bumps,shave bumps,ingrown hairs,,,,,,,,,"pseudofolliculitis barbae (razor bumps, shave bumps, or ingrown hairs)",,,,,,9016,Skin,7820,infections of the skin,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+psoriasis,,,,,,,,,,,,,,,psoriasis,,,,,,9016,Skin,7816,psoriasis,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+psychosis,,,,,,,,psychoses,psychotic depressive reaction,psychotic reaction,,,,,,,,,,,8989,Mental Disorders,,,,,Inactive,Active,v0.1,v1.0,,,,,
+PTSD (post-traumatic stress disorder),,"post-traumatic stress disorder |
+PTSD |
+posttraumatic stress disorder",post-traumatic stress disorder,PTSD,Posttraumatic stress disorder,,,"PTSD (post-traumatic stress disorder), combat-related","PTSD (post-traumatic stress disorder), non-combat-related",Post Traumatic Stress Disorder (PTSD) Combat - Mental Disorders,Post Traumatic Stress Disorder (PTSD) Personal Trauma - Mental Disorders,PTSD personal trauma,,,PTSD (post-traumatic stress disorder),,,,,,8989,Mental Disorders,9411,post-traumatic stress disorder,DBQ PSYCH PTSD Initial,no,Active,Active,v1.0,,v1.2,v1.3,Autosuggestion updated to remove distinction between combat/non-combat in v1.2,Contention Text Lookup v0.5,v1.3 Synonym added 9/15/2025
+pulmonary alveolar proteinosis (PAP),,"pulmonary alveolar proteinosis |
+PAP","pulmonary alveolar proteinosis
+",PAP,,,,,,,,,,,pulmonary alveolar proteinosis (PAP),,,,,,9012,Respiratory,6827,Pulmonary alveolar proteinosis,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.3,,,,,,
+pulmonary fibrosis,,"pleural effusion |
+pleural fibrosis |
+pleural effusion or fibrosis",pleural effusion,pleural fibrosis,pleural effusion or fibrosis,,,"fibrosis, interstitial pulmonary",,,,,,,pulmonary fibrosis,,,,,,9012,Respiratory,Multiple,ILD or Pulmonary Fibrosis Group,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.1,,,v1.3,,,
+pulmonary granuloma (lung nodule),,"pulmonary granuloma |
+lung nodule",pulmonary granuloma,lung nodule,,,,,,,,,,,pulmonary granuloma (lung nodule)  ,,,,,,8965,Cyst/Benign Growth - Respiratory,Multiple,Granuloma Group,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.1,,,,,,
+radiculopathy lower extremities,"left, right, bilateral",,,,,,,,,,,,,,"radiculopathy, right lower extremities","radiculopathy, left lower extremities","radiculopathy, bilateral lower extremities",,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),Multiple,Peripheral Nerves DC Group,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.0,,,,,,"Per DBQ Index, use NEURO Peripheral nerves conditions DBQ for CFI"
+radiculopathy upper extremities,"left, right, bilateral",,,,,,,,,,,,,,"radiculopathy, right upper extremities","radiculopathy, left upper extremities","radiculopathy, bilateral upper extremities",,,,8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),Multiple,Peripheral Nerves DC Group,DBQ MUSC Neck (cervical spine),no,Active,Active,v1.0,,,,,,"Per DBQ Index, use NEURO Peripheral nerves conditions DBQ for CFI"
+Raynaud's disease,,,,,,,,,,,,,,,Raynaud's disease,,,,,,8979,Heart/Veins/Arteries,7124,Raynaud's disease (primary Raynaud's),DBQ CARDIO Artery & Veins,no,Active,Active,v1.0,,,,,,
+rectal bleeding,,,,,,,,,,,,,,,,,,,,,8968,Digestive,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Respiratory,,,,,,,,Respiratory complaints,non-specific respiratory condition,lung condition,signs or symptoms involving respiratory system,sinus condition,,,,,,,,,9012,Respiratory,,,,,Inactive,Active,v0.1,v1.0,,,,,
+restless leg syndrome (RLS),,"restless leg syndrome |
+RLS",,,,,,,,,,,,,restless leg syndrome (RLS),,,,,,9006,Neurological - Cranial/Peripheral Nerves,Multiple,No Match,DBQ NEURO Cranial Nerve Conditions,no,Active,Active,v1.3,,,,,,
+retinitis,,,,,,,,retina (detachment of),"retina (scars, atrophy, or irregularities of)",,,,,,,,,,,,8974,Eye (Vision),,,,,Inactive,Active,v0.1,v1.0,,,,,
+rheumatic fever,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+rheumatoid arthritis,,,,,,,,rheumatism,,,,,,,rheumatoid arthritis,,,,,,8992,Musculoskeletal - Arthritis,5002,rheumatoid arthritis,DBQ RHEUM Arthritis,no,Active,Active,v1.0,,,,,,
+"rhinitis, chronic",,"allergic rhinitis |
+non-allergic rhinitis |
+allergic or vasomotor rhinitis |
+vasomotor rhinitis |
+bacterial rhinitis",allergic rhinitis,non-allergic rhinitis,allergic or vasomotor rhinitis,vasomotor rhinitis,bacterial rhinitis,rhinitis,,,,,,,"rhinitis, chronic",,,,,,9012,Respiratory,Multiple,Rhinitis DC Group,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",yes,Active,Active,v1.0,,v1.3,v1.3,v1.3,,"v1.3 Changed from ""chronic rhinitis, allergic or non-allergic"" to ""rhinitis, chronic"" on 2/2/2026"
+rib fracture,"left, right, bilateral",,,,,,,,,,,,,,"rib fracture, right","rib fracture, left","rib fracture, bilateral",,,,249482,Musculoskeletal - Bones,5297,removal of rib(s),DBQ MUSC Bones and Other Skeletal Conditions,no,Active,Active,v1.0,,,,,Contention Text Lookup v0.5,
+rib removal,,,,,,,,,,,,,,,rib removal,,,,,,249482,Musculoskeletal - Bones,5297,removal of rib(s),DBQ MUSC Bones and Other Skeletal Conditions,no,Active,Active,v1.0,,,,,,
+ringworm (dermatophytosis),,"ringworm |
+dermatophytosis",ringworm,dermatophytosis,,,,,,,,,,,ringworm (dermatophytosis),,,,,,9016,Skin,7813,dermatophytosis,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+rotator cuff tear,"left, right, bilateral",,,,,,,,,,,,,,"rotator cuff tear, right","rotator cuff tear, left","rotator cuff tear, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+salivary gland cancer,,,,,,,,,,,,,,,salivary gland cancer,,,,,,8931,Cancer - Dental and Oral,9918,"neoplasm, hard and soft tissue, malignant (oral)",DBQ DENTAL Oral and Dental,yes,Active,Active,v1.1,,,,,,
+salpingitis,,,,,,,,,,,,,,,,,,,,,8978,Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+sarcoidosis,,,,,,,,Boeck's disease,,,,,,,sarcoidosis,,,,,,9012,Respiratory,6846,sarcoidosis,DBQ RESP Respiratory Conditions (Other than Tuberculosis and Sleep Apnea),yes,Active,Active,v1.1,,,,,,
+"scars, extremities or trunk",,,,,,,,Scars (Extremities and Trunk),,,,,,,"scars, extremities or trunk",,,,,,9013,Scars (Extremities and Trunk),Multiple,Scars (Extremities and Trunk) DC group,DBQ DERM Scars Disfigurement,no,Active,Active,v1.0,,,,,,
+"scars, head, face or neck",,,,,,,,"Scars (Head, Face, Or Neck)",,,,,,,"scars, head, face or neck",,,,,,9014,"Scars (Head, Face, Or Neck)",Multiple,"Scars (Head, Face and Neck) DC Group",DBQ DERM Scars Disfigurement,no,Active,Active,v1.0,,,,,,
+schistosomiasis,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+schizoaffective disorder,,,,,,,,,,,,,,,schizoaffective disorder,,,,,,8989,Mental Disorders,9211,Schizoaffective Disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.3,,,,,,
+schizophrenia,,,,,,,,,,,,,,,schizophrenia,,,,,,8989,Mental Disorders,9201,schizophrenia,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,,,,
+sciatica (sciatic nerve radiculopathy),"left, right, bilateral","sciatica |
+sciatic nerve radiculopathy |
+diabetic peripheral neuropathy lower extremities sciatic |
+leg sciatica |
+lower extremity radiculopathy sciatic |
+lower extremity radiculopathy sciatic nerve |
+lower extremity radiculopathy sciatic nerve |
+lower extremity radiculopathy sciatica |
+lower extremity radiculopathysciatic |
+lower extremity sciatica |
+lower peripheral neuropathy sciatic |
+lower radiculopathy extremity sciatic |
+lower radiculopathy sciatic |
+lower sciatic radiculopathy |
+nerve sciatica |
+neuritis of the sciatic nerve |
+neuropathy in the leg sciatic |
+paralysis of sciatic nerve |
+radiculopathy lower extremities sciatic |
+radiculopathy lower extremities sciatic nerve |
+radiculopathy lower extremity sciatic |
+radiculopathy lower extremity sciatic nerve |
+radiculopathy lower extremity sciatic nerve 1 |
+radiculopathy of the sciatic nerve lower extremities |
+radiculopathy sciatica lower extremities |
+sciatic |
+sciatic lower extremity |
+sciatic nerve |
+sciatic nerve damage |
+sciatic nerve issues |
+sciatic nerve leg |
+sciatic nerve paralysis |
+sciatic radiculopathy lower extremity |
+sciatica down both legs |
+sciatica leg |
+sciatica legs |
+sciatica lower extremity |
+sciatica nerve |
+sciatica side |
+sided sciatica",,,,,,,,,,,,,"sciatica (sciatic nerve radiculopathy), left","sciatica (sciatic nerve radiculopathy), right","sciatica (sciatic nerve radiculopathy), bilateral",,,,9006,Neurological - Cranial/Peripheral Nerves,Multiple,Neurological: Diseases of the Peripheral Nerves,DBQ NEURO Peripheral Nerves,no,Active,Active,v1.3,,,,,,
+scoliosis,,,,,,,,,,,,,,,scoliosis,,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),Multiple,musculoskeletal: spine group,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.3,,,,,,
+Service Connected Death,,,,,,,,,,,,,,,,,,,,,9015,Service Connected Death,,,,,Inactive,Active,v0.1,v1.0,,,,,
+shin splints,"left, right, bilateral",,,,,,,,,,,,,,"shin splints, right","shin splints, left","shin splints, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+shoulder dislocation,"left, right, bilateral",,,,,,,,,,,,,,"shoulder dislocation, right","shoulder dislocation, left","shoulder dislocation, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+shoulder impingement syndrome,"left, right, bilateral",,,,,,,,,,,,,,"shoulder impingement syndrome, right","shoulder impingement syndrome, left","shoulder impingement syndrome, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+"shoulder pain or stiffness, diagnosis unknown","left, right, bilateral","shoulder pain |
+shoulder stiffness",,,,,,,,,,,,,"shoulder pain or stiffness, diagnosis unknown, left","shoulder pain or stiffness, diagnosis unknown, right","shoulder pain or stiffness, diagnosis unknown, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.3,,,,,,
+shoulder replacement (shoulder arthroplasty),"left, right, bilateral","shoulder replacement |
+shoulder arthroplasty |
+shoulder replacement (prosthesis)",shoulder replacement,shoulder arthroplasty,shoulder replacement (prosthesis),,,shoulder replacement,,,,,,,"shoulder replacement (shoulder arthroplasty), right","shoulder replacement (shoulder arthroplasty), left","shoulder replacement (shoulder arthroplasty), bilateral",,,,9002,Musculoskeletal - Shoulder,5051,shoulder replacement,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,v1.2,,,
+shoulder sprain,,,,,,,,,,,,,,,,,,,,,9002,Musculoskeletal - Shoulder,,,,,Inactive,Active,v0.1,v1.0,,,,,
+shoulder strain,"left, right, bilateral",,,,,,,,,,,,,,"shoulder strain, right","shoulder strain, left","shoulder strain, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+sickle cell anemia,,,,,,,,,,,,,,,sickle cell anemia,,,,,,8981,Hemic and Lymphatic,7714,sickle cell anemia,"DBQ HEM Hematologic and Lymphatic Conditions, Including Leukemia",no,Active,Active,v1.0,,,,,,
+Skin,,,,,,,,,,,,,,,,,,,,,9016,Skin,,,,,Inactive,Active,v0.1,v1.0,,,,,
+"Skin cancer (other than melanoma), extremities or trunk",,"skin cancer, extremities or trunk |
+basal cell carcinoma, extremities or trunk |
+squamous cell carcinoma, extremities or trunk |
+skin carcinoma, extremities or trunk","skin cancer, extremities or trunk","basal cell carcinoma, extremities or trunk","squamous cell carcinoma, extremities or trunk","skin carcinoma, extremities or trunk",,,,,,,,,"Skin cancer (other than melanoma), extremities or trunk",,,,,,1250,Skin,7818,Malignant skin neoplasms (other than malignant melanoma),DBQ DERM Skin Diseases,yes,Active,Active,v1.3,,,,,,
+"Skin cancer (other than melanoma), head or neck",,"skin cancer, head or neck |
+basal cell carcinoma, head or neck |
+squamous cell carcinoma, head or neck |
+skin carcinoma, head or neck","skin cancer, head or neck","basal cell carcinoma, head or neck","squamous cell carcinoma, head or neck","skin carcinoma, head or neck",,,,,,,,,"Skin cancer (other than melanoma), head or neck",,,,,,1250,Skin,7818,Malignant skin neoplasms (other than malignant melanoma),DBQ DERM Skin Diseases,yes,Active,Active,v1.3,,,,,,
+SLAP tear (superior labral anterior to posterior tear),"left, right, bilateral","SLAP tear |
+superior labral anterior to posterior tear",SLAP tear,superior labral anterior to posterior tear,,,,,,,,,,,"SLAP tear (superior labral anterior to posterior tear), right","SLAP tear (superior labral anterior to posterior), left","SLAP tear (superior labral anterior to posterior tear), bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+sleep apnea,,"sleep apnea ayndromes |
+OSA |
+snoring",sleep apnea ayndromes,OSA,snoring,,,,,,,,,,sleep apnea,,,,,,9012,Respiratory,6847,sleep apnea syndromes,DBQ RESP Sleep apnea,no,Active,Active,v1.0,,,v1.2,,,
+small intestine cancer,,,,,,,,cancer - small intestine,,,,,,,small intestine cancer,,,,,,8932,Cancer - Digestive,7343,malignant growths of digestive system,DBQ GI Intestinal (other than surgical or infectious),yes,Active,Active,v1.1,,,,,,
+social anxiety disorder (social phobia),,"social anxiety disorder |
+social phobia",social anxiety disorder,social phobia,,,,,,,,,,,social anxiety disorder (social phobia),,,,,,8989,Mental Disorders,9403,social anxiety disorder (social phobia),DBQ PSYCH Mental Disorders,no,Active,Active,v1.3,,,,,,
+"soft-tissue sarcoma of muscle, fat, or fibrous connective tissue","head or neck, extremities or trunk","soft-tissue sarcoma of muscle |
+soft-tissue sarcoma of fat |
+soft-tissue sarcoma of fibrous connective tissue",soft-tissue sarcoma of muscle,soft-tissue sarcoma of fat,soft-tissue sarcoma of fibrous connective tissue,,,,,,,,,,"soft-tissue sarcoma of muscle, fat, or fibrous connective tissue, head or neck","soft-tissue sarcoma of muscle, fat, or fibrous connective tissue, extremities or trunk",,,,,8941,Cancer - Musculoskeletal and Muscle Injuries,5329,"soft tissue sarcoma (of muscle, fat or fibrous connective tissue)",DBQ MUSC Muscle Injuries,"yes, if head or neck",Active,Active,v1.1,,,,,,
+somatic symptom disorder (SSD),,"somatic symptom disorder |
+SSD",somatic symptom disorder,SSD,,,,,,,,,,,somatic symptom disorder (SSD),,,,,,8989,Mental Disorders,9421,somatization disorder,DBQ PSYCH Mental Disorders,no,Active,Active,v1.0,,,,,,
+Special Monthly Compensation - Aid and Attendance/Housebound,,,,,,,,,,,,,,,,,,,,,9017,Special Monthly Compensation - Aid and Attendance/Housebound,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Special Monthly Compensation - Anatomical Loss/Loss Of Use,,,,,,,,,,,,,,,,,,,,,9018,Special Monthly Compensation - Anatomical Loss/Loss Of Use,,,,,Inactive,Active,v0.1,v1.0,,,,,
+Spina Bifida,,,,,,,,,,,,,,,,,,,,,9019,Spina Bifida,,,,,Inactive,Active,v0.1,v1.0,,,,,
+"spinal arthritis, back",,,,,,,,,,,,,,,"spinal arthritis, back",,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),5242,degenerative arthritis of the spine,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.0,,,,,,
+"spinal arthritis, neck",,,,,,,,,,,,,,,"spinal arthritis, neck",,,,,,8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),5242,degenerative arthritis of the spine,DBQ MUSC Neck (cervical spine),no,Active,Active,v1.0,,,,,,
+"spondylolisthesis, back",,,,,,,,,,,,,,,"spondylolisthesis, back",,,,,,8998,Musculoskeletal - Mid/Lower Back (Thoracolumbar Spine),5239,spondylolisthesis or segmental instability,DBQ MUSC Back (thoracolumbar spine),no,Active,Active,v1.0,,,,,,
+"spondylolisthesis, neck",,,,,,,,,,,,,,,"spondylolisthesis, neck",,,,,,8999,Musculoskeletal - Neck/Upper Back (Cervical Spine),5239,spondylolisthesis or segmental instability,DBQ MUSC Neck (cervical spine),no,Active,Active,v1.0,,,,,,
+squamous cell carcinoma of the skin ,"head or neck, extremities or trunk",,,,,,,,,,,,,,"squamous cell carcinoma of the skin, head or neck ","squamous cell carcinoma of the skin, extremities or trunk",,,,,1250,Cancer - Skin,7818,malignant growths of the skin,DBQ DERM Skin Diseases,"yes, if head or neck",Inactive,Active,v1.1,v1.3,,,,,"v1.3 Removed and replaced by ""Skin cancer..."""
+stomach cancer,,cancer - duodenum,cancer - duodenum,,,,,cancer - stomach,,,,,,,stomach cancer,,,,,,8932,Cancer - Digestive,7343,malignant growths of digestive system,DBQ GI Stomach and Duodenum,yes,Active,Active,v1.0,,,v1.2,,,
+stress fracture in leg,"left, right, bilateral",,,,,,,,,,,,,,"stress fracture in leg, right","stress fracture in leg, left","stress fracture in leg, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+syphilis,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
+syphilitic arthritis,,,,,,,,,,,,,,,syphilitic arthritis,,,,,,8992,Musculoskeletal - Arthritis,5007,syphilitic arthritis,DBQ RHEUM Arthritis,no,Active,Active,v1.0,,,,,,
+syringomyelia,,,,,,,,,,,,,,,,,,,,,9007,Neurological other System,,,,,Inactive,Active,v0.1,v1.0,,,,,
+tachycardia,,,,,,,,,,,,,,,tachycardia,,,,,,8979,Heart/Veins/Arteries,Multiple,Arrhythmia Group,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+tailbone (coccyx) removal,,"tailbone removal |
+coccyx removal",tailbone removal,coccyx removal,,,,,,,,,,,tailbone (coccyx) removal,,,,,,249482,Musculoskeletal - Bones,5298,removal of coccyx (tailbone),DBQ MUSC Bones and Other Skeletal Conditions,no,Active,Active,v1.0,,,,,,
+"temporomandibular disorder, including TMJ",,"temporomandibular disorder |
+TMJ |
+TMD",temporomandibular disorder,TMJ,,,,,,,,,,,"temporomandibular disorder, including TMJ",,,,,,249481,Dental and Oral - Musculoskeletal,9905,temporomandibular disorder (TMD),DBQ MUSC Temporomandibular Disorders,no,Active,Active,v1.0,,,v1.3,,,"v1.3 Add synonym ""TMD"""
+tendinosis in hand or fingers,"left, right, bilateral","tendinosis in hand |
+tendinosis in fingers",tendinosis in hand,tendinosis in fingers,,,,,,,,,,,"tendinosis in hand or fingers, right","tendinosis in hand or fingers, left","tendinosis in hand or fingers, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+tendonitis (tendinitis) in ankle,"left, right, bilateral","tendinitis in ankle |
+tendonitis in ankle",tendinitis in ankle,tendonitis in ankle,,,,,,,,,,,"tendonitis (tendinitis) in ankle, right","tendonitis (tendinitis) in ankle, left","tendonitis (tendinitis) in ankle, bilateral",,,,8991,Musculoskeletal - Ankle,Multiple,Ankle DC Group,DBQ MUSC Ankle,no,Active,Active,v1.0,,,,,,
+tendonitis (tendinitis) in elbow,"left, right, bilateral","tendonitis in elbow |
+tendinitis in elbow",tendonitis in elbow,tendinitis in elbow,,,,,,,,,,,"tendonitis (tendinitis) in elbow, right","tendonitis (tendinitis) in elbow, left","tendonitis (tendinitis) in elbow, bilateral",,,,8993,Musculoskeletal - Elbow,Multiple,Elbow and Forearm DC Group,DBQ MUSC Elbow and forearm,no,Active,Active,v1.0,,,,,,
+tendonitis (tendinitis) in foot,"left, right, bilateral","tendonitis in foot |
+tendinitis in foot",tendonitis in foot,tendinitis in foot,,,,,,,,,,,"tendonitis (tendinitis) in foot, right","tendonitis (tendinitis) in foot, left","tendonitis (tendinitis) in foot, bilateral",,,,8994,Musculoskeletal - Foot,Multiple,Foot DC Group,DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,,,,,
+tendonitis (tendinitis) in hand or fingers,"left, right, bilateral","tendonitis in hand |
+tendinitis in hand |
+tendonitis in fingers |
+tendinitis in fingers",tendonitis in hand,tendinitis in hand,tendonitis in fingers,tendinitis in fingers,,,,,,,,,"tendonitis (tendinitis) in hand or fingers, right","tendonitis (tendinitis) in hand or fingers, left","tendonitis (tendinitis) in hand or fingers, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+tendonitis (tendinitis) in hip,"left, right, bilateral","tendonitis in hip |
+tendinitis in hip",tendonitis in hip,tendinitis in hip,,,,,,,,,,,"tendonitis (tendinitis) in hip, right","tendonitis (tendinitis) in hip, left","tendonitis (tendinitis) in hip, bilateral",,,,8996,Musculoskeletal - Hip,Multiple,Hip and Thigh DC Group,DBQ MUSC Hip and thigh,no,Active,Active,v1.0,,,,,,
+tendonitis (tendinitis) in knee,"left, right, bilateral","tendonitis in knee |
+tendinitis in knee",tendonitis in knee,tendinitis in knee,,,,,,,,,,,"tendonitis (tendinitis) in knee, right","tendonitis (tendinitis) in knee, left","tendonitis (tendinitis) in knee, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+tendonitis (tendinitis) in shoulder,"left, right, bilateral","tendonitis in shoulder |
+tendinitis in shoulder",tendonitis in shoulder,tendinitis in shoulder,,,,,,,,,,,"tendonitis (tendinitis) in shoulder, right","tendonitis (tendinitis) in shoulder, left","tendonitis (tendinitis) in shoulder, bilateral",,,,9002,Musculoskeletal - Shoulder,Multiple,Shoulder and Arm DC Group,DBQ MUSC Shoulder and arm,no,Active,Active,v1.0,,,,,,
+tendonitis (tendinitis) in wrist,"left, right, bilateral","tendonitis in wrist |
+tendinitis in wrist",tendonitis in wrist,tendinitis in wrist,,,,,,,,,,,"tendonitis (tendinitis) in wrist, right","tendonitis (tendinitis) in wrist, left","tendonitis (tendinitis) in wrist, bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+tennis elbow (lateral epicondylitis),"left, right, bilateral","tennis elbow |
+lateral epicondylitis",tennis elbow,lateral epicondylitis,,,,,,,,,,,"tennis elbow (lateral epicondylitis), right","tennis elbow (lateral epicondylitis), left","tennis elbow (lateral epicondylitis), bilateral",,,,8993,Musculoskeletal - Elbow,Multiple,Elbow and Forearm DC Group,DBQ MUSC Elbow and forearm,no,Active,Active,v1.0,,,,,,
+tenosynovitis in hand or fingers,"left, right, bilateral","tenosynovitis in hand |
+tenosynovitis in fingers",tenosynovitis in hand,tenosynovitis in fingers,,,,,,,,,,,"tenosynovitis in hand or fingers, right","tenosynovitis in hand or fingers, left","tenosynovitis in hand or fingers, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+tenosynovitis in wrist,"left, right, bilateral",,,,,,,,,,,,,,"tenosynovitis in wrist, right","tenosynovitis in wrist, left","tenosynovitis in wrist, bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+testicular cancer,"left, right, bilateral",,,,,,,cancer - testicle,testicular cancer,,,,,,"testicular cancer, right","testicular cancer, left","testicular cancer, bilateral",,,,8935,Cancer - Genitourinary,7528,malignant growths of genitourinary system,DBQ GU Male Reproductive Organ,yes,Active,Active,v1.0,,v1.1,,Replaced with right/left/bilateral variations,,
+thrombocytopenia,,,,,,,,,,,,,,,,,,,,,8981,Hemic and Lymphatic,,,,,Inactive,Active,v0.1,v1.0,,,,,
+thyroid cancer,,,,,,,,cancer - thyroid,,,,,,,thyroid cancer,,,,,,8933,Cancer - Endocrine,7914,malignant growth of the endocrine system,DBQ ENDO Thyroid & Parathyroid,yes,Active,Active,v1.1,,,,,,
+tibia or fibula fracture,"left, right, bilateral","tibia fracture |
+fibula fracture",tibia fracture,fibula fracture,,,,,,,,,,,"tibia or fibula fracture, right","tibia or fibula fracture, left","tibia or fibula fracture, bilateral",,,,8997,Musculoskeletal - Knee,Multiple,Knee and Leg DC Group,DBQ MUSC Knee and lower leg,no,Active,Active,v1.0,,,,,,
+Tietze syndrome,,,,,,,,,,,,,,,Tietze syndrome,,,,,,249482,Musculoskeletal - Bones,5297,removal of rib(s),DBQ MUSC Bones and Other Skeletal Conditions,no,Active,Active,v1.0,,,,,,
+tinnitus (ringing or hissing in ears),,"tinnitus |
+ringing in ears |
+hissing in ears |
+tinnitus, recurrent",tinnitus,ringing in ears,hissing in ears,"tinnitus, recurrent",,tinnitus,ears-ringing,ringing in ears,,,,,tinnitus (ringing or hissing in ears),,,,,,3140,Hearing Loss,6260,tinnitus,DBQ AUDIO Hearing Loss and Tinnitus,no,Active,Active,v1.0,,,v1.2,,,
+tongue cancer,,,,,,,,cancer - tongue,,,,,,,tongue cancer,,,,,,8931,Cancer - Dental and Oral,9918,"neoplasm, hard and soft tissue, malignant (oral)",DBQ DENTAL Oral and Dental,yes,Active,Active,v1.1,,,,,,
+trachea cancer (cancer of windpipe),,"trachea cancer |
+cancer of windpipe",trachea cancer,cancer of windpipe,,,,cancer - trachea,,,,,,,trachea cancer (cancer of windpipe),,,,,,1230,Cancer - Respiratory,6819,malignant growths of the respiratory system,"DBQ ENT Sinusitis, Rhinitis and Other Conditions of the Nose, Throat, Larynx and Pharynx",yes,Active,Active,v1.0,,,,,,
+traumatic brain injury (TBI),,"traumatic brain injury |
+TBI",traumatic brain injury,TBI,,,,Traumatic Brain Injury,,,,,,,traumatic brain injury (TBI),,,,,,9020,Traumatic Brain Injury,8045,residuals of traumatic brain injury (TBI),DBQ NEURO Initial Evaluation of TBI,no,Active,Active,v1.0,,,,,,
+trigger finger,"left, right, bilateral",,,,,,,,,,,,,,"trigger finger, right","trigger finger, left","trigger finger, bilateral",,,,8995,Musculoskeletal - Hand,Multiple,Hand and Finger DC Group,DBQ MUSC Hand and Finger,no,Active,Active,v1.0,,,,,,
+Tuberculosis,,,,,,,,,,,,,,,,,,,,,6890,Tuberculosis,,,,,Inactive,Active,v0.1,v1.0,,,,,
+typhoid arthritis,,,,,,,,,,,,,,,typhoid arthritis,,,,,,8992,Musculoskeletal - Arthritis,5006,typhoid arthritis,DBQ RHEUM Arthritis,no,Active,Active,v1.0,,,,,,
+ulcerative colitis,,,,,,,,colitis,peptic ulcer disease,ulcer condition,,,,,ulcerative colitis,,,,,,8968,Digestive,7323,ulcerative colitis,DBQ GI Intestinal (other than surgical or infectious),no,Active,Active,v1.0,,,,,,
+Unemployability,,,,,,,,,,,,,,,,,,,,,6990,Unemployability,,,,,Inactive,Active,v0.1,v1.0,,,,,
+ureteral cancer (ureter cancer),,"ureteral cancer |
+ureter cancer",ureteral cancer,ureter cancer,,,,cancer - ureters,cancer - urethra,cancer - urinary tract,,,,,ureteral cancer (ureter cancer),,,,,,8935,Cancer - Genitourinary,7528,malignant growths of genitourinary system,DBQ GU Urinary Tract Conditions,no,Active,Active,v1.0,,,,,,
+urethritis,,,,,,,,,,,,,,,urethritis,,,,,,8975,Genitourinary,7525,"chronic prostatitis, urethritis, epididymitis, orchitis",DBQ GU Urinary Tract Conditions,no,Active,Active,v1.0,,,,,,
+urinary incontinence (loss of bladder control),,"urinary incontinence |
+loss of bladder control",urinary incontinence,loss of bladder control,,,,,,,,,,,urinary incontinence (loss of bladder control),,,,,,8975,Genitourinary,7517,injury of bladder,DBQ GU Urinary Tract Conditions,no,Active,Active,v1.0,,,,,,
+uterine cancer,,,,,,,,choriocarcinoma,,,,,,,uterine cancer,,,,,,8937,Cancer - Gynecological,7627,malignant growths of gynecological system,DBQ GYN Gynecological,yes,Active,Active,v1.1,,,,,,
+uterus (displacement of),,,,,,,,uterus (prolapse),,,,,,,,,,,,,8978,Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+vaginal cancer,,,,,,,,,,,,,,,vaginal cancer,,,,,,8937,Cancer - Gynecological,7627,malignant growths of gynecological system,DBQ GYN Gynecological,yes,Active,Active,v1.1,,,,,,
+vaginitis,,,,,,,,vulvovaginitis,,,,,,,,,,,,,8978,Gynecological,,,,,Inactive,Active,v0.1,v1.0,,,,,
+varicocele,"left, right, bilateral",,,,,,,,,,,,,,"varicocele, right","varicocele, left","varicocele, bilateral",,,,8975,Genitourinary,7543,varicocele/Hydrocele,DBQ GU Male Reproductive Organ,no,Active,Active,v1.0,,,,,,
+varicose veins in leg,"left, right, bilateral",,,,,,,,,,,,,,"varicose veins in leg, right","varicose veins in leg, left","varicose veins in leg, bilateral",,,,8987,Leg Condition - Heart/Veins/Arteries,7120,varicose veins,DBQ CARDIO Artery & Veins,no,Active,Active,v1.0,,v1.2,,replaced with terms with r/l/bilateral,,
+"varicose veins, other than in leg",,,,,,,,,,,,,,,"varicose veins, other than in leg",,,,,,8979,Heart/Veins/Arteries,7120,varicose veins,DBQ CARDIO Artery & Veins,no,Inactive,Active,v1.0,v1.2,,,,,
+"vascular soft-tissue sarcoma, including angiosarcoma ","head or neck, extremities or trunk","vascular soft-tissue sarcoma |
+angiosarcoma",vascular soft-tissue sarcoma,angiosarcoma,,,,,,,,,,,"vascular soft-tissue sarcoma, including angiosarcoma, head or neck ","vascular soft-tissue sarcoma, including angiosarcoma, extremities or trunk",,,,,8938,Cancer - Heart/Veins/Arteries,7123,soft-tissue sarcoma (of vascular origin),DBQ CARDIO Artery & Veins,"yes, if head or neck",Active,Active,v1.1,,,,,,
+ventral hernia (hernia in abdomen),,"ventral hernia |
+hernia in abdomen",ventral hernia,hernia in abdomen,,,,"hernia, ventral",,,,,,,ventral hernia (hernia in abdomen),,,,,,8968,Digestive,7338,"hernia, including femoral, inguinal, umbilical, ventral","DBQ GI Hernias (Including Abdominal, Inguinal, and Femoral Hernias)",no,Active,Active,v1.0,,,,,,
+ventricular hypertrophy,,,,,,,,,,,,,,,right ventricular hypertrophy (RVH),left ventricular hypertrophy (LVH),biventricular hypertrophy,,,,8979,Heart/Veins/Arteries,Multiple,Arrhythmia Group,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+vertigo or dizziness,,"dizziness |
+peripheral vestibular disorder |
+PVD |
+vertigo",,,,,,,,,,,,,vertigo or dizziness,,,,,,8969,Ear Disease and Other Sense Organs,6204 or 6205,auditory: diseases of the ear group,DBQ ENT Ear (Including Vestibular and Infectious),no,Active,Active,v1.3,,,,,,
+"visual impairment, including blurry vision, blindness and double vision",,"visual impairment |
+blurry vision |
+blindness |
+double vision",visual impairment,blurry vision,blindness,double vision,,blindness (including light perception only),visually impaired,,,,,,"visual impairment, including blurry vision, blindness and double vision",,,,,,8974,Eye (Vision),Multiple,Visual Impairment DC Group,DBQ OPHTH Eyes,no,Active,Active,v1.0,,,,,,
+vitiligo,,,,,,,,,,,,,,,vitiligo,,,,,,9016,Skin,7823,vitiligo,DBQ DERM Skin Diseases,no,Active,Active,v1.0,,,,,,
+vulvar cancer,,,,,,,,,,,,,,,vulvar cancer,,,,,,8937,Cancer - Gynecological,7627,malignant growths of gynecological system,DBQ GYN Gynecological,yes,Active,Active,v1.1,,,,,,
+weak foot,"left, right, bilateral",,,,,,,,,,,,,,"weak foot, right","weak foot, left","weak foot, bilateral",,,,8994,Musculoskeletal - Foot,5277,"weak foot condition, bilateral",DBQ MUSC Foot Conditions including flatfoot (pes planus),no,Active,Active,v1.0,,1.2,,,,Added right/left variations in v1.2
+Wolff-Parkinson-White syndrome,,,,,,,,,,,,,,,Wolff-Parkinson-White syndrome,,,,,,8979,Heart/Veins/Arteries,7010,supraventricular tachycardia,DBQ CARDIO Heart,no,Active,Active,v1.0,,,,,,
+"Wound, Bullet/Shell Fragment",,,,,,,,,,,,,,,,,,,,,9021,"Wound, Bullet/Shell Fragment",,,,,Inactive,Active,v0.1,v1.0,,,,,
+wrist fracture,"left, right, bilateral",,,,,,,,,,,,,,"wrist fracture, right","wrist fracture, left","wrist fracture, bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+wrist replacement (wrist arthroplasty),"left, right, bilateral","wrist replacement |
+wrist arthroplasty |
+wrist replacement (prosthesis)",wrist replacement,wrist arthroplasty,wrist replacement (prosthesis),,,,,,,,,,"wrist replacement (wrist arthroplasty), right","wrist replacement (wrist arthroplasty), left","wrist replacement (wrist arthroplasty), bilateral",,,,9004,Musculoskeletal - Wrist,5053,wrist replacement,DBQ MUSC Wrist,no,Active,Active,v1.0,,v1.2,,,,
+wrist sprain,"left, right, bilateral",,,,,,,,,,,,,,"wrist sprain, right","wrist sprain, left","wrist sprain, bilateral",,,,9004,Musculoskeletal - Wrist,Multiple,Wrist DC Group,DBQ MUSC Wrist,no,Active,Active,v1.0,,,,,,
+wrist strain,,,,,,,,,,,,,,,,,,,,,9004,Musculoskeletal - Wrist,,,,,Inactive,Active,v0.1,v1.0,,,,,
+yellow fever,,,,,,,,,,,,,,,,,,,,,8986,"Infectious Diseases, Immune Disorders & Nutritional Deficiencies",,,,,Inactive,Active,v0.1,v1.0,,,,,
