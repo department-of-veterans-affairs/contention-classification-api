@@ -20,13 +20,14 @@ active_autocomplete = app_config["autosuggestion_table"]["active_autocomplete"]
 
 
 def test_build_dropdown_options_list() -> None:
+    # 582 unique autosuggestion terms in v0.2, 623 in v0.3
     assert (
         len(
             build_logging_table(
                 filepath=filepath, autocomplete_columns=autocomplete_columns, active_autocomplete=active_autocomplete
             )
         )
-        == 582
+        == 623
     )
 
 

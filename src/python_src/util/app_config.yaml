@@ -31,7 +31,7 @@ diagnostic_code_table:
   classification_code: CLASSIFICATION_CODE
   classification_name: CLASSIFICATION_TEXT
 autosuggestion_table:
-  version_number: v0.2
+  version_number: v0.3
   filename: "CC Taxonomy master"
   active_autocomplete: Active autosuggestion terms
   autocomplete_terms:
