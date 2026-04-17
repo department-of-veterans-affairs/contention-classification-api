@@ -102,3 +102,76 @@ def test_contention_text_lookup_table_empty_file() -> None:
     with patch("builtins.open", mock_open(read_data="CONTENTION TEXT,CLASSIFICATION CODE,CLASSIFICATION TEXT\n")):
         table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
         assert table.get("Test")["classification_code"] is None
+
+
+# Test handling of a column of aggregate_synonyms in the csv
+aggregate_synonyms_column = app_config["condition_dropdown_table"]["aggregate_synonyms"]
+agg_column_names = ",".join(term_columns + classification_columns + [aggregate_synonyms_column])
+
+
+def test_aggregate_synonyms_single_token() -> None:
+    """A single token in aggregate_synonyms is added as a key mapping to the same classification."""
+    csv_data = f"{agg_column_names}\nknee pain,,,,,,,,,,,,,,,,,,8997,Knee,Active,knee ache in mornings\n"
+    with patch("builtins.open", mock_open(read_data=csv_data)):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        assert table.get("knee ache in mornings")["classification_code"] == 8997
+        assert table.get("knee ache in mornings")["classification_name"] == "Knee"
+
+
+def test_aggregate_synonyms_single_token_extra_spaces() -> None:
+    """A single token in aggregate_synonyms is trimmed and added as a key mapping to the same classification."""
+    csv_data = f"{agg_column_names}\nknee pain,,,,,,,,,,,,,,,,,,8997,Knee,Active,    knee ache in mornings  \n"
+    with patch("builtins.open", mock_open(read_data=csv_data)):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        assert table.get("knee ache in mornings")["classification_code"] == 8997
+        assert table.get("knee ache in mornings")["classification_name"] == "Knee"
+
+
+def test_aggregate_synonyms_multiple_tokens() -> None:
+    """Multiple pipe-delimited tokens in aggregate_synonyms are each added as keys."""
+    csv_data = f"{agg_column_names}\nknee pain,,,,,,,,,,,,,,,,,,8997,Knee,Active,knee ache|knee soreness|sore knee\n"
+    with patch("builtins.open", mock_open(read_data=csv_data)):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        for synonym in ("knee ache", "knee soreness", "sore knee"):
+            assert table.get(synonym)["classification_code"] == 8997
+
+
+def test_aggregate_synonyms_multiple_tokens_extra_spaces() -> None:
+    """Multiple pipe-delimited tokens in aggregate_synonyms are each trimmed and added as keys"""
+    csv_data = f"{agg_column_names}\nknee pain,,,,,,,,,,,,,,,,,,8997,Knee,Active,  knee ache  |  knee soreness|  sore knee\n"
+    with patch("builtins.open", mock_open(read_data=csv_data)):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        for synonym in ("knee ache", "knee soreness", "sore knee"):
+            assert table.get(synonym)["classification_code"] == 8997
+
+
+def test_aggregate_synonyms_empty_cell() -> None:
+    """An empty aggregate_synonyms cell adds no extra keys beyond the input_key columns."""
+    csv_data = f"{agg_column_names}\nknee pain,,,,,,,,,,,,,,,,,,8997,Knee,Active,\n"
+    with patch("builtins.open", mock_open(read_data=csv_data)):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        assert len(table) == 1
+        assert table.get("knee pain")["classification_code"] == 8997
+
+
+def test_aggregate_synonyms_does_not_overwrite_input_key_entry() -> None:
+    """A token in aggregate_synonyms that duplicates an input_key entry does not overwrite it."""
+    csv_data = (
+        f"{agg_column_names}\n"
+        # "knee pain" appears as both the primary input_key term and an aggregate synonym
+        "knee pain,,,,,,,,,,,,,,,,,,8997,Knee,Active,knee pain|knee ache\n"
+    )
+    with patch("builtins.open", mock_open(read_data=csv_data)):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        # "knee pain" should still resolve (not be dropped or duplicated unexpectedly)
+        assert table.get("knee pain")["classification_code"] == 8997
+        assert table.get("knee ache")["classification_code"] == 8997
+
+
+def test_aggregate_synonyms_inactive_row_ignored() -> None:
+    """aggregate_synonyms tokens from inactive rows are not added to the table."""
+    csv_data = f"{agg_column_names}\nknee pain,,,,,,,,,,,,,,,,,,8997,Knee,Inactive,soreness in knee\n"
+    with patch("builtins.open", mock_open(read_data=csv_data)):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        assert len(table) == 0
+        assert table.get("soreness in knee")["classification_code"] is None
