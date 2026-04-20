@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, FrozenSet, List, Union
 from unittest.mock import Mock, patch
 
 from fastapi.testclient import TestClient
@@ -302,7 +302,7 @@ def test_is_in_lut_not_in_lut() -> None:
 
 def test_add_to_lut_if_new_adds_new_term() -> None:
     """A term not yet in the table is added by _add_to_lut_if_new."""
-    mappings: dict = {}
+    mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
     row = {
         "CONDITION": "new unique condition",
         "Classification Code": "1234",
@@ -317,7 +317,7 @@ def test_add_to_lut_if_new_adds_new_term() -> None:
 
 def test_add_to_lut_if_new_does_not_overwrite_different_code() -> None:
     """Avoid overwriting an existing entry when classification codes differ."""
-    mappings: dict = {}
+    mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
     original_row = {
         "CONDITION": "acl tear",
         "Classification Code": "8997",
@@ -338,7 +338,7 @@ def test_add_to_lut_if_new_does_not_overwrite_different_code() -> None:
 
 def test_add_to_lut_if_new_logs_warning_on_collision() -> None:
     """A classification code collision should emit a warning-level log."""
-    mappings: dict = {}
+    mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
     original_row = {
         "CONDITION": "acl tear",
         "Classification Code": "8997",
@@ -362,7 +362,7 @@ def test_add_to_lut_if_new_logs_warning_on_collision() -> None:
 
 def test_add_to_lut_if_new_allows_same_code_overwrite() -> None:
     """_add_to_lut_if_new may overwrite when classification codes are identical (harmless duplicate)."""
-    mappings: dict = {}
+    mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
     row = {
         "CONDITION": "acl tear",
         "Classification Code": "8997",
