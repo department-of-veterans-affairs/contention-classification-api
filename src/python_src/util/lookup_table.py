@@ -85,7 +85,7 @@ class ContentionTextLookupTable:
     def get(self, input_str: str, default_value: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         fallback = default_value if default_value is not None else self.init_values.lut_default_value
         classification = self.classification_code_mappings.get(input_str.strip().lower(), fallback)
-        return classification
+        return dict(classification)
 
     def __len__(self) -> int:
         return len(self.classification_code_mappings)

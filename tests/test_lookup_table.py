@@ -192,3 +192,16 @@ def test_aggregate_synonyms_inactive_row_ignored() -> None:
         table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
         assert len(table) == 0
         assert table.get("soreness in knee")["classification_code"] is None
+
+
+def test_get_returns_copy_not_alias(mock_csv_strings: Dict[str, str]) -> None:
+    """get() should return a copy of the stored mapping dict so callers cannot corrupt
+    entries that share the same underlying dict instance (e.g. input_key + aggregate synonyms)."""
+    with patch("builtins.open", mock_open(read_data=mock_csv_strings["contention_csv"])):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        first_result = table.get("Test")
+        first_result["classification_code"] = 9999  # mutate the returned copy
+        second_result = table.get("Test")
+        assert second_result["classification_code"] != 9999, (
+            "Mutating the dict returned by get() should not affect the stored mapping"
+        )
