@@ -104,6 +104,23 @@ def test_contention_text_lookup_table_empty_file() -> None:
         assert table.get("Test")["classification_code"] is None
 
 
+def test_get_uses_caller_default_value_when_provided(mock_csv_strings: Dict[str, str]) -> None:
+    """get() should use the caller-supplied default_value for misses, not the init default."""
+    custom_default = {"classification_code": 9999, "classification_name": "Custom Default"}
+    with patch("builtins.open", mock_open(read_data=mock_csv_strings["contention_csv"])):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        result = table.get("nonexistent term", default_value=custom_default)
+        assert result == custom_default
+
+
+def test_get_falls_back_to_init_default_when_none_passed(mock_csv_strings: Dict[str, str]) -> None:
+    """get() should fall back to lut_default_value when no default_value is passed."""
+    with patch("builtins.open", mock_open(read_data=mock_csv_strings["contention_csv"])):
+        table = ContentionTextLookupTable(init_values=dropdown_expanded_table_inits)
+        result = table.get("nonexistent term")
+        assert result == dropdown_expanded_table_inits.lut_default_value
+
+
 # Test handling of a column of aggregate_synonyms in the csv
 aggregate_synonyms_column = app_config["condition_dropdown_table"]["aggregate_synonyms"]
 agg_column_names = ",".join(term_columns + classification_columns + [aggregate_synonyms_column])

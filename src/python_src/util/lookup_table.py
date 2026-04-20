@@ -77,12 +77,14 @@ class ContentionTextLookupTable:
                 for token in tokens:
                     table_key = token.lower()
                     if table_key not in self.classification_code_mappings:
-                        logging.info(f"adding [{table_key}] as a synonym for [{row[self.init_values.classification_name]}]")
+                        logging.debug(
+                            f"adding aggregate synonym [{table_key}] -> [{row[self.init_values.classification_name]}]"
+                        )
                         self.classification_code_mappings[table_key] = mapping
 
     def get(self, input_str: str, default_value: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        default_value = self.init_values.lut_default_value
-        classification = self.classification_code_mappings.get(input_str.strip().lower(), default_value)
+        fallback = default_value if default_value is not None else self.init_values.lut_default_value
+        classification = self.classification_code_mappings.get(input_str.strip().lower(), fallback)
         return classification
 
     def __len__(self) -> int:
