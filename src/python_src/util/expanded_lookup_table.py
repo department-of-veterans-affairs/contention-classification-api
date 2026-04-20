@@ -1,3 +1,4 @@
+import logging
 import re
 from string import punctuation
 from typing import Any, Dict, FrozenSet, List, Optional, Union
@@ -110,10 +111,31 @@ class ExpandedLookupTable:
         temp = frozenset(self._removal_pipeline(term).split())
         is_in_table = temp in classification_code_mappings
         if is_in_table:
-            classification_codes_differ = classification_code_mappings[temp]["classification_code"] != int(
-                row[self.init_values.classification_code]
-            )
+            existing_code = classification_code_mappings[temp]["classification_code"]
+            new_code = int(row[self.init_values.classification_code])
+            classification_codes_differ = existing_code != new_code
+            if classification_codes_differ:
+                logging.warning(
+                    f"classification code collision for term [{term!r}]: "
+                    f"keeping existing code [{existing_code}], "
+                    f"ignoring incoming code [{new_code}]"
+                )
         return is_in_table and classification_codes_differ
+
+    def _add_to_lut_if_new(
+        self,
+        key: str,
+        row: Dict[str, str],
+        classification_code_mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]],
+    ) -> None:
+        """
+        Adds a processed key to the lookup table only if it is not already present with a
+        different classification code. This preserves the first-seen classification when
+        multiple CSV rows normalise to the same frozenset key (e.g. after the removal pipeline
+        strips directional/bilateral qualifiers).
+        """
+        if not self._is_in_table(key, row, classification_code_mappings):
+            self._add_to_lut(key, row, classification_code_mappings)
 
     def _add_to_lut(
         self,
@@ -150,12 +172,12 @@ class ExpandedLookupTable:
 
             for key_text in self.init_values.input_key:
                 if row[key_text]:
-                    self._add_to_lut(row[key_text], row, classification_code_mappings)
+                    self._add_to_lut_if_new(row[key_text], row, classification_code_mappings)
 
             if self.init_values.aggregate_synonyms and row.get(self.init_values.aggregate_synonyms):
                 tokens = [t.strip() for t in row[self.init_values.aggregate_synonyms].split("|") if t.strip()]
                 for token in tokens:
-                    self._add_to_lut(token, row, classification_code_mappings)
+                    self._add_to_lut_if_new(token, row, classification_code_mappings)
 
         # adds the joint lookup to the table
         classification_code_mappings.update(self._musculoskeletal_lookup())
