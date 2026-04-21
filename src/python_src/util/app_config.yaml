@@ -1,5 +1,5 @@
 condition_dropdown_table:
-  version_number: v0.2
+  version_number: v0.3
   filename: "CC Taxonomy master"
   input_key:
     - Main condition/term
@@ -23,6 +23,7 @@ condition_dropdown_table:
   classification_code: Classification Code
   classification_name: Classification Text
   active_classification: Active classification mapping
+  aggregate_synonyms: All synonyms
 diagnostic_code_table:
   version_number: v0.6
   filename: "[Release notes] Diagnostic Code to Classification mapping release notes - DC Lookup"
@@ -30,7 +31,7 @@ diagnostic_code_table:
   classification_code: CLASSIFICATION_CODE
   classification_name: CLASSIFICATION_TEXT
 autosuggestion_table:
-  version_number: v0.2
+  version_number: v0.3
   filename: "CC Taxonomy master"
   active_autocomplete: Active autosuggestion terms
   autocomplete_terms:

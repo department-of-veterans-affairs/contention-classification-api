@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, FrozenSet, List, Union
 from unittest.mock import Mock, patch
 
 from fastapi.testclient import TestClient
@@ -298,3 +298,79 @@ def test_is_in_lut_not_in_lut() -> None:
     }
     result = TEST_LUT._is_in_table(test_value, test_row, TEST_LUT.contention_text_lookup_table)
     assert not result
+
+
+def test_add_to_lut_if_new_adds_new_term() -> None:
+    """A term not yet in the table is added by _add_to_lut_if_new."""
+    mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
+    row = {
+        "CONDITION": "new unique condition",
+        "Classification Code": "1234",
+        "Classification Text": "Test Category",
+        "ACTIVE": "Active",
+    }
+    TEST_LUT._add_to_lut_if_new("new unique condition", row, mappings)
+    assert len(mappings) == 1
+    entry = next(iter(mappings.values()))
+    assert entry["classification_code"] == 1234
+
+
+def test_add_to_lut_if_new_does_not_overwrite_different_code() -> None:
+    """Avoid overwriting an existing entry when classification codes differ."""
+    mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
+    original_row = {
+        "CONDITION": "acl tear",
+        "Classification Code": "8997",
+        "Classification Text": "Musculoskeletal - Knee",
+        "ACTIVE": "Active",
+    }
+    TEST_LUT._add_to_lut_if_new("acl tear", original_row, mappings)
+    conflicting_row = {
+        "CONDITION": "acl tear",
+        "Classification Code": "9999",  # different code
+        "Classification Text": "Other",
+        "ACTIVE": "Active",
+    }
+    TEST_LUT._add_to_lut_if_new("acl tear", conflicting_row, mappings)
+    entry = next(iter(mappings.values()))
+    assert entry["classification_code"] == 8997, "First-seen classification code should be preserved"
+
+
+def test_add_to_lut_if_new_logs_warning_on_collision() -> None:
+    """A classification code collision should emit a warning-level log."""
+    mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
+    original_row = {
+        "CONDITION": "acl tear",
+        "Classification Code": "8997",
+        "Classification Text": "Musculoskeletal - Knee",
+        "ACTIVE": "Active",
+    }
+    TEST_LUT._add_to_lut_if_new("acl tear", original_row, mappings)
+    conflicting_row = {
+        "CONDITION": "acl tear",
+        "Classification Code": "9999",
+        "Classification Text": "Other",
+        "ACTIVE": "Active",
+    }
+    with patch("src.python_src.util.expanded_lookup_table.logging") as mock_logging:
+        TEST_LUT._add_to_lut_if_new("acl tear", conflicting_row, mappings)
+        mock_logging.warning.assert_called_once()
+        warning_msg = mock_logging.warning.call_args[0][0]
+        assert "8997" in warning_msg
+        assert "9999" in warning_msg
+
+
+def test_add_to_lut_if_new_allows_same_code_overwrite() -> None:
+    """_add_to_lut_if_new may overwrite when classification codes are identical (harmless duplicate)."""
+    mappings: Dict[FrozenSet[str], Dict[str, Union[str, int]]] = {}
+    row = {
+        "CONDITION": "acl tear",
+        "Classification Code": "8997",
+        "Classification Text": "Musculoskeletal - Knee",
+        "ACTIVE": "Active",
+    }
+    TEST_LUT._add_to_lut_if_new("acl tear", row, mappings)
+    TEST_LUT._add_to_lut_if_new("acl tear", row, mappings)  # same code — not a conflict
+    assert len(mappings) == 1
+    entry = next(iter(mappings.values()))
+    assert entry["classification_code"] == 8997
